@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Estudo - College Prep</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Cabeçalho Fixo -->
+    <header class="sticky-header" id="header">
+        <div class="logo">📚 College Prep</div>
+        <nav class="nav-menu">
+            <a href="#vocabulario" class="nav-link">Vocabulário</a>
+            <a href="#trading" class="nav-link">Opções de Trading</a>
+            <a href="#quiz" class="nav-link">Quiz</a>
+        </nav>
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="container">
+        <!-- Seção de Vocabulário -->
+        <section id="vocabulario" class="section">
+            <h2>📖 Vocabulário para Exame de Entrada</h2>
+            <div class="flashcard-container" id="flashcards">
+                <!-- Flashcards serão gerados pelo JavaScript -->
+            </div>
+            <div class="controls">
+                <button id="prevCard" class="btn">← Anterior</button>
+                <span id="cardCounter">1 / 20</span>
+                <button id="nextCard" class="btn">Próximo →</button>
+            </div>
+        </section>
+
+        <!-- Seção de Opções de Trading -->
+        <section id="trading" class="section">
+            <h2>📈 Opções de Trading</h2>
+            <div class="trading-grid">
+                <div class="trading-card">
+                    <h3>Call Option (Opção de Compra)</h3>
+                    <p>Direito de comprar uma ação a um preço fixo (strike) até uma data específica.</p>
+                    <div class="example">
+                        <strong>Exemplo:</strong><br>
+                        AAPL a $150 → Call $155<br>
+                        Se AAPL > $155: Lucro = (Preço - $155) - Premium<br>
+                        Se AAPL < $155: Perda = Premium
+                    </div>
+                </div>
+                <div class="trading-card">
+                    <h3>Put Option (Opção de Venda)</h3>
+                    <p>Direito de vender uma ação a um preço fixo (strike) até uma data específica.</p>
+                    <div class="example">
+                        <strong>Exemplo:</strong><br>
+                        AAPL a $150 → Put $145<br>
+                        Se AAPL < $145: Lucro = ($145 - Preço) - Premium<br>
+                        Se AAPL > $145: Perda = Premium
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Simulador Interativo -->
+            <div class="simulator">
+                <h3>Simulador de Opções</h3>
+                <div class="simulator-controls">
+                    <label>Preço da Ação: $<input type="number" id="stockPrice" value="150" min="1"></label>
+                    <label>Strike Price: $<input type="number" id="strikePrice" value="155" min="1"></label>
+                    <label>Premium: $<input type="number" id="premium" value="2" min="0.01" step="0.01"></label>
+                    <label>Tipo:
+                        <select id="optionType">
+                            <option value="call">Call (Compra)</option>
+                            <option value="put">Put (Venda)</option>
+                        </select>
+                    </label>
+                    <button id="calculateBtn" class="btn">Calcular Resultado</button>
+                </div>
+                <div id="result" class="result-box"></div>
+            </div>
+        </section>
+
+        <!-- Seção de Quiz -->
+        <section id="quiz" class="section">
+            <h2>🎯 Quiz de Conhecimentos</h2>
+            <div id="quizContainer">
+                <div id="quizQuestion"></div>
+                <div id="quizOptions"></div>
+                <div id="quizResult"></div>
+                <button id="nextQuestion" class="btn" style="display:none;">Próxima Pergunta</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Sistema de Estudo para College Entrance Exam & Trading | 2024</p>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

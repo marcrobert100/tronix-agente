@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>DeliveryBot — Painel</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+<style>
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#090b10;--bg2:#0f1219;--bg3:#161b27;--bg4:#1c2133;
+  --brd:#222840;--brd2:#2d3655;
+  --tx:#e6eaf8;--mu:#576080;--mu2:#8892b8;
+  --ac:#ff4f1f;--ac2:#ff6e3f;
+  --gr:#1bcc6f;--rd:#ff3351;--bl:#3d95ff;--pu:#9d7aff;--am:#f59e0b;
+  --sw:222px;--r:10px;
+  --fh:'Syne',sans-serif;--fb:'DM Sans',sans-serif;
+}
+/* ══ 10 SKINS ══ */
+[data-skin="carbon"]{--bg:#090b10;--bg2:#0f1219;--bg3:#161b27;--bg4:#1c2133;--brd:#222840;--brd2:#2d3655;--tx:#e6eaf8;--mu:#576080;--ac:#ff4f1f;--ac2:#ff6e3f}
+[data-skin="ocean"]{--bg:#03080f;--bg2:#071525;--bg3:#0b1f36;--bg4:#0e2848;--brd:#0e3660;--brd2:#1a4a7a;--tx:#d6eeff;--mu:#3d6b9a;--ac:#0ea5e9;--ac2:#38bdf8}
+[data-skin="emerald"]{--bg:#020c09;--bg2:#051a12;--bg3:#07261a;--bg4:#0a3323;--brd:#0d4a30;--brd2:#156040;--tx:#d1fae5;--mu:#2d7a55;--ac:#10b981;--ac2:#34d399}
+[data-skin="violet"]{--bg:#07030f;--bg2:#100820;--bg3:#180d30;--bg4:#201240;--brd:#2e1560;--brd2:#3d1d80;--tx:#ede9fe;--mu:#6240a0;--ac:#7c3aed;--ac2:#9d60ff}
+[data-skin="rose"]{--bg:#0f030a;--bg2:#200612;--bg3:#30081a;--bg4:#400b22;--brd:#600d32;--brd2:#801040;--tx:#ffe4ee;--mu:#a03060;--ac:#f43f5e;--ac2:#fb7185}
+[data-skin="amber"]{--bg:#0f0a02;--bg2:#1f1403;--bg3:#2e1d04;--bg4:#3d2605;--brd:#5c3a06;--brd2:#7a4e08;--tx:#fef3c7;--mu:#9a6a10;--ac:#f59e0b;--ac2:#fbbf24}
+[data-skin="steel"]{--bg:#060709;--bg2:#0d1017;--bg3:#141924;--bg4:#1b2231;--brd:#1e2d42;--brd2:#253755;--tx:#dce6f5;--mu:#4a6080;--ac:#64748b;--ac2:#94a3b8}
+[data-skin="light"]{--bg:#f0f2f7;--bg2:#ffffff;--bg3:#e8ecf5;--bg4:#dde3f0;--brd:#c8d0e8;--brd2:#b0bcd8;--tx:#1a2040;--mu:#6070a0;--ac:#3d6aff;--ac2:#6090ff}
+[data-skin="neon"]{--bg:#030508;--bg2:#06090e;--bg3:#090e16;--bg4:#0c121e;--brd:#0f1a2a;--brd2:#142236;--tx:#e0fffa;--mu:#1a9070;--ac:#00ffcc;--ac2:#00e5b8}
+[data-skin="crimson"]{--bg:#0a0202;--bg2:#160404;--bg3:#200606;--bg4:#2c0808;--brd:#440a0a;--brd2:#5c0c0c;--tx:#ffe8e8;--mu:#904040;--ac:#dc2626;--ac2:#ef4444}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.4)}}
+html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fb);font-size:14px;line-height:1.55}
+a{color:var(--bl)}
+code{background:var(--bg4);padding:2px 6px;border-radius:4px;font-size:.8em;color:var(--am);font-family:'Courier New',monospace}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:2px}
+
+/* ── LAYOUT ── */
+#app{display:flex;height:100vh;overflow:hidden}
+.sb{width:var(--sw);flex-shrink:0;height:100vh;background:var(--bg2);border-right:1px solid var(--brd);display:flex;flex-direction:column;overflow:hidden;transition:transform .28s}
+.mn{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+
+/* ── SIDEBAR ── */
+.brand{display:flex;align-items:center;gap:10px;padding:18px 14px;border-bottom:1px solid var(--brd)}
+.brand-ico{font-size:1.6rem;flex-shrink:0}
+.brand-name{font-family:var(--fh);font-weight:800;font-size:.92rem;color:var(--ac);line-height:1.2}
+.brand-sub{font-size:.65rem;color:var(--mu)}
+
+.lic-b{margin:8px 10px;padding:7px 10px;background:var(--bg3);border:1px solid var(--brd);border-radius:8px;display:flex;align-items:center;gap:7px;font-size:.74rem;min-width:0}
+.ld{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.ld.ok{background:var(--gr);box-shadow:0 0 5px var(--gr)}
+.ld.warn{background:var(--am);box-shadow:0 0 5px var(--am)}
+.ld.bad{background:var(--rd)}
+.li{flex:1;min-width:0}
+.li-n{color:var(--tx);font-weight:500;font-size:.76rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li-d{color:var(--mu);font-size:.68rem}
+
+.nav{flex:1;padding:8px;display:flex;flex-direction:column;gap:1px;overflow-y:auto}
+.nb{display:flex;align-items:center;gap:9px;padding:8px 10px;background:none;border:none;border-radius:7px;color:var(--mu);font-family:var(--fb);font-size:.83rem;font-weight:500;cursor:pointer;text-align:left;transition:all .14s;width:100%;white-space:nowrap}
+.nb:hover{background:var(--bg3);color:var(--tx)}
+.nb.active{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;box-shadow:0 3px 10px rgba(255,79,31,.25)}
+.ni{font-size:.85rem;width:16px;text-align:center;flex-shrink:0}
+.nbd{margin-left:auto;background:var(--rd);color:#fff;font-size:.6rem;font-weight:800;padding:1px 5px;border-radius:8px;display:none}
+.nbd.show{display:block}
+
+.sbf{padding:12px 14px;border-top:1px solid var(--brd);display:flex;align-items:center;gap:8px}
+.sd{width:7px;height:7px;border-radius:50%;background:var(--mu);flex-shrink:0;transition:background .3s}
+.sd.on{background:var(--gr);box-shadow:0 0 6px var(--gr)}.sd.off{background:var(--rd)}
+.sbft{font-size:.74rem;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.out-btn{margin-left:auto;flex-shrink:0;background:none;border:none;color:var(--mu);font-size:.74rem;cursor:pointer;padding:3px 7px;border-radius:5px;transition:all .14s}
+.out-btn:hover{background:var(--bg3);color:var(--rd)}
+
+/* ── TOPBAR ── */
+.tb{display:flex;align-items:center;gap:12px;padding:0 20px;height:54px;background:var(--bg2);border-bottom:1px solid var(--brd);flex-shrink:0}
+.mtog{display:none;background:none;border:none;color:var(--tx);font-size:1.2rem;cursor:pointer;flex-shrink:0}
+.tb-title{font-family:var(--fh);font-weight:700;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-r{margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.wa-pill{display:flex;align-items:center;gap:5px;background:var(--bg3);border:1px solid var(--brd);padding:4px 10px;border-radius:16px;font-size:.76rem;white-space:nowrap}
+.wd{width:6px;height:6px;border-radius:50%;background:var(--mu);transition:background .3s}
+.wd.on{background:var(--gr);box-shadow:0 0 4px var(--gr)}
+
+/* ── CONTENT ── */
+.tw{flex:1;overflow-y:auto;overflow-x:hidden}
+.tab{display:none;padding:20px}
+.tab.active{display:block;animation:ti .18s ease}
+@keyframes ti{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+.phd{margin-bottom:18px}
+.phd h1{font-family:var(--fh);font-size:1.3rem;font-weight:800}
+.phd p{color:var(--mu);font-size:.82rem;margin-top:2px}
+
+/* ── CARDS ── */
+.card{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:18px;margin-bottom:14px}
+.chd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.chd h3{font-family:var(--fh);font-weight:700;font-size:.86rem}
+
+/* ── GRIDS ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.stat{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;transition:transform .18s}
+.stat::after{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.stat:hover{transform:translateY(-1px)}
+.sg::after{background:var(--gr)}.so::after{background:var(--ac)}.sb2::after{background:var(--bl)}.sp::after{background:var(--pu)}
+.sv{font-family:var(--fh);font-size:1.8rem;font-weight:800;line-height:1;margin-top:5px}
+.sl{color:var(--mu);font-size:.74rem;margin-top:2px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* ── FEED MENSAGENS ── */
+.feed{max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:4px}
+.fe{color:var(--mu);font-size:.8rem;text-align:center;padding:20px}
+.fi{display:flex;gap:7px;padding:6px 9px;background:var(--bg3);border-radius:6px;font-size:.76rem}
+.fi.entrada{border-left:3px solid var(--bl)}.fi.saida{border-left:3px solid var(--gr)}
+.fn{color:var(--mu);font-size:.7rem;white-space:nowrap}
+.fm{color:var(--tx);flex:1;word-break:break-word;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ft{color:var(--mu);font-size:.68rem;white-space:nowrap}
+
+/* ── PEDIDO CARD ── */
+.pc{background:var(--bg3);border:1px solid var(--brd);border-left:4px solid var(--ac);border-radius:var(--r);padding:14px;margin-bottom:9px;display:flex;gap:12px;position:relative;animation:sl .28s ease}
+@keyframes sl{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+@keyframes fp{0%,100%{box-shadow:none;border-left-color:var(--ac)}50%{box-shadow:0 0 0 3px rgba(255,79,31,.5);border-left-color:#fff}}
+.flash{animation:fp .5s ease infinite}
+.pc-tag{position:absolute;top:6px;right:6px;background:var(--ac);color:#fff;font-size:.58rem;font-weight:800;padding:2px 6px;border-radius:4px;letter-spacing:.06em}
+.pm{display:flex;flex-direction:column;gap:3px;min-width:90px}
+.pnum{font-family:var(--fh);font-size:1.3rem;font-weight:800;color:var(--ac);line-height:1}
+.pn{color:var(--mu2);font-size:.73rem}
+.pt{color:var(--mu);font-size:.68rem}
+.pa{display:flex;flex-direction:column;gap:4px;margin-top:6px}
+.pb{flex:1;min-width:0}
+.pi{font-weight:600;font-size:.84rem;margin-bottom:4px}
+.pd{color:var(--mu);font-size:.76rem;line-height:1.8}
+
+/* ── QR ── */
+.qa{display:flex;align-items:center;justify-content:center;background:var(--bg3);border:2px dashed var(--brd);border-radius:10px;min-height:200px;margin-bottom:12px}
+.ql{text-align:center;color:var(--mu)}.ql p{margin-top:8px;font-size:.8rem}
+.spin{width:28px;height:28px;border:3px solid var(--brd);border-top-color:var(--ac);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+#qr-img{border-radius:8px;max-width:220px;background:#fff;padding:7px}
+.sbanner{padding:8px 12px;border-radius:8px;background:var(--bg3);border:1px solid var(--brd);font-size:.8rem;margin-bottom:12px;text-align:center;color:var(--mu);transition:all .2s}
+.sbanner.on{background:rgba(27,204,111,.08);border-color:var(--gr);color:var(--gr)}
+.how{padding-left:16px;color:var(--mu);font-size:.82rem;line-height:2.1}
+.how strong{color:var(--tx)}
+.tip{margin-top:10px;padding:9px 12px;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:8px;font-size:.78rem;color:var(--am)}
+
+/* ── FORMS ── */
+.fg{margin-bottom:12px}
+.fg label{display:block;font-size:.71rem;color:var(--mu);font-weight:500;margin-bottom:4px;letter-spacing:.05em;text-transform:uppercase}
+.inp{width:100%;background:var(--bg3);border:1px solid var(--brd);border-radius:8px;padding:8px 12px;color:var(--tx);font-family:var(--fb);font-size:.84rem;outline:none;transition:border .16s}
+.inp:focus{border-color:var(--ac)}
+select.inp{appearance:none;cursor:pointer}
+textarea.inp{resize:vertical}
+.code{width:100%;background:#07080e;border:1px solid var(--brd);border-radius:8px;padding:12px;color:#8fd98f;font-family:'Courier New',monospace;font-size:.75rem;line-height:1.75;resize:vertical;outline:none}
+.code:focus{border-color:var(--ac)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.trow{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--brd);margin-bottom:12px;font-size:.84rem}
+.tog{position:relative;width:44px;height:22px;flex-shrink:0}
+.tog input{opacity:0;width:0;height:0}
+.tsl{position:absolute;inset:0;background:var(--bg4);border:1px solid var(--brd);border-radius:22px;cursor:pointer;transition:all .18s}
+.tsl::before{content:'';position:absolute;width:16px;height:16px;left:3px;top:2px;background:var(--mu);border-radius:50%;transition:all .18s}
+.tog input:checked+.tsl{background:var(--ac);border-color:var(--ac)}
+.tog input:checked+.tsl::before{transform:translateX(21px);background:#fff}
+
+/* ── BOTÕES ── */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:8px 14px;border-radius:8px;border:none;font-family:var(--fb);font-size:.8rem;font-weight:500;cursor:pointer;transition:all .14s;white-space:nowrap;flex-shrink:0}
+.btp{background:var(--ac);color:#fff}.btp:hover{background:var(--ac2);transform:translateY(-1px)}
+.btd{background:var(--rd);color:#fff}.btd:hover{opacity:.85}
+.bto{background:transparent;color:var(--mu);border:1px solid var(--brd)}.bto:hover{color:var(--tx);border-color:var(--mu2)}
+.btg{background:rgba(27,204,111,.1);color:var(--gr);border:1px solid rgba(27,204,111,.2)}.btg:hover{background:rgba(27,204,111,.18)}
+.btb{background:rgba(61,149,255,.1);color:var(--bl);border:1px solid rgba(61,149,255,.2)}.btb:hover{background:rgba(61,149,255,.18)}
+.btam{background:rgba(245,158,11,.1);color:var(--am);border:1px solid rgba(245,158,11,.2)}.btam:hover{background:rgba(245,158,11,.18)}
+.btsm{padding:5px 10px;font-size:.75rem}
+.brow{display:flex;gap:6px;flex-wrap:wrap}
+.btn-w{width:100%;justify-content:center}
+.active-via{background:var(--ac)!important;color:#fff!important;border-color:var(--ac)!important}
+
+/* ── TOAST ── */
+.toast{display:none;padding:8px 12px;border-radius:8px;font-size:.78rem;margin-top:8px}
+.toast.ok{display:block;background:rgba(27,204,111,.1);color:var(--gr);border:1px solid rgba(27,204,111,.2)}
+.toast.er{display:block;background:rgba(255,51,81,.1);color:var(--rd);border:1px solid rgba(255,51,81,.2)}
+
+/* ── CARDÁPIO ADMIN ── */
+.cg{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
+.cg-hd{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg4);border-bottom:1px solid var(--brd);cursor:pointer}
+.cg-hd:hover{background:var(--bg3)}
+.cg-name{font-family:var(--fh);font-weight:700;font-size:.88rem}
+.cg-cnt{color:var(--mu);font-size:.73rem;margin-top:1px}
+.cg-body{padding:10px 12px}
+.ir{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg3);border-radius:8px;margin-bottom:5px;border:1px solid var(--brd);transition:opacity .2s}
+.ir.pausado{opacity:.38}
+.ii{flex:1;min-width:0}
+.in{font-weight:600;font-size:.84rem}
+.ip{color:var(--gr);font-size:.78rem;font-weight:600}
+.id2{color:var(--mu);font-size:.72rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ia{display:flex;gap:4px;flex-shrink:0}
+
+/* ── LOGS ── */
+.lf2{max-height:400px;overflow-y:auto;display:flex;flex-direction:column;gap:3px}
+.li2{padding:6px 9px;border-radius:6px;font-family:'Courier New',monospace;font-size:.74rem;background:var(--bg3);border-left:3px solid var(--brd)}
+.li2.entrada{border-left-color:var(--bl)}.li2.saida{border-left-color:var(--gr)}.li2.saida_manual{border-left-color:var(--pu)}
+.lt{color:var(--mu);font-size:.68rem}.lde{color:var(--am)}.lm{color:var(--tx);margin-top:1px;word-break:break-word}
+
+/* ── PROMOÇÕES ── */
+.promo-item{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg3);border:1px solid var(--brd);border-radius:8px;margin-bottom:7px}
+.promo-item input[type=text]{flex:1;background:transparent;border:none;color:var(--tx);font-family:var(--fb);font-size:.84rem;outline:none}
+.promo-item input[type=text]::placeholder{color:var(--mu)}
+
+/* ── STATUS WA ── */
+.sw-card{background:var(--bg3);border:1px solid var(--brd);border-radius:var(--r);padding:14px;margin-bottom:10px}
+.sw-card.inativo{opacity:.5}
+.dias{display:flex;gap:3px;flex-wrap:wrap;margin:8px 0}
+.dia{width:32px;height:26px;border:1px solid var(--brd);border-radius:6px;background:var(--bg4);color:var(--mu);font-size:.7rem;font-weight:700;cursor:pointer;transition:all .14s}
+.dia.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.sw-prev{background:var(--bg);border:1px solid var(--brd);border-radius:7px;padding:8px 12px;font-size:.8rem;color:var(--mu2);min-height:48px;white-space:pre-wrap;word-break:break-word;margin-top:6px}
+.sw-log{max-height:160px;overflow-y:auto}
+.sw-log-item{padding:4px 9px;font-size:.73rem;background:var(--bg3);border-radius:5px;margin-bottom:3px;color:var(--mu2);border-left:3px solid var(--pu)}
+.tmpl{text-align:left;justify-content:flex-start;padding:7px 11px;font-size:.78rem;margin-bottom:4px}
+
+/* ── RELATÓRIOS ── */
+.rank-item{display:flex;align-items:center;gap:9px;padding:7px 11px;background:var(--bg3);border-radius:7px;margin-bottom:4px}
+.rank-num{font-family:var(--fh);font-weight:800;font-size:1rem;min-width:26px;text-align:center;color:var(--ac)}
+.rank-nome{flex:1;font-size:.83rem}
+.rank-qtd{font-size:.75rem;color:var(--mu);background:var(--bg4);padding:2px 7px;border-radius:8px}
+.hist-row{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--brd);font-size:.82rem}
+.hist-row:last-child{border:none}
+.hist-data{color:var(--mu);font-size:.76rem;min-width:75px}
+.hist-qtd{font-family:var(--fh);font-weight:700;font-size:.95rem;min-width:32px}
+.hist-bar{flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.hist-fill{height:100%;background:var(--ac);border-radius:3px;transition:width .5s ease}
+.hist-pag{color:var(--mu);font-size:.7rem;text-align:right;min-width:70px}
+
+/* ── LICENÇA ── */
+.lic-box{padding:18px;border-radius:var(--r);border:1px solid var(--brd);background:var(--bg3);text-align:center;margin-bottom:12px}
+.lic-num{font-family:var(--fh);font-size:3rem;font-weight:800;line-height:1}
+.lic-num.ok{color:var(--gr)}.lic-num.warn{color:var(--am)}.lic-num.bad{color:var(--rd)}
+.lic-lbl{color:var(--mu);font-size:.8rem;margin-top:3px}
+.lic-nome{font-size:.95rem;font-weight:600;margin-top:6px}
+
+/* ── AGENTE BADGE ── */
+.abadge{display:inline-block;padding:2px 9px;border-radius:10px;font-size:.68rem;font-weight:800;letter-spacing:.07em}
+.abadge.on{background:rgba(27,204,111,.15);color:var(--gr);border:1px solid rgba(27,204,111,.3)}
+.abadge.off{background:rgba(255,51,81,.15);color:var(--rd);border:1px solid rgba(255,51,81,.3)}
+
+/* ── MODAL ── */
+.mbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;align-items:center;justify-content:center}
+.mbg.show{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--brd);border-radius:14px;padding:24px;width:380px;max-width:94vw;box-shadow:0 50px 100px rgba(0,0,0,.8);animation:ti .24s cubic-bezier(.22,1,.36,1)}
+.modal h3{font-family:var(--fh);font-weight:700;font-size:.96rem;margin-bottom:16px}
+.modal-ft{display:flex;gap:7px;margin-top:16px;justify-content:flex-end}
+
+/* ── PRINT OVERLAY ── */
+#pov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9000;align-items:center;justify-content:center}
+#pov.show{display:flex;animation:ti .2s}
+.pbox{background:#fff;color:#111;width:320px;border-radius:12px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.8);animation:ti .26s cubic-bezier(.22,1,.36,1)}
+.phd2{background:#111;color:#fff;padding:12px 16px;display:flex;align-items:center;gap:8px}
+.phd2 h2{font-family:var(--fh);font-size:.95rem;font-weight:700}
+.pcount{margin-left:auto;background:var(--ac);color:#fff;font-weight:800;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:all .2s}
+.pcount.go{background:var(--gr);transform:scale(1.1)}
+.pbody{padding:16px}
+.prow{display:flex;gap:7px;padding:5px 0;border-bottom:1px dashed #ddd;font-size:.82rem;align-items:flex-start}
+.prow:last-child{border:none}
+.prow-l{color:#555;flex-shrink:0;min-width:78px;font-size:.76rem}
+.prow-v{font-weight:600;word-break:break-word}
+.pft{padding:10px 16px;background:#f4f4f4;display:flex;gap:7px}
+.pft button{flex:1;padding:9px;border:none;border-radius:7px;cursor:pointer;font-size:.82rem;font-weight:700}
+.pft .pp{background:#111;color:#fff}.pft .pc2{background:#e0e0e0;color:#333}
+
+/* ── SUPORTE LOCK ── */
+#sup-lock{max-width:380px}
+#sup-content{display:none}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .stats{grid-template-columns:1fr 1fr}
+  .two{grid-template-columns:1fr}
+  .fgrid{grid-template-columns:1fr}
+}
+@media(max-width:660px){
+  .sb{position:fixed;top:0;left:0;z-index:200;transform:translateX(-100%)}
+  .sb.open{transform:translateX(0);box-shadow:4px 0 20px rgba(0,0,0,.5)}
+  .mtog{display:block}
+  .tab{padding:14px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="sb" id="sb">
+    <div class="brand">
+      <span class="brand-ico">🛵</span>
+      <div><div class="brand-name">DeliveryBot</div><div class="brand-sub">by Marco Roberto</div></div>
+    </div>
+
+    <div class="lic-b" id="lb">
+      <div class="ld" id="ld"></div>
+      <div class="li"><div class="li-n" id="ln">—</div><div class="li-d" id="ldi">verificando...</div></div>
+    </div>
+
+    <nav class="nav">
+      <button class="nb active" data-tab="dashboard"><span class="ni">📊</span>Dashboard</button>
+      <button class="nb" data-tab="whatsapp"><span class="ni">📱</span>WhatsApp</button>
+      <button class="nb" data-tab="pedidos"><span class="ni">📦</span>Pedidos<span class="nbd" id="nbd">0</span></button>
+      <button class="nb" data-tab="cardapio"><span class="ni">🍽️</span>Cardápio</button>
+      <button class="nb" data-tab="fluxos"><span class="ni">🔀</span>Fluxos</button>
+      <button class="nb" data-tab="ia"><span class="ni">🤖</span>IA / Groq</button>
+      <button class="nb" data-tab="empresa"><span class="ni">🏠</span>Empresa</button>
+      <button class="nb" data-tab="statuswa"><span class="ni">📢</span>Status WA</button>
+      <button class="nb" data-tab="promocoes"><span class="ni">🔥</span>Promoções</button>
+      <button class="nb" data-tab="relatorios"><span class="ni">📈</span>Relatórios</button>
+      <button class="nb" data-tab="logs"><span class="ni">📋</span>Logs</button>
+      <button class="nb" data-tab="enviar"><span class="ni">✉️</span>Enviar Msg</button>
+      <button class="nb" data-tab="atendimento"><span class="ni">👤</span>Atendimento<span class="nbd" id="nbd-atend" style="display:none">!</span></button>
+      <button class="nb" data-tab="aparencia"><span class="ni">🎨</span>Aparência</button>
+      <button class="nb" data-tab="suporte"><span class="ni">🔑</span>Licença</button>
+    </nav>
+
+    <div class="sbf">
+      <div class="sd" id="sd"></div>
+      <span class="sbft" id="sbft">Desconectado</span>
+      <button class="out-btn" id="btn-logout">Sair</button>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN ═══ -->
+  <main class="mn">
+    <header class="tb">
+      <button class="mtog" id="mtog">☰</button>
+      <div class="tb-title" id="tb-title">Dashboard</div>
+      <div class="tb-r">
+        <div class="wa-pill"><div class="wd" id="wd"></div><span id="wtxt">Desconectado</span></div>
+      </div>
+    </header>
+
+    <div class="tw">
+
+      <!-- ══ DASHBOARD ══ -->
+      <section class="tab active" id="tab-dashboard">
+        <div class="phd"><h1>Dashboard</h1><p>Visão geral em tempo real</p></div>
+        <div class="stats">
+          <div class="stat sg"><div style="font-size:1.1rem">📨</div><div class="sv" id="sv-m">0</div><div class="sl">Mensagens</div></div>
+          <div class="stat so"><div style="font-size:1.1rem">📦</div><div class="sv" id="sv-p">0</div><div class="sl">Pedidos abertos</div></div>
+          <div class="stat sb2"><div style="font-size:1.1rem">🛒</div><div class="sv" id="sv-s">0</div><div class="sl">Clientes ativos</div></div>
+          <div class="stat sp" style="position:relative"><div style="font-size:1.1rem">🔴</div><div class="sv" id="sv-pa" style="font-size:1.6rem;color:var(--ac)">0</div><div class="sl">Pedindo agora</div><div id="sv-pa-pulse" style="display:none;position:absolute;top:8px;right:8px;width:10px;height:10px;border-radius:50%;background:var(--ac);animation:pulse 1s infinite"></div></div>
+          <div class="stat sp"><div style="font-size:1.1rem">⏱️</div><div class="sv" id="sv-u">0m</div><div class="sl">Online</div></div>
+        </div>
+        <div class="two">
+          <div class="card"><div class="chd"><h3>📟 Mensagens recentes</h3></div><div class="feed" id="feed-d"><div class="fe">Aguardando...</div></div></div>
+          <div class="card"><div class="chd"><h3>📦 Pedidos recentes</h3></div><div id="dash-p"><div class="fe">Nenhum pedido.</div></div></div>
+        </div>
+      </section>
+
+      <!-- ══ WHATSAPP ══ -->
+      <section class="tab" id="tab-whatsapp">
+        <div class="phd"><h1>WhatsApp</h1><p>Conecte seu número escaneando o QR Code</p></div>
+        <div class="two">
+          <div class="card">
+            <div class="chd"><h3>📱 QR Code</h3></div>
+            <div class="qa" id="qa"><div class="ql" id="ql"><div class="spin"></div><p>Aguardando QR...</p></div><img id="qr-img" src="" style="display:none"/></div>
+            <div class="sbanner" id="sb-banner"><span id="sb-txt">Desconectado</span></div>
+            <div class="brow"><button class="btn btp" id="btn-qr">🔄 Novo QR</button><button class="btn btd btsm" id="btn-limpar">🗑️ Limpar sessão</button><button class="btn bto btsm" id="btn-desc">⏏️ Desconectar</button></div>
+          </div>
+          <div class="card">
+            <div class="chd"><h3>📖 Como conectar</h3></div>
+            <ol class="how"><li>Aguarde o QR Code aparecer <em>(~1 min)</em></li><li>Abra o <strong>WhatsApp</strong> no celular</li><li>Vá em <strong>Aparelhos conectados → Conectar</strong></li><li>Aponte a câmera para o QR</li><li>Aparecer <strong>"conectado"</strong> = pronto!</li></ol>
+            <div class="tip">⚠️ Se não conectar: clique em <strong>Limpar sessão</strong> e escaneie novamente.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ PEDIDOS ══ -->
+      <section class="tab" id="tab-pedidos">
+        <div class="phd"><h1>Pedidos em Aberto</h1><p>Pedidos confirmados pelos clientes</p></div>
+        <div class="card" style="padding:12px 16px">
+          <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px">
+                <span style="font-family:var(--fh);font-weight:700;font-size:.86rem">🖨️ Impressão Automática</span>
+                <label class="tog"><input type="checkbox" id="tog-print" checked/><span class="tsl"></span></label>
+              </div>
+              <div style="color:var(--mu);font-size:.73rem;margin-bottom:7px">Vias:</div>
+              <div class="brow">
+                <button class="btn bto btsm via-btn active-via" data-via="1">1 via</button>
+                <button class="btn bto btsm via-btn" data-via="2">2 vias</button>
+                <button class="btn bto btsm via-btn" data-via="3">3 vias</button>
+              </div>
+            </div>
+            <div style="margin-left:auto;display:flex;gap:12px;flex-wrap:wrap">
+              <div style="text-align:center;padding:12px 18px;background:var(--bg3);border:1px solid var(--brd);border-radius:var(--r)">
+                <div style="font-family:var(--fh);font-weight:700;font-size:.84rem;margin-bottom:5px">🤖 Agente</div>
+                <div class="abadge on" id="agente-badge">ATIVO</div>
+                <div style="margin-top:8px"><button class="btn btd btsm btn-w" id="btn-agente">⏸️ Pausar</button></div>
+              </div>
+              <div style="text-align:center;padding:12px 18px;background:var(--bg3);border:1px solid var(--brd);border-radius:var(--r)">
+                <div style="font-family:var(--fh);font-weight:700;font-size:.84rem;margin-bottom:5px">🏪 Loja</div>
+                <div class="abadge on" id="loja-badge">ABERTA</div>
+                <div style="margin-top:8px"><button class="btn btd btsm btn-w" id="btn-loja">🔒 Fechar</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="lista-ped"><div class="fe">Nenhum pedido em aberto.</div></div>
+      </section>
+
+      <!-- ══ CARDÁPIO ══ -->
+      <section class="tab" id="tab-cardapio">
+        <div class="phd"><h1>Cardápio</h1><p>Gerencie grupos e produtos</p></div>
+        <div class="card">
+          <div class="chd"><h3>📋 Produtos</h3>
+            <div class="brow"><button class="btn btg btsm" id="btn-nova-cat">➕ Grupo</button><button class="btn btp btsm" id="btn-novo-item">➕ Produto</button></div>
+          </div>
+          <div id="cardapio-admin"><div class="fe">Carregando...</div></div>
+        </div>
+
+        <!-- Acompanhamentos -->
+        <div class="card">
+          <div class="chd"><h3>🧩 Lista de Acompanhamentos</h3>
+            <button class="btn btp btsm" id="btn-sv-acomp">💾 Salvar lista</button>
+          </div>
+          <p style="color:var(--mu);font-size:.82rem;margin-bottom:12px">
+            Estes são os acompanhamentos disponíveis para todos os produtos. No cadastro de cada produto, defina quantos o cliente pode escolher.
+          </p>
+          <div id="acomp-lista" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px"></div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input class="inp" id="acomp-novo" placeholder="Ex: Ketchup, Mostarda..." style="flex:1"/>
+            <button class="btn btg btsm" id="btn-add-acomp">➕ Adicionar</button>
+          </div>
+          <div style="font-size:.74rem;color:var(--mu);margin-top:6px">💡 Pode digitar vários separados por vírgula. Clique no ❌ para remover.</div>
+          <div class="toast" id="t-acomp"></div>
+        </div>
+
+        <!-- Regra meio a meio -->
+        <div class="card">
+          <div class="chd"><h3>🍕 Regra Pizza Meio a Meio</h3></div>
+          <p style="color:var(--mu);font-size:.82rem;margin-bottom:14px">
+            Quando o cliente pedir <em>"meio calabresa meio frango"</em>, como calcular o preço?
+          </p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+            <label style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg3);border:2px solid var(--brd);border-radius:9px;cursor:pointer;transition:all .18s" id="label-maior">
+              <input type="radio" name="meioameio" id="rule-maior" value="maior" style="accent-color:var(--ac)"/>
+              <div>
+                <div style="font-weight:600;font-size:.86rem">💰 Cobra o maior valor</div>
+                <div style="font-size:.74rem;color:var(--mu)">Ex: Calabresa R$38 + Frango R$42 = cobra R$42</div>
+              </div>
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg3);border:2px solid var(--brd);border-radius:9px;cursor:pointer;transition:all .18s" id="label-media">
+              <input type="radio" name="meioameio" id="rule-media" value="media" style="accent-color:var(--ac)"/>
+              <div>
+                <div style="font-weight:600;font-size:.86rem">📊 Cobra a média</div>
+                <div style="font-size:.74rem;color:var(--mu)">Ex: Calabresa R$38 + Frango R$42 = cobra R$40</div>
+              </div>
+            </label>
+          </div>
+          <button class="btn btp btsm" id="btn-sv-mam">💾 Salvar regra</button>
+          <div class="toast" id="t-mam"></div>
+        </div>
+
+        <!-- Como pedir meio a meio -->
+        <div class="card">
+          <div class="chd"><h3>💬 Como o cliente pede meio a meio</h3></div>
+          <p style="color:var(--mu);font-size:.82rem;margin-bottom:10px">O bot reconhece automaticamente qualquer um desses formatos:</p>
+          <div style="display:flex;flex-direction:column;gap:5px;font-size:.82rem">
+            <div style="padding:6px 12px;background:var(--bg3);border-radius:7px;color:var(--mu2)">💬 <strong style="color:var(--tx)">"meio calabresa meio frango G"</strong></div>
+            <div style="padding:6px 12px;background:var(--bg3);border-radius:7px;color:var(--mu2)">💬 <strong style="color:var(--tx)">"metade calabresa metade frango"</strong></div>
+            <div style="padding:6px 12px;background:var(--bg3);border-radius:7px;color:var(--mu2)">💬 <strong style="color:var(--tx)">"1/2 calabresa 1/2 frango"</strong></div>
+            <div style="padding:6px 12px;background:var(--bg3);border-radius:7px;color:var(--mu2)">💬 <strong style="color:var(--tx)">"pizza meio a meio calabresa e frango"</strong></div>
+          </div>
+          <p style="color:var(--mu);font-size:.78rem;margin-top:10px">
+            ✅ O bot verifica os dois sabores no cardápio, calcula o valor conforme a regra acima e anota automaticamente.
+          </p>
+        </div>
+      </section>
+
+      <!-- ══ FLUXOS ══ -->
+      <section class="tab" id="tab-fluxos">
+        <div class="phd"><h1>Fluxos</h1><p>Respostas automáticas por palavra-chave</p></div>
+        <div class="card">
+          <div class="chd"><h3>🔀 Fluxos (JSON)</h3><button class="btn btp btsm" id="btn-sv-flx">💾 Salvar</button></div>
+          <p style="color:var(--mu);font-size:.78rem;margin-bottom:9px">Variáveis: <code>{empresaNome}</code> <code>{cardapio}</code> <code>{horario}</code> <code>{taxaEntrega}</code> <code>{tempoEntrega}</code> <code>{pagamentos}</code> <code>{pixChave}</code> <code>{promocoes}</code></p>
+          <textarea class="code" id="ed-flx" rows="22"></textarea>
+          <div class="toast" id="t-flx"></div>
+        </div>
+      </section>
+
+      <!-- ══ IA ══ -->
+      <section class="tab" id="tab-ia">
+        <div class="phd"><h1>IA / Groq</h1><p>Inteligência artificial para respostas livres</p></div>
+        <div class="two">
+          <div class="card">
+            <div class="chd"><h3>🔑 Chave API Groq</h3></div>
+            <p style="color:var(--mu);font-size:.82rem;margin-bottom:12px">Gratuita em <a href="https://console.groq.com" target="_blank">console.groq.com</a></p>
+            <div id="groq-status" style="padding:9px 12px;border-radius:7px;background:var(--bg3);border:1px solid var(--brd);font-size:.8rem;margin-bottom:12px;color:var(--mu)">Verificando...</div>
+            <div class="fg"><label>Cole a chave completa (gsk_...)</label><input type="password" class="inp" id="inp-key" placeholder="gsk_SuaChaveCompleta..."/></div>
+            <button class="btn btp btn-w" id="btn-sv-key">💾 Salvar Chave Groq</button>
+            <div class="toast" id="t-key"></div>
+            <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--brd)">
+              <div class="trow"><span>Ativar IA</span><label class="tog"><input type="checkbox" id="tog-ia"/><span class="tsl"></span></label></div>
+              <button class="btn bto btsm btn-w" id="btn-sv-ia">Salvar configuração</button>
+              <div class="toast" id="t-ia"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="chd"><h3>🧠 Prompt e Modelo</h3><button class="btn btp btsm" id="btn-sv-prompt">💾 Salvar</button></div>
+            <textarea class="inp" id="ed-prompt" rows="7" style="width:100%;resize:vertical;margin-bottom:10px"></textarea>
+            <div class="fg"><label>Modelo Groq</label>
+              <select class="inp" id="sel-mdl">
+                <option value="llama-3.1-8b-instant">llama-3.1-8b-instant (rápido)</option>
+                <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile (melhor)</option>
+                <option value="mixtral-8x7b-32768">mixtral-8x7b (contexto longo)</option>
+              </select>
+            </div>
+            <div class="toast" id="t-prompt"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ EMPRESA ══ -->
+      <section class="tab" id="tab-empresa">
+        <div class="phd"><h1>Dados da Empresa</h1><p>Informações usadas nas respostas do bot</p></div>
+        <div class="card">
+          <div class="chd"><h3>🏠 Configurações</h3><button class="btn btp btsm" id="btn-sv-emp">💾 Salvar</button></div>
+          <div class="fgrid">
+            <div class="fg"><label>Nome</label><input class="inp" id="e-nome" placeholder="Pizzaria do João"/></div>
+            <div class="fg"><label>Endereço</label><input class="inp" id="e-end" placeholder="Rua X, 123 - Bairro"/></div>
+            <div class="fg"><label>Telefone</label><input class="inp" id="e-tel" placeholder="11 99999-9999"/></div>
+            <div class="fg" style="grid-column:1/-1">
+              <label>📅 Horário de Funcionamento por Dia</label>
+              <div id="grade-horario" style="margin-top:8px;display:flex;flex-direction:column;gap:6px"></div>
+              <input type="hidden" id="e-hor"/>
+              <div style="margin-top:8px;font-size:.74rem;color:var(--mu)">
+                💡 Desmarque os dias que a loja não funciona · <strong>00:00 = meia-noite</strong>
+              </div>
+            </div>
+            <div class="fg"><label>Taxa de Entrega</label><input class="inp" id="e-taxa" placeholder="R$ 5,00"/></div>
+            <div class="fg"><label>Tempo de Entrega</label><input class="inp" id="e-tempo" placeholder="30 a 50 min"/></div>
+            <div class="fg"><label>Pedido Mínimo</label><input class="inp" id="e-min" placeholder="R$ 25,00"/></div>
+            <div class="fg"><label>Pagamentos</label><input class="inp" id="e-pag" placeholder="Dinheiro, Cartão, Pix"/></div>
+            <div class="fg"><label>Chave Pix</label><input class="inp" id="e-pix" placeholder="email@empresa.com"/></div>
+          </div>
+          <div class="toast" id="t-emp"></div>
+        </div>
+      </section>
+
+      <!-- ══ STATUS WA ══ -->
+      <section class="tab" id="tab-statuswa">
+        <div class="phd"><h1>📢 Status WhatsApp</h1><p>Agende publicações automáticas no status do perfil</p></div>
+        <div class="two">
+          <div>
+            <div class="card">
+              <div class="chd"><h3>⏰ Status Agendados</h3><button class="btn btp btsm" id="btn-add-sw">➕ Novo</button></div>
+              <p style="color:var(--mu);font-size:.78rem;margin-bottom:12px">Variáveis: <code>{empresaNome}</code> <code>{horario}</code> <code>{promocoes}</code> <code>{tempoEntrega}</code></p>
+              <div id="lista-sw"><div class="fe">Nenhum status agendado.</div></div>
+              <button class="btn btp btn-w" id="btn-sv-sw" style="margin-top:10px">💾 Salvar agendamentos</button>
+              <div class="toast" id="t-sw"></div>
+            </div>
+          </div>
+          <div>
+            <div class="card">
+              <div class="chd"><h3>💡 Templates</h3></div>
+              <div id="lista-tmpl"></div>
+            </div>
+            <div class="card">
+              <div class="chd"><h3>📋 Log de publicações</h3><button class="btn bto btsm" onclick="document.getElementById('sw-log').innerHTML='<div class=fe>Log limpo.</div>'">🗑️</button></div>
+              <div class="sw-log" id="sw-log"><div class="fe">Nenhuma publicação ainda.</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ PROMOÇÕES ══ -->
+      <section class="tab" id="tab-promocoes">
+        <div class="phd"><h1>🔥 Promoções Especiais</h1><p>Cadastre promoções com imagem — aparecem quando o cliente digitar "7" ou "promoções"</p></div>
+
+        <!-- Controle geral -->
+        <div class="card">
+          <div class="chd"><h3>⚙️ Controle</h3></div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+            <span style="font-weight:600;font-size:.86rem">🔥 Promoções ativas</span>
+            <label class="tog"><input type="checkbox" id="tog-promo-geral"/><span class="tsl"></span></label>
+            <span id="promo-geral-badge" style="font-size:.74rem;padding:3px 10px;border-radius:20px;background:var(--bg3);color:var(--mu)">Desativado</span>
+          </div>
+          <div style="font-size:.73rem;color:var(--mu);margin-top:8px">Quando desativado, o bot não mostra promoções mesmo se o cliente pedir.</div>
+        </div>
+
+        <!-- Lista de promoções -->
+        <div class="card">
+          <div class="chd"><h3>✨ Promoções cadastradas</h3><button class="btn btg btsm" id="btn-nova-promo">➕ Nova Promoção</button></div>
+          <div id="lista-promos-card" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:8px">
+            <div class="fe">Nenhuma promoção cadastrada.</div>
+          </div>
+        </div>
+        <div class="toast" id="t-promo"></div>
+      </section>
+
+      <!-- MODAL PROMOÇÃO -->
+      <div class="mbg" id="modal-promo">
+        <div class="modal" style="max-width:480px">
+          <h3 id="mp-title">🔥 Nova Promoção</h3>
+          <input type="hidden" id="mp-id"/>
+          <div class="fg"><label>Nome da promoção *</label><input class="inp" id="mp-nome" placeholder="Ex: Pizza G + 2 Refris"/></div>
+          <div class="fg"><label>Descrição</label><input class="inp" id="mp-desc" placeholder="Ex: Somente hoje!"/></div>
+          <div class="fgrid">
+            <div class="fg"><label>Preço original</label><input class="inp" id="mp-preco-orig" placeholder="R$ 65,00"/></div>
+            <div class="fg"><label>Preço promocional *</label><input class="inp" id="mp-preco-promo" placeholder="R$ 45,00"/></div>
+          </div>
+          <div class="fg"><label>Desconto</label><input class="inp" id="mp-desconto" placeholder="Ex: 30% OFF"/></div>
+          <div class="fg">
+            <label>📸 Imagem da promoção</label>
+            <div id="mp-img-preview" style="width:100%;height:160px;background:var(--bg3);border:2px dashed var(--brd);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;margin-bottom:6px" onclick="document.getElementById('mp-img-input').click()">
+              <span id="mp-img-placeholder" style="color:var(--mu);font-size:.82rem">📷 Clique para selecionar imagem</span>
+              <img id="mp-img-thumb" style="display:none;width:100%;height:100%;object-fit:cover"/>
+            </div>
+            <input type="file" id="mp-img-input" accept="image/*" style="display:none"/>
+            <div style="font-size:.72rem;color:var(--mu)">JPG ou PNG. Máximo 2MB.</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
+            <label style="font-size:.82rem">Ativa</label>
+            <label class="tog"><input type="checkbox" id="mp-ativo" checked/><span class="tsl"></span></label>
+          </div>
+          <div class="modal-ft">
+            <button class="btn bto" id="btn-cancelar-promo">Cancelar</button>
+            <button class="btn btp" id="btn-salvar-promo">💾 Salvar</button>
+          </div>
+          <div class="toast" id="t-mp"></div>
+        </div>
+      </div>
+
+      <!-- ══ RELATÓRIOS ══ -->
+      <section class="tab" id="tab-relatorios">
+        <div class="phd"><h1>📈 Relatórios</h1><p>Desempenho do seu delivery</p></div>
+        <div class="stats" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr))">
+          <div class="stat sg"><div style="font-size:1.1rem">📦</div><div class="sv" id="rel-hoje">0</div><div class="sl">Pedidos hoje</div></div>
+          <div class="stat sp"><div style="font-size:1.1rem">💰</div><div class="sv" id="rel-fat" style="font-size:1.1rem">R$ 0</div><div class="sl">Faturamento hoje</div></div>
+          <div class="stat so"><div style="font-size:1.1rem">🏆</div><div class="sv" id="rel-total">0</div><div class="sl">Total geral</div></div>
+          <div class="stat sb2"><div style="font-size:1.1rem">⭐</div><div class="sv" id="rel-top" style="font-size:1rem">—</div><div class="sl">Mais pedido</div></div>
+        </div>
+        <div class="two">
+          <div class="card">
+            <div class="chd"><h3>🧾 Pedidos de Hoje</h3><button class="btn bto btsm" id="btn-atrel">🔄</button></div>
+            <div class="lf2" id="rel-pedidos" style="max-height:340px"><div class="fe">Carregando...</div></div>
+          </div>
+          <div>
+            <div class="card">
+              <div class="chd"><h3>🏆 Top Itens</h3></div>
+              <div id="rel-rank"><div class="fe">Sem dados.</div></div>
+            </div>
+            <div class="card">
+              <div class="chd"><h3>📆 Histórico</h3></div>
+              <div id="rel-hist" style="max-height:260px;overflow-y:auto"><div class="fe">Sem dados.</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ LOGS ══ -->
+      <section class="tab" id="tab-logs">
+        <div class="phd"><h1>Logs</h1><p>Histórico de conversas do dia</p></div>
+        <div class="card"><div class="chd"><h3>📋 Histórico</h3><button class="btn bto btsm" id="btn-atlog">🔄 Atualizar</button></div><div class="lf2" id="log-feed"><div class="fe">Carregando...</div></div></div>
+      </section>
+
+      <!-- ══ ENVIAR ══ -->
+      <section class="tab" id="tab-enviar">
+        <div class="phd"><h1>Enviar Mensagem</h1><p>Mensagem manual para qualquer número</p></div>
+        <div class="card" style="max-width:480px">
+          <div class="chd"><h3>✉️ Nova Mensagem</h3></div>
+          <div class="fg"><label>Número (DDI+DDD, só números)</label><input class="inp" id="env-n" placeholder="5511999999999"/></div>
+          <div class="fg"><label>Mensagem</label><textarea class="inp" id="env-m" rows="4"></textarea></div>
+          <button class="btn btp" id="btn-env">📤 Enviar</button>
+          <div class="toast" id="t-env"></div>
+        </div>
+      </section>
+
+      <!-- ══ SUPORTE/LICENÇA ══ -->
+      <section class="tab" id="tab-suporte">
+        <div class="phd"><h1>Licença &amp; Suporte</h1><p>Área restrita — Marco Roberto</p></div>
+
+        <div id="sup-lock" style="max-width:380px">
+          <div class="card" style="text-align:center;padding:32px 24px">
+            <div style="font-size:2.2rem;margin-bottom:10px">🔒</div>
+            <div style="font-family:var(--fh);font-weight:700;font-size:1rem;margin-bottom:4px">Área Restrita</div>
+            <div style="color:var(--mu);font-size:.82rem;margin-bottom:16px">Exclusiva do desenvolvedor Marco Roberto</div>
+            <div class="fg"><label>Usuário</label><input type="text" class="inp" id="sup-user" placeholder="usuário" style="text-align:center"/></div>
+            <div class="fg"><label>Senha</label><input type="password" class="inp" id="sup-senha" placeholder="••••••••" style="text-align:center;letter-spacing:.2em;font-size:1rem"/></div>
+            <button class="btn btp btn-w" id="btn-sup-unlock">🔓 Acessar</button>
+            <div class="toast" id="t-sup-lock"></div>
+          </div>
+        </div>
+
+        <div id="sup-content">
+          <div class="two">
+            <div class="card">
+              <div class="chd"><h3>📅 Status da Licença</h3></div>
+              <div class="lic-box"><div class="lic-num" id="lic-big">—</div><div class="lic-lbl" id="lic-lbl">...</div><div class="lic-nome" id="lic-com">—</div></div>
+            </div>
+            <div class="card">
+              <div class="chd"><h3>⚙️ Configurar</h3><button class="btn btp btsm" id="btn-sv-lic">💾 Salvar</button></div>
+              <div class="fg"><label>Nome do Comerciante</label><input class="inp" id="lic-nome-inp" placeholder="Ex: Pizzaria do João"/></div>
+              <div class="fg"><label>Data de Validade</label><input type="date" class="inp" id="lic-val-inp"/></div>
+              <div class="trow"><span>Licença Ativa</span><label class="tog"><input type="checkbox" id="tog-lic"/><span class="tsl"></span></label></div>
+              <div class="toast" id="t-lic"></div>
+            </div>
+          </div>
+          <div class="card"><div class="chd"><h3>📞 Suporte</h3></div>
+            <p style="color:var(--mu);font-size:.86rem;line-height:2">👨‍💻 <strong style="color:var(--tx)">Marco Roberto</strong><br/>🛵 Desenvolvedor DeliveryBot WhatsApp<br/>🤖 Sistema completo de delivery com IA</p>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /tw -->
+      <!-- ══ CLIENTES ══ -->
+      <section class="tab" id="tab-clientes" style="display:none">
+        <div class="phd"><h1>👥 Histórico de Clientes</h1><p>Clientes que já fizeram pedidos</p></div>
+        <div class="card">
+          <div class="chd"><h3>Clientes cadastrados</h3><button class="btn btb btsm" onclick="loadClientes()">🔄 Atualizar</button></div>
+          <div id="clientes-lista"><div class="fe">Clique em Atualizar para carregar.</div></div>
+        </div>
+      </section>
+      <!-- ══ ATENDIMENTO HUMANO ══ -->
+      <section class="tab" id="tab-atendimento">
+        <div class="phd"><h1>👤 Atendimento Humano</h1><p>Chat direto com o cliente — bot pausado</p></div>
+
+        <!-- Controle -->
+        <div class="card">
+          <div class="chd"><h3>⚙️ Configuração</h3></div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+            <span style="font-weight:600;font-size:.86rem">👤 Atendimento humano</span>
+            <label class="tog"><input type="checkbox" id="tog-atend"/><span class="tsl"></span></label>
+            <span id="atend-badge" style="font-size:.74rem;padding:3px 10px;border-radius:20px;background:var(--bg3);color:var(--mu)">Desativado</span>
+          </div>
+          <div class="fg">
+            <label>📲 Número do atendente (opcional — redireciona o cliente)</label>
+            <input class="inp" id="inp-num-atend" placeholder="82999999999 (só dígitos com DDD)"/>
+            <div style="font-size:.73rem;color:var(--mu);margin-top:4px">Quando ativo, o bot envia link direto para este WhatsApp além do chat aqui.</div>
+          </div>
+          <button class="btn btp btsm" id="btn-sv-atend">💾 Salvar</button>
+          <div class="toast" id="t-atend"></div>
+        </div>
+
+        <!-- Conversas abertas -->
+        <div class="card">
+          <div class="chd"><h3>💬 Conversas em atendimento</h3><button class="btn btb btsm" id="btn-refresh-atend">🔄</button></div>
+          <div id="atend-lista"><div class="fe">Nenhum atendimento ativo.</div></div>
+        </div>
+
+        <!-- Chat -->
+        <div class="card" id="atend-chat-box" style="display:none">
+          <div class="chd">
+            <h3>💬 Chat — <span id="atend-chat-num">—</span></h3>
+            <button class="btn btd btsm" id="btn-encerrar-atend">✅ Encerrar e devolver ao bot</button>
+          </div>
+          <div id="atend-msgs" style="height:300px;overflow-y:auto;padding:8px;background:var(--bg3);border-radius:8px;margin-bottom:10px;display:flex;flex-direction:column;gap:6px">
+            <div class="fe">Selecione um atendimento acima.</div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <textarea class="inp" id="atend-resposta" rows="2" placeholder="Digite a resposta..." style="flex:1;resize:none"></textarea>
+            <button class="btn btp" id="btn-enviar-atend" style="align-self:flex-end">📤 Enviar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ APARÊNCIA ══ -->
+      <section class="tab" id="tab-aparencia">
+        <div class="phd"><h1>🎨 Aparência</h1><p>Escolha o tema visual do painel</p></div>
+        <div class="card">
+          <div class="chd"><h3>🎨 Temas</h3></div>
+          <div id="skin-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:8px"></div>
+          <div class="toast" id="t-skin"></div>
+        </div>
+      </section>
+  </main>
+</div><!-- /app -->
+
+<!-- MODAIS -->
+<div class="mbg" id="modal-cat">
+  <div class="modal">
+    <h3>➕ Novo Grupo</h3>
+    <div class="fg"><label>Ícone (emoji)</label><input class="inp" id="mc-ico" placeholder="🍕" maxlength="4"/></div>
+    <div class="fg"><label>Nome *</label><input class="inp" id="mc-nome" placeholder="Ex: Pizzas"/></div>
+    <div class="modal-ft"><button class="btn bto" id="btn-cc">Cancelar</button><button class="btn btp" id="btn-oc">Criar Grupo</button></div>
+    <div class="toast" id="t-cat"></div>
+  </div>
+</div>
+
+<div class="mbg" id="modal-item">
+  <div class="modal">
+    <h3 id="mi-title">➕ Novo Produto</h3>
+    <input type="hidden" id="mi-cat-orig"/><input type="hidden" id="mi-nome-orig"/>
+    <div class="fg"><label>Grupo *</label><select class="inp" id="mi-cat"></select></div>
+    <div class="fg"><label>Nome *</label><input class="inp" id="mi-nome" placeholder="Ex: Pizza Calabresa"/></div>
+    <div class="fg"><label>Descrição</label><input class="inp" id="mi-desc" placeholder="Ex: Molho, mussarela e calabresa"/></div>
+    <div class="fgrid">
+      <div class="fg"><label>Preço *</label><input class="inp" id="mi-preco" placeholder="R$ 35,00"/></div>
+      <div class="fg"><label>Tamanhos</label><input class="inp" id="mi-tam" placeholder="P/M/G"/></div>
+    </div>
+    <div class="fgrid">
+      <div class="fg">
+        <label>🧩 Acompanhamentos (qtd)</label>
+        <input type="number" class="inp" id="mi-acomp" min="0" max="20" placeholder="0 = sem acompanhamento"/>
+        <div style="font-size:.72rem;color:var(--mu);margin-top:4px">Quantos o cliente pode escolher da lista global. Ex: 6 para pastel.</div>
+      </div>
+    </div>
+    <!-- ── IMAGEM DO PRODUTO ── -->
+    <div class="fg" style="margin-top:10px">
+      <label>📸 Foto do Produto <span style="font-size:.72rem;color:var(--mu)">(enviada ao cliente ao pedir)</span></label>
+      <div id="mi-img-preview" style="width:100%;height:150px;background:var(--bg3);border:2px dashed var(--brd);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;margin-bottom:6px;transition:border .2s" onclick="document.getElementById('mi-img-input').click()" onmouseover="this.style.borderColor='var(--ac)'" onmouseout="this.style.borderColor='var(--brd)'">
+        <span id="mi-img-placeholder" style="color:var(--mu);font-size:.82rem;text-align:center">📷 Clique para adicionar foto<br><span style="font-size:.7rem">JPG, PNG — máx 2MB</span></span>
+        <img id="mi-img-thumb" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:8px"/>
+      </div>
+      <input type="file" id="mi-img-input" accept="image/*" style="display:none"/>
+      <button type="button" id="mi-img-remove" style="display:none;background:none;border:1px solid var(--brd);color:var(--mu);border-radius:6px;padding:4px 10px;font-size:.75rem;cursor:pointer;margin-top:2px" onclick="removerImagemItem()">🗑️ Remover foto</button>
+    </div>
+    <div class="modal-ft"><button class="btn bto" id="btn-ci">Cancelar</button><button class="btn btp" id="btn-oi">Salvar</button></div>
+    <div class="toast" id="t-item"></div>
+  </div>
+</div>
+
+<!-- PRINT OVERLAY -->
+<div id="pov">
+  <div class="pbox">
+    <div class="phd2"><span>🖨️</span><h2>Novo Pedido!</h2><div class="pcount" id="pcount">3</div></div>
+    <div class="pbody">
+      <div class="prow"><span class="prow-l">🔢 Pedido</span><span class="prow-v" id="pr-np" style="font-size:1.1rem;color:#c00">—</span></div>
+      <div class="prow"><span class="prow-l">📱 Cliente</span><span class="prow-v" id="pr-n">—</span></div>
+      <div class="prow"><span class="prow-l">🛒 Itens</span><span class="prow-v" id="pr-i">—</span></div>
+      <div class="prow"><span class="prow-l">📍 Endereço</span><span class="prow-v" id="pr-e">—</span></div>
+      <div class="prow" id="pr-comp-row" style="display:none"><span class="prow-l">🏠 Compl.</span><span class="prow-v" id="pr-c">—</span></div>
+      <div class="prow" id="pr-tel-row" style="display:none"><span class="prow-l">📞 Tel.</span><span class="prow-v" id="pr-tel">—</span></div>
+      <div class="prow" id="pr-maps-row" style="display:none"><span class="prow-l">🗺️ Mapa</span><a class="prow-v" id="pr-m" href="#" target="_blank" style="color:#1155cc;font-size:.74rem">Abrir</a></div>
+      <div class="prow"><span class="prow-l">💳 Pagamento</span><span class="prow-v" id="pr-p">—</span></div>
+      <div class="prow" id="pr-troco-row" style="display:none"><span class="prow-l">💰 Troco</span><span class="prow-v" id="pr-troco">—</span></div>
+      <div class="prow"><span class="prow-l">🕐 Hora</span><span class="prow-v" id="pr-h">—</span></div>
+    </div>
+    <div class="pft"><button class="pp" id="btn-imp">🖨️ Imprimir agora</button><button class="pc2" id="btn-fch">✕ Fechar</button></div>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/public/js/app.js"></script>
+</body>
+</html>

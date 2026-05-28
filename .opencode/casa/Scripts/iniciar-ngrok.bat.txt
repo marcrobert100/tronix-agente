@@ -1,0 +1,18 @@
+
+@echo off
+echo Iniciando Ngrok...
+echo Link publico: https://uniliteral-abel-prespiracular.ngrok-free.app
+ngrok http --url=uniliteral-abel-prespiracular.ngrok-free.app 3000
+pause
+
+
+
+
+
+
+
+
+
+
+
+

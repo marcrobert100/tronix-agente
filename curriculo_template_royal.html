@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currículo - Royal Executive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: #e2e8f0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .header {
+            background: #1e3a5f;
+            padding: 30px 35px 25px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #c9a227, #e8c547, #c9a227);
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            border: 40px solid rgba(201,162,39,0.15);
+            border-radius: 50%;
+        }
+        .photo-box {
+            width: 110px;
+            height: 110px;
+            background: rgba(255,255,255,0.1);
+            border: 3px solid #c9a227;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .photo-box svg {
+            width: 50px;
+            height: 50px;
+            fill: rgba(255,255,255,0.5);
+        }
+        .header-info h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .header-info .cargo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: #c9a227;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .header-info .contato-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 8px;
+        }
+        .contato-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 10.5px;
+            color: rgba(255,255,255,0.85);
+        }
+        .contato-item svg {
+            width: 13px;
+            height: 13px;
+            fill: #c9a227;
+        }
+        .body-layout {
+            display: flex;
+            flex: 1;
+        }
+        .sidebar {
+            width: 185px;
+            background: #162d4d;
+            padding: 25px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+        .sidebar-section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            color: #c9a227;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 1.5px solid rgba(201,162,39,0.3);
+            padding-bottom: 6px;
+            margin-bottom: 12px;
+        }
+        .competencia-item {
+            margin-bottom: 10px;
+        }
+        .comp-label {
+            font-size: 11px;
+            color: #ffffff;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .comp-bar {
+            height: 5px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .comp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #c9a227, #e8c547);
+            border-radius: 3px;
+        }
+        .idioma-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .idioma-nome {
+            font-size: 11px;
+            color: rgba(255,255,255,0.9);
+            font-weight: 600;
+        }
+        .idioma-nivel {
+            font-size: 9px;
+            color: #c9a227;
+            font-weight: 600;
+        }
+        .formacao-item {
+            margin-bottom: 14px;
+            padding-left: 12px;
+            border-left: 2px solid #c9a227;
+        }
+        .formacao-curso {
+            font-size: 11px;
+            color: #ffffff;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 2px;
+        }
+        .formacao-inst {
+            font-size: 10px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 2px;
+        }
+        .formacao-ano {
+            font-size: 9px;
+            color: #c9a227;
+            font-weight: 600;
+        }
+        .main-content {
+            flex: 1;
+            padding: 25px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1e3a5f;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, #c9a227, transparent);
+        }
+        .resumo-text {
+            font-size: 11.5px;
+            color: #3a3a3a;
+            line-height: 1.7;
+            text-align: justify;
+        }
+        .destaques-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 5px;
+        }
+        .destaque-card {
+            background: linear-gradient(135deg, #1e3a5f, #162d4d);
+            border-left: 4px solid #c9a227;
+            border-radius: 0 8px 8px 0;
+            padding: 12px 14px;
+            position: relative;
+            overflow: hidden;
+        }
+        .destaque-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            background: rgba(201,162,39,0.08);
+            border-radius: 0 0 0 60px;
+        }
+        .destaque-icon {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        .destaque-titulo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            color: #c9a227;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 3px;
+        }
+        .destaque-valor {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 3px;
+        }
+        .destaque-desc {
+            font-size: 9.5px;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.3;
+        }
+        .experiencia-item {
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        .experiencia-item:last-child {
+            border-bottom: none;
+        }
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 6px;
+        }
+        .exp-cargo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #1e3a5f;
+        }
+        .exp-periodo {
+            font-size: 10px;
+            color: #c9a227;
+            font-weight: 600;
+            background: rgba(201,162,39,0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+            white-space: nowrap;
+        }
+        .exp-empresa {
+            font-size: 11px;
+            color: #7a7a7a;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .exp-desc {
+            font-size: 10.5px;
+            color: #555;
+            line-height: 1.6;
+        }
+        .btn-download {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: linear-gradient(135deg, #1e3a5f, #2d5080);
+            color: #c9a227;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(30,58,95,0.5);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            z-index: 999;
+        }
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(30,58,95,0.7);
+        }
+        .btn-download svg {
+            width: 16px;
+            height: 16px;
+            fill: #c9a227;
+        }
+        @media print {
+            body { background: none; padding: 0; }
+            .page { box-shadow: none; }
+            .btn-download { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <div id="curriculo">
+        <div class="page">
+            <div class="header">
+                <div class="photo-box">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </div>
+                <div class="header-info">
+                    <h1>Carlos Eduardo Mendes</h1>
+                    <div class="cargo">Diretor Executivo de Operações</div>
+                    <div class="contato-row">
+                        <div class="contato-item"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg> (11) 98547-3321</div>
+                        <div class="contato-item"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg> carlos.mendes@email.com</div>
+                        <div class="contato-item"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> São Paulo, SP</div>
+                        <div class="contato-item"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg> linkedin.com/in/carlosmendes</div>
+                    </div>
+                </div>
+            </div>
+            <div class="body-layout">
+                <div class="sidebar">
+                    <div>
+                        <div class="sidebar-section-title">Competências</div>
+                        <div class="competencia-item">
+                            <div class="comp-label">Liderança Estratégica</div>
+                            <div class="comp-bar"><div class="comp-fill" style="width:95%"></div></div>
+                        </div>
+                        <div class="competencia-item">
+                            <div class="comp-label">Gestão de Projetos</div>
+                            <div class="comp-bar"><div class="comp-fill" style="width:90%"></div></div>
+                        </div>
+                        <div class="competencia-item">
+                            <div class="comp-label">Análise Financeira</div>
+                            <div class="comp-bar"><div class="comp-fill" style="width:85%"></div></div>
+                        </div>
+                        <div class="competencia-item">
+                            <div class="comp-label">Negociação</div>
+                            <div class="comp-bar"><div class="comp-fill" style="width:92%"></div></div>
+                        </div>
+                        <div class="competencia-item">
+                            <div class="comp-label">Planejamento Estratégico</div>
+                            <div class="comp-bar"><div class="comp-fill" style="width:88%"></div></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="sidebar-section-title">Idiomas</div>
+                        <div class="idioma-item">
+                            <span class="idioma-nome">Português</span>
+                            <span class="idioma-nivel">Nativo</span>
+                        </div>
+                        <div class="idioma-item">
+                            <span class="idioma-nome">Inglês</span>
+                            <span class="idioma-nivel">Avançado</span>
+                        </div>
+                        <div class="idioma-item">
+                            <span class="idioma-nome">Espanhol</span>
+                            <span class="idioma-nivel">Intermediário</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="sidebar-section-title">Formação</div>
+                        <div class="formacao-item">
+                            <div class="formacao-curso">MBA em Gestão Empresarial</div>
+                            <div class="formacao-inst">FGV - Fundação Getúlio Vargas</div>
+                            <div class="formacao-ano">2018 - 2020</div>
+                        </div>
+                        <div class="formacao-item">
+                            <div class="formacao-curso">Bacharel em Administração</div>
+                            <div class="formacao-inst">USP - Universidade de São Paulo</div>
+                            <div class="formacao-ano">2010 - 2014</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="sidebar-section-title">Certificações</div>
+                        <div style="font-size:10px;color:rgba(255,255,255,0.75);line-height:1.8;">
+                            • PMP - Project Management<br>
+                            • Six Sigma Green Belt<br>
+                            • Scrum Master Certified
+                        </div>
+                    </div>
+                </div>
+                <div class="main-content">
+                    <div>
+                        <div class="section-title">Perfil Profissional</div>
+                        <p class="resumo-text">Executivo com mais de 12 anos de experiência em liderança operacional e gestão estratégica de empresas de grande porte. Especializado em otimização de processos, redução de custos e implementação de métricas de performance. Histórico comprovado de crescimento de receita e expansão de mercado em setores competitivos.</p>
+                    </div>
+                    <div>
+                        <div class="section-title">Destaques Profissionais</div>
+                        <div class="destaques-grid">
+                            <div class="destaque-card">
+                                <div class="destaque-titulo">Receita Gerada</div>
+                                <div class="destaque-valor">R$ 45M+</div>
+                                <div class="destaque-desc">Em novos contratos fechados nos últimos 3 anos</div>
+                            </div>
+                            <div class="destaque-card">
+                                <div class="destaque-titulo">Economia Gerada</div>
+                                <div class="destaque-valor">R$ 8,2M</div>
+                                <div class="destaque-desc">Através de otimização de processos e reductos de custos</div>
+                            </div>
+                            <div class="destaque-card">
+                                <div class="destaque-titulo">Equipe Liderada</div>
+                                <div class="destaque-valor">120+</div>
+                                <div class="destaque-desc">Profissionais em múltiplos departamentos e regionais</div>
+                            </div>
+                            <div class="destaque-card">
+                                <div class="destaque-titulo">Projetos Entregues</div>
+                                <div class="destaque-valor">35+</div>
+                                <div class="destaque-desc">Projetos estratégicos concluídos com sucesso</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="section-title">Experiência Profissional</div>
+                        <div class="experiencia-item">
+                            <div class="exp-header">
+                                <div class="exp-cargo">Diretor de Operações</div>
+                                <div class="exp-periodo">2021 - Atual</div>
+                            </div>
+                            <div class="exp-empresa">Grupo Alpha Corporativo • São Paulo, SP</div>
+                            <div class="exp-desc">Liderança de operação nationwide com P&L de R$ 120M/ano. Reestruturação do modelo de atendimento que resultou em 30% de aumento na satisfação dos clientes. Implementação de programa de transformação digital com ROI de 180%.</div>
+                        </div>
+                        <div class="experiencia-item">
+                            <div class="exp-header">
+                                <div class="exp-cargo">Gerente Sênior de Projetos</div>
+                                <div class="exp-periodo">2018 - 2021</div>
+                            </div>
+                            <div class="exp-empresa">Sigma Consultoria Estratégica • São Paulo, SP</div>
+                            <div class="exp-desc">Gestão de portfolio com 15 projetos simultâneos e budget de R$ 25M. Desenvolvimento de metodologia proprietary de consulting que reduziu tempo de entrega em 25%. Mentoria de equipe de 20 consultores juniores.</div>
+                        </div>
+                        <div class="experiencia-item">
+                            <div class="exp-header">
+                                <div class="exp-cargo">Coordenador de Operações</div>
+                                <div class="exp-periodo">2014 - 2018</div>
+                            </div>
+                            <div class="exp-empresa">Beta Logística S.A. • Campinas, SP</div>
+                            <div class="exp-desc">Coordenação de operações logísticas com 60 colaboradores. Implementação de sistema WMS que melhorou acuracidade de estoque em 40%. Redução de lead time de entrega em 35% através de reorganização de layouts.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn-download" onclick="generatePDF('curriculo_template_royal')">
+        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        Baixar PDF
+    </button>
+    <script>
+        function generatePDF(filename) {
+            const element = document.getElementById('curriculo');
+            const opt = {
+                margin: 0,
+                filename: filename + '.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, logging: false },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+    </script>
+</body>
+</html>

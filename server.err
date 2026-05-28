@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "C:\xampp\htdocs\agente\virtual_office\server.py", line 103, in <module>
+    server.run()
+  File "C:\xampp\htdocs\agente\virtual_office\server.py", line 99, in run
+    web.run_app(self.app, host='0.0.0.0', port=self.port)
+  File "C:\Users\CHCONTE RECPÇÃO\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\web.py", line 517, in run_app
+    loop.run_until_complete(main_task)
+  File "C:\Users\CHCONTE RECPÇÃO\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+OSError: [Errno 10048] error while attempting to bind on address ('0.0.0.0', 8765): [winerror 10048] normalmente é permitida apenas uma utilização de cada endereço de soquete (protocolo/endereço de rede/porta)

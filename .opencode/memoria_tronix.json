@@ -1,0 +1,47 @@
+{
+  "identity": "Tronix",
+  "version": "1.0.0",
+  "last_initialization": "2026-05-05T15:05:00Z",
+  "status": "active",
+  "protocol_history": [],
+  "sync_log": [
+    {
+      "timestamp": "2026-05-05T15:05:00Z",
+      "source": "logs_evolucao",
+      "records_synced": 5,
+      "last_sync_time": "2026-05-05T15:05:00Z"
+    }
+  ],
+  "last_actions": [
+    {
+      "id": 10,
+      "agente": "Tronix Sync",
+      "acao": "Sincronizado 46 skills",
+      "timestamp": "2026-05-04 13:35:42"
+    },
+    {
+      "id": 9,
+      "agente": "Tronix Sync",
+      "acao": "Sincronizado 46 skills",
+      "timestamp": "2026-05-04 13:25:50"
+    },
+    {
+      "id": 8,
+      "agente": "Tronix Sync",
+      "acao": "Sincronizado 46 skills",
+      "timestamp": "2026-05-04 13:25:21"
+    },
+    {
+      "id": 7,
+      "agente": "Tronix",
+      "acao": "SINCRONIZACAO_SKILLS: Tronix sincronizado com 46 skills",
+      "timestamp": "2026-05-04 13:24:13"
+    },
+    {
+      "id": 6,
+      "agente": "Tronix-REDTEAM",
+      "acao": "ANALISE_RISCO_MOBILE-DESIGN - Riscos: AsyncStorage tokens (CRITICO), Hardcoded API keys (ALTO), SSL pinning ausente (ALTO), Log sensivel (MEDIO) - Mitigacao: SecureStore, env vars, certificate pinning",
+      "timestamp": "2026-04-27 17:11:42"
+    }
+  ]
+}

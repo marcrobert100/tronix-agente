@@ -1,0 +1,78 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                    INSTALADOR DELIVERY BOT WHATSAPP                        ║
+║                           EVOLUCAO - Marco Roberto                         ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+📁 PASTA DE INSTALAÇÃO:
+   C:\Users\CHCONTE RECPÇÃO\Desktop\evolucao
+
+📋 ARQUIVOS DISPONÍVEIS:
+
+1. instalar_bot.bat
+   - Instalador completo que copia todos os arquivos do bot
+   - Requer que os arquivos originais estejam em C:\xampp\htdocs\agente\.opencode\casa
+
+2. instalar_bot_simples.bat
+   - Instalador simplificado que cria apenas a estrutura básica
+   - Ideal para instalar em computadores sem os arquivos originais
+   - Baixa automaticamente as dependências via npm
+
+3. README.md
+   - Documentação completa de como usar o bot
+   - Instruções de instalação, configuração e manutenção
+
+4. INSTRUCOES.txt
+   - Este arquivo com resumo rápido
+
+════════════════════════════════════════════════════════════════════════════
+
+🚀 COMO USAR:
+
+OPÇÃO 1 - Instalação Completa (se tiver os arquivos originais):
+   1. Clique duas vezes em "instalar_bot.bat"
+   2. Aguarde a instalação
+   3. Clique no atalho "Iniciar Bot" no desktop
+
+OPÇÃO 2 - Instalação Simples (para computadores novos):
+   1. Clique duas vezes em "instalar_bot_simples.bat"
+   2. Aguarde a instalação
+   3. Execute o arquivo "INICIAR.bat" na pasta bot
+
+════════════════════════════════════════════════════════════════════════════
+
+🔐 DADOS DE LOGIN:
+   Usuário: cliente
+   Senha: 123456
+   URL: http://localhost:3000
+
+════════════════════════════════════════════════════════════════════════════
+
+⚠️  IMPORTANTE:
+
+- O bot precisa de Node.js instalado (verificado automaticamente)
+- Conexão com internet é necessária
+- Use apenas uma sessão do WhatsApp por vez
+- Faça backup regular da pasta "logs"
+
+════════════════════════════════════════════════════════════════════════════
+
+🔄 ATUALIZAÇÃO:
+
+Para atualizar o bot:
+1. Pare o bot (feche a janela do CMD)
+2. Copie os novos arquivos para a pasta "bot"
+3. Abra CMD na pasta "bot" e execute: npm install
+4. Inicie novamente com INICIAR.bat
+
+════════════════════════════════════════════════════════════════════════════
+
+🆘 SUPORTE:
+
+- Verifique os logs na pasta "bot/logs/"
+- Reinicie o bot se travar
+- Reconecte o WhatsApp se necessário
+
+════════════════════════════════════════════════════════════════════════════
+
+Bot desenvolvido por Marco Roberto
+Delivery Bot WhatsApp v6.0

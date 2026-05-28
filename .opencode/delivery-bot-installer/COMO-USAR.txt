@@ -1,0 +1,199 @@
+╔════════════════════════════════════════════════════════════╗
+║                                                            ║
+║     📦 COMO USAR O PACOTE DE INSTALAÇÃO                   ║
+║     Delivery Bot para WhatsApp                             ║
+║                                                            ║
+╚════════════════════════════════════════════════════════════╝
+
+
+📋 VISÃO GERAL
+═════════════════════════════════════════════════════════════
+
+Este pacote permite instalar o Delivery Bot em qualquer
+computador Windows de forma rápida e fácil.
+
+O pacote contém:
+• Scripts de instalação automática
+• Configurador web (instalar.html)
+• Scripts de manutenção (backup, atualização, etc.)
+• Documentação completa
+
+═════════════════════════════════════════════════════════════
+
+
+🚀 COMO CRIAR O PACOTE
+═════════════════════════════════════════════════════════════
+
+  PASSO 1: Copiar arquivos do bot
+  ───────────────────────────────
+  • Execute COPIAR-ARQUIVOS.bat
+  • Isso copiará os arquivos principais do bot
+
+  PASSO 2: Criar pacote
+  ─────────────────────
+  • Execute CRIAR-PACOTE.bat
+  • O pacote será criado em: dist/delivery-bot-v2.0.0.zip
+
+  PASSO 3: Distribuir
+  ───────────────────
+  • Envie o arquivo ZIP para o cliente
+  • O cliente extrai e executa INSTALAR.bat
+
+═════════════════════════════════════════════════════════════
+
+
+📥 COMO INSTALAR (PARA O CLIENTE)
+═════════════════════════════════════════════════════════════
+
+  PASSO 1: Extrair o pacote
+  ─────────────────────────
+  • Extraia o arquivo ZIP em uma pasta
+  • Exemplo: C:\DeliveryBot\
+
+  PASSO 2: Instalar Node.js
+  ─────────────────────────
+  • Baixe: https://nodejs.org/
+  • Instale a versão LTS
+  • Marque "Add to PATH" durante a instalação
+
+  PASSO 3: Configurar
+  ───────────────────
+  • Abra o arquivo instalar.html no navegador
+  • Preencha as configurações da empresa
+  • Baixe os arquivos .env e config.json gerados
+  • Coloque os arquivos na pasta do bot
+
+  PASSO 4: Instalar dependências
+  ─────────────────────────────
+  • Clique duas vezes em INSTALAR.bat
+  • Aguarde a instalação (1-2 minutos)
+
+  PASSO 5: Iniciar o bot
+  ──────────────────────
+  • Clique duas vezes em INICIAR.bat
+  • Acesse http://localhost:3000
+  • Configure o cardápio no painel
+  • Escaneie o QR Code do WhatsApp
+
+═════════════════════════════════════════════════════════════
+
+
+📁 SCRIPTS INCLUÍDOS
+═════════════════════════════════════════════════════════════
+
+  INSTALAR.bat
+  ────────────
+  • Instala dependências do Node.js
+  • Cria estrutura de diretórios
+  • Configura arquivos iniciais
+
+  INICIAR.bat
+  ───────────
+  • Inicia o servidor do bot
+  • Mostra URL do painel
+  • Mantém o servidor rodando
+
+  DESINSTALAR.bat
+  ────────────────
+  • Remove dependências
+  • Remove logs e configurações
+  • Mantém arquivos principais
+
+  ATUALIZAR.bat
+  ─────────────
+  • Atualiza dependências
+  • Limpa cache do npm
+  • Verifica atualizações
+
+  BACKUP.bat
+  ──────────
+  • Cria backup dos dados
+  • Salva em pasta backups/
+  • Cria arquivo ZIP
+
+  RESTAURAR.bat
+  ─────────────
+  • Restaura backup anterior
+  • Substitui dados atuais
+  • Mantém configurações
+
+  STATUS.bat
+  ──────────
+  • Verifica status do sistema
+  • Mostra versões instaladas
+  • Verifica se o servidor está rodando
+
+  COPIAR-ARQUIVOS.bat
+  ───────────────────
+  • Copia arquivos do bot principal
+  • Atualiza arquivos do pacote
+  • Use quando atualizar o bot
+
+  INICIAR-EXTERNO.bat
+  ───────────────────
+  • Inicia com Ngrok
+  • Permite acesso externo
+  • Útil para clientes remotos
+
+═════════════════════════════════════════════════════════════
+
+
+⚙️ CONFIGURAÇÃO
+═════════════════════════════════════════════════════════════
+
+  Arquivo: .env
+  ─────────────
+  GROQ_API_KEY      = Chave da API Groq
+  PORT              = Porta do servidor (3000)
+  EMPRESA_NOME      = Nome da empresa
+  EMPRESA_TELEFONE  = Telefone com DDD
+
+  Arquivo: config.json
+  ────────────────────
+  • Configurado via painel web
+  • Cardápio, preços, taxas
+  • Horário de funcionamento
+  • Formas de pagamento
+  • Pesquisa de satisfação
+
+═════════════════════════════════════════════════════════════
+
+
+🔧 SOLUÇÃO DE PROBLEMAS
+═════════════════════════════════════════════════════════════
+
+  Problema: "Node.js não encontrado"
+  ───────────────────────────────────
+  • Instale o Node.js: https://nodejs.org/
+  • Reinicie o computador após instalar
+  • Execute STATUS.bat para verificar
+
+  Problema: "Erro ao instalar dependências"
+  ─────────────────────────────────────────
+  • Verifique a conexão com a internet
+  • Execute: npm install --production
+  • Delete node_modules e tente novamente
+
+  Problema: "WhatsApp não conecta"
+  ────────────────────────────────
+  • Instale o Google Chrome
+  • Escaneie o QR Code novamente
+  • Verifique se o WhatsApp está ativo
+
+  Problema: "Painel não carrega"
+  ─────────────────────────────
+  • Verifique se o servidor está rodando
+  • Acesse: http://localhost:3000
+  • Verifique se a porta 3000 está livre
+
+═════════════════════════════════════════════════════════════
+
+
+📞 SUPORTE
+═════════════════════════════════════════════════════════════
+
+  Desenvolvido por Marco Roberto
+  WhatsApp: (XX) XXXXX-XXXX
+  Email: suporte@exemplo.com
+
+═════════════════════════════════════════════════════════════

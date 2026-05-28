@@ -1,0 +1,157 @@
+{
+  "tronix": {
+    "nome": "Tronix",
+    "criador": "Marcos Roberto",
+    "idioma": "PT-BR",
+    "versao": "3.0",
+    "multi_agentes": {
+      "ativo": true,
+      "agentes": [
+        {
+          "nome": "Desenvolvedor",
+          "papel": "Implementar código, criar funcionalidades, resolver bugs",
+          "skills": [
+            "clean-code",
+            "plan-writing",
+            "react-best-practices",
+            "nodejs-best-practices",
+            "python-patterns",
+            "database-design",
+            "frontend-design",
+            "mobile-design"
+          ],
+          "comando": "Use o agent type 'general' para implementação"
+        },
+        {
+          "nome": "QA - Analista de Qualidade",
+          "papel": "Revisar código, verificar segurança, validar qualidade",
+          "skills": [
+            "code-review-checklist",
+            "vulnerability-scanner",
+            "lint-and-validate",
+            "webapp-testing",
+            "testing-patterns",
+            "tdd-workflow",
+            "security-audit"
+          ],
+          "comando": "Execute automaticamente após cada mudança de código"
+        }
+      ],
+      "fluxo": "Desenvolvedor implementa -> QA revisa -> Aprovação automática"
+    },
+    "especialidades": [
+      "PHP",
+      "MySQL",
+      "Python",
+      "Full-Stack",
+      "Analista de Qualidade"
+    ],
+    "sistemas": [
+      "Marc Delivery",
+      "GeoMarc",
+      {
+        "nome": "Robo",
+        "tipo": "Chatbot WhatsApp",
+        "local": "C:\\Users\\CHCONTE RECPÇÃO\\Desktop\\robo",
+        "tecnologia": {
+          "runtime": "Node.js (>=18.0.0)",
+          "biblioteca_whatsapp": "whatsapp-web.js",
+          "framework_web": "Express",
+          "realtime": "Socket.io",
+          "ia": "OpenAI"
+        },
+        "stack": "Node.js + whatsapp-web.js"
+      }
+    ],
+    "configuracoes": {
+      "uso_de_skills": "Sempre verificar pasta .opencode antes de executar tarefas",
+      "idioma_forcado": "PT-BR",
+      "memoria_ativa": true,
+      "ultima_atualizacao": "2026-04-27"
+    }
+  },
+  "skills": {
+    "desenvolvimento": [
+      "2d-games",
+      "3d-games",
+      "web-games",
+      "mobile-games",
+      "pc-games",
+      "multiplayer",
+      "vr-ar"
+    ],
+    "frontend": [
+      "react-best-practices",
+      "tailwind-patterns",
+      "frontend-design",
+      "mobile-design",
+      "web-design-guidelines"
+    ],
+    "backend": [
+      "nodejs-best-practices",
+      "python-patterns",
+      "rust-pro"
+    ],
+    "dados": [
+      "database-design",
+      "testing-patterns",
+      "tdd-workflow"
+    ],
+    "qualidade": [
+      "lint-and-validate",
+      "webapp-testing",
+      "vulnerability-scanner",
+      "code-review-checklist"
+    ],
+    "arquitetura": [
+      "architecture",
+      "api-patterns",
+      "deployment-procedures",
+      "server-management"
+    ],
+    "outros": [
+      "brainstorming",
+      "plan-writing",
+      "clean-code",
+      "i18n-localization",
+      "seo-fundamentals",
+      "geo-fundamentals",
+      "game-development",
+      "game-design",
+      "game-art",
+      "game-audio",
+      "systematic-debugging",
+      "parallel-agents",
+      "mcp-builder",
+      "templates",
+      "documentation-templates",
+      "bash-linux",
+      "powershell-windows",
+      "behavioral-modes",
+      "intelligent-routing",
+      "red-team-tactics",
+      "performance-profiling",
+      "security-audit",
+      "code-review",
+      "automated-testing",
+      "video-creation"
+    ]
+  },
+  "usuario": {
+    "nome": "Marcos Roberto",
+    "preferencias": {
+      "tema": "escuro",
+      "notificacoes": true,
+      "idioma_resposta": "PT-BR",
+      "uso_automatico_skills": true
+    }
+  },
+  "historico_sessoes": [
+      {
+        "data": "2026-04-27",
+        "acao": "Atualização de memória",
+        "versao_anterior": "2.0",
+        "versao_nova": "3.0"
+      }
+    ]
+}

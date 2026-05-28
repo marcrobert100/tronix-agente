@@ -1,0 +1,18 @@
+{
+  "banco": "tronix_system",
+  "versao": "1.0.0",
+  "tabelas": {
+    "logs_evolucao": [
+      {
+        "id": 1,
+        "timestamp": "2026-04-27T10:30:00",
+        "operacao": "PROTOCOLO_SINCRONIZACAO_CORE",
+        "status": "ATIVO",
+        "skills_count": 46,
+        "localizacao": "Viçosa, Alagoas, Brasil",
+        "criador": "Marcos Roberto",
+        "mensagem": "Tronix ativo. Pronto para comando."
+      }
+    ]
+  }
+}

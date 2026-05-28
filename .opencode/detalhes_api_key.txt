@@ -1,0 +1,43 @@
+=== DETALHES DA API KEY FORNECIDA ===
+
+API KEY FORNECIDA:
+AIzaSyDMnQjY94YAKcOkJS9fG9q1TQMcj3sU9Hw
+
+VERIFICAÇÕES REALIZADAS:
+
+1. Teste de Consulta (YouTube Data API v3):
+   - Endpoint: https://www.googleapis.com/youtube/v3/videos
+   - Parâmetros: part=snippet, id=dQw4w9WgXcQ
+   - Resultado: API key inválida ou sem permissões (HTTP 403)
+
+2. Teste de Canal:
+   - Endpoint: https://www.googleapis.com/youtube/v3/channels
+   - Parâmetros: part=snippet,statistics, id=UC_x5XG1OV2P6uZZ5FSM9Ttw
+   - Resultado: API key inválida ou sem permissões (HTTP 403)
+
+3. Teste de Busca:
+   - Endpoint: https://www.googleapis.com/youtube/v3/search
+   - Parâmetros: part=snippet, q=frutas, type=video
+   - Resultado: API key inválida ou sem permissões (HTTP 403)
+
+ANÁLISE:
+- A API key fornecida não funciona para nenhum endpoint da YouTube Data API v3
+- Possíveis causas:
+  1. API key expirada ou revogada
+  2. API key não tem a API YouTube Data API v3 ativada
+  3. API key foi criada para um projeto diferente
+  4. API key foi bloqueada por violação de termos de serviço
+
+SOLUÇÃO:
+1. Acesse: https://console.cloud.google.com/
+2. Selecione o projeto correto
+3. Vá para "APIs & Services" > "Library"
+4. Ative "YouTube Data API v3"
+5. Vá para "APIs & Services" > "Credentials"
+6. Crie uma nova API key ou verifique a existente
+7. Use a nova API key nos scripts
+
+OBSERVAÇÃO:
+- API keys são apenas para consultas (leitura)
+- Para upload de vídeos, OAuth 2.0 é necessário (não API key)
+- A API key fornecida pode ser usada apenas para consultas públicas

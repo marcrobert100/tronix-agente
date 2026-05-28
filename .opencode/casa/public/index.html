@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delivery Bot — Painel Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-icon">🛵</span>
+      <div>
+        <div class="brand-name">DeliveryBot</div>
+        <div class="brand-sub">by Marco Roberto</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-btn active" data-tab="dashboard">
+        <span class="nav-icon">📊</span> Dashboard
+      </button>
+      <button class="nav-btn" data-tab="whatsapp">
+        <span class="nav-icon">📱</span> WhatsApp
+      </button>
+      <button class="nav-btn" data-tab="pedidos">
+        <span class="nav-icon">📦</span> Pedidos
+        <span class="badge" id="badge-pedidos">0</span>
+      </button>
+      <button class="nav-btn" data-tab="cardapio">
+        <span class="nav-icon">🍽️</span> Cardápio
+      </button>
+      <button class="nav-btn" data-tab="fluxos">
+        <span class="nav-icon">🔀</span> Fluxos
+      </button>
+      <button class="nav-btn" data-tab="ia">
+        <span class="nav-icon">🤖</span> IA / Groq
+      </button>
+      <button class="nav-btn" data-tab="empresa">
+        <span class="nav-icon">🏠</span> Empresa
+      </button>
+      <button class="nav-btn" data-tab="logs">
+        <span class="nav-icon">📋</span> Logs
+      </button>
+      <button class="nav-btn" data-tab="enviar">
+        <span class="nav-icon">✉️</span> Enviar Msg
+      </button>
+    </nav>
+
+    <div class="sidebar-status" id="sidebar-status">
+      <div class="status-dot" id="status-dot"></div>
+      <span id="status-text-sidebar">Desconectado</span>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <!-- HEADER -->
+    <header class="topbar">
+      <button class="menu-toggle" id="menu-toggle">☰</button>
+      <div class="topbar-title" id="topbar-title">Dashboard</div>
+      <div class="topbar-right">
+        <div class="wa-badge" id="wa-badge-top">
+          <span class="dot-sm" id="dot-sm"></span>
+          <span id="wa-status-top">Desconectado</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ══ TAB: DASHBOARD ══ -->
+    <section class="tab active" id="tab-dashboard">
+      <div class="page-header">
+        <h1>Dashboard</h1>
+        <p>Visão geral em tempo real</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card accent-green">
+          <div class="stat-icon">📨</div>
+          <div class="stat-value" id="stat-mensagens">0</div>
+          <div class="stat-label">Mensagens hoje</div>
+        </div>
+        <div class="stat-card accent-orange">
+          <div class="stat-icon">📦</div>
+          <div class="stat-value" id="stat-pedidos">0</div>
+          <div class="stat-label">Pedidos em aberto</div>
+        </div>
+        <div class="stat-card accent-blue">
+          <div class="stat-icon">👥</div>
+          <div class="stat-value" id="stat-sessoes">0</div>
+          <div class="stat-label">Clientes ativos</div>
+        </div>
+        <div class="stat-card accent-purple">
+          <div class="stat-icon">⏱️</div>
+          <div class="stat-value" id="stat-uptime">0m</div>
+          <div class="stat-label">Tempo online</div>
+        </div>
+      </div>
+
+      <div class="two-cols">
+        <div class="card">
+          <div class="card-header">
+            <h3>📟 Últimas Mensagens</h3>
+          </div>
+          <div class="feed" id="feed-msgs">
+            <div class="feed-empty">Nenhuma mensagem ainda.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>📦 Pedidos Recentes</h3>
+          </div>
+          <div id="dashboard-pedidos">
+            <div class="feed-empty">Nenhum pedido detectado.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ TAB: WHATSAPP ══ -->
+    <section class="tab" id="tab-whatsapp">
+      <div class="page-header">
+        <h1>Conexão WhatsApp</h1>
+        <p>Escaneie o QR Code para conectar</p>
+      </div>
+
+      <div class="two-cols">
+        <div class="card qr-card">
+          <div class="card-header">
+            <h3>📱 QR Code</h3>
+          </div>
+          <div class="qr-area" id="qr-area">
+            <div class="qr-loading" id="qr-loading">
+              <div class="spinner"></div>
+              <p>Aguardando QR Code...</p>
+            </div>
+            <img id="qr-img" src="" alt="QR Code" style="display:none;" />
+          </div>
+          <div class="status-banner" id="status-banner">
+            <span id="status-banner-text">Desconectado</span>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="btn-novo-qr">🔄 Gerar novo QR</button>
+            <button class="btn btn-danger" id="btn-limpar">🗑️ Limpar sessão</button>
+            <button class="btn btn-outline" id="btn-desconectar">⏏️ Desconectar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>📖 Como conectar</h3></div>
+          <ol class="how-to">
+            <li>Aguarde o QR Code aparecer (pode demorar ~1 min na primeira vez)</li>
+            <li>Abra o <strong>WhatsApp</strong> no celular</li>
+            <li>Vá em <strong>Aparelhos conectados → Conectar aparelho</strong></li>
+            <li>Aponte a câmera para o QR Code</li>
+            <li>Quando aparecer <strong>"WhatsApp conectado!"</strong>, está pronto!</li>
+          </ol>
+          <div class="tip-box">
+            <strong>⚠️ Se não conectar:</strong> Clique em "Limpar sessão" e escaneie o novo QR Code gerado.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ TAB: PEDIDOS ══ -->
+    <section class="tab" id="tab-pedidos">
+      <div class="page-header">
+        <h1>Pedidos em Aberto</h1>
+        <p>Pedidos detectados automaticamente nas conversas</p>
+      </div>
+      <div id="lista-pedidos">
+        <div class="feed-empty">Nenhum pedido em aberto.</div>
+      </div>
+    </section>
+
+    <!-- ══ TAB: CARDÁPIO ══ -->
+    <section class="tab" id="tab-cardapio">
+      <div class="page-header">
+        <h1>Cardápio</h1>
+        <p>Edite o cardápio que o bot usa nas respostas</p>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3>📋 Cardápio (JSON)</h3>
+          <button class="btn btn-sm btn-primary" id="btn-salvar-cardapio">💾 Salvar</button>
+        </div>
+        <p style="color:var(--muted); font-size:0.85rem; margin-bottom:12px;">
+          Edite o JSON abaixo. Cada categoria tem <code>categoria</code> e <code>itens</code> com <code>nome</code>, <code>descricao</code>, <code>preco</code> e <code>tamanhos</code>.
+        </p>
+        <textarea class="code-editor" id="editor-cardapio" rows="20" placeholder="Carregando..."></textarea>
+        <div class="toast" id="toast-cardapio"></div>
+      </div>
+    </section>
+
+    <!-- ══ TAB: FLUXOS ══ -->
+    <section class="tab" id="tab-fluxos">
+      <div class="page-header">
+        <h1>Fluxos de Atendimento</h1>
+        <p>Configure as respostas automáticas por palavra-chave</p>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3>🔀 Fluxos (JSON)</h3>
+          <button class="btn btn-sm btn-primary" id="btn-salvar-fluxos">💾 Salvar</button>
+        </div>
+        <p style="color:var(--muted); font-size:0.85rem; margin-bottom:12px;">
+          Cada fluxo tem <code>id</code>, <code>gatilhos</code> (palavras que ativam) e <code>resposta</code>.<br/>
+          Variáveis disponíveis: <code>{empresaNome}</code> <code>{cardapio}</code> <code>{horario}</code> <code>{telefone}</code> <code>{taxaEntrega}</code> <code>{tempoEntrega}</code> <code>{pedidoMinimo}</code> <code>{pagamentos}</code> <code>{pixChave}</code>
+        </p>
+        <textarea class="code-editor" id="editor-fluxos" rows="25" placeholder="Carregando..."></textarea>
+        <div class="toast" id="toast-fluxos"></div>
+      </div>
+    </section>
+
+    <!-- ══ TAB: IA ══ -->
+    <section class="tab" id="tab-ia">
+      <div class="page-header">
+        <h1>Inteligência Artificial</h1>
+        <p>Configure a IA Groq que responde perguntas livres</p>
+      </div>
+      <div class="two-cols">
+        <div class="card">
+          <div class="card-header"><h3>🔑 Chave API Groq</h3></div>
+          <p style="color:var(--muted); font-size:0.9rem; margin-bottom:16px;">
+            A IA é gratuita! Obtenha sua chave em <a href="https://console.groq.com" target="_blank" class="link">console.groq.com</a>
+          </p>
+          <div class="form-group">
+            <label>Chave Groq (começa com gsk_)</label>
+            <input type="password" id="input-groq-key" class="input" placeholder="gsk_..." />
+          </div>
+          <div class="toggle-row">
+            <label>Ativar IA</label>
+            <label class="toggle">
+              <input type="checkbox" id="toggle-ia" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <button class="btn btn-primary" id="btn-salvar-groq">💾 Salvar chave</button>
+          <div class="toast" id="toast-ia"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>🧠 Prompt do Sistema</h3>
+            <button class="btn btn-sm btn-primary" id="btn-salvar-prompt">💾 Salvar</button>
+          </div>
+          <p style="color:var(--muted); font-size:0.85rem; margin-bottom:12px;">
+            Instruções de personalidade da IA. Não precisa colocar o cardápio — ele é injetado automaticamente.
+          </p>
+          <textarea class="input" id="editor-prompt" rows="8" style="width:100%; resize:vertical;"></textarea>
+          <div class="form-group" style="margin-top:16px;">
+            <label>Modelo</label>
+            <select class="input" id="select-model">
+              <option value="llama-3.1-8b-instant">llama-3.1-8b-instant (rápido)</option>
+              <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile (melhor)</option>
+              <option value="mixtral-8x7b-32768">mixtral-8x7b (contexto longo)</option>
+            </select>
+          </div>
+          <div class="toast" id="toast-prompt"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ TAB: EMPRESA ══ -->
+    <section class="tab" id="tab-empresa">
+      <div class="page-header">
+        <h1>Dados da Empresa</h1>
+        <p>Informações usadas nas respostas do bot</p>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3>🏠 Configurações</h3>
+          <button class="btn btn-sm btn-primary" id="btn-salvar-empresa">💾 Salvar</button>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nome da Empresa</label>
+            <input type="text" class="input" id="emp-nome" placeholder="Ex: Pizzaria do João" />
+          </div>
+          <div class="form-group">
+            <label>Endereço</label>
+            <input type="text" class="input" id="emp-endereco" placeholder="Rua X, 123 - Bairro" />
+          </div>
+          <div class="form-group">
+            <label>Telefone / WhatsApp</label>
+            <input type="text" class="input" id="emp-telefone" placeholder="11 99999-9999" />
+          </div>
+          <div class="form-group">
+            <label>Horário de Funcionamento</label>
+            <input type="text" class="input" id="emp-horario" placeholder="Seg-Sex: 11h às 23h" />
+          </div>
+          <div class="form-group">
+            <label>Taxa de Entrega</label>
+            <input type="text" class="input" id="emp-taxa" placeholder="R$ 5,00" />
+          </div>
+          <div class="form-group">
+            <label>Tempo de Entrega</label>
+            <input type="text" class="input" id="emp-tempo" placeholder="30 a 50 minutos" />
+          </div>
+          <div class="form-group">
+            <label>Pedido Mínimo</label>
+            <input type="text" class="input" id="emp-minimo" placeholder="R$ 25,00" />
+          </div>
+          <div class="form-group">
+            <label>Formas de Pagamento</label>
+            <input type="text" class="input" id="emp-pagamentos" placeholder="Dinheiro, Cartão, Pix" />
+          </div>
+          <div class="form-group">
+            <label>Chave Pix</label>
+            <input type="text" class="input" id="emp-pix" placeholder="email@empresa.com ou 11999999999" />
+          </div>
+        </div>
+        <div class="toast" id="toast-empresa"></div>
+      </div>
+    </section>
+
+    <!-- ══ TAB: LOGS ══ -->
+    <section class="tab" id="tab-logs">
+      <div class="page-header">
+        <h1>Logs de Conversa</h1>
+        <p>Registro de todas as mensagens recebidas e enviadas</p>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3>📋 Histórico</h3>
+          <button class="btn btn-sm btn-outline" id="btn-atualizar-logs">🔄 Atualizar</button>
+        </div>
+        <div class="log-feed" id="log-feed">
+          <div class="feed-empty">Carregando logs...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ TAB: ENVIAR MSG ══ -->
+    <section class="tab" id="tab-enviar">
+      <div class="page-header">
+        <h1>Enviar Mensagem</h1>
+        <p>Envie uma mensagem manualmente para qualquer número</p>
+      </div>
+      <div class="card" style="max-width: 560px;">
+        <div class="card-header"><h3>✉️ Nova Mensagem</h3></div>
+        <div class="form-group">
+          <label>Número (com DDI e DDD, sem +)</label>
+          <input type="text" class="input" id="enviar-numero" placeholder="5511999999999" />
+        </div>
+        <div class="form-group">
+          <label>Mensagem</label>
+          <textarea class="input" id="enviar-msg" rows="5" placeholder="Digite a mensagem..."></textarea>
+        </div>
+        <button class="btn btn-primary" id="btn-enviar-msg">📤 Enviar</button>
+        <div class="toast" id="toast-enviar"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+{
+  "name": "delivery-bot-installer",
+  "version": "1.0.0",
+  "description": "Pacote de instalação do Delivery Bot para WhatsApp",
+  "scripts": {
+    "install": "INSTALAR.bat",
+    "start": "INICIAR.bat",
+    "uninstall": "DESINSTALAR.bat",
+    "update": "ATUALIZAR.bat",
+    "backup": "BACKUP.bat",
+    "restore": "RESTAURAR.bat",
+    "status": "STATUS.bat"
+  },
+  "files": [
+    "INSTALAR.bat",
+    "INICIAR.bat",
+    "DESINSTALAR.bat",
+    "ATUALIZAR.bat",
+    "BACKUP.bat",
+    "RESTAURAR.bat",
+    "STATUS.bat",
+    "COPIAR-ARQUIVOS.bat",
+    "INICIAR-EXTERNO.bat",
+    ".env.example",
+    "config.example.json",
+    "package.json",
+    "README.txt",
+    "instalar.html",
+    "server.js",
+    "tts-service.js",
+    "public/"
+  ],
+  "requirements": {
+    "node": ">=18.0.0",
+    "os": "Windows 10/11",
+    "chrome": ">=90.0.0"
+  },
+  "author": "Marco Roberto",
+  "license": "UNLICENSED",
+  "private": true
+}

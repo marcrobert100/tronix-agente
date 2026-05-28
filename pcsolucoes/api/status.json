@@ -1,0 +1,94 @@
+{
+    "equipe": {
+        "gestor": {
+            "status": "trabalhando",
+            "tarefa": "Coordenando equipe",
+            "ultimaAcao": "Gestor coordenando a equipe",
+            "timestamp": "2026-05-11 02:08:40"
+        },
+        "designer": {
+            "status": "trabalhando",
+            "tarefa": "Criando mockups",
+            "ultimaAcao": "Designer criando mockups",
+            "timestamp": "2026-05-11 02:08:43"
+        },
+        "programador": {
+            "status": "trabalhando",
+            "tarefa": "Desenvolvendo sistema",
+            "ultimaAcao": "Programador trabalhando no sistema",
+            "timestamp": "2026-05-11 02:08:38"
+        },
+        "atendente": {
+            "status": "trabalhando",
+            "tarefa": "Atendendo clientes",
+            "ultimaAcao": "Atendente atendendo clientes",
+            "timestamp": "2026-05-11 02:08:46"
+        },
+        "secretaria": {
+            "status": "trabalhando",
+            "tarefa": "Conversando com o Programador",
+            "ultimaAcao": "Secretaria conversando com o Programador sobre specs",
+            "timestamp": "2026-05-11 02:01:44"
+        }
+    },
+    "atividades": [
+        {
+            "timestamp": "2026-05-11 01:57:47",
+            "agente": "Secretaria",
+            "acao": "conversando",
+            "detalhes": "Secretaria conversando com o Programador sobre specs",
+            "tarefa": "Conversando com o Programador",
+            "tipo": "tarefa"
+        },
+        {
+            "timestamp": "2026-05-11 02:00:23",
+            "agente": "Sistema",
+            "acao": "mensagem",
+            "detalhes": "Feliz Dia das Maes! Que todas as maes sejam celebradas hoje.",
+            "tarefa": "",
+            "tipo": "sucesso"
+        },
+        {
+            "timestamp": "2026-05-11 02:01:44",
+            "agente": "Secretaria",
+            "acao": "conversando",
+            "detalhes": "Secretaria conversando com o Programador sobre specs",
+            "tarefa": "Conversando com o Programador",
+            "tipo": "tarefa"
+        },
+        {
+            "timestamp": "2026-05-11 02:08:38",
+            "agente": "Programador",
+            "acao": "trabalhando",
+            "detalhes": "Programador trabalhando no sistema",
+            "tarefa": "Desenvolvendo sistema",
+            "tipo": "tarefa"
+        },
+        {
+            "timestamp": "2026-05-11 02:08:40",
+            "agente": "Gestor",
+            "acao": "trabalhando",
+            "detalhes": "Gestor coordenando a equipe",
+            "tarefa": "Coordenando equipe",
+            "tipo": "tarefa"
+        },
+        {
+            "timestamp": "2026-05-11 02:08:43",
+            "agente": "Designer",
+            "acao": "trabalhando",
+            "detalhes": "Designer criando mockups",
+            "tarefa": "Criando mockups",
+            "tipo": "tarefa"
+        },
+        {
+            "timestamp": "2026-05-11 02:08:46",
+            "agente": "Atendente",
+            "acao": "trabalhando",
+            "detalhes": "Atendente atendendo clientes",
+            "tarefa": "Atendendo clientes",
+            "tipo": "tarefa"
+        }
+    ],
+    "projetoAtual": "",
+    "ultimaAtualizacao": "2026-05-11 02:08:46"
+}

@@ -1,0 +1,122 @@
+{
+  "name": "Tronix - Pipeline Midia",
+  "nodes": [
+    {
+      "id": "trigger-schedule",
+      "name": "Agendador",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [250, 300],
+      "parameters": {
+        "rule": {
+          "interval": [{"field": "cron", "expression": "0 8,10,14,18 * * *"}]
+        }
+      }
+    },
+    {
+      "id": "http-request",
+      "name": "Gerar Imagem Cloudflare",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [450, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.cloudflare.com/client/v4/accounts/038280d984d9c936772700b7dbbc479e/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {"name": "Authorization", "value": "Bearer cfut_nI8gZqUUHil8sG6xjjE1W26wbVHgDyU8PRQTdUV2e61edb64"},
+            {"name": "Content-Type", "value": "application/json"}
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {"name": "prompt", "value": "={{ $json.prompt || 'Cinematic shot of a Brazilian landscape, hyper-realistic, epic atmosphere, 4k' }}"}
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "code-convert",
+      "name": "Salvar Imagem",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [650, 300],
+      "parameters": {
+        "language": "python",
+        "code": "import os\nimport base64\nfrom datetime import datetime\n\n# Pega os dados da requisicao\nresponse = items[0].json\n\n# Converte base64 para arquivo\nif 'result' in response:\n    img_data = response['result']\n    if isinstance(img_data, dict) and 'image' in img_data:\n        img_data = img_data['image']\n    \n    # Decodifica se vier em base64\n    if isinstance(img_data, str):\n        img_bytes = base64.b64decode(img_data)\n    else:\n        img_bytes = bytes(img_data)\n    \n    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')\n    filename = f'uploads/tronix_{timestamp}.png'\n    \n    with open(filename, 'wb') as f:\n        f.write(img_bytes)\n    \n    items[0]['json']['arquivo'] = filename\n    items[0]['json']['timestamp'] = timestamp\n\nreturn items"
+      }
+    },
+    {
+      "id": "exec-script",
+      "name": "Criar Video Ken Burns",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [850, 300],
+      "parameters": {
+        "command": "python",
+        "arguments": {
+          "parameters": [
+            {"name": "script", "value": "={{ 'gera_video.py --pasta ' + $json['arquivo'] + ' --saida videos_saida/' + $json['timestamp'] + '.mp4 --duracao 6 --animacao fade' }}"}
+          ]
+        }
+      }
+    },
+    {
+      "id": "exec-super",
+      "name": "Adicionar Voz Edge-TTS",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1050, 300],
+      "parameters": {
+        "command": "python",
+        "arguments": {
+          "parameters": [
+            {"name": "script", "value": "={{ 'tronix_super_editor.py videos_saida/' + $json['timestamp'] + '.mp4' }}"}
+          ]
+        }
+      }
+    },
+    {
+      "id": "sqlite-insert",
+      "name": "Registrar no SQLite",
+      "type": "n8n-nodes-base.sqlite",
+      "typeVersion": 1,
+      "position": [1250, 300],
+      "parameters": {
+        "query": "INSERT INTO conteudo (tipo, titulo, arquivo, pasta, legenda, hashtags, voz_usada, status_post) VALUES ('video', @titulo, @arquivo, 'videos_saida', @legenda, '#tronix #pcsolucoes #automacao', 'AntonioNeural', 'pendente')",
+        "additionalFields": {
+          "queryReplacement": {
+            "values": [
+              {"parameter": "titulo", "value": "={{ 'Video Tronix ' + $json['timestamp'] }}"},
+              {"parameter": "arquivo", "value": "={{ $json['timestamp'] + '.mp4' }}"},
+              {"parameter": "legenda", "value": "={{ $json.legenda || 'Conteudo gerado pelo Tronix' }}"}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "noop-end",
+      "name": "Fim",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [1450, 300]
+    }
+  ],
+  "connections": {
+    "Agendador": {"main": [[{node: "Gerar Imagem Cloudflare", type: "main", index: 0}]]},
+    "Gerar Imagem Cloudflare": {"main": [[{node: "Salvar Imagem", type: "main", index: 0}]]},
+    "Salvar Imagem": {"main": [[{node: "Criar Video Ken Burns", type: "main", index: 0}]]},
+    "Criar Video Ken Burns": {"main": [[{node: "Adicionar Voz Edge-TTS", type: "main", index: 0}]]},
+    "Adicionar Voz Edge-TTS": {"main": [[{node: "Registrar no SQLite", type: "main", index: 0}]]},
+    "Registrar no SQLite": {"main": [[{node: "Fim", type: "main", index: 0}]]}
+  },
+  "settings": {},
+  "staticData": null,
+  "tags": ["tronix", "midia", "automacao"]
+}

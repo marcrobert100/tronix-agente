@@ -1,0 +1,55 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                    INSTALADOR DELIVERY BOT WHATSAPP                        ║
+║                           EVOLUCAO - Marco Roberto                         ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+📁 PASTA DE INSTALAÇÃO:
+   C:\Users\CHCONTE RECPÇÃO\Desktop\evolucao
+
+📦 ARQUIVO PRINCIPAL (PARA COPIAR EM OUTRA MÁQUINA):
+   delivery_bot.zip (15.4 KB)
+   ↑ Este é o arquivo que você deve copiar para instalar em outra máquina
+
+📋 ARQUIVOS DISPONÍVEIS:
+
+1. delivery_bot.zip          - ZIP completo do bot (15.4 KB)
+2. instalar_bot.bat          - Instalador que copia arquivos originais
+3. instalar_bot_simples.bat  - Instalador simplificado
+4. criar_instalador_zip.bat  - Cria ZIP a partir dos arquivos originais
+5. criar_instalador_standalone.bat - Cria instalador completo
+6. criar_zip_simples.bat     - Cria ZIP simples
+7. criar_zip.ps1             - Script PowerShell para criar ZIP
+8. README.md                 - Documentação completa
+9. INSTRUCOES.txt            - Instruções rápidas
+10. COMO_USAR.txt            - Guia de uso detalhado
+11. SUMARIO.txt              - Este arquivo
+
+════════════════════════════════════════════════════════════════════════════
+
+🚀 COMO INSTALAR EM OUTRA MÁQUINA:
+
+1. Copie o arquivo delivery_bot.zip para a nova máquina
+2. Extraia o ZIP em qualquer pasta
+3. Execute o arquivo instalar_bot.bat
+4. Aguarde a instalação automática
+5. Clique no atalho criado no desktop
+
+🔐 DADOS DE LOGIN:
+   Usuário: cliente
+   Senha: 123456
+   URL: http://localhost:3000
+
+════════════════════════════════════════════════════════════════════════════
+
+✅ O QUE FOI CRIADO:
+
+✓ Pasta evolucao no desktop
+✓ ZIP completo com todos os recursos do bot
+✓ Scripts de instalação automáticos
+✓ Documentação completa
+✓ Instruções de uso detalhadas
+
+════════════════════════════════════════════════════════════════════════════
+
+Bot desenvolvido por Marco Roberto
+Delivery Bot WhatsApp v6.0

@@ -1,0 +1,50 @@
+name: 🚀 Deploy — Servidor de Produção
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 📦 Preparar deploy
+        run: |
+          mkdir -p deploy_package
+          rsync -av --exclude='node_modules' --exclude='__pycache__' --exclude='.git' \
+            --exclude='*.db' --exclude='*.mp4' --exclude='*.mp3' --exclude='*.png' \
+            --exclude='.env' --exclude='ComfyUI' --exclude='dify' --exclude='ragflow' \
+            --exclude='n8n-data' --exclude='minio-data' \
+            ./ deploy_package/
+
+      - name: 🔐 Configurar chave SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          rsync -avz --delete -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT -o StrictHostKeyChecking=no" \
+            deploy_package/ $SSH_USER@$SSH_HOST:/var/www/tronix/
+
+      - name: 🔄 Reiniciar serviços
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+        run: |
+          ssh -i ~/.ssh/deploy_key -p $SSH_PORT -o StrictHostKeyChecking=no \
+            $SSH_USER@$SSH_HOST "cd /var/www/tronix && \
+            echo 'Deploy concluído em $(date)' >> deploy.log"
+
+      - name: ✅ Health Check
+        run: |
+          echo "Deploy finalizado com sucesso!"

@@ -1,0 +1,46 @@
+
+=== CONFIGURAÇÃO DO OAuth 2.0 PARA API DO YOUTUBE ===
+
+PARA FAZER UPLOAD DE VÍDEOS, VOCÊ PRECISA CONFIGURAR OAuth 2.0:
+
+1. Acesse o Google Cloud Console:
+   https://console.cloud.google.com/
+
+2. Crie um novo projeto ou selecione um existente:
+   - Clique no seletor de projetos no topo
+   - Clique em "Novo Projeto"
+   - Nome: "YouTube Upload Tool"
+   - Clique em "Criar"
+
+3. Ative a API do YouTube Data API v3:
+   - Vá para "APIs & Services" > "Library"
+   - Pesquise por "YouTube Data API v3"
+   - Clique em "Enable"
+
+4. Crie credenciais OAuth 2.0:
+   - Vá para "APIs & Services" > "Credentials"
+   - Clique em "Create Credentials" > "OAuth client ID"
+   - Selecione "Desktop app" como tipo de aplicativo
+   - Nome: "YouTube Upload Desktop"
+   - Clique em "Create"
+
+5. Baixe o arquivo de credenciais:
+   - Após criar, clique em "Download JSON"
+   - Salve o arquivo como 'client_secret.json' na pasta:
+     C:\xampp\htdocs\agente\.opencode
+
+6. Execute o script de upload:
+   - Abra o terminal nesta pasta
+   - Execute: python youtube_upload.py
+   - Siga as instruções no navegador para autorizar o acesso
+
+=== IMPORTANTE ===
+- NUNCA compartilhe o arquivo client_secret.json
+- Mantenha-o seguro e não commit no repositório
+- A API key fornecida é apenas para consultas, não para upload
+
+=== VERIFICAÇÃO APÓS CONFIGURAÇÃO ===
+Após baixar o client_secret.json, execute:
+   python youtube_upload.py
+
+Se tudo estiver correto, o navegador abrirá para autorizar o acesso.

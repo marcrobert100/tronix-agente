@@ -1,0 +1,49 @@
+=== INSTRUÇÕES PARA UPLOAD DO VÍDEO "frutas.mp4" NO YOUTUBE ===
+
+ARQUIVO DE VÍDEO:
+- Local: C:\Users\CHCONTE RECPÇÃO\Desktop\frutas.mp4
+- Tamanho: ~10 MB
+- Última modificação: 03/05/2026 09:38:13
+
+PROBLEMA IDENTIFICADO:
+- A API key fornecida (AIzaSyDMnQjY94YAKcOkJS9fG9q1TQMcj3sU9Hw) não é válida para upload
+- API keys são apenas para consultas (leitura), não para upload de vídeos
+- Para upload, é necessário OAuth 2.0
+
+SOLUÇÃO - PASSO A PASSO:
+
+1. CONFIGURAR OAuth 2.0 NO GOOGLE CLOUD CONSOLE:
+   a) Acesse: https://console.cloud.google.com/
+   b) Crie um projeto ou selecione um existente
+   c) Ative a API "YouTube Data API v3"
+   d) Crie credenciais OAuth 2.0 para "Desktop app"
+   e) Baixe o arquivo JSON e salve como "client_secret.json"
+
+2. INSTALAR DEPENDÊNCIAS PYTHON:
+   pip install --upgrade google-api-python-client
+   pip install --upgrade google-auth-oauthlib
+   pip install --upgrade google-auth
+
+3. EXECUTAR O UPLOAD:
+   python youtube_upload.py
+
+4. SEGUIR AS INSTRUÇÕES NO NAVEGADOR:
+   - Autorizar o acesso ao seu canal do YouTube
+   - O script salvará as credenciais para uso futuro
+
+ARQUIVOS CRIADOS:
+- youtube_upload.py: Script principal para upload
+- youtube_check.py: Verifica API key (apenas para consulta)
+- youtube_channel_info.py: Obtém informações do canal
+- setup_youtube_oauth.py: Instruções de configuração
+- INSTRUCOES_UPLOAD_YOUTUBE.txt: Este arquivo
+
+OBSERVAÇÕES IMPORTANTES:
+- NUNCA compartilhe o arquivo client_secret.json
+- Mantenha-o seguro e não commit no repositório
+- A API key fornecida é apenas para consultas públicas
+- Para upload, OAuth 2.0 é obrigatório
+
+SE NÃO CONSEGUIR CONFIGURAR OAuth:
+- Use a interface web do YouTube: https://www.youtube.com/upload
+- Ou use ferramentas de terceiros como "YouTube Uploader"

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{nome} - Curriculum Vitae</title>
+    <style>
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        body {{
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 30px;
+        }}
+        .container {{
+            max-width: 850px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+        }}
+        .header {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 45px 50px;
+            position: relative;
+        }}
+        .header::after {{
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+        }}
+        .nome {{
+            font-size: 2.8em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }}
+        .titulo {{
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 25px;
+            font-weight: 300;
+        }}
+        .contato {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            font-size: 0.95em;
+            opacity: 0.95;
+        }}
+        .contato-item {{
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }}
+        .destaques-container {{
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            background: #f8f9fa;
+        }}
+        .destaque {{
+            padding: 25px 20px;
+            text-align: center;
+            border-right: 1px solid #e9ecef;
+        }}
+        .destaque:last-child {{
+            border-right: none;
+        }}
+        .destaque-numero {{
+            font-size: 2.2em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+        }}
+        .destaque-texto {{
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+            font-weight: 500;
+        }}
+        .content {{
+            padding: 40px 50px;
+        }}
+        .section {{
+            margin-bottom: 35px;
+        }}
+        .section-title {{
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }}
+        .section-title::before {{
+            content: '';
+            width: 4px;
+            height: 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }}
+        .experiencia-item, .formacao-item {{
+            margin-bottom: 25px;
+            position: relative;
+            padding-left: 25px;
+        }}
+        .experiencia-item::before {{
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+        }}
+        .experiencia-item::after {{
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 20px;
+            width: 2px;
+            height: calc(100% + 5px);
+            background: #e9ecef;
+        }}
+        .experiencia-item:last-child::after {{
+            display: none;
+        }}
+        .item-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 10px;
+        }}
+        .item-titulo {{
+            font-size: 1.15em;
+            font-weight: 700;
+            color: #333;
+        }}
+        .item-subtitulo {{
+            color: #764ba2;
+            font-weight: 500;
+        }}
+        .item-periodo {{
+            color: #999;
+            font-size: 0.9em;
+            background: #f8f9fa;
+            padding: 3px 12px;
+            border-radius: 15px;
+        }}
+        .item-descricao {{
+            margin-top: 10px;
+            color: #666;
+            line-height: 1.7;
+        }}
+        .competencias-grid {{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }}
+        .competencia {{
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }}
+        .competencia-nome {{
+            font-weight: 600;
+            color: #333;
+        }}
+        .competencia-barra {{
+            width: 100px;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }}
+        .competencia-fill {{
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }}
+        .competencia-info {{
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 160px;
+        }}
+        .competencia-porc {{
+            font-size: 0.85em;
+            color: #999;
+            min-width: 40px;
+            text-align: right;
+        }}
+        .certificacoes-list {{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }}
+        .certificacao {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 15px 20px;
+            border-radius: 12px;
+        }}
+        .certificacao-nome {{
+            font-weight: 700;
+            margin-bottom: 5px;
+        }}
+        .certificacao-info {{
+            font-size: 0.85em;
+            opacity: 0.85;
+        }}
+        .idiomas-grid {{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }}
+        .idioma {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }}
+        .idioma-nome {{
+            font-size: 1.1em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }}
+        .idioma-nivel {{
+            font-size: 0.9em;
+            opacity: 0.85;
+        }}
+        .conhecimentos-list {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }}
+        .conhecimento {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }}
+        @media print {{
+            body {{ background: #fff; padding: 0; }}
+            .container {{ box-shadow: none; }}
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="nome">{nome}</h1>
+            <p class="titulo">{titulo}</p>
+            <div class="contato">
+                {contato_itens}
+            </div>
+        </div>
+
+        <div class="destaques-container">
+            {destaques_html}
+        </div>
+
+        <div class="content">
+            {experiencia_html}
+            {formacao_html}
+            {competencias_html}
+            {certificacoes_html}
+            {idiomas_html}
+            {conhecimentos_html}
+        </div>
+    </div>
+</body>
+</html>

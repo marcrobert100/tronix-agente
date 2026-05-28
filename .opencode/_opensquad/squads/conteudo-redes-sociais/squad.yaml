@@ -1,0 +1,15 @@
+name: conteudo-redes-sociais
+description: Squad para produção de conteúdo para redes sociais
+pipeline:
+  - name: researcher
+    agent: researcher
+    description: Pesquisa tendências e conteúdo relevante
+  - name: writer
+    agent: writer
+    description: Escreve o conteúdo para as redes sociais
+  - name: designer
+    agent: designer
+    description: Cria os visuais para o conteúdo
+  - name: publisher
+    agent: publisher
+    description: Publica o conteúdo nas redes sociais

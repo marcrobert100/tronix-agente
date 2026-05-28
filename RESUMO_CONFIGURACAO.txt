@@ -1,0 +1,38 @@
+=== CONFIGURAÇÃO CLAUDE CODE + OLLAMA ===
+
+MODELO INSTALADO:
+- qwen2:0.5b (352 MB)
+- Modelo leve e rápido para CPU
+- Ideal para seu i5-3570
+
+CONFIGURAÇÃO DO CLAUDE CODE:
+Arquivo: C:\Users\CHCONTE RECPÇÃO\.claude.json
+
+Perfil ativo:
+- Nome: Ollama Qwen2 0.5B
+- Modelo: qwen2:0.5b
+- Base URL: http://localhost:11434/v1
+- Provider: openai
+
+VARIÁVEIS DE AMBIENTE:
+- CLAUDE_CODE_USE_OLLAMA=1
+- OLLAMA_MODEL=qwen2:0.5b
+- OLLAMA_NUM_THREAD=4
+
+COMO USAR:
+1. Iniciar Ollama: ollama serve
+2. Usar Claude Code - ele usará automaticamente o Ollama
+3. A API está disponível em: http://localhost:11434/v1
+
+TESTE DA API:
+$body = @{model="qwen2:0.5b";messages=@(@{role="user";content="Olá"});stream=$false} | ConvertTo-Json
+Invoke-RestMethod -Uri "http://localhost:11434/v1/chat/completions" -Method Post -Body $body -ContentType "application/json"
+
+MODELOS DISPONÍVEIS:
+- qwen2:0.5b (352 MB) - ATIVO
+- gemma2:2b (1.7 GB)
+- llama3.2:1b (1.3 GB)
+- llama3.1:8b (4.9 GB)
+- gemma4:e2b (7.2 GB)
+
+DICA: Use modelos pequenos (1B-3B) para respostas rápidas no seu i5-3570.

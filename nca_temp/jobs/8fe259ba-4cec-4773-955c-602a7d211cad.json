@@ -1,0 +1,21 @@
+{
+  "job_status": "done",
+  "job_id": "8fe259ba-4cec-4773-955c-602a7d211cad",
+  "queue_id": 1824711442800,
+  "process_id": 910384,
+  "response": {
+    "endpoint": "/v1/toolkit/test",
+    "code": 500,
+    "id": null,
+    "job_id": "8fe259ba-4cec-4773-955c-602a7d211cad",
+    "response": null,
+    "message": "Could not connect to the endpoint URL: \"http://localhost:9000/tronix/success.txt\"",
+    "run_time": 35.93,
+    "queue_time": 0,
+    "total_time": 35.93,
+    "pid": 910384,
+    "queue_id": 1824711442800,
+    "queue_length": 0,
+    "build_number": 219
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "perfil_profissional": "Profissional de Tecnologia e Gestão com sólida formação acadêmica em Sistemas de Informação pela UFAL e trajetória consolidada em operações multinacionais de grande porte. Especialista em análise de qualidade, melhoria contínua de processos e gestão de equipes multiculturais, com histórico de entregas mensuráveis que resultaram em ganhos expressivos de eficiência operacional e satisfação do cliente. Capacidade comprovada de liderar implementações estratégicas, conduzir auditorias de processos e desenvolver soluções sistêmicas que otimizam fluxos de trabalho e reduzem custos operacionais. Perfil analítico orientado a resultados, com expertise em ferramentas de gestão empresarial e certificações especializadas em qualidade e inteligência artificial. Comunicação assertiva, visão estratégica de negócio e comprometimento com a excelência operacional em ambientes de alta competitividade.",
+
+  "destaques_profissionais": [
+    "Impulsionou eficiência operacional com ganho de 9% em produtividade em ambiente de gestão multicadeia",
+    "Elevou índice de satisfação do cliente em 4 pontos percentuais por meio de processos otimizados",
+    "Liderou implementação de novos processos de melhoria em organização com atuação estratégica",
+    "Gestão integral de operações em 4 grandes redes corporativas simultaneamente",
+    "Conquistou certificações SEBRAE em 5 áreas distintas de gestão empresarial",
+    "Desenvolveu programas de treinamento que capacitaram equipes de alto desempenho",
+    "Implementou controle rigoroso de estoque com redução de perdas operacionais",
+    "Conduziu auditorias de processos em ambientes de alta complexidade e volume",
+    "Otimizou fluxos de trabalho resultando em melhoria contínua mensurável",
+    "Planejou e executou gestão da qualidade com foco em excelência operacional"
+  ],
+
+  "experiencia_profissional": [
+    {
+      "titulo": "Analista de Qualidade e Implementador de Processos",
+      "empresa": "Grupo Guimarães",
+      "periodo": "2025 - Presente",
+      "localizacao": "Maceió, AL",
+      "bullets": [
+        "Executou análise sistêmica de qualidade em operações estratégicas, identificando oportunidades de melhoria em fluxos críticos",
+        "Liderou implementação de novos processos de melhoria contínua com foco em eficiência e redução de retrabalho",
+        "Gerenciou iniciativas de gestão da qualidade que resultaram em otimização de workflows operacionais",
+        "Desenvolveu métricas e indicadores-chave de desempenho (KPIs) para monitoramento de processos",
+        "Conduziu inspeção e controle de qualidade em etapas críticas da operação",
+        "Realizou auditorias de processos para garantir conformidade com padrões estabelecidos",
+        "Implementou ferramentas de planejamento Q.A. para antecipação de não-conformidades"
+      ]
+    },
+    {
+      "titulo": "Gestor de Operações e Experiência do Cliente",
+      "empresa": "Pizzaria Nicole | Lopana | UCI Cinemas | McDonald's",
+      "periodo": "Experiência Anterior",
+      "localizacao": "Maceió, AL",
+      "bullets": [
+        "Gerenciou operações de forma integral em 4 grandes redes corporativas com excelência",
+        "Treinou e capacitou equipes multifuncionais, elevando níveis de produtividade e engajamento",
+        "Elaborou escalas funcionais estratégicas garantindo cobertura adequada e redução de custos com sobreturno",
+        "Executou gestão de compras com negociação de fornecedores e otimização de custos de aquisição",
+        "Proporcionou atendimento ao cliente de excelência, elevando satisfaction scores em 4%",
+        "Implementou controle rigoroso de estoque com redução de perdas e controle de custos variáveis",
+        "Conquistou eficiência operacional de 9% superior à média do setor por meio de processos otimizados",
+        "Conduziu gestão de equipes com foco em desenvolvimento de lideranças e retenção de talentos",
+        "Padronizou procedimentos operacionais em conformidade com diretrizes corporativas internacionais",
+        "Gerenciou budget operacional garantindo sustentabilidade financeira das unidades"
+      ]
+    }
+  ],
+
+  "formacao_academica": [
+    {
+      "grau": "Bacharelado em Sistemas de Informação",
+      "instituicao": "Universidade Federal de Alagoas - UFAL",
+      "status": "Concluído"
+    },
+    {
+      "grau": "Bacharelado em Sistema de Informação",
+      "instituicao": "Faculdade Estácio de Sá",
+      "status": "Concluído"
+    },
+    {
+      "grau": "Curso Técnico em Administração",
+      "instituicao": "Instituição Técnica de Ensino",
+      "status": "Concluído"
+    }
+  ],
+
+  "competencias": {
+    "gestao_operacional": [
+      "Gestão de Equipes",
+      "Gestão da Qualidade",
+      "Gestão de Operações",
+      "Gestão de Compras",
+      "Gestão Empresarial",
+      "Controle de Estoque"
+    ],
+    "qualidade_e_processos": [
+      "Análise de Sistemas",
+      "Inspeção e Controle de Qualidade",
+      "Melhoria de Processos",
+      "Auditorias de Processos",
+      "Planejamento Q.A.",
+      "Otimização de Fluxos"
+    ],
+    "desenvolvimento_de_pessoas": [
+      "Treinamento e Capacitação",
+      "Desenvolvimento de Lideranças",
+      "Gestão de Performance",
+      "Coaching de Equipes"
+    ],
+    "atendimento": [
+      "Atendimento ao Cliente",
+      "Gestão de Experiência do Cliente",
+      "Satisfação e Fidelização"
+    ]
+  },
+
+  "certificacoes": [
+    {
+      "nome": "Boas Práticas em Atendimento",
+      "instituicao": "SEBRAE"
+    },
+    {
+      "nome": "Excel e Gerência Geral",
+      "instituicao": "SEBRAE"
+    },
+    {
+      "nome": "Gestão Empresarial",
+      "instituicao": "SEBRAE"
+    },
+    {
+      "nome": "Piloto de Hospitalidade",
+      "instituicao": "SEBRAE"
+    },
+    {
+      "nome": "Certificação e Conformidade",
+      "instituicao": "SEBRAE"
+    },
+    {
+      "nome": "Introdução - Trilha IA para Estudantes",
+      "instituicao": "Trilha de Inteligência Artificial"
+    },
+    {
+      "nome": "Acelerador de Aprendizado - Trilha Fluência Educadores",
+      "instituicao": "Trilha de Fluência Educacional"
+    },
+    {
+      "nome": "Explore Novas Formas de Ensino com IA",
+      "instituicao": "Trilha de Fluência Educacional"
+    },
+    {
+      "nome": "Conclusão - Trilha Fluência Educadores",
+      "instituicao": "Trilha de Fluência Educacional"
+    },
+    {
+      "nome": "Prepare-se para o Futuro com IA",
+      "instituicao": "Trilha de Inteligência Artificial"
+    }
+  ],
+
+  "idiomas": [
+    {
+      "idioma": "Português",
+      "nivel": "Nativo"
+    }
+  ],
+
+  "conhecimentos_adicionais": [
+    "Análise de Sistemas",
+    "Gestão da Qualidade",
+    "Melhoria de Processos",
+    "Auditoria de Processos",
+    "KPI Management",
+    "Gestão de Equipes",
+    "Planejamento Q.A.",
+    "Controle de Estoque",
+    "Gestão de Compras",
+    "Atendimento ao Cliente",
+    "Excel Avançado",
+    "Inteligência Artificial",
+    "Gestão Empresarial",
+    "Operações Multinacionais",
+    "Conformidade corporativa"
+  ],
+
+  "dados_pessoais": {
+    "nome": "Marcos Roberto da Silva",
+    "titulo": "Gerente de Restaurante",
+    "email": "silvamrs100@gmail.com",
+    "telefone": "(82) 99185-6656",
+    "cidade": "Maceió, AL",
+    "linkedin": "linkedin.com/in/marcosrs"
+  }
+}

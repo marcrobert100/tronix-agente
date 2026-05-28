@@ -1,0 +1,18 @@
+- `[x]` 1. Preparação de Infraestrutura e Estado
+  - `[x]` Criar pasta `src/config/`
+  - `[x]` Criar `state.js` (gerenciamento de Maps e variáveis globais)
+  - `[x]` Criar `dbConfig.js` (lógica de leitura/escrita do config.json e logs)
+- `[x]` 2. Camada de Serviços
+  - `[x]` Criar `src/services/groqService.js` (Integração Llama 3)
+  - `[x]` Criar `src/services/voiceService.js` (Transcrição Whisper + TTS embarcado)
+  - `[x]` Criar `src/services/whatsappService.js` (Lógica de mensagens nativas e áudio via WWeb.js)
+- `[/]` 3. Controladores e Rotas
+  - `[x]` Criar `src/middlewares/authMiddleware.js`
+  - `[x]` Criar `src/routes/api.js`
+  - `[ ]` Criar `src/controllers/menuController.js`
+  - `[x]` Criar `src/controllers/settingsController.js`
+- `[/]` 4. Integração
+  - `[x]` Montar entrypoint `src/server_v2.js`
+  - `[x]` Atualizar scripts no `package.json` (`npm run start:v2`)
+- `[ ]` 5. Validação
+  - `[ ]` Testes de carga do `server_v2` paralelo à porta original.

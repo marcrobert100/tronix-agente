@@ -1,0 +1,367 @@
+{
+  "identity": "Tronix",
+  "version": "1.1.0",
+  "last_initialization": "2026-05-12T12:00:00Z",
+  "status": "active",
+  "protocol_history": [
+    "SESSAO_2026-05-12"
+  ],
+  "sync_log": [
+    {
+      "timestamp": "2026-05-11T12:00:00Z",
+      "source": "logs_evolucao",
+      "records_synced": 6,
+      "last_sync_time": "2026-05-11T12:00:00Z"
+    }
+  ],
+  "last_actions": [
+    {
+      "id": 12,
+      "agente": "Tronix",
+      "acao": "ATIVACAO: Tronix ativado por Marcos em 2026-05-12. Sessao iniciada.",
+      "timestamp": "2026-05-12T12:00:00Z"
+    },
+    {
+      "id": 13,
+      "agente": "Tronix",
+      "acao": "VERIFICACAO_PASTA: Explorado diretorio agente/ com 100+ entradas. Confirmados sistema Tronix, PCsoluções, pipeline de midia.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 14,
+      "agente": "Tronix-DEV",
+      "acao": "CRIADO: index.php - Galeria visual Tronix com grid responsivo, players de video, badges Original/Animado/Super Editor, match imagem por timestamp.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 15,
+      "agente": "Tronix-DEV",
+      "acao": "ATUALIZADO: index.php - Logica de matching imagem->video por timestamp, suporte a _super e _super_voz com badges e botoes diferenciados.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 16,
+      "agente": "Tronix-SUPER",
+      "acao": "CRIADO: tronix_super_editor.py - Pipeline de voz Edge-TTS + legenda com FFmpeg. Usa AntonioNeural (pt-BR). Corrigido encoding UTF-8 e fontfile.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 17,
+      "agente": "Tronix-SUPER",
+      "acao": "EXECUTADO: Super Editor no video tronix_1778515500.mp4 com texto PROMOCAO PCSOLUCOES. Gerado _super.mp4 (texto) e _super_voz.mp4 (voz gTTS).",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 18,
+      "agente": "Tronix-SUPER",
+      "acao": "MIGRADO: gTTS para Edge-TTS (voz mais natural). Instalado edge-tts v7.2.8. Voz alterada para pt-BR-AntonioNeural.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 19,
+      "agente": "Tronix-SUPER",
+      "acao": "ATUALIZADO: tronix_super_editor.py - Agora por padrao adiciona SOMENTE voz. Texto na tela apenas com flag --texto.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 20,
+      "agente": "Tronix-DEV",
+      "acao": "CRIADO: mini_novela.py - Concatena N videos da pasta videos_saida usando concat demuxer do FFmpeg.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 21,
+      "agente": "Tronix-DEV",
+      "acao": "EXECUTADO: mini_novela.py juntou 3 videos (tronix.mp4 + _super.mp4 + _super_voz.mp4) em mini_novela.mp4 (12s, 1.2MB).",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 22,
+      "agente": "Tronix-MEDIA",
+      "acao": "CRIADO: gerar_mini_novela.py - Pipeline completo: Cloudflare SDXL -> Ken Burns -> Edge-TTS voz -> FFmpeg concat.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 23,
+      "agente": "Tronix-MEDIA",
+      "acao": "EXECUTADO: gerar_mini_novela.py com tema 'Extraterrestre invade a Terra'. 3 cenarios: A Chegada, O Plano, A Invasao. Imagens via Cloudflare, video Ken Burns, voz AntonioNeural. MINI NOVELA PRONTA em mini_novela.mp4 (14s, 4MB, Full HD 1920x1080).",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 24,
+      "agente": "Tronix-DEV",
+      "acao": "FIX: gera_video.py adaptado para moviepy v2.2.1 - TextClip com kwargs, font path, FadeIn/FadeOut via moviepy.video.fx, ColorClip API v2. Removido slide/typewriter/bounce custom.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 25,
+      "agente": "Tronix",
+      "acao": "MEMORIA: Sessao 2026-05-12 salva. Configuracao: Tronix ativo em Vicosa-AL, PCsoluções. Pipeline funcional: Cloudflare SDXL -> Ken Burns -> Edge-TTS AntonioNeural -> FFmpeg concat.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 26,
+      "agente": "Tronix-SYNC",
+      "acao": "SKILLS_SINCRONIZADAS: 37 skills carregadas do .agent/skills/ (Antigravity Kit). Atualizado tronix_core.json com a lista oficial.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 27,
+      "agente": "Tronix-DB",
+      "acao": "CRIADO: tronix_logger.py - Banco SQLite (tronix.db) com tabelas conteudo, pipeline_log, agendamento. Integrado ao super_editor e gerador de mini-novelas.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 28,
+      "agente": "Tronix-DB",
+      "acao": "CRIADO: sql_tronix.sql - Schema MySQL para quando o XAMPP estiver disponivel.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 29,
+      "agente": "Tronix-DOC",
+      "acao": "CRIADO: potencial.md no Desktop com lista de capacidades e pendencias (redes sociais, agendador, jogos, dashboard).",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 29,
+      "agente": "Tronix-DOC",
+      "acao": "CRIADO: potencial.md no Desktop com lista de capacidades e pendencias.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 30,
+      "agente": "Tronix-YT",
+      "acao": "CRIADO: tronix_youtube.py - Upload YouTube via OAuth 2.0. Aguardando client_secrets.json do Google Cloud.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 31,
+      "agente": "Tronix-IG",
+      "acao": "INSTALADO: instagrapi v2.6.3. CRIADO: tronix_instagram.py - Posta Reels e fotos no Instagram via login mobile. Suporte a postagem de pendentes do banco.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 32,
+      "agente": "Tronix",
+      "acao": "FIM_SESSAO: 2026-05-12. Pipeline completo: gerar -> banco -> postar. Proximo: agendador Windows + dashboard.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 33,
+      "agente": "Tronix",
+      "acao": "CORRECAO: Credenciais IG removidas do .env (nao eram do Instagram). Script tronix_instagram.py aguarda dados corretos.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 34,
+      "agente": "Tronix-RESEARCH",
+      "acao": "PESQUISA_GITHUB: Modelos encontrados - Open-Sora 2.0 (24k stars), CogVideoX (12.5k), HunyuanVideo (11.9k), Wan2.2, LTX-2. Automacao: instagrapi, auto-reels-uploader, Agentfy, MoneyPrinterTurbo, OpenMontage.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 35,
+      "agente": "Tronix-DEV",
+      "acao": "CRIADO: dashboard.php - Dashboard web PHP com SQLite. Exibe estatisticas, conteudos recentes e pipeline log. Acessivel em /agente/dashboard.php",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 36,
+      "agente": "Tronix-DEV",
+      "acao": "CRIADO: tronix_scheduler.ps1 - Script PowerShell que instala 3 tarefas no Windows: PostarInstagram (10h/14h/18h), GerarNovela (08h), Limpeza (domingo 03h).",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 37,
+      "agente": "Tronix-IG",
+      "acao": "ATUALIZADO: tronix_instagram.py v2 - Suporte a --pasta (postar todos videos de uma pasta), --pendentes (banco), --video (individual).",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 38,
+      "agente": "Tronix-DEV",
+      "acao": "ATUALIZADO: index.php - Link para dashboard.php adicionado no footer.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 39,
+      "agente": "Tronix",
+      "acao": "GPU check: Sem CUDA. Modelos locais inviaveis.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 40,
+      "agente": "Tronix-MEDIA",
+      "acao": "CRIADO: animar_ia.py - Pipeline 3-tentativas: 1) ZSky API (gratis, 1080p), 2) Replicate (Wan 2.2 I2V, $0.01), 3) HuggingFace SVD (fallback). Substitui o antigo animar_opencode.py.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 41,
+      "agente": "Tronix",
+      "acao": "TESTE: Imagem cachorro surfando gerada via Cloudflare SDXL. Video Ken Burns criado com FFmpeg. ZSky API retornou 404. Token HuggingFace expirou.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 42,
+      "agente": "Tronix-DEV",
+      "acao": "CRIADO: animar_replicate.py - Script dedicado para Wan 2.2 I2V via Replicate API. Guia de setup incluido no --help.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 43,
+      "agente": "Tronix-DEV",
+      "acao": "FIX: moviepy reinstalado v2.2.1 (estava v1 quebrado pelo instagrapi). gera_video.py restaurado para imports v2.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 44,
+      "agente": "Tronix",
+      "acao": "FIM_SESSAO: Pipeline funcional: Ken Burns + FFmpeg. Pendente: configurar Replicate API.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 45,
+      "agente": "Tronix-NCA",
+      "acao": "CLONADO: NCA-ToolKit (stephengpope, 2.3k stars) para C:\\xampp\\htdocs\\agente\\nca-toolkit. Servidor Flask rodando na porta 8080 com 28 blueprints. Dependencias instaladas: google-cloud-storage, google-cloud-run, boto3. Limitacao: requer S3/MinIO para upload de arquivos.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 46,
+      "agente": "Tronix-NCA",
+      "acao": "CRIADO: tronix_nca.py - Wrapper Python para NCA-ToolKit. Endpoints: imagem_para_video(), concatenar_videos(), adicionar_legenda(), status().",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 47,
+      "agente": "Tronix",
+      "acao": "FIM_SESSAO: Tudo registrado.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 48,
+      "agente": "Tronix-INFRA",
+      "acao": "INSTALADO: Docker Engine v29.4.3 dentro do WSL2 Ubuntu. Docker rodando, composes prontos.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 49,
+      "agente": "Tronix-INFRA",
+      "acao": "INSTALADO: MinIO via Docker Compose. Portas 9000 (API) e 9001 (Console). Bucket 'tronix' criado. Pendente: resolver rota WSL2 -> Windows para NCA-ToolKit enxergar MinIO.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 50,
+      "agente": "Tronix-INFRA",
+      "acao": "CRIADO: iniciar_infra.ps1 - Script one-click que: 1) Sobe WSL+Docker+MinIO, 2) Detecta IP do WSL, 3) Inicia NCA-ToolKit. Basta rodar: powershell -File iniciar_infra.ps1",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 51,
+      "agente": "Tronix-DEV",
+      "acao": "FIX: NCA-ToolKit caption_video endpoint desabilitado (falta fontes linux /usr/share/fonts/custom). 28 blueprints registrados de 34.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 52,
+      "agente": "Tronix",
+      "acao": "FIM_SESSAO: Docker + MinIO + NCA-ToolKit instalados. Pipeline FFmpeg nativo OK.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 53,
+      "agente": "Tronix-INFRA",
+      "acao": "INSTALADO: moto S3 mock (Python puro, leve). Servidor rodando na porta 9090. Bucket 'tronix' criado e funcional.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 54,
+      "agente": "Tronix-INFRA",
+      "acao": "CRIADO: iniciar_tudo.bat - Script batch one-click que inicia Moto S3 + NCA-ToolKit sequencialmente. Basta dar duplo clique.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 55,
+      "agente": "Tronix",
+      "acao": "FIM_SESSAO_COMPLETA: 2026-05-12. Tronix v1.0 totalmente operacional. Infraestrutura: Cloudflare SDXL, FFmpeg, Edge-TTS, SQLite, MinIO/moto S3, NCA-ToolKit. Pendentes: billing Replicate para Wan 2.2, credenciais Instagram.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 56,
+      "agente": "Tronix-DEV",
+      "acao": "UPGRADE: Instalado CrewAI v1.14.4 e n8n v2.20.6. Criado tronix_crew.py com 9 agentes (DEV, MEDIA, SUPER, IG, YT, DB, INFRA, RESEARCH, SYNC) em processo hierarquico com memoria persistente.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 57,
+      "agente": "Tronix-DEV",
+      "acao": "UPGRADE: Criado n8n_workflow.json com pipeline visual: Agendador Cron -> Cloudflare SDXL -> Ken Burns -> Edge-TTS -> SQLite. Workflow importavel via http://localhost:5678.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 58,
+      "agente": "Tronix-DEV",
+      "acao": "UPGRADE: Criado iniciar_n8n.bat para start one-click do n8n. CrewAI usa LLM free configurado no tronix_crew.py.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 59,
+      "agente": "Tronix-DEV",
+      "acao": "INSTALADO: Langflow v1.9.2 via uv. Interface drag-and-drop para agentes LangChain. Acessivel em http://localhost:7860 via 'python -m langflow run'",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 60,
+      "agente": "Tronix-DEV",
+      "acao": "CLONADO: Dify (langgenius) em agente/dify/. Plataforma full-stack AI apps com RAG + agente + workflow. Docker compose em dify/docker/. Porta 3000.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 61,
+      "agente": "Tronix-DEV",
+      "acao": "CLONADO: RAGFlow (infiniflow) em agente/ragflow/. Engine RAG enterprise. Docker compose em ragflow/docker/. Porta 9380.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 62,
+      "agente": "Tronix-DEV",
+      "acao": "CRIADO: iniciar_dify_ragflow.bat - Script one-click que sobe Dify + RAGFlow via Docker WSL2. Para Langflow: python -m langflow run.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 63,
+      "agente": "Tronix-DEV",
+      "acao": "UNIFICACAO: API Gateway FastAPI criado (porta 8081). 12 endpoints REST. CrewAI atualizado com GatewayTool + N8nTool. n8n workflow v2 com webhook. Dashboard unificado com status em tempo real. iniciar_tronix.bat one-click.",
+      "timestamp": "2026-05-12T14:00:00Z"
+    },
+    {
+      "id": 64,
+      "agente": "CREWAI-TEST",
+      "acao": "Teste de integracao",
+      "timestamp": "2026-05-12T09:44:40Z"
+    },
+    {
+      "id": 65,
+      "agente": "TESTE",
+      "acao": "EXECUTOU: tronix_logger.py ",
+      "timestamp": "2026-05-12T09:44:42Z"
+    },
+    {
+      "id": 66,
+      "agente": "Tronix-DEV",
+      "acao": "ATUALIZADO: tronix_crew.py - LLM migrado para OpenRouter (google/gemini-2.0-flash-exp). Adicionados agentes ROTEIRISTA e DIRETOR. Manager LLM configurado via OpenRouter.",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 67,
+      "agente": "Tronix-DEV",
+      "acao": "ATUALIZADO: tronix_core.json - v1.3.0, agentes 9->11 com ROTEIRISTA e DIRETOR, manager_llm openrouter/google/gemini-2.0-flash-exp",
+      "timestamp": "2026-05-12"
+    },
+    {
+      "id": 68,
+      "agente": "Tronix-DEV",
+      "acao": "CONFIGURADO: OPENROUTER_API_KEY adicionada ao .env. CrewAI pronto para usar google/gemini-2.0-flash-exp via OpenRouter.",
+      "timestamp": "2026-05-12"
+    }
+  ]
+}

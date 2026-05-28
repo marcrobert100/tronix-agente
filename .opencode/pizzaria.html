@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizzaria Animation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .scene {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            background: linear-gradient(180deg, #2d132c 0%, #801336 50%, #c72c41 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .sign {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #f4d03f;
+            padding: 15px 40px;
+            border-radius: 10px;
+            border: 4px solid #c9a227;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            animation: signGlow 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes signGlow {
+            from { box-shadow: 0 5px 20px rgba(244, 208, 63, 0.3); }
+            to { box-shadow: 0 5px 30px rgba(244, 208, 63, 0.7); }
+        }
+
+        .sign h1 {
+            color: #c72c41;
+            font-size: 32px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 0 #801336;
+            animation: textBounce 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes textBounce {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
+        .pizza-container {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: pizzaFloat 2s ease-in-out infinite;
+        }
+
+        @keyframes pizzaFloat {
+            0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+            25% { transform: translateX(-50%) translateY(-20px) rotate(5deg); }
+            50% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+            75% { transform: translateX(-50%) translateY(-10px) rotate(-5deg); }
+        }
+
+        .pizza {
+            width: 180px;
+            height: 180px;
+            background: #f5deb3;
+            border-radius: 50%;
+            border: 8px solid #d4a574;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .pizza::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            background: #c72c41;
+            border-radius: 50%;
+            box-shadow: 
+                40px 20px 0 #c72c41,
+                -40px 20px 0 #c72c41,
+                0px -45px 0 #c72c41,
+                30px -30px 0 #c72c41,
+                -30px -30px 0 #c72c41;
+        }
+
+        .pepperoni {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: #8b0000;
+            border-radius: 50%;
+            top: 25%;
+            left: 30%;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
+        }
+
+        .pepperoni:nth-child(2) { top: 20%; left: 60%; }
+        .pepperoni:nth-child(3) { top: 55%; left: 25%; }
+        .pepperoni:nth-child(4) { top: 50%; left: 65%; }
+        .pepperoni:nth-child(5) { top: 70%; left: 45%; }
+
+        .flame {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+        }
+
+        .flame span {
+            width: 15px;
+            height: 30px;
+            background: linear-gradient(0deg, #ff6b35, #f7c531, #ffeb3b);
+            border-radius: 50% 50% 20% 20%;
+            animation: flicker 0.3s ease-in-out infinite alternate;
+            transform-origin: bottom center;
+        }
+
+        .flame span:nth-child(2) { animation-delay: 0.1s; height: 40px; }
+        .flame span:nth-child(3) { animation-delay: 0.2s; }
+        .flame span:nth-child(4) { animation-delay: 0.15s; height: 35px; }
+        .flame span:nth-child(5) { animation-delay: 0.05s; }
+
+        @keyframes flicker {
+            0% { transform: scaleY(1) scaleX(1) rotate(-5deg); }
+            100% { transform: scaleY(1.2) scaleX(0.8) rotate(5deg); }
+        }
+
+        .steam {
+            position: absolute;
+            bottom: 200px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+        }
+
+        .steam span {
+            width: 8px;
+            height: 30px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            animation: rise 1.5s ease-out infinite;
+        }
+
+        .steam span:nth-child(2) { animation-delay: 0.3s; }
+        .steam span:nth-child(3) { animation-delay: 0.6s; }
+        .steam span:nth-child(4) { animation-delay: 0.9s; }
+
+        @keyframes rise {
+            0% { opacity: 0.8; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-60px) scale(1.5); }
+        }
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 1s ease-in-out infinite;
+        }
+
+        .star:nth-child(1) { top: 20px; left: 30px; animation-delay: 0s; }
+        .star:nth-child(2) { top: 50px; left: 100px; animation-delay: 0.3s; }
+        .star:nth-child(3) { top: 30px; right: 80px; animation-delay: 0.6s; }
+        .star:nth-child(4) { top: 80px; right: 40px; animation-delay: 0.9s; }
+        .star:nth-child(5) { top: 15px; left: 150px; animation-delay: 0.2s; }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        .counter {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(180deg, #5d4e37 0%, #3d2e1f 100%);
+            border-top: 5px solid #8b7355;
+        }
+
+        .counter::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .delivery {
+            position: absolute;
+            bottom: 70px;
+            right: 30px;
+            font-size: 14px;
+            color: #fff;
+            background: #27ae60;
+            padding: 8px 15px;
+            border-radius: 20px;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="timer" id="timer">5s</div>
+    
+    <div class="scene">
+        <div class="stars">
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+        </div>
+        
+        <div class="sign">
+            <h1>🍕 PIZZARIA 🍕</h1>
+        </div>
+        
+        <div class="steam">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <div class="pizza-container">
+            <div class="pizza">
+                <div class="pepperoni"></div>
+                <div class="pepperoni"></div>
+                <div class="pepperoni"></div>
+                <div class="pepperoni"></div>
+                <div class="pepperoni"></div>
+            </div>
+        </div>
+        
+        <div class="flame">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <div class="delivery">🚚 Entrega Rápida!</div>
+        
+        <div class="counter"></div>
+    </div>
+
+    <script>
+        let seconds = 5;
+        const timerElement = document.getElementById('timer');
+        
+        const countdown = setInterval(() => {
+            seconds--;
+            timerElement.textContent = seconds + 's';
+            
+            if (seconds <= 0) {
+                clearInterval(countdown);
+                timerElement.textContent = 'FIM!';
+                document.querySelector('.scene').style.animationPlayState = 'paused';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

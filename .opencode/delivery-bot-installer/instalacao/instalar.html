@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Bot - Instalador</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .header p {
+            opacity: 0.9;
+        }
+        .content {
+            padding: 40px;
+        }
+        .step {
+            display: none;
+        }
+        .step.active {
+            display: block;
+        }
+        .step h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        .step p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .form-group small {
+            display: block;
+            margin-top: 5px;
+            color: #888;
+            font-size: 0.85rem;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-secondary {
+            background: #6c757d;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        .progress {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .progress-step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #666;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        .progress-step.active {
+            background: #667eea;
+            color: white;
+        }
+        .progress-step.completed {
+            background: #28a745;
+            color: white;
+        }
+        .config-preview {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .success {
+            text-align: center;
+            padding: 40px;
+        }
+        .success h2 {
+            color: #28a745;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .success .icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        .file-list {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .file-list h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .file-list ul {
+            list-style: none;
+            padding: 0;
+        }
+        .file-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .file-list li:last-child {
+            border-bottom: none;
+        }
+        .file-list li::before {
+            content: "✅ ";
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Delivery Bot</h1>
+            <p>Instalador e Configurador</p>
+        </div>
+        <div class="content">
+            <div class="progress">
+                <div class="progress-step active" data-step="1">1</div>
+                <div class="progress-step" data-step="2">2</div>
+                <div class="progress-step" data-step="3">3</div>
+                <div class="progress-step" data-step="4">4</div>
+            </div>
+
+            <!-- Step 1: Bem-vindo -->
+            <div class="step active" data-step="1">
+                <h2>Bem-vindo ao Instalador!</h2>
+                <p>Este assistente irá configurar seu bot de delivery para WhatsApp.</p>
+                <p>O que você precisa ter pronto:</p>
+                <ul style="margin: 20px 0 20px 30px; color: #666;">
+                    <li>Node.js instalado (https://nodejs.org)</li>
+                    <li>Chave da API Groq (gratuita em console.groq.com)</li>
+                    <li>WhatsApp ativo no celular</li>
+                </ul>
+                <p>Vamos começar!</p>
+            </div>
+
+            <!-- Step 2: Configurações da Empresa -->
+            <div class="step" data-step="2">
+                <h2>Configurações da Empresa</h2>
+                <div class="form-group">
+                    <label>Nome da Empresa</label>
+                    <input type="text" id="empresaNome" placeholder="Ex: Pizzaria do João">
+                </div>
+                <div class="form-group">
+                    <label>Telefone</label>
+                    <input type="text" id="empresaTelefone" placeholder="Ex: 11999999999">
+                    <small>Somente números, com DDD</small>
+                </div>
+                <div class="form-group">
+                    <label>Endereço</label>
+                    <input type="text" id="empresaEndereco" placeholder="Ex: Rua das Flores, 123 - Centro">
+                </div>
+                <div class="form-group">
+                    <label>Horário de Funcionamento</label>
+                    <input type="text" id="horario" placeholder="Ex: Seg a Sex: 08h às 22h">
+                </div>
+            </div>
+
+            <!-- Step 3: Configurações de Entrega -->
+            <div class="step" data-step="3">
+                <h2>Configurações de Entrega</h2>
+                <div class="form-group">
+                    <label>Taxa de Entrega</label>
+                    <input type="text" id="taxaEntrega" placeholder="Ex: R$ 5,00">
+                </div>
+                <div class="form-group">
+                    <label>Tempo de Entrega</label>
+                    <input type="text" id="tempoEntrega" placeholder="Ex: 30 a 50 minutos">
+                </div>
+                <div class="form-group">
+                    <label>Pedido Mínimo</label>
+                    <input type="text" id="pedidoMinimo" placeholder="Ex: R$ 20,00">
+                </div>
+                <div class="form-group">
+                    <label>Formas de Pagamento</label>
+                    <input type="text" id="pagamentos" placeholder="Ex: Dinheiro, Cartão, Pix">
+                </div>
+                <div class="form-group">
+                    <label>Chave Pix</label>
+                    <input type="text" id="pixChave" placeholder="Ex: pagamentos@empresa.com.br">
+                </div>
+                <div class="form-group">
+                    <label>Chave da API Groq</label>
+                    <input type="text" id="groqApiKey" placeholder="gsk_...">
+                    <small>Obtenha gratuitamente em: https://console.groq.com</small>
+                </div>
+            </div>
+
+            <!-- Step 4: Revisão -->
+            <div class="step" data-step="4">
+                <h2>Revisão das Configurações</h2>
+                <p>Verifique se todas as informações estão corretas:</p>
+                <div class="config-preview" id="configPreview"></div>
+            </div>
+
+            <!-- Step 5: Sucesso -->
+            <div class="step" data-step="5">
+                <div class="success">
+                    <div class="icon">✅</div>
+                    <h2>Configuração Completa!</h2>
+                    <p>Seu bot está quase pronto. Siga os passos abaixo:</p>
+                    <div class="file-list">
+                        <h3>📁 Arquivos Gerados:</h3>
+                        <ul>
+                            <li>.env - Configurações de API</li>
+                            <li>config.json - Configurações do bot</li>
+                        </ul>
+                        <h3 style="margin-top: 20px;">🚀 Próximos Passos:</h3>
+                        <ul>
+                            <li>Execute INICIAR.bat para iniciar o servidor</li>
+                            <li>Acesse http://localhost:3000 no navegador</li>
+                            <li>Configure o cardápio no painel</li>
+                            <li>Escaneie o QR Code do WhatsApp</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons" id="buttons">
+                <button class="btn btn-secondary" id="prevBtn" style="display: none;">← Anterior</button>
+                <button class="btn" id="nextBtn">Próximo →</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function showStep(step) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.querySelector(`.step[data-step="${step}"]`).classList.add('active');
+            
+            document.querySelectorAll('.progress-step').forEach(s => {
+                s.classList.remove('active', 'completed');
+                const stepNum = parseInt(s.dataset.step);
+                if (stepNum < step) s.classList.add('completed');
+                if (stepNum === step) s.classList.add('active');
+            });
+
+            document.getElementById('prevBtn').style.display = step > 1 ? 'block' : 'none';
+            document.getElementById('nextBtn').textContent = step === totalSteps ? 'Gerar Configuração' : 'Próximo →';
+        }
+
+        function generateConfig() {
+            const config = {
+                useAI: true,
+                model: "llama-3.1-8b-instant",
+                empresaNome: document.getElementById('empresaNome').value || 'Minha Empresa',
+                empresaEndereco: document.getElementById('empresaEndereco').value || '',
+                empresaTelefone: document.getElementById('empresaTelefone').value || '',
+                horarioFuncionamento: document.getElementById('horario').value || '',
+                taxaEntrega: document.getElementById('taxaEntrega').value || 'R$ 0,00',
+                tempoEntrega: document.getElementById('tempoEntrega').value || '30 a 50 minutos',
+                pedidoMinimo: document.getElementById('pedidoMinimo').value || 'R$ 0,00',
+                pagamentos: document.getElementById('pagamentos').value || 'Dinheiro, Cartão, Pix',
+                pixChave: document.getElementById('pixChave').value || '',
+                promptSistema: `Você é o atendente virtual de ${document.getElementById('empresaNome').value || 'nossa empresa'}. Seja simpático, use emojis moderadamente e seja objetivo. Ajude clientes com pedidos, cardápio, tempo de entrega e pagamento.`,
+                cardapio: [],
+                pesquisaSatisfacao: true,
+                pesquisaTempoMinutos: 5,
+                pesquisaPerguntas: [
+                    { emoji: "⭐", texto: "Qualidade da comida" },
+                    { emoji: "🚀", texto: "Tempo de entrega" },
+                    { emoji: "💬", texto: "Atendimento" },
+                    { emoji: "📦", texto: "Embalagem" }
+                ]
+            };
+
+            const env = `# Configuração do Bot - Delivery
+GROQ_API_KEY=${document.getElementById('groqApiKey').value || ''}
+PORT=3000
+EMPRESA_NOME=${document.getElementById('empresaNome').value || 'Minha Empresa'}
+EMPRESA_TELEFONE=${document.getElementById('empresaTelefone').value || '5511999999999'}
+`;
+
+            document.getElementById('configPreview').textContent = 
+                '=== .env ===\n' + env + '\n=== config.json ===\n' + JSON.stringify(config, null, 2);
+
+            // Store for download
+            window.botConfig = { config, env };
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentStep === totalSteps) {
+                generateConfig();
+                currentStep++;
+                showStep(currentStep);
+                document.getElementById('nextBtn').textContent = 'Baixar Arquivos';
+                document.getElementById('nextBtn').onclick = downloadFiles;
+            } else if (currentStep < totalSteps) {
+                currentStep++;
+                if (currentStep === totalSteps) {
+                    generateConfig();
+                }
+                showStep(currentStep);
+            }
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        });
+
+        function downloadFiles() {
+            if (!window.botConfig) return;
+            
+            // Download .env
+            const envBlob = new Blob([window.botConfig.env], { type: 'text/plain' });
+            const envUrl = URL.createObjectURL(envBlob);
+            const envLink = document.createElement('a');
+            envLink.href = envUrl;
+            envLink.download = '.env';
+            envLink.click();
+            
+            // Download config.json
+            const configBlob = new Blob([JSON.stringify(window.botConfig.config, null, 2)], { type: 'application/json' });
+            const configUrl = URL.createObjectURL(configBlob);
+            const configLink = document.createElement('a');
+            configLink.href = configUrl;
+            configLink.download = 'config.json';
+            configLink.click();
+        }
+
+        showStep(1);
+    </script>
+</body>
+</html>

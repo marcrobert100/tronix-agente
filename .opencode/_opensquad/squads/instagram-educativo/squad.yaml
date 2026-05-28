@@ -1,0 +1,18 @@
+name: instagram-educativo
+description: Squad especializado em criação de posts educativos para Instagram
+pipeline:
+  - name: topic-researcher
+    agent: topic-researcher
+    description: Pesquisa tópicos educativos relevantes para o nicho
+  - name: content-creator
+    agent: content-creator
+    description: Cria o conteúdo educativo em formato Instagram
+  - name: visual-designer
+    agent: visual-designer
+    description: Design de carrosséis, stories e posts visuais
+  - name: hashtag-strategist
+    agent: hashtag-strategist
+    description: Estratégia de hashtags e otimização para alcance
+  - name: instagram-publisher
+    agent: instagram-publisher
+    description: Publicação e monitoramento no Instagram

@@ -1,0 +1,60 @@
+{
+    "nome": "Marcos Roberto da Silva",
+    "titulo": "Gerente de Restaurante",
+    "email": "silvamrs100@gmail.com",
+    "telefone": "(82) 99185-6656",
+    "cidade": "Maceio, AL",
+    "linkedin": "linkedin.com/in/marcosrs",
+    "foto_url": "",
+    "destaques": [
+        {"numero": "+20%", "texto": "Produtividade da Equipe"},
+        {"numero": "R$180K", "texto": "Faturamento Mensal"},
+        {"numero": "+22%", "texto": "Satisfacao do Cliente"},
+        {"numero": "25", "texto": "Colaboradores Liderados"}
+    ],
+    "experiencia": [
+        {
+            "cargo": "Gerente de Restaurante",
+            "empresa": "Restaurante Sabor & Arte",
+            "periodo": "2019 - Presente",
+            "descricao": "Gestao completa de restaurante com foco em satisfacao do cliente e otimizacao de processos."
+        },
+        {
+            "cargo": "Subgerente",
+            "empresa": "Pizzaria Bela Napoli",
+            "periodo": "2016 - 2019",
+            "descricao": "Supervisao de equipes e controle de qualidade dos produtos."
+        }
+    ],
+    "formacao": [
+        {
+            "curso": "Administracao de Empresas",
+            "instituicao": "Universidade Federal de Alagoas",
+            "ano": "2015"
+        }
+    ],
+    "competencias": [
+        {"nome": "Gestao de Equipes", "nivel": 90, "cor": "#3498db"},
+        {"nome": "Atendimento ao Cliente", "nivel": 95, "cor": "#2ecc71"},
+        {"nome": "Controle Financeiro", "nivel": 80, "cor": "#e74c3c"},
+        {"nome": "Logistica", "nivel": 75, "cor": "#f39c12"},
+        {"nome": "Planejamento Estrategico", "nivel": 85, "cor": "#9b59b6"},
+        {"nome": "Gestão de Estoque", "nivel": 88, "cor": "#1abc9c"}
+    ],
+    "certificacoes": [
+        {"nome": "Curso de Gestao Empresarial", "instituicao": "SENAC", "ano": "2018"},
+        {"nome": "Seguranca Alimentar", "instituicao": "ANVISA", "ano": "2020"}
+    ],
+    "idiomas": [
+        {"idioma": "Portugues", "nivel": "Nativo"},
+        {"idioma": "Espanhol", "nivel": "Intermediario"},
+        {"idioma": "Ingles", "nivel": "Basico"}
+    ],
+    "conhecimentos": [
+        "Microsoft Office",
+        "Sistemas de PDV",
+        "Controle de Custos",
+        "Gestao de Fornecedores",
+        "Treinamento de Equipes"
+    ]
+}

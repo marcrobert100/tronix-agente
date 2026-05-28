@@ -1,0 +1,101 @@
+{
+  "useAI": true,
+  "model": "llama-3.1-8b-instant",
+  "empresaNome": "Minha Empresa",
+  "empresaEndereco": "Rua Exemplo, 123 - Centro",
+  "empresaTelefone": "11999999999",
+  "horarioFuncionamento": "Seg a Sex: 08h às 22h, Sáb e Dom: 09h às 20h",
+  "taxaEntrega": "R$ 5,00",
+  "tempoEntrega": "30 a 50 minutos",
+  "pedidoMinimo": "R$ 20,00",
+  "pagamentos": "Dinheiro, Cartão, Pix",
+  "pixChave": "pagamentos@minhaempresa.com.br",
+  "promptSistema": "Você é o atendente virtual da Minha Empresa. Seja simpático, use emojis moderadamente e seja objetivo. Ajude clientes com pedidos, cardápio, tempo de entrega e pagamento. Se não souber algo, diga que vai verificar com a equipe. Nunca invente preços ou itens do cardápio — use apenas as informações fornecidas.",
+  "cardapio": [
+    {
+      "categoria": "🍕 Pizzas",
+      "itens": [
+        {
+          "nome": "Pizza Margherita",
+          "descricao": "Molho de tomate, mussarela e manjericão",
+          "preco": "R$ 25,00 / 35,00 / 42,00",
+          "tamanhos": "P/M/G",
+          "precos": {
+            "P": "R$ 25,00",
+            "M": "R$ 35,00",
+            "G": "R$ 42,00"
+          }
+        },
+        {
+          "nome": "Pizza Calabresa",
+          "descricao": "Molho, mussarela, calabresa e cebola",
+          "preco": "R$ 28,00 / 38,00 / 45,00",
+          "tamanhos": "P/M/G",
+          "precos": {
+            "P": "R$ 28,00",
+            "M": "R$ 38,00",
+            "G": "R$ 45,00"
+          }
+        }
+      ]
+    },
+    {
+      "categoria": "🍔 Lanches",
+      "itens": [
+        {
+          "nome": "X-Burger",
+          "descricao": "Hambúrguer, queijo, alface e tomate",
+          "preco": "R$ 18,00"
+        },
+        {
+          "nome": "X-Bacon",
+          "descricao": "Hambúrguer, queijo, bacon crocante",
+          "preco": "R$ 22,00"
+        }
+      ]
+    },
+    {
+      "categoria": "🥤 Bebidas",
+      "itens": [
+        {
+          "nome": "Coca-Cola 2L",
+          "descricao": "Refrigerante Coca-Cola 2 litros",
+          "preco": "R$ 12,00"
+        },
+        {
+          "nome": "Suco Natural",
+          "descricao": "Suco de frutas naturais 500ml",
+          "preco": "R$ 8,00"
+        }
+      ]
+    }
+  ],
+  "pesquisaSatisfacao": true,
+  "pesquisaTempoMinutos": 5,
+  "pesquisaPerguntas": [
+    {
+      "emoji": "⭐",
+      "texto": "Qualidade da comida"
+    },
+    {
+      "emoji": "🚀",
+      "texto": "Tempo de entrega"
+    },
+    {
+      "emoji": "💬",
+      "texto": "Atendimento"
+    },
+    {
+      "emoji": "📦",
+      "texto": "Embalagem"
+    }
+  ],
+  "fluxos": [
+    {
+      "id": "boas_vindas",
+      "gatilho": "oi|olá|ola|bom dia|boa tarde|boa noite|e ai|eai|fala",
+      "resposta": "Olá! 👋 Bem-vindo(a) à {empresa}!\n\n🍽️ Como posso ajudar?\n\n*1* 📋 Ver cardápio\n*2* 🛒 Fazer pedido\n*3* 📍 Endereço e horário\n*4* 💳 Formas de pagamento\n*5* 📞 Falar com atendente",
+      "tipo": "resposta"
+    }
+  ]
+}

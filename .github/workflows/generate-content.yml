@@ -1,0 +1,57 @@
+name: 🎬 Gerar Conteúdo Automático
+
+on:
+  schedule:
+    - cron: '0 10,14,18 * * *'  # 07h, 11h, 15h (BR)
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: 'Tema do conteúdo'
+        required: false
+        default: ''
+      tipo:
+        description: 'Tipo de conteúdo'
+        required: false
+        default: 'video'
+        type: choice
+        options:
+          - video
+          - imagem
+          - mini_novela
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar dependências
+        run: |
+          pip install requests cloudflare moviepy edge-tts instagrapi
+
+      - name: 🎯 Gerar conteúdo com pipeline
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+          INSTAGRAM_USER: ${{ secrets.INSTAGRAM_USER }}
+          INSTAGRAM_PASS: ${{ secrets.INSTAGRAM_PASS }}
+        run: |
+          python pipeline.py \
+            --prompt "${{ github.event.inputs.prompt || 'Conteudo automatico gerado pelo GitHub Actions' }}" \
+            --tipo "${{ github.event.inputs.tipo || 'video' }}"
+
+      - name: 📤 Upload do conteúdo gerado
+        uses: actions/upload-artifact@v4
+        with:
+          name: conteudo-gerado
+          path: |
+            tronix_output/
+            videos_saida/
+            uploads/
