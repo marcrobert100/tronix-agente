@@ -3,12 +3,16 @@
 ## Repositório
 - GitHub: `https://github.com/marcrobert100/tronix-agente.git`
 - Branch: `main`
-- Commit mais recente: `cbac3b7` (WhatsApp integration)
+- Commit mais recente: `ead2ec3` (AGENTS.md persistente)
+- GitHub Pages: ❌ NÃO ATIVADO (precisa configurar manualmente)
 
 ## Estrutura de Diretórios
 ```
 /infoengine/
 ├── index.html                        # Vitrine/portal dos templates
+├── dashboard/
+│   ├── index.php                     # Dashboard PHP (criar, gerenciar, ferramentas)
+│   └── assets/                       # CSS/JS do dashboard
 ├── design-system/
 │   ├── _variables.css                # Tokens de design (cores, tipografia, espaçamento)
 │   ├── _typography.css               # Sistema tipográfico
@@ -20,7 +24,9 @@
 │   │   └── o-dragao-que-aprendeu-a-abracar.html # 11 páginas + capa + narração voz
 │   └── infografico/
 │       ├── vendas.html               # Infográfico vendas profissional
-│       └── social-post.html          # Post 1080x1080 para Instagram/LinkedIn
+│       ├── social-post.html          # Post 1080x1080 para Instagram/LinkedIn
+│       ├── certificado.html          # Certificado digital editável (paisagem)
+│       └── cartao-visita.html        # Cartão visita frente/verso editável
 └── tools/
     ├── criar_historia.py             # Gera JSON de histórias infantis
     ├── gerar_pdf.py                  # Converte HTML em PDF via Playwright
@@ -38,7 +44,7 @@
 7. **SVG inline** em vez de imagens externas
 8. **Diálogos em itálico** com a classe `.fala` ou tag `<em>` usando Playfair Display
 
-## Templates Existentes
+## Templates Existentes (6)
 
 ### Infantil
 | Template | Páginas | Recursos |
@@ -52,6 +58,12 @@
 | Vendas Profissional | A4 | Cards, stats, tabela specs, preço, depoimento, CTA, PDF, WhatsApp |
 | Social Post | 1080x1080px | Avatar, cards, citação, QR placeholder, exportação PNG, WhatsApp |
 
+### Utilitários
+| Template | Formato | Recursos |
+|----------|---------|----------|
+| Certificado Digital | A4 paisagem | Editável inline, selo, assinatura, PDF, WhatsApp |
+| Cartão de Visita | 340x200mm | Frente/verso, editável inline, QR placeholder, WhatsApp |
+
 ## WhatsApp Integration
 - Todos os templates têm botão **📱 WhatsApp** na toolbar que abre `wa.me/5582991856656`
 - Script Python: `tools/enviar_whatsapp.py`
@@ -60,6 +72,7 @@
 
 ## Git Log Resumido
 ```
+ead2ec3 📝 Adiciona AGENTS.md - memoria persistente do projeto InfoEngine
 cbac3b7 ✨ Adiciona integracao com WhatsApp: compartilhar templates via wa.me
 34b0145 ✨ Adiciona livro O Dragao que Aprendeu a Abracar, infograficos vendas/social-post e ferramenta gerar_infografico.py
 e61820a ✨ InfoEngine — Sistema de Infográficos e Livros Infantis
@@ -72,11 +85,19 @@ e61820a ✨ InfoEngine — Sistema de Infográficos e Livros Infantis
 - Código hospedado em `C:\xampp\htdocs\agente\infoengine\`
 - Git repo root: `C:\xampp\htdocs\agente`
 - O livro "O Dragão que Aprendeu a Abraçar" também fica salvo no Desktop
+- Fluxograma 3D Tronix no Desktop: `tronix-3d-flowchart.html`
+- Análise de potencial no Desktop: `potencial.md`
+
+## Dashboard PHP
+- URL: `http://localhost/agente/infoengine/dashboard/index.php` (requer Apache/XAMPP ligado)
+- Abas: Dashboard, Criar (livro/infográfico), Ferramentas (PDF, WhatsApp)
+- Gera JSON para usar com os scripts Python
+- Requer PHP no XAMPP
 
 ## Próximos Passos (Ideias)
-- [ ] Ativar GitHub Pages nas settings: branch `main`, pasta `/infoengine`
-- [ ] Dashboard web para configurar templates sem editar HTML
-- [ ] Criar página de vendas dedicada (landing page do livro)
-- [ ] Template de cartão de visita digital
+- [ ] ATIVAR GITHUB PAGES: Settings > Pages > branch `main`, folder `/infoengine`
+- [ ] Iniciar Apache no XAMPP para usar o dashboard PHP
+- [ ] Dashboard avançado com salvamento em MySQL
 - [ ] Template de apresentação empresarial
 - [ ] Integrar com API do WhatsApp Business para envio direto
+- [ ] PWA (Progressive Web App) para uso mobile

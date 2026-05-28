@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificado — InfoEngine</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:linear-gradient(135deg,#0f0c2e,#1a1a5e,#0f0c2e); min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:2rem; }
+.toolbar { position:fixed; top:0.5rem; right:0.5rem; z-index:100; display:flex; gap:0.4rem; }
+.toolbar button { background:rgba(255,255,255,0.08); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:0.5rem 1rem; border-radius:2rem; font-family:'Quicksand',sans-serif; font-weight:600; font-size:0.75rem; cursor:pointer; transition:all 0.3s; }
+.toolbar button:hover { background:rgba(255,255,255,0.15); transform:translateY(-2px); }
+.page { width:820px; max-width:100%; margin:2rem 0; }
+.cert { background:#fff; border-radius:20px; overflow:hidden; box-shadow:0 40px 100px rgba(0,0,0,0.5); position:relative; }
+.cert-border { padding:2.5rem; position:relative; }
+.cert-border::before { content:''; position:absolute; inset:1.2rem; border:2px solid #ffd700; border-radius:12px; pointer-events:none; }
+.cert-header { text-align:center; padding:2rem 1rem 1rem; }
+.cert-header .seal { width:80px; height:80px; margin:0 auto 0.8rem; background:linear-gradient(135deg,#ffd700,#ff7a30); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2rem; color:#fff; box-shadow:0 8px 30px rgba(255,215,0,0.2); }
+.cert-header h1 { font-family:'Playfair Display',Georgia,serif; font-weight:900; font-size:2.5rem; color:#1a1a2e; letter-spacing:2px; text-transform:uppercase; }
+.cert-header .divider { width:120px; height:2px; background:linear-gradient(90deg,transparent,#ffd700,transparent); margin:0.8rem auto; }
+.cert-body { text-align:center; padding:1rem 2rem; }
+.cert-body p { font-family:'Quicksand',sans-serif; font-size:1.05rem; color:#666; line-height:1.8; max-width:600px; margin:0 auto; }
+.cert-body .nome { font-family:'Playfair Display',Georgia,serif; font-weight:900; font-size:2.8rem; color:#1a1a2e; margin:0.8rem 0; }
+.cert-body .curso { font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:1.4rem; color:#ff7a30; margin:0.4rem 0; }
+.cert-body .desc { font-size:1rem; color:#888; max-width:500px; margin:0.6rem auto; line-height:1.7; }
+.cert-footer { display:flex; justify-content:space-between; padding:2rem 3rem 1rem; align-items:flex-end; }
+.cert-footer .assinatura { text-align:center; min-width:180px; }
+.cert-footer .assinatura .line { width:160px; height:1px; background:#ccc; margin:0 auto; }
+.cert-footer .assinatura .cargo { font-size:0.8rem; color:#999; margin-top:0.3rem; }
+.cert-footer .assinatura .name { font-size:0.9rem; color:#333; font-weight:600; margin-top:0.2rem; }
+.cert-footer .data { text-align:right; font-size:0.9rem; color:#999; }
+.cert-footer .data strong { color:#333; }
+.cert-badge { position:absolute; bottom:1.5rem; right:2rem; font-size:0.75rem; color:#ccc; letter-spacing:2px; text-transform:uppercase; }
+.editable { cursor:pointer; transition:all 0.3s; padding:0.2rem 0.5rem; border-radius:4px; display:inline-block; }
+.editable:hover { background:rgba(255,215,0,0.08); outline:2px dashed rgba(255,215,0,0.2); }
+.editable:focus { background:rgba(255,215,0,0.05); outline:2px solid #ffd700; }
+@media print { body { background:white; padding:0; } .toolbar { display:none; } .cert { box-shadow:none; border-radius:0; } .page { margin:0; } }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <button onclick="window.print()">🖨️ Imprimir PDF</button>
+  <button onclick="gerarPDF()">⬇️ Baixar PDF</button>
+  <button onclick="compartilharWhatsApp()">📱 WhatsApp</button>
+</div>
+<div class="page" id="page">
+  <div class="cert">
+    <div class="cert-border">
+      <div class="cert-header">
+        <div class="seal">🏅</div>
+        <h1>Certificado</h1>
+        <div class="divider"></div>
+      </div>
+      <div class="cert-body">
+        <p>Certificamos que</p>
+        <div class="nome" contenteditable="true" id="nomeAluno">[Nome do Aluno]</div>
+        <p>concluiu com êxito o curso</p>
+        <div class="curso" contenteditable="true" id="nomeCurso">[Nome do Curso]</div>
+        <div class="desc" contenteditable="true" id="descCurso">com carga horária de XX horas, demonstrando excelente aproveitamento e dedicação.</div>
+      </div>
+      <div class="cert-footer">
+        <div class="assinatura">
+          <div class="line"></div>
+          <div class="cargo" contenteditable="true">[Instrutor]</div>
+          <div class="name" contenteditable="true">[Nome do Instrutor]</div>
+        </div>
+        <div class="data">
+          <div>Data de conclusão</div>
+          <strong contenteditable="true" id="dataConclusao">[Data]</strong>
+        </div>
+      </div>
+      <div class="cert-badge">✦ InfoEngine</div>
+    </div>
+  </div>
+</div>
+<script>
+function gerarPDF() {
+  const btn = event.target; btn.textContent = '⏳ Gerando...'; btn.disabled = true;
+  html2pdf().set({ margin:[0,0,0,0], filename:'certificado.pdf', image:{ type:'jpeg', quality:0.98 }, html2canvas:{ scale:3, letterRendering:true, useCORS:true, logging:false }, jsPDF:{ unit:'mm', format:'a4', orientation:'landscape' } }).from(document.getElementById('page')).save().then(function() { btn.textContent = '✅ PDF Salvo!'; setTimeout(() => { btn.textContent = '⬇️ Baixar PDF'; btn.disabled = false; }, 2000); });
+}
+function compartilharWhatsApp() {
+  const msg = 'Olá! 🏅 Acabei de criar um certificado no InfoEngine. Veja em: ' + window.location.href;
+  window.open('https://wa.me/5582991856656?text=' + encodeURIComponent(msg), '_blank');
+}
+</script>
+</body>
+</html>
