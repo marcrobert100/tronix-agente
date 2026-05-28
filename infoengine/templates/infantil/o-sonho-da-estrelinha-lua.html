@@ -518,6 +518,7 @@ body {
 <div class="toolbar">
   <button onclick="window.print()">🖨️ Imprimir PDF</button>
   <button onclick="gerarPDF()">⬇️ Baixar PDF</button>
+  <button onclick="compartilharWhatsApp()">📱 WhatsApp</button>
 </div>
 
 <div class="book" id="book">
@@ -1139,6 +1140,10 @@ makeStars('stars6', 55);
 makeStars('stars7', 50);
 makeStars('stars8', 45);
 
+function compartilharWhatsApp() {
+  const msg = 'Olá! 🌙 Acabei de criar o livro "O Sonho da Estrelinha Lua" no InfoEngine. Veja em: ' + window.location.href;
+  window.open('https://wa.me/5582991856656?text=' + encodeURIComponent(msg), '_blank');
+}
 function gerarPDF() {
   const btn = event.target;
   btn.textContent = '⏳ Gerando...';

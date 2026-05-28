@@ -150,6 +150,7 @@ body {
   <button onclick="lerHistoria()">🔊 Ouvir História</button>
   <button onclick="window.print()">🖨️ Imprimir PDF</button>
   <button onclick="gerarPDF()">⬇️ Baixar PDF</button>
+  <button onclick="compartilharWhatsApp()">📱 WhatsApp</button>
 </div>
 <div class="book" id="book">
   <div class="cover-page">
@@ -546,6 +547,10 @@ function lerHistoria() {
   const voz = window.speechSynthesis; voz.cancel();
   function falar(i) { if (i >= textos.length) return; const msg = new SpeechSynthesisUtterance(textos[i]); msg.lang = 'pt-BR'; msg.rate = 0.85; msg.pitch = 1.1; msg.onend = () => falar(i + 1); voz.speak(msg); }
   falar(0);
+}
+function compartilharWhatsApp() {
+  const msg = 'Olá! ✨ Acabei de criar o livro "O Dragão que Aprendeu a Abraçar" no InfoEngine. Você pode ver online em: ' + window.location.href;
+  window.open('https://wa.me/5582991856656?text=' + encodeURIComponent(msg), '_blank');
 }
 function gerarPDF() {
   const btn = event.target; btn.textContent = '⏳ Gerando...'; btn.disabled = true;

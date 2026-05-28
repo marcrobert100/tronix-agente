@@ -57,6 +57,7 @@ body { background:linear-gradient(135deg,var(--night-900),var(--night-800)); min
 <div class="toolbar">
   <button onclick="window.print()">🖨️ Imprimir PDF</button>
   <button onclick="gerarPDF()">⬇️ Baixar PDF</button>
+  <button onclick="compartilharWhatsApp()">📱 WhatsApp</button>
 </div>
 <div class="page" id="page">
   <div class="hero">
@@ -123,6 +124,10 @@ body { background:linear-gradient(135deg,var(--night-900),var(--night-800)); min
   <div class="footer">InfoEngine &mdash; Template de Infográfico de Vendas</div>
 </div>
 <script>
+function compartilharWhatsApp() {
+  const msg = 'Olá! 📊 Acabei de criar um infográfico de vendas no InfoEngine. Veja em: ' + window.location.href;
+  window.open('https://wa.me/5582991856656?text=' + encodeURIComponent(msg), '_blank');
+}
 function gerarPDF() {
   const btn = event.target; btn.textContent = '⏳ Gerando...'; btn.disabled = true;
   html2pdf().set({

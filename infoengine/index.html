@@ -106,6 +106,7 @@ body {
 .tag-infantil { background: rgba(255,215,0,0.15); color: var(--gold-400); }
 .tag-pdf { background: rgba(255,122,90,0.15); color: var(--coral-400); }
 .tag-svg { background: rgba(100,200,255,0.15); color: #80d8ff; }
+.tag-whatsapp { background: rgba(37,211,102,0.15); color: #25d366; }
 
 .preview-icon svg {
   width: 80px;
@@ -162,7 +163,7 @@ body {
 <div class="stats">
   <div class="stat"><div class="num">4</div><div class="lbl">Templates</div></div>
   <div class="stat"><div class="num">1</div><div class="lbl">Design System</div></div>
-  <div class="stat"><div class="num">3</div><div class="lbl">Ferramentas</div></div>
+  <div class="stat"><div class="num">4</div><div class="lbl">Ferramentas</div></div>
   <div class="stat"><div class="num">SVG</div><div class="lbl">Ilustrações</div></div>
 </div>
 
@@ -187,6 +188,7 @@ body {
         <span class="tag tag-infantil">Infantil</span>
         <span class="tag tag-pdf">PDF</span>
         <span class="tag tag-svg">SVG</span>
+        <span class="tag tag-whatsapp">WhatsApp</span>
       </div>
     </div>
   </a>
@@ -214,6 +216,7 @@ body {
         <span class="tag tag-infantil">Infantil</span>
         <span class="tag tag-pdf">PDF</span>
         <span class="tag tag-svg">SVG</span>
+        <span class="tag tag-whatsapp">WhatsApp</span>
       </div>
     </div>
   </a>
@@ -234,6 +237,7 @@ body {
       <div class="tags">
         <span class="tag tag-infantil">Infográfico</span>
         <span class="tag tag-pdf">PDF</span>
+        <span class="tag tag-whatsapp">WhatsApp</span>
       </div>
     </div>
   </a>
@@ -256,13 +260,26 @@ body {
       <div class="tags">
         <span class="tag tag-infantil">Redes Sociais</span>
         <span class="tag tag-pdf">PNG</span>
+        <span class="tag tag-whatsapp">WhatsApp</span>
       </div>
     </div>
   </a>
 </div>
 
+<div style="max-width:1100px;width:100%;margin:var(--space-8) 0;padding:var(--space-8);background:rgba(255,255,255,0.03);border-radius:var(--radius-lg);border:1px solid rgba(255,255,255,0.06);text-align:center;">
+  <h3 style="color:var(--gold-400);font-family:var(--font-display);font-size:var(--font-size-xl);margin-bottom:var(--space-4);">📱 Compartilhe no WhatsApp</h3>
+  <p style="color:rgba(255,255,255,0.5);font-size:var(--font-size-sm);margin-bottom:var(--space-4);max-width:500px;margin-left:auto;margin-right:auto;">
+    Todos os templates têm botão <strong style="color:#25d366;">WhatsApp</strong> na toolbar. 
+    Clique para abrir o WhatsApp Web com uma mensagem pré-preenchida contendo o link do template.
+  </p>
+  <div style="display:flex;gap:var(--space-2);justify-content:center;flex-wrap:wrap;">
+    <button onclick="window.open('https://wa.me/5582991856656?text='+encodeURIComponent('Olá! 👋 Acabei de usar o InfoEngine para criar materiais incríveis. Quer ver? '+window.location.href),'_blank'" class="btn btn-ghost" style="border-color:#25d366;color:#25d366;">📱 Enviar Link no WhatsApp</button>
+  </div>
+</div>
+
 <div class="footer">
-  InfoEngine &mdash; Marcos Roberto &mdash; MIT License
+  InfoEngine &mdash; Marcos Roberto &mdash; MIT License &mdash; 
+  <a href="https://github.com/marcrobert100/tronix-agente" style="color:rgba(255,255,255,0.2);text-decoration:none;">GitHub</a>
 </div>
 </body>
 </html>

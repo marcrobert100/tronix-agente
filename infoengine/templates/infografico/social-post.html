@@ -42,6 +42,7 @@ body { background:linear-gradient(135deg,#0f0c2e,#1a1a5e,#0f0c2e); min-height:10
 <div class="toolbar">
   <button onclick="baixarPNG()">⬇️ Baixar PNG</button>
   <button onclick="window.print()">🖨️ Imprimir</button>
+  <button onclick="compartilharWhatsApp()">📱 WhatsApp</button>
 </div>
 <div class="post" id="post">
   <div class="header">
@@ -85,6 +86,10 @@ body { background:linear-gradient(135deg,#0f0c2e,#1a1a5e,#0f0c2e); min-height:10
   </div>
 </div>
 <script>
+function compartilharWhatsApp() {
+  const msg = 'Olá! 📱 Acabei de criar um post para redes sociais no InfoEngine. Veja em: ' + window.location.href;
+  window.open('https://wa.me/5582991856656?text=' + encodeURIComponent(msg), '_blank');
+}
 function baixarPNG() {
   const btn = event.target; btn.textContent = '⏳ Renderizando...'; btn.disabled = true;
   html2canvas(document.getElementById('post'), {
