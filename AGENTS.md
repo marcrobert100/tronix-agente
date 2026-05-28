@@ -9,9 +9,12 @@
 ## Estrutura de Diretórios
 ```
 /infoengine/
-├── index.html                        # Vitrine/portal dos templates
+├── index.html                        # Vitrine/portal dos templates (PWA + APK)
+├── manifest.json                     # PWA Manifest (Stitch Contos Mágicos)
+├── sw.js                            # Service Worker (cache offline)
 ├── dashboard/
 │   ├── index.php                     # Dashboard PHP (criar, gerenciar, ferramentas)
+│   ├── api.php                       # API JSON (status, tools)
 │   └── assets/                       # CSS/JS do dashboard
 ├── design-system/
 │   ├── _variables.css                # Tokens de design (cores, tipografia, espaçamento)
@@ -27,11 +30,16 @@
 │       ├── social-post.html          # Post 1080x1080 para Instagram/LinkedIn
 │       ├── certificado.html          # Certificado digital editável (paisagem)
 │       └── cartao-visita.html        # Cartão visita frente/verso editável
-└── tools/
-    ├── criar_historia.py             # Gera JSON de histórias infantis
-    ├── gerar_pdf.py                  # Converte HTML em PDF via Playwright
-    ├── gerar_infografico.py          # Gera JSON de infográficos
-    └── enviar_whatsapp.py            # Envia via WhatsApp (link wa.me ou pywhatkit)
+├── tools/
+│   ├── criar_historia.py             # Gera JSON de histórias infantis
+│   ├── gerar_pdf.py                  # Converte HTML em PDF via Playwright
+│   ├── gerar_infografico.py          # Gera JSON de infográficos
+│   ├── enviar_whatsapp.py            # Envia via WhatsApp (link wa.me ou pywhatkit)
+│   ├── gerar-apk.js                  # Constrói APK Android via Capacitor/PWABuilder
+│   └── gerar-icones.html            # Gera ícones PNG para PWA/APK
+└── assets/
+    ├── icons/                        # Ícones SVG para PWA
+    └── screenshots/                  # Screenshots para loja
 ```
 
 ## Regras de Design (Sempre Seguir)
@@ -91,8 +99,22 @@ e61820a ✨ InfoEngine — Sistema de Infográficos e Livros Infantis
 ## Dashboard PHP
 - URL: `http://localhost/agente/infoengine/dashboard/index.php` (requer Apache/XAMPP ligado)
 - Abas: Dashboard, Criar (livro/infográfico), Ferramentas (PDF, WhatsApp)
+- API JSON: `dashboard/api.php?action=status` ou `?action=tools`
 - Gera JSON para usar com os scripts Python
 - Requer PHP no XAMPP
+
+## PWA + APK — Stitch Contos Mágicos Infantis
+- **App Name:** Stitch Contos Mágicos Infantis
+- **App ID:** `com.stitch.contosmagicos`
+- **PWA:** `manifest.json` + `sw.js` — instalação direta no navegador
+- **APK:** 3 métodos para gerar:
+  1. `node tools/gerar-apk.js --pwa` → prepara projeto Capacitor + instruções
+  2. `node tools/gerar-apk.js --apk` → build local (requer Android SDK + Java)
+  3. PWABuilder (https://pwabuilder.com) — arrasta URL, baixa APK
+  4. AndroidJS (https://androidjs.com) — upload dos arquivos
+- **Ícones:** `assets/icons/icon.svg` + `gerar-icones.html` (conversão SVG→PNG via Canvas)
+- **Service Worker:** Cache dos assets principais, fallback offline
+- URL base: `https://marcrobert100.github.io/tronix-agente/infoengine/` (quando Pages ativo)
 
 ## Próximos Passos (Ideias)
 - [ ] ATIVAR GITHUB PAGES: Settings > Pages > branch `main`, folder `/infoengine`
@@ -100,4 +122,6 @@ e61820a ✨ InfoEngine — Sistema de Infográficos e Livros Infantis
 - [ ] Dashboard avançado com salvamento em MySQL
 - [ ] Template de apresentação empresarial
 - [ ] Integrar com API do WhatsApp Business para envio direto
-- [ ] PWA (Progressive Web App) para uso mobile
+- [ ] ~PWA (Progressive Web App) para uso mobile~ ✅ CONCLUÍDO
+- [ ] Gerar APK assinado (Android App Bundle) para Play Store
+- [ ] Criar versão iOS via PWABuilder

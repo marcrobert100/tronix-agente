@@ -8,6 +8,12 @@
 <link rel="stylesheet" href="design-system/_variables.css">
 <link rel="stylesheet" href="design-system/_typography.css">
 <link rel="stylesheet" href="design-system/_components.css">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Stitch Contos">
+<meta name="theme-color" content="#ffd700">
+<meta name="application-name" content="Stitch Contos Mágicos Infantis">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -168,7 +174,7 @@ body {
   <div class="stat"><div class="num">1</div><div class="lbl">Design System</div></div>
   <div class="stat"><div class="num">4</div><div class="lbl">Ferramentas</div></div>
   <div class="stat"><div class="num">1</div><div class="lbl">Dashboard</div></div>
-  <div class="stat"><div class="num">SVG</div><div class="lbl">Ilustrações</div></div>
+  <div class="stat"><div class="num">APK</div><div class="lbl">Exportar App</div></div>
 </div>
 
 <div class="gallery">
@@ -314,20 +320,46 @@ body {
   </a>
 </div>
 
-<div style="max-width:1100px;width:100%;margin:var(--space-8) 0;padding:var(--space-8);background:rgba(255,255,255,0.03);border-radius:var(--radius-lg);border:1px solid rgba(255,255,255,0.06);text-align:center;">
-  <h3 style="color:var(--gold-400);font-family:var(--font-display);font-size:var(--font-size-xl);margin-bottom:var(--space-4);">📱 Compartilhe no WhatsApp</h3>
-  <p style="color:rgba(255,255,255,0.5);font-size:var(--font-size-sm);margin-bottom:var(--space-4);max-width:500px;margin-left:auto;margin-right:auto;">
-    Todos os templates têm botão <strong style="color:#25d366;">WhatsApp</strong> na toolbar. 
-    Clique para abrir o WhatsApp Web com uma mensagem pré-preenchida contendo o link do template.
-  </p>
-  <div style="display:flex;gap:var(--space-2);justify-content:center;flex-wrap:wrap;">
-    <button onclick="window.open('https://wa.me/5582991856656?text='+encodeURIComponent('Olá! 👋 Acabei de usar o InfoEngine para criar materiais incríveis. Quer ver? '+window.location.href),'_blank'" class="btn btn-ghost" style="border-color:#25d366;color:#25d366;">📱 Enviar Link no WhatsApp</button>
+<div style="max-width:1100px;width:100%;margin:var(--space-8) 0;display:flex;flex-direction:column;gap:var(--space-6);">
+
+  <div style="padding:var(--space-8);background:rgba(255,255,255,0.03);border-radius:var(--radius-lg);border:1px solid rgba(255,255,255,0.06);text-align:center;">
+    <h3 style="color:var(--gold-400);font-family:var(--font-display);font-size:var(--font-size-xl);margin-bottom:var(--space-4);">📱 Compartilhe no WhatsApp</h3>
+    <p style="color:rgba(255,255,255,0.5);font-size:var(--font-size-sm);margin-bottom:var(--space-4);max-width:500px;margin-left:auto;margin-right:auto;">
+      Todos os templates têm botão <strong style="color:#25d366;">WhatsApp</strong> na toolbar. 
+      Clique para abrir o WhatsApp Web com uma mensagem pré-preenchida contendo o link do template.
+    </p>
+    <div style="display:flex;gap:var(--space-2);justify-content:center;flex-wrap:wrap;">
+      <button onclick="window.open('https://wa.me/5582991856656?text='+encodeURIComponent('Olá! 👋 Acabei de usar o InfoEngine para criar materiais incríveis. Quer ver? '+window.location.href),'_blank'" class="btn btn-ghost" style="border-color:#25d366;color:#25d366;">📱 Enviar Link no WhatsApp</button>
+    </div>
   </div>
+
+  <div style="padding:var(--space-8);background:rgba(255,215,0,0.03);border-radius:var(--radius-lg);border:1px solid rgba(255,215,0,0.1);text-align:center;">
+    <h3 style="color:var(--gold-400);font-family:var(--font-display);font-size:var(--font-size-xl);margin-bottom:var(--space-4);">🪡 Stitch Contos Mágicos — App Android</h3>
+    <p style="color:rgba(255,255,255,0.5);font-size:var(--font-size-sm);margin-bottom:var(--space-4);max-width:500px;margin-left:auto;margin-right:auto;">
+      Transforme o InfoEngine em um aplicativo Android nativo. Abaixo o APK pronto ou gere você mesmo.
+    </p>
+    <div style="display:flex;gap:var(--space-2);justify-content:center;flex-wrap:wrap;">
+      <a href="tools/gerar-apk.js" download class="btn btn-primary" style="text-decoration:none;">📦 Baixar Script APK (Node.js)</a>
+      <a href="tools/gerar-icones.html" class="btn btn-ghost" style="text-decoration:none;border-color:var(--gold-400);color:var(--gold-400);">🎨 Gerar Ícones PNG</a>
+    </div>
+    <div style="margin-top:var(--space-4);display:flex;gap:var(--space-2);justify-content:center;flex-wrap:wrap;font-size:var(--font-size-sm);color:rgba(255,255,255,0.3);">
+      <span>Ou gere online:</span>
+      <a href="https://pwabuilder.com" target="_blank" style="color:var(--gold-400);">PWABuilder</a>
+      <span>·</span>
+      <a href="https://androidjs.com" target="_blank" style="color:var(--gold-400);">AndroidJS</a>
+    </div>
+  </div>
+
 </div>
 
 <div class="footer">
-  InfoEngine &mdash; Marcos Roberto &mdash; MIT License &mdash; 
+  InfoEngine &mdash; Stitch Contos Mágicos Infantis &mdash; Marcos Roberto &mdash; MIT License &mdash; 
   <a href="https://github.com/marcrobert100/tronix-agente" style="color:rgba(255,255,255,0.2);text-decoration:none;">GitHub</a>
 </div>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
 </body>
 </html>

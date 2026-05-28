@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0c2e"/>
+      <stop offset="100%" style="stop-color:#1a1a5e"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+  <circle cx="256" cy="180" r="80" fill="#ffd700" opacity="0.15"/>
+  <circle cx="256" cy="180" r="50" fill="#ffd700" opacity="0.9"/>
+  <circle cx="240" cy="170" r="9" fill="#7a5500"/>
+  <circle cx="272" cy="170" r="9" fill="#7a5500"/>
+  <path d="M245,190 Q256,202 267,190" stroke="#7a5500" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M256,130 Q240,90 220,60" stroke="#ff7a30" stroke-width="6" stroke-linecap="round" opacity="0.6">
+    <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/>
+  </path>
+  <path d="M256,130 Q272,90 292,60" stroke="#ffb347" stroke-width="6" stroke-linecap="round" opacity="0.5">
+    <animate attributeName="opacity" values="0.2;0.7;0.2" dur="2.2s" repeatCount="indefinite" begin="0.3s"/>
+  </path>
+  <circle cx="220" cy="60" r="8" fill="#ffd700"><animate attributeName="r" values="5;10;5" dur="1.5s" repeatCount="indefinite"/></circle>
+  <circle cx="292" cy="60" r="6" fill="#ffd700"><animate attributeName="r" values="4;8;4" dur="1.8s" repeatCount="indefinite" begin="0.3s"/></circle>
+  <rect x="156" y="290" width="100" height="40" rx="6" fill="#2a2a6e" opacity="0.4"/>
+  <rect x="158" y="300" width="96" height="28" rx="4" fill="#3a3a7e" opacity="0.3"/>
+  <circle cx="190" cy="305" r="10" fill="#fce4ec" opacity="0.3"/>
+  <ellipse cx="180" cy="315" rx="25" ry="8" fill="#fce4ec" opacity="0.2"/>
+  <rect x="280" y="290" width="80" height="35" rx="6" fill="#ff7a30" opacity="0.3"/>
+  <circle cx="300" cy="300" r="10" fill="#ff7a30" opacity="0.5"/>
+  <circle cx="296" cy="298" r="2.5" fill="#7a3a00"/>
+  <circle cx="304" cy="298" r="2.5" fill="#7a3a00"/>
+  <text x="256" y="420" font-family="Quicksand, sans-serif" font-size="48" font-weight="700" fill="#ffd700" text-anchor="middle" letter-spacing="2">Stitch</text>
+  <text x="256" y="460" font-family="Quicksand, sans-serif" font-size="20" font-weight="400" fill="rgba(255,255,255,0.3)" text-anchor="middle" letter-spacing="1">Contos Mágicos</text>
+</svg>
