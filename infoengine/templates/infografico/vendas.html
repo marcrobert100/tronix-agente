@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infográfico de Vendas — InfoEngine</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../design-system/_variables.css">
+<link rel="stylesheet" href="../design-system/_typography.css">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:linear-gradient(135deg,var(--night-900),var(--night-800)); min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:2rem; }
+.toolbar { position:fixed; top:0.5rem; right:0.5rem; z-index:100; display:flex; gap:0.4rem; }
+.toolbar button { background:rgba(255,255,255,0.08); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:0.5rem 1rem; border-radius:2rem; font-family:var(--font-body); font-weight:600; font-size:0.75rem; cursor:pointer; transition:all 0.3s; }
+.toolbar button:hover { background:rgba(255,255,255,0.15); transform:translateY(-2px); }
+.page { width:820px; max-width:100%; background:#fff; border-radius:20px; box-shadow:0 40px 100px rgba(0,0,0,0.4); overflow:hidden; margin:2rem 0; }
+.hero { background:linear-gradient(160deg,var(--night-900),var(--night-800),var(--night-700)); padding:3rem 2.5rem; text-align:center; color:#fff; }
+.hero h1 { font-family:var(--font-display); font-weight:900; font-size:3rem; color:var(--gold-400); line-height:1.15; }
+.hero p { color:rgba(255,255,255,0.5); font-size:1.1rem; margin-top:0.5rem; }
+.hero .divider { width:80px; height:2px; background:var(--gold-400); margin:0.8rem auto; border-radius:2px; }
+.content { padding:2rem 2.5rem; }
+.section-title { font-family:var(--font-display); font-weight:900; font-size:1.6rem; color:var(--text-dark); text-align:center; margin-bottom:1.2rem; }
+.section-title::after { content:''; display:block; width:50px; height:3px; background:var(--coral-400); margin:0.4rem auto 0; border-radius:2px; }
+.bgrid { display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; margin:1rem 0; }
+.bcard { background:#f8f4f0; border-radius:14px; padding:1.2rem; border-left:4px solid var(--coral-400); }
+.bcard:nth-child(2) { border-left-color:var(--gold-400); }
+.bcard:nth-child(3) { border-left-color:#80d8ff; }
+.bcard:nth-child(4) { border-left-color:#b9f6ca; }
+.bcard .ic { font-size:1.5rem; margin-bottom:0.3rem; }
+.bcard h4 { font-family:var(--font-display); font-size:1.1rem; color:var(--text-dark); margin-bottom:0.2rem; }
+.bcard p { font-size:0.95rem; color:#888; margin:0; line-height:1.6; }
+.srow { display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin:1rem 0; }
+.si { text-align:center; padding:0.8rem 1.2rem; background:#f8f4f0; border-radius:14px; min-width:110px; }
+.si .num { font-family:var(--font-display); font-weight:900; font-size:2.2rem; color:var(--coral-400); line-height:1.1; }
+.si .lbl { font-size:0.85rem; color:#999; text-transform:uppercase; letter-spacing:1px; font-weight:600; }
+.stable { display:grid; grid-template-columns:1fr 1fr; gap:0.4rem; background:#f8f4f0; border-radius:14px; padding:1.2rem; margin:1rem 0; }
+.stable > div { display:flex; justify-content:space-between; padding:0.5rem 0; border-bottom:1px dashed #e0d6cc; font-size:1rem; }
+.stable > div:nth-last-child(-n+2) { border-bottom:none; }
+.stable .l { color:#888; }
+.stable .v { color:var(--text-dark); font-weight:600; }
+.pbox { text-align:center; padding:1.5rem; background:linear-gradient(135deg,var(--night-800),var(--night-700)); border-radius:18px; color:#fff; margin:1rem 0; }
+.pbox .old { font-size:1rem; color:rgba(255,255,255,0.3); text-decoration:line-through; }
+.pbox .cur { font-family:var(--font-display); font-weight:900; font-size:3.5rem; color:var(--gold-400); line-height:1.2; }
+.pbox .note { font-size:0.9rem; color:rgba(255,255,255,0.4); }
+.pbox .cta { display:inline-block; margin-top:1rem; padding:1rem 3rem; background:var(--coral-400); color:#fff; border-radius:3rem; font-weight:700; font-size:1.1rem; letter-spacing:1px; text-transform:uppercase; box-shadow:0 8px 25px rgba(255,122,90,0.25); cursor:pointer; transition:all 0.3s; }
+.pbox .cta:hover { transform:translateY(-2px); box-shadow:0 12px 35px rgba(255,122,90,0.35); }
+.testi { background:#f8f4f0; border-radius:14px; padding:1.2rem; margin:0.8rem 0; text-align:center; }
+.testi p { font-size:1rem; color:#666; font-style:italic; margin:0; line-height:1.6; }
+.testi .au { font-size:0.9rem; color:var(--text-dark); font-weight:600; margin-top:0.5rem; font-style:normal; display:block; }
+.footer { padding:1.5rem; text-align:center; border-top:1px solid #f0ebe5; color:#bbb; font-size:0.85rem; }
+@media (max-width:850px) { .hero h1 { font-size:2rem; } .bgrid { grid-template-columns:1fr; } .content { padding:1.5rem; } .stable { grid-template-columns:1fr; } .pbox .cur { font-size:2.5rem; } }
+@media print { body { background:white; padding:0; } .toolbar { display:none; } .page { box-shadow:none; border-radius:0; margin:0; width:100%; } }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <button onclick="window.print()">🖨️ Imprimir PDF</button>
+  <button onclick="gerarPDF()">⬇️ Baixar PDF</button>
+</div>
+<div class="page" id="page">
+  <div class="hero">
+    <h1>Produto Pro Max</h1>
+    <p>A solução completa que vai transformar seus resultados</p>
+    <div class="divider"></div>
+  </div>
+  <div class="content">
+    <div class="srow">
+      <div class="si"><div class="num">+50%</div><div class="lbl">Mais Resultados</div></div>
+      <div class="si"><div class="num">12x</div><div class="lbl">Sem Juros</div></div>
+      <div class="si"><div class="num">7</div><div class="lbl">Dias de Garantia</div></div>
+      <div class="si"><div class="num">+2k</div><div class="lbl">Clientes</div></div>
+    </div>
+
+    <h3 class="section-title">Benefícios Exclusivos</h3>
+    <div class="bgrid">
+      <div class="bcard">
+        <div class="ic">⚡</div>
+        <h4>Alta Performance</h4>
+        <p>Tecnologia de ponta para máxima eficiência em todos os cenários de uso.</p>
+      </div>
+      <div class="bcard">
+        <div class="ic">🔒</div>
+        <h4>Segurança Total</h4>
+        <p>Proteção de dados com criptografia de nível empresarial e certificação internacional.</p>
+      </div>
+      <div class="bcard">
+        <div class="ic">📱</div>
+        <h4>Multiplataforma</h4>
+        <p>Funciona em qualquer dispositivo com experiência consistente e adaptativa.</p>
+      </div>
+      <div class="bcard">
+        <div class="ic">🤝</div>
+        <h4>Suporte Premium</h4>
+        <p>Atendimento exclusivo 24 horas por dia, 7 dias por semana, em português.</p>
+      </div>
+    </div>
+
+    <h3 class="section-title">Especificações</h3>
+    <div class="stable">
+      <div><span class="l">Capacidade</span><span class="v">Ilimitada</span></div>
+      <div><span class="l">Velocidade</span><span class="v">Até 10 Gbps</span></div>
+      <div><span class="l">Armazenamento</span><span class="v">1 TB SSD</span></div>
+      <div><span class="l">Conexão</span><span class="v">5G / Wi-Fi 7</span></div>
+      <div><span class="l">Bateria</span><span class="v">72 horas</span></div>
+      <div><span class="l">Idiomas</span><span class="v">Português, Inglês, Espanhol</span></div>
+      <div><span class="l">Garantia</span><span class="v">12 meses</span></div>
+      <div><span class="l">Certificação</span><span class="v">ISO 27001</span></div>
+    </div>
+
+    <div class="pbox">
+      <div class="old">De R$ 4.997,00</div>
+      <div class="cur">R$ 1.997,00</div>
+      <div class="note">ou 12x de R$ 199,70 sem juros</div>
+      <div class="cta">✅ Garantir Oferta</div>
+    </div>
+
+    <div class="testi">
+      <p>"Comprei há 3 meses e já vi resultado na primeira semana. O suporte é incrível e o produto superou minhas expectativas."</p>
+      <span class="au">— Carolina M., São Paulo</span>
+    </div>
+  </div>
+  <div class="footer">InfoEngine &mdash; Template de Infográfico de Vendas</div>
+</div>
+<script>
+function gerarPDF() {
+  const btn = event.target; btn.textContent = '⏳ Gerando...'; btn.disabled = true;
+  html2pdf().set({
+    margin:[0,0,0,0], filename:'infografico-vendas.pdf',
+    image:{ type:'jpeg', quality:0.98 },
+    html2canvas:{ scale:3, letterRendering:true, useCORS:true, logging:false },
+    jsPDF:{ unit:'mm', format:'a4', orientation:'portrait' },
+    pagebreak:{ mode:['avoid-all','css','legacy'] }
+  }).from(document.getElementById('page')).save().then(function() {
+    btn.textContent = '✅ PDF Salvo!';
+    setTimeout(() => { btn.textContent = '⬇️ Baixar PDF'; btn.disabled = false; }, 2000);
+  });
+}
+</script>
+</body>
+</html>

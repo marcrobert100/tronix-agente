@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Post Profissional — InfoEngine</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:linear-gradient(135deg,#0f0c2e,#1a1a5e,#0f0c2e); min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:2rem; }
+.toolbar { position:fixed; top:0.5rem; right:0.5rem; z-index:100; display:flex; gap:0.4rem; }
+.toolbar button { background:rgba(255,255,255,0.08); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:0.5rem 1rem; border-radius:2rem; font-family:'Quicksand',sans-serif; font-weight:600; font-size:0.75rem; cursor:pointer; transition:all 0.3s; }
+.toolbar button:hover { background:rgba(255,255,255,0.15); transform:translateY(-2px); }
+.post { width:620px; height:620px; background:linear-gradient(160deg,#0f0c2e,#1a1a5e,#2a2a7e); border-radius:24px; overflow:hidden; position:relative; box-shadow:0 30px 80px rgba(0,0,0,0.5); margin:2rem 0; display:flex; flex-direction:column; }
+.header { padding:1.5rem 2rem; display:flex; align-items:center; gap:0.8rem; }
+.avatar { width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#ff7a30,#ffd700); display:flex; align-items:center; justify-content:center; font-weight:900; color:#fff; font-size:1.2rem; font-family:'Quicksand',sans-serif; }
+.hinfo { flex:1; }
+.hinfo .name { color:#fff; font-weight:700; font-size:1rem; font-family:'Quicksand',sans-serif; }
+.hinfo .handle { color:rgba(255,255,255,0.3); font-size:0.8rem; }
+.badge { background:rgba(255,215,0,0.15); color:var(--gold,#ffd700); padding:0.3rem 0.8rem; border-radius:2rem; font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; }
+.hero-area { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:1rem 2rem; text-align:center; }
+.hero-area h1 { font-family:'Playfair Display',Georgia,serif; font-weight:900; font-size:2.5rem; color:#ffd700; line-height:1.15; margin-bottom:0.5rem; }
+.hero-area p { color:rgba(255,255,255,0.6); font-size:1.1rem; max-width:420px; line-height:1.6; }
+.hero-area .divider { width:60px; height:2px; background:linear-gradient(90deg,transparent,#ffd700,transparent); margin:0.8rem auto; }
+.cards { display:flex; gap:0.6rem; padding:0 2rem 0.8rem; }
+.card { flex:1; background:rgba(255,255,255,0.05); border-radius:14px; padding:0.8rem; text-align:center; border:1px solid rgba(255,255,255,0.06); }
+.card .num { font-family:'Playfair Display',Georgia,serif; font-weight:900; font-size:1.8rem; color:#ffd700; line-height:1.1; }
+.card .lbl { font-size:0.75rem; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1px; margin-top:0.2rem; }
+.card p { font-size:0.75rem; color:rgba(255,255,255,0.3); margin-top:0.3rem; line-height:1.4; }
+.quote { padding:0.8rem 2rem 1.2rem; text-align:center; }
+.quote p { font-family:'Playfair Display',Georgia,serif; font-style:italic; font-size:1.1rem; color:rgba(255,255,255,0.5); line-height:1.5; }
+.quote .au { font-family:'Quicksand',sans-serif; font-style:normal; font-size:0.85rem; color:rgba(255,255,255,0.3); margin-top:0.3rem; display:block; }
+.footer-post { padding:0.8rem 2rem 1.2rem; display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(255,255,255,0.06); }
+.footer-post .logo { font-weight:700; font-size:0.8rem; color:rgba(255,255,255,0.15); letter-spacing:2px; text-transform:uppercase; }
+.footer-post .qr-placeholder { width:32px; height:32px; background:rgba(255,255,255,0.05); border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:0.5rem; color:rgba(255,255,255,0.1); }
+@media (max-width:650px) { .post { width:100%; height:auto; aspect-ratio:1/1; } .hero-area h1 { font-size:1.8rem; } }
+@media print { body { background:white; } .toolbar { display:none; } .post { box-shadow:none; } }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <button onclick="baixarPNG()">⬇️ Baixar PNG</button>
+  <button onclick="window.print()">🖨️ Imprimir</button>
+</div>
+<div class="post" id="post">
+  <div class="header">
+    <div class="avatar">M</div>
+    <div class="hinfo">
+      <div class="name">Marcos Roberto</div>
+      <div class="handle">@marcos.roberto &bull; 1 h</div>
+    </div>
+    <span class="badge">Destaque</span>
+  </div>
+  <div class="hero-area">
+    <h1>O Poder da<br>Conexão</h1>
+    <p>Descubra como pequenas atitudes podem transformar grandes resultados.</p>
+    <div class="divider"></div>
+    <p style="font-size:0.95rem;color:rgba(255,255,255,0.4);margin-top:0.3rem;">Dicas práticas para sua jornada</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <div class="num">1</div>
+      <div class="lbl">Propósito</div>
+      <p>Defina metas claras e objetivas.</p>
+    </div>
+    <div class="card">
+      <div class="num">2</div>
+      <div class="lbl">Foco</div>
+      <p>Elimine distrações diárias.</p>
+    </div>
+    <div class="card">
+      <div class="num">3</div>
+      <div class="lbl">Ação</div>
+      <p>Execute com consistência.</p>
+    </div>
+  </div>
+  <div class="quote">
+    <p>"O sucesso não é o resultado de um grande feito, mas sim a soma de pequenas coisas bem feitas todos os dias."</p>
+    <span class="au">— Uma reflexão para sua semana</span>
+  </div>
+  <div class="footer-post">
+    <span class="logo">✦ InfoEngine</span>
+    <span class="qr-placeholder">QR</span>
+  </div>
+</div>
+<script>
+function baixarPNG() {
+  const btn = event.target; btn.textContent = '⏳ Renderizando...'; btn.disabled = true;
+  html2canvas(document.getElementById('post'), {
+    scale: 3, backgroundColor: null, useCORS: true, logging: false,
+  }).then(function(canvas) {
+    const link = document.createElement('a'); link.download = 'social-post.png';
+    link.href = canvas.toDataURL('image/png'); link.click();
+    btn.textContent = '✅ PNG Salvo!';
+    setTimeout(() => { btn.textContent = '⬇️ Baixar PNG'; btn.disabled = false; }, 2000);
+  });
+}
+</script>
+</body>
+</html>
