@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Sonho da Estrelinha Lua - Livro Infantil Ilustrado</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --night1: #0b081a;
+  --night2: #15123a;
+  --night3: #1f1b4e;
+  --gold: #ffd700;
+  --gold-light: #fff8dc;
+  --coral: #ff7a5a;
+  --pink: #fce4ec;
+  --blue: #e3f2fd;
+  --lavender: #f3e5f5;
+  --peach: #fff3e0;
+  --cream: #fdf8f0;
+  --text-dark: #1a1a2e;
+  --text-soft: #4a3f4a;
+  --accent: #ff7a5a;
+}
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(135deg, var(--night1), var(--night2), var(--night1));
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.toolbar {
+  position: fixed; top: 0.5rem; right: 0.5rem; z-index: 100;
+  display: flex; gap: 0.4rem;
+}
+.toolbar button {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #fff; padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-family: Quicksand, sans-serif;
+  font-weight: 600; font-size: 0.75rem;
+  cursor: pointer; transition: all 0.3s;
+}
+.toolbar button:hover {
+  background: rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+}
+
+.book {
+  position: relative; z-index: 1;
+  width: 820px; max-width: 100%;
+  background: var(--cream);
+  border-radius: 20px;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+  overflow: hidden;
+  margin: 2rem 0;
+}
+
+/* ===== FULL BLEED ILLUSTRATION PAGES ===== */
+.illustration-page {
+  position: relative;
+  width: 100%;
+  min-height: 600px;
+  page-break-after: always;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.illustration-page .art-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.illustration-page .art-content {
+  position: relative;
+  z-index: 2;
+}
+
+.illustration-page .text-overlay {
+  position: relative;
+  z-index: 3;
+  padding: 2rem 2.5rem 1.8rem;
+  background: linear-gradient(transparent, rgba(0,0,0,0.5) 20%, rgba(0,0,0,0.8));
+  color: #fff;
+}
+
+.illustration-page .text-overlay.light {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(4px);
+  color: var(--text-dark);
+  border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+.illustration-page h2 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 0.6rem;
+}
+
+.illustration-page p {
+  font-size: 1.2rem;
+  line-height: 1.75;
+  font-weight: 500;
+  max-width: 700px;
+}
+
+/* ===== COVER ===== */
+.cover-page {
+  position: relative;
+  width: 100%;
+  min-height: 650px;
+  background: linear-gradient(160deg, #0b081a 0%, #15123a 30%, #2a235a 60%, #15123a 100%);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  page-break-after: always;
+}
+
+.cover-page .glow-sphere {
+  position: absolute;
+  top: 5%; left: 50%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(255,215,0,0.06) 0%, transparent 60%);
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+.cover-svg-wrap {
+  position: relative;
+  width: 360px;
+  height: 290px;
+  margin-bottom: 1rem;
+}
+
+.illustration-page .text-overlay em {
+  font-size: 1.3rem;
+  line-height: 1.8;
+  display: block;
+  margin: 0.5rem 0;
+}
+
+.cover-svg-wrap svg {
+  width: 100%;
+  height: 100%;
+}
+
+.cover-page h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 3.8rem;
+  color: var(--gold);
+  text-shadow: 0 2px 40px rgba(255,215,0,0.15);
+  line-height: 1.1;
+  position: relative;
+  z-index: 2;
+}
+
+.cover-page .tagline {
+  font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
+  font-size: 1.6rem;
+  color: rgba(255,255,255,0.4);
+  margin-top: 0.3rem;
+  position: relative;
+  z-index: 2;
+}
+
+.cover-page .divider {
+  width: 100px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 1rem auto;
+  position: relative; z-index: 2;
+}
+
+.cover-page .author {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  position: relative; z-index: 2;
+}
+
+.cover-page .age {
+  display: inline-block;
+  margin-top: 1.2rem;
+  padding: 0.4rem 1.5rem;
+  border: 1px solid rgba(255,215,0,0.2);
+  border-radius: 2rem;
+  font-size: 0.9rem;
+  color: var(--gold);
+  letter-spacing: 2px;
+  background: rgba(255,215,0,0.05);
+  position: relative; z-index: 2;
+}
+
+/* Page number */
+.pg-num {
+  position: absolute;
+  bottom: 0.8rem; right: 1.5rem;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.25);
+  font-weight: 600;
+  z-index: 5;
+}
+
+.pg-num.dark {
+  color: rgba(0,0,0,0.15);
+}
+
+/* ===== PAGE 1 - Star in sky ===== */
+.pg1 {
+  background: linear-gradient(180deg, #0f0c29 0%, #1a1a5e 40%, #2d2d7a 60%, #1a1a5e 80%, #0f0c29 100%);
+  min-height: 620px;
+}
+
+/* ===== PAGE 2 - Fairy ===== */
+.pg2 {
+  background: linear-gradient(180deg, #1a1a5e 0%, #2a1a5e 30%, #3a2a6e 50%, #2a1a5e 70%, #1a1a5e 100%);
+  min-height: 620px;
+}
+
+/* ===== PAGE 3 - Secret ===== */
+.pg3 {
+  background: linear-gradient(180deg, #15123a 0%, #1f2a5a 40%, #2a3a6a 60%, #1f2a5a 80%, #15123a 100%);
+  min-height: 620px;
+}
+
+/* ===== PAGE 4 - Child awake ===== */
+.pg4 {
+  background: linear-gradient(180deg, #1a1a5e 0%, #2a1a3e 30%, #3a2a4e 50%, #2a1a3e 70%, #1a1a5e 100%);
+  min-height: 620px;
+}
+
+/* ===== PAGE 5 - Friendship ===== */
+.pg5 {
+  background: linear-gradient(180deg, #15123a 0%, #2a1a4a 30%, #3a2a5a 50%, #2a1a4a 70%, #15123a 100%);
+  min-height: 620px;
+}
+
+/* ===== PAGE 6 - Star dance ===== */
+.pg6 {
+  background: linear-gradient(180deg, #0f0c29 0%, #1f1a4a 30%, #2f2a5a 50%, #1f1a4a 70%, #0f0c29 100%);
+  min-height: 620px;
+}
+
+/* ===== PAGE 7 - Dream ===== */
+.pg7 {
+  background: linear-gradient(180deg, #1a1a5e 0%, #1f2a5a 30%, #2a3a5a 50%, #1f2a5a 70%, #1a1a5e 100%);
+  min-height: 620px;
+}
+
+/* ===== PAGE 8 - Sleep ===== */
+.pg8 {
+  background: linear-gradient(180deg, #15123a 0%, #1a1a4e 30%, #2a2a5e 50%, #1a1a4e 70%, #15123a 100%);
+  min-height: 620px;
+}
+
+/* ===== PAGE 9 - Good night ===== */
+.pg9 {
+  background: linear-gradient(160deg, #0b081a 0%, #15123a 40%, #2a235a 100%);
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.pg9 h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  color: var(--gold);
+  margin-bottom: 0.8rem;
+}
+.pg9 p {
+  color: rgba(255,255,255,0.75);
+  font-size: 1.2rem;
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 2;
+  font-weight: 500;
+}
+
+/* ===== BIG SVG STYLES ===== */
+.big-svg {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* ===== DECORATIVE STARS (on page backgrounds) ===== */
+.deco-star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  animation: twinkle var(--d) ease-in-out infinite;
+  animation-delay: var(--dd);
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.1; transform: scale(0.5); }
+  50% { opacity: 0.7; transform: scale(1.2); }
+}
+
+/* ===== FLOATING BUBBLES ===== */
+.float-bubbles {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: 0.5rem 0;
+}
+.bub {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  animation: bfloat 3s ease-in-out infinite;
+}
+.bub:nth-child(2) { width: 32px; height: 32px; margin-top: 8px; animation-delay: 0.4s; }
+.bub:nth-child(3) { animation-delay: 0.8s; }
+.bub:nth-child(4) { width: 30px; height: 30px; margin-top: 12px; animation-delay: 1.2s; }
+.bub:nth-child(5) { width: 36px; height: 36px; animation-delay: 1.6s; }
+@keyframes bfloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ===== STAR DANCE ===== */
+.sdance {
+  display: flex; justify-content: center; gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+.sd {
+  width: 14px; height: 14px;
+  background: var(--gold);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(255,215,0,0.4);
+  animation: sd 1.5s ease-in-out infinite;
+}
+.sd:nth-child(2) { animation-delay: 0.15s; width: 18px; height: 18px; }
+.sd:nth-child(3) { animation-delay: 0.3s; }
+.sd:nth-child(4) { animation-delay: 0.45s; width: 20px; height: 20px; }
+.sd:nth-child(5) { animation-delay: 0.6s; }
+.sd:nth-child(6) { animation-delay: 0.75s; width: 16px; height: 16px; }
+.sd:nth-child(7) { animation-delay: 0.9s; }
+@keyframes sd {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.5; }
+  50% { transform: translateY(-12px) scale(1.2); opacity: 1; }
+}
+
+/* ===== SALES INFOGRAPHIC ===== */
+.info {
+  padding: 2rem 2.5rem;
+  background: #fff;
+  page-break-after: always;
+}
+.info h2 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.8rem;
+  color: var(--text-dark);
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+.info h2::after {
+  content: '';
+  display: block;
+  width: 50px; height: 3px;
+  background: var(--accent);
+  margin: 0.5rem auto 0;
+  border-radius: 2px;
+}
+.bgrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin: 1rem 0;
+}
+.bcard {
+  background: #f8f4f0;
+  border-radius: 14px;
+  padding: 1rem;
+  border-left: 4px solid var(--accent);
+}
+.bcard:nth-child(2) { border-left-color: var(--gold); }
+.bcard:nth-child(3) { border-left-color: #90caf9; }
+.bcard:nth-child(4) { border-left-color: #ce93d8; }
+.bcard .ic { font-size: 1.3rem; }
+.bcard h4 { font-size: 0.9rem; color: var(--text-dark); }
+.bcard h4 { font-size: 1rem; color: var(--text-dark); margin-bottom: 0.2rem; }
+.bcard p { font-size: 0.9rem; color: #888; margin: 0; line-height: 1.5; }
+
+.srow {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+.si {
+  text-align: center;
+  padding: 0.8rem 1.2rem;
+  background: #f8f4f0;
+  border-radius: 14px;
+  min-width: 100px;
+}
+.si .num {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 2rem;
+  color: var(--accent);
+  line-height: 1.1;
+}
+.si .lbl {
+  font-size: 0.8rem;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stable {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  background: #f8f4f0;
+  border-radius: 14px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+.stable > div {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed #e0d6cc;
+  font-size: 0.95rem;
+}
+.stable > div:nth-last-child(-n+2) { border-bottom: none; }
+.stable .l { color: #888; }
+.stable .v { color: var(--text-dark); font-weight: 600; }
+
+.pbox {
+  text-align: center;
+  padding: 1.2rem;
+  background: linear-gradient(135deg, var(--night2), var(--night3));
+  border-radius: 18px;
+  color: #fff;
+  margin: 1rem 0;
+}
+.pbox .old { font-size: 0.9rem; color: rgba(255,255,255,0.3); text-decoration: line-through; }
+.pbox .cur {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 3rem;
+  color: var(--gold);
+  line-height: 1.2;
+}
+.pbox .note { font-size: 0.85rem; color: rgba(255,255,255,0.4); }
+.pbox .cta {
+  display: inline-block;
+  margin-top: 0.8rem;
+  padding: 0.8rem 2.5rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 3rem;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  box-shadow: 0 8px 25px rgba(255,122,90,0.25);
+}
+
+.testi {
+  background: #f8f4f0;
+  border-radius: 14px;
+  padding: 1rem;
+  margin: 0.6rem 0;
+  text-align: center;
+}
+.testi p { font-size: 0.95rem; color: #666; font-style: italic; margin: 0; line-height: 1.5; }
+.testi .au { font-size: 0.85rem; color: var(--text-dark); font-weight: 600; margin-top: 0.4rem; font-style: normal; }
+
+@media (max-width: 850px) {
+  .cover-page { min-height: 450px; }
+  .cover-page h1 { font-size: 2.6rem; }
+  .cover-svg-wrap { width: 220px; height: 180px; }
+  .cover-page .tagline { font-size: 1.2rem; }
+  .illustration-page { min-height: 480px; }
+  .illustration-page .text-overlay { padding: 1.2rem 1.5rem; }
+  .illustration-page h2 { font-size: 1.6rem; }
+  .illustration-page p { font-size: 1rem; }
+  .bgrid { grid-template-columns: 1fr; }
+  .info { padding: 1.5rem; }
+  .pg9 h2 { font-size: 2rem; }
+  .pg9 p { font-size: 1rem; }
+}
+
+@media print {
+  body { background: white; padding: 0; }
+  .toolbar { display: none; }
+  .book { box-shadow: none; border-radius: 0; margin: 0; width: 100%; }
+  .cover-page, .illustration-page, .pg9, .info { page-break-after: always; }
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button onclick="window.print()">🖨️ Imprimir PDF</button>
+  <button onclick="gerarPDF()">⬇️ Baixar PDF</button>
+</div>
+
+<div class="book" id="book">
+
+  <!-- ============================================================
+       COVER - Full page illustration
+       ============================================================ -->
+  <div class="cover-page">
+    <div class="glow-sphere"></div>
+
+    <div class="cover-svg-wrap">
+      <svg viewBox="0 0 320 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Big Moon -->
+        <circle cx="220" cy="70" r="55" fill="url(#cg1)" opacity="0.95"/>
+        <circle cx="245" cy="62" r="47" fill="#0b081a"/>
+        <!-- Moon glow -->
+        <circle cx="220" cy="70" r="80" fill="url(#cg2)" opacity="0.15">
+          <animate attributeName="opacity" values="0.1;0.2;0.1" dur="3s" repeatCount="indefinite"/>
+        </circle>
+        <!-- Stars around moon -->
+        <circle cx="150" cy="30" r="3.5" fill="#ffd700"><animate attributeName="opacity" values="0.2;1;0.2" dur="2s" repeatCount="indefinite"/></circle>
+        <circle cx="120" cy="80" r="2.5" fill="#ffd700"><animate attributeName="opacity" values="0.3;0.9;0.3" dur="2.5s" repeatCount="indefinite"/></circle>
+        <circle cx="270" cy="120" r="3" fill="#fff"><animate attributeName="opacity" values="0.1;0.8;0.1" dur="3s" repeatCount="indefinite"/></circle>
+        <circle cx="290" cy="40" r="2" fill="#fff"><animate attributeName="opacity" values="0.2;1;0.2" dur="1.8s" repeatCount="indefinite"/></circle>
+        <circle cx="95" cy="45" r="2.5" fill="#ffd700"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.2s" repeatCount="indefinite"/></circle>
+        <circle cx="160" cy="100" r="1.8" fill="#fff"><animate attributeName="opacity" values="0.2;0.7;0.2" dur="2.8s" repeatCount="indefinite"/></circle>
+        <circle cx="280" cy="15" r="1.5" fill="#fff"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="2s" repeatCount="indefinite"/></circle>
+        <!-- Child sleeping in bed -->
+        <rect x="40" y="175" width="100" height="40" rx="6" fill="#1a1a5e" opacity="0.5"/>
+        <rect x="42" y="185" width="96" height="28" rx="4" fill="#2a2a6e"/>
+        <!-- Pillow -->
+        <ellipse cx="110" cy="192" rx="18" ry="10" fill="#3a3a7e"/>
+        <!-- Child head -->
+        <circle cx="90" cy="190" r="10" fill="#fce4ec" opacity="0.6"/>
+        <!-- Body under blanket -->
+        <ellipse cx="80" cy="200" rx="25" ry="8" fill="#fce4ec" opacity="0.4"/>
+        <!-- Bed frame -->
+        <rect x="35" y="205" width="110" height="10" rx="3" fill="#2d2d5e"/>
+        <rect x="32" y="170" width="8" height="50" rx="2" fill="#3d3d5e"/>
+        <rect x="140" y="170" width="8" height="50" rx="2" fill="#3d3d5e"/>
+        <!-- Stars trailing down to child -->
+        <circle cx="100" cy="140" r="2" fill="#ffd700" opacity="0.5"><animate attributeName="opacity" values="0;0.7;0" dur="1.5s" repeatCount="indefinite"/></circle>
+        <circle cx="115" cy="128" r="2.5" fill="#ffd700" opacity="0.4"><animate attributeName="opacity" values="0;0.8;0" dur="1.8s" repeatCount="indefinite" begin="0.3s"/></circle>
+        <circle cx="132" cy="115" r="2" fill="#fff" opacity="0.3"><animate attributeName="opacity" values="0;0.6;0" dur="2s" repeatCount="indefinite" begin="0.6s"/></circle>
+        <circle cx="145" cy="105" r="1.5" fill="#fff" opacity="0.3"><animate attributeName="opacity" values="0;0.5;0" dur="2.2s" repeatCount="indefinite" begin="0.9s"/></circle>
+        <!-- Clouds -->
+        <g opacity="0.08">
+          <ellipse cx="60" cy="230" rx="40" ry="10" fill="#fff"/>
+          <ellipse cx="45" cy="226" rx="18" ry="12" fill="#fff"/>
+          <ellipse cx="75" cy="227" rx="14" ry="9" fill="#fff"/>
+        </g>
+        <g opacity="0.06">
+          <ellipse cx="260" cy="210" rx="35" ry="8" fill="#fff"/>
+          <ellipse cx="250" cy="206" rx="15" ry="10" fill="#fff"/>
+        </g>
+        <defs>
+          <radialGradient id="cg1" cx="35%" cy="35%">
+            <stop offset="0%" stop-color="#fff8dc"/>
+            <stop offset="50%" stop-color="#ffd700"/>
+            <stop offset="100%" stop-color="#e5a500"/>
+          </radialGradient>
+          <radialGradient id="cg2" cx="50%" cy="50%">
+            <stop offset="0%" stop-color="#ffd700"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <h1>O Sonho da<br>Estrelinha Lua</h1>
+    <p class="tagline">Uma história para embalar os sonhos</p>
+    <div class="divider"></div>
+    <p class="author">Marcos Roberto</p>
+    <span class="age">✦ 2 — 6 anos ✦</span>
+  </div>
+
+  <!-- ============================================================
+       PAGE 1 — Star yawning in the sky (FULL BLEED)
+       ============================================================ -->
+  <div class="illustration-page pg1">
+    <!-- Background stars -->
+    <div id="stars1" class="art-bg"></div>
+
+    <!-- Big SVG: Star yawning -->
+    <div class="art-content" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+      <svg viewBox="0 0 400 350" style="width:80%;max-width:500px;height:auto;" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Large star glow -->
+        <circle cx="200" cy="150" r="100" fill="url(#sg1)" opacity="0.12"/>
+        <circle cx="200" cy="150" r="70" fill="url(#sg1)" opacity="0.2"/>
+        <!-- Main star body -->
+        <circle cx="200" cy="150" r="45" fill="#ffd700" opacity="0.9"/>
+        <circle cx="200" cy="150" r="40" fill="url(#sg2)"/>
+        <!-- Star eyes (sleepy) -->
+        <ellipse cx="185" cy="142" rx="5" ry="3" fill="#7a5500"/>
+        <ellipse cx="215" cy="142" rx="5" ry="3" fill="#7a5500"/>
+        <!-- Sleepy eyelids (half closed) -->
+        <path d="M178,140 Q185,136 192,140" stroke="#7a5500" stroke-width="1.5" fill="#ffd700" opacity="0.6"/>
+        <path d="M208,140 Q215,136 222,140" stroke="#7a5500" stroke-width="1.5" fill="#ffd700" opacity="0.6"/>
+        <!-- Yawning mouth -->
+        <ellipse cx="200" cy="162" rx="8" ry="6" fill="#7a5500" opacity="0.7"/>
+        <!-- Yawn lines -->
+        <line x1="175" y1="165" x2="158" y2="170" stroke="#ffd700" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+        <line x1="225" y1="165" x2="242" y2="170" stroke="#ffd700" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+        <line x1="178" y1="172" x2="165" y2="180" stroke="#ffd700" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+        <line x1="222" y1="172" x2="235" y2="180" stroke="#ffd700" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+        <!-- Sparkles around -->
+        <circle cx="150" cy="100" r="4" fill="#ffd700"><animate attributeName="opacity" values="0.2;1;0.2" dur="2s" repeatCount="indefinite"/></circle>
+        <circle cx="250" cy="95" r="3" fill="#ffd700"><animate attributeName="opacity" values="0.3;0.9;0.3" dur="2.5s" repeatCount="indefinite"/></circle>
+        <circle cx="130" cy="160" r="2.5" fill="#fff"><animate attributeName="opacity" values="0.1;0.7;0.1" dur="3s" repeatCount="indefinite"/></circle>
+        <circle cx="270" cy="155" r="3.5" fill="#fff"><animate attributeName="opacity" values="0.2;0.8;0.2" dur="1.8s" repeatCount="indefinite"/></circle>
+        <circle cx="170" cy="90" r="2" fill="#ffd700"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.2s" repeatCount="indefinite"/></circle>
+        <circle cx="230" cy="88" r="2.5" fill="#ffd700"><animate attributeName="opacity" values="0.2;0.7;0.2" dur="2.8s" repeatCount="indefinite"/></circle>
+        <!-- ZZZ -->
+        <text x="168" y="118" font-family="Quicksand" font-size="10" fill="#ffd700" opacity="0.5">z</text>
+        <text x="172" y="106" font-family="Quicksand" font-size="13" fill="#ffd700" opacity="0.4">z</text>
+        <text x="178" y="92" font-family="Quicksand" font-size="16" fill="#ffd700" opacity="0.3">Z</text>
+      </svg>
+    </div>
+
+    <!-- Text overlay -->
+    <div class="text-overlay" style="background:linear-gradient(transparent, rgba(0,0,0,0.6) 20%, rgba(0,0,0,0.8));">
+      <h2>Lá no céu...</h2>
+      <p>Lá no céu, bem alto, morava uma estrelinha chamada Lua. Ela era a menor de todas, mas tinha o brilho mais bonito que já existiu. Todas as noites, Lua acordava com o pôr do sol e se preparava para iluminar o céu. Mas havia um problema: a Estrelinha Lua estava com muito sono!</p>
+      <p><em style="font-family:'Playfair Display',serif;font-weight:700;font-style:italic;color:var(--gold);">— Ai, que soninho! Será que as crianças lá embaixo também estão com sono?</em></p>
+    </div>
+    <span class="pg-num">1</span>
+  </div>
+
+  <!-- ============================================================
+       PAGE 2 — Fairy of Dreams (FULL BLEED)
+       ============================================================ -->
+  <div class="illustration-page pg2">
+    <div id="stars2" class="art-bg"></div>
+
+    <div class="art-content" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+      <svg viewBox="0 0 400 380" style="width:75%;max-width:480px;height:auto;" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Fairy glow -->
+        <circle cx="200" cy="150" r="120" fill="url(#fg1)" opacity="0.1"/>
+        <circle cx="200" cy="150" r="80" fill="url(#fg1)" opacity="0.15"/>
+        <!-- Fairy face -->
+        <circle cx="200" cy="130" r="20" fill="#fff8dc" opacity="0.8"/>
+        <!-- Fairy hair -->
+        <path d="M180,125 Q185,100 200,95 Q215,100 220,125" fill="#ffd700" opacity="0.5"/>
+        <!-- Fairy body / dress -->
+        <path d="M185,148 Q200,190 215,148" fill="#fff8dc" opacity="0.3"/>
+        <path d="M178,148 Q200,200 222,148" fill="#e3f2fd" opacity="0.15"/>
+        <!-- Left wing -->
+        <ellipse cx="150" cy="145" rx="45" ry="18" fill="#e3f2fd" opacity="0.25" transform="rotate(-15,150,145)"/>
+        <ellipse cx="148" cy="145" rx="40" ry="14" fill="#fce4ec" opacity="0.15" transform="rotate(-15,148,145)"/>
+        <!-- Right wing -->
+        <ellipse cx="250" cy="145" rx="45" ry="18" fill="#e3f2fd" opacity="0.25" transform="rotate(15,250,145)"/>
+        <ellipse cx="252" cy="145" rx="40" ry="14" fill="#fce4ec" opacity="0.15" transform="rotate(15,252,145)"/>
+        <!-- Wand -->
+        <line x1="210" y1="150" x2="240" y2="190" stroke="#ffd700" stroke-width="2" opacity="0.5"/>
+        <circle cx="240" cy="192" r="5" fill="url(#sg2)"/>
+        <!-- Magic sparkles -->
+        <circle cx="255" cy="180" r="2.5" fill="#ffd700"><animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite"/></circle>
+        <circle cx="248" cy="168" r="2" fill="#fff"><animate attributeName="opacity" values="0;0.8;0" dur="2s" repeatCount="indefinite" begin="0.3s"/></circle>
+        <circle cx="265" cy="172" r="1.8" fill="#ffd700"><animate attributeName="opacity" values="0;0.7;0" dur="1.8s" repeatCount="indefinite" begin="0.6s"/></circle>
+        <circle cx="230" cy="175" r="1.5" fill="#fff"><animate attributeName="opacity" values="0;0.6;0" dur="2.2s" repeatCount="indefinite" begin="0.9s"/></circle>
+        <!-- Fairy eyes -->
+        <circle cx="194" cy="128" r="2.5" fill="#4a3f4a"/>
+        <circle cx="206" cy="128" r="2.5" fill="#4a3f4a"/>
+        <!-- Fairy smile -->
+        <path d="M195,135 Q200,140 205,135" stroke="#4a3f4a" stroke-width="1.5" fill="none"/>
+        <!-- Small stars -->
+        <circle cx="130" cy="80" r="3" fill="#ffd700"><animate attributeName="opacity" values="0.2;0.8;0.2" dur="2.5s" repeatCount="indefinite"/></circle>
+        <circle cx="270" cy="75" r="2.5" fill="#fff"><animate attributeName="opacity" values="0.3;0.9;0.3" dur="2s" repeatCount="indefinite"/></circle>
+        <circle cx="100" cy="150" r="2" fill="#ffd700"><animate attributeName="opacity" values="0.1;0.7;0.1" dur="3s" repeatCount="indefinite"/></circle>
+        <circle cx="300" cy="140" r="3" fill="#ffd700"><animate attributeName="opacity" values="0.2;0.6;0.2" dur="2.8s" repeatCount="indefinite"/></circle>
+      </svg>
+    </div>
+
+    <div class="text-overlay">
+      <h2>A Fada dos Sonhos</h2>
+      <p>Foi quando uma luz suave e dourada apareceu ao seu lado. Era a Fada dos Sonhos, com seu vestido feito de névoa e cabelos de luar.</p>
+      <p><em style="font-family:'Playfair Display',serif;font-weight:700;font-style:italic;color:var(--gold);">— Estrelinha Lua, por que você está tão cansada?</em></p>
+      <p>— Eu quero dormir — respondeu Lua — mas tenho medo de apagar minha luz e deixar o céu escuro.</p>
+      <p>A Fada dos Sonhos sorriu com carinho e sentou-se ao lado da estrelinha.</p>
+    </div>
+    <span class="pg-num">2</span>
+  </div>
+
+  <!-- ============================================================
+       PAGE 3 — The Secret of Sleep (FULL BLEED)
+       ============================================================ -->
+  <div class="illustration-page pg3">
+    <div id="stars3" class="art-bg"></div>
+
+    <div class="art-content" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+      <svg viewBox="0 0 400 380" style="width:75%;max-width:480px;height:auto;" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Big star (Lua) listening -->
+        <circle cx="200" cy="155" r="95" fill="url(#sg1)" opacity="0.1"/>
+        <circle cx="200" cy="155" r="65" fill="url(#sg1)" opacity="0.15"/>
+        <circle cx="200" cy="155" r="42" fill="#ffd700" opacity="0.85"/>
+        <circle cx="200" cy="155" r="37" fill="url(#sg2)"/>
+        <!-- Star eyes (wide open, curious) -->
+        <circle cx="188" cy="148" r="5" fill="#7a5500"/>
+        <circle cx="212" cy="148" r="5" fill="#7a5500"/>
+        <circle cx="188" cy="148" r="2.5" fill="#fff" opacity="0.5"/>
+        <circle cx="212" cy="148" r="2.5" fill="#fff" opacity="0.5"/>
+        <!-- Surprised eyebrows -->
+        <path d="M182,138 Q188,134 194,138" stroke="#7a5500" stroke-width="1.8" fill="none"/>
+        <path d="M206,138 Q212,134 218,138" stroke="#7a5500" stroke-width="1.8" fill="none"/>
+        <!-- Small smile -->
+        <path d="M193,163 Q200,170 207,163" stroke="#7a5500" stroke-width="1.5" fill="none"/>
+        <!-- Whisper lines from fairy -->
+        <path d="M235,120 Q260,110 280,115" stroke="#ffd700" stroke-width="1" opacity="0.3" stroke-dasharray="3,3"/>
+        <path d="M240,130 Q265,122 285,128" stroke="#ffd700" stroke-width="1" opacity="0.25" stroke-dasharray="3,3"/>
+        <path d="M238,140 Q260,135 278,142" stroke="#ffd700" stroke-width="1" opacity="0.2" stroke-dasharray="3,3"/>
+        <!-- Rising stars (secret floating up) -->
+        <circle cx="140" cy="280" r="3" fill="#ffd700"><animate attributeName="cy" values="280;60" dur="5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.6;0" dur="5s" repeatCount="indefinite"/></circle>
+        <circle cx="180" cy="290" r="2.5" fill="#fff"><animate attributeName="cy" values="290;40" dur="6s" repeatCount="indefinite" begin="0.5s"/><animate attributeName="opacity" values="0.5;0" dur="6s" repeatCount="indefinite" begin="0.5s"/></circle>
+        <circle cx="220" cy="285" r="3.5" fill="#ffd700"><animate attributeName="cy" values="285;50" dur="5.5s" repeatCount="indefinite" begin="1s"/><animate attributeName="opacity" values="0.7;0" dur="5.5s" repeatCount="indefinite" begin="1s"/></circle>
+        <circle cx="260" cy="275" r="2" fill="#fff"><animate attributeName="cy" values="275;30" dur="6.5s" repeatCount="indefinite" begin="0.3s"/><animate attributeName="opacity" values="0.4;0" dur="6.5s" repeatCount="indefinite" begin="0.3s"/></circle>
+        <circle cx="160" cy="295" r="2" fill="#ffd700"><animate attributeName="cy" values="295;70" dur="4.5s" repeatCount="indefinite" begin="1.5s"/><animate attributeName="opacity" values="0.5;0" dur="4.5s" repeatCount="indefinite" begin="1.5s"/></circle>
+        <!-- Little house far below -->
+        <rect x="170" y="330" width="40" height="25" rx="2" fill="#1a1a5e" opacity="0.3"/>
+        <polygon points="170,330 190,315 210,330" fill="#d4a037" opacity="0.15"/>
+        <rect x="170" y="355" width="40" height="5" fill="#15123a"/>
+      </svg>
+    </div>
+
+    <div class="text-overlay">
+      <h2>O segredo do sono</h2>
+      <p><em style="font-family:'Playfair Display',serif;font-weight:700;font-style:italic;color:var(--gold);">— Querida estrelinha, deixe eu te contar um segredo: quando você dorme, seu brilho descansa. E quando descansa, ele fica ainda mais forte!</em></p>
+      <p>Lua arregalou os olhos. — De verdade? — Sim! E sabe o que mais? Lá embaixo, tem uma criança que também não consegue dormir. Ela precisa de você. Quando você brilha, as crianças sabem que está tudo bem. Seu brilho é como um abraço quentinho vindo do céu.</p>
+    </div>
+    <span class="pg-num">3</span>
+  </div>
+
+  <!-- ============================================================
+       PAGE 4 — The Awake Child (FULL BLEED)
+       ============================================================ -->
+  <div class="illustration-page pg4">
+    <div id="stars4" class="art-bg"></div>
+
+    <div class="art-content" style="position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;">
+      <svg viewBox="0 0 400 350" style="width:85%;max-width:520px;height:auto;" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Room background -->
+        <rect x="30" y="60" width="340" height="280" rx="8" fill="#1a1a3e" opacity="0.3"/>
+        <rect x="30" y="60" width="340" height="12" rx="4" fill="#2a2a5e" opacity="0.4"/>
+        <!-- Big window -->
+        <rect x="50" y="85" width="140" height="150" rx="6" fill="#0b081a"/>
+        <rect x="48" y="83" width="144" height="154" rx="8" fill="none" stroke="#d4a037" stroke-width="2" opacity="0.2"/>
+        <line x1="120" y1="85" x2="120" y2="235" stroke="#d4a037" stroke-width="1" opacity="0.15"/>
+        <line x1="50" y1="160" x2="190" y2="160" stroke="#d4a037" stroke-width="1" opacity="0.15"/>
+        <!-- Moon and stars through window -->
+        <circle cx="100" cy="130" r="18" fill="url(#cg1)" opacity="0.9"/>
+        <circle cx="110" cy="126" r="15" fill="#0b081a"/>
+        <circle cx="150" cy="110" r="2.5" fill="#ffd700"><animate attributeName="opacity" values="0.2;1;0.2" dur="2s" repeatCount="indefinite"/></circle>
+        <circle cx="165" cy="140" r="2" fill="#fff"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.5s" repeatCount="indefinite"/></circle>
+        <circle cx="80" cy="105" r="1.8" fill="#fff"><animate attributeName="opacity" values="0.1;0.7;0.1" dur="3s" repeatCount="indefinite"/></circle>
+        <circle cx="140" cy="100" r="1.5" fill="#ffd700"><animate attributeName="opacity" values="0.2;0.6;0.2" dur="2.8s" repeatCount="indefinite"/></circle>
+        <!-- Pedro's bed -->
+        <rect x="210" y="190" width="160" height="80" rx="6" fill="#2a2a5e" opacity="0.5"/>
+        <rect x="210" y="185" width="160" height="10" rx="3" fill="#3a3a6e" opacity="0.6"/>
+        <!-- Pillow -->
+        <ellipse cx="330" cy="225" rx="30" ry="16" fill="#fce4ec" opacity="0.3"/>
+        <!-- Child silhouette -->
+        <circle cx="300" cy="210" r="18" fill="#f5d6a8" opacity="0.6"/>
+        <!-- Eyes open (awake) -->
+        <circle cx="295" cy="207" r="2.5" fill="#1a1a3e" opacity="0.5"/>
+        <circle cx="305" cy="207" r="2.5" fill="#1a1a3e" opacity="0.5"/>
+        <!-- Body under blanket -->
+        <ellipse cx="280" cy="245" rx="55" ry="18" fill="#fce4ec" opacity="0.25"/>
+        <!-- Blanket detail -->
+        <path d="M215,220 Q240,210 280,215 Q320,220 370,215" stroke="#fce4ec" stroke-width="1" opacity="0.15" fill="none"/>
+        <!-- Toys on shelf -->
+        <rect x="250" y="105" width="15" height="20" rx="3" fill="#f5a623" opacity="0.2"/>
+        <circle cx="280" cy="115" r="8" fill="#ff8a80" opacity="0.2"/>
+        <rect x="300" y="108" width="12" height="17" rx="2" fill="#80d8ff" opacity="0.2"/>
+      </svg>
+    </div>
+
+    <div class="text-overlay">
+      <h2>A criança acordada</h2>
+      <p>Lua olhou para baixo e viu uma casinha com uma luz acesa. Dentro, um menino chamado Pedro estava sentado na cama, olhando pela janela. Ele não conseguia dormir. Pensava em dragões, em monstros debaixo da cama e em sombras estranhas no corredor.</p>
+      <p>Então Pedro olhou para o céu e viu a Estrelinha Lua. Ela piscou para ele — e ele sentiu um calor gostoso no peito.</p>
+      <p><em style="font-family:'Playfair Display',serif;font-weight:700;font-style:italic;color:var(--gold);">— Oi, estrelinha...</em></p>
+    </div>
+    <span class="pg-num">4</span>
+  </div>
+
+  <!-- ============================================================
+       PAGE 5 — Friendship Light (FULL BLEED)
+       ============================================================ -->
+  <div class="illustration-page pg5">
+    <div id="stars5" class="art-bg"></div>
+
+    <div class="art-content" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+      <svg viewBox="0 0 400 380" style="width:75%;max-width:480px;height:auto;" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Big glow -->
+        <circle cx="200" cy="170" r="130" fill="url(#sg1)" opacity="0.06"/>
+        <!-- Star (Lua) - left side -->
+        <circle cx="130" cy="140" r="50" fill="url(#sg1)" opacity="0.15"/>
+        <circle cx="130" cy="140" r="35" fill="#ffd700" opacity="0.85"/>
+        <circle cx="130" cy="140" r="30" fill="url(#sg2)"/>
+        <!-- Star face -->
+        <circle cx="122" cy="135" r="3.5" fill="#7a5500"/>
+        <circle cx="138" cy="135" r="3.5" fill="#7a5500"/>
+        <path d="M127,145 Q130,150 133,145" stroke="#7a5500" stroke-width="1.5" fill="none"/>
+        <!-- Heart (connection) - right side -->
+        <path d="M280,180 C280,155 250,155 250,180 C250,205 280,225 280,225 C280,225 310,205 310,180 C310,155 280,155 280,180Z" fill="#ff8a80" opacity="0.8">
+          <animate attributeName="opacity" values="0.5;0.9;0.5" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="transform" type="scale" values="1;1.05;1" dur="2s" repeatCount="indefinite" additive="sum"/>
+        </path>
+        <!-- Light beam connecting star to heart -->
+        <line x1="165" y1="155" x2="250" y2="195" stroke="#ffd700" stroke-width="2" opacity="0.15" stroke-dasharray="6,4">
+          <animate attributeName="opacity" values="0.05;0.25;0.05" dur="2s" repeatCount="indefinite"/>
+        </line>
+        <!-- Glow under heart -->
+        <ellipse cx="280" cy="230" rx="40" ry="8" fill="#ff8a80" opacity="0.08"/>
+        <!-- Sparkles -->
+        <circle cx="180" cy="115" r="3" fill="#ffd700"><animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite"/></circle>
+        <circle cx="160" cy="100" r="2" fill="#fff"><animate attributeName="opacity" values="0;0.8;0" dur="2s" repeatCount="indefinite" begin="0.3s"/></circle>
+        <circle cx="200" cy="108" r="2.5" fill="#ffd700"><animate attributeName="opacity" values="0;0.7;0" dur="1.8s" repeatCount="indefinite" begin="0.6s"/></circle>
+        <circle cx="175" cy="95" r="1.8" fill="#fff"><animate attributeName="opacity" values="0;0.6;0" dur="2.2s" repeatCount="indefinite" begin="0.9s"/></circle>
+        <!-- Small stars around -->
+        <circle cx="80" cy="80" r="2.5" fill="#ffd700"><animate attributeName="opacity" values="0.2;0.8;0.2" dur="2.5s" repeatCount="indefinite"/></circle>
+        <circle cx="320" cy="100" r="2" fill="#fff"><animate attributeName="opacity" values="0.3;0.9;0.3" dur="2s" repeatCount="indefinite"/></circle>
+        <circle cx="350" cy="160" r="3" fill="#ffd700"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3s" repeatCount="indefinite"/></circle>
+      </svg>
+    </div>
+
+    <div class="text-overlay">
+      <h2>Um brilho de amizade</h2>
+      <p><em style="font-family:'Playfair Display',serif;font-weight:700;font-style:italic;color:var(--gold);">— Vou fazer um pedido: queria que a estrelinha ficasse comigo até eu dormir.</em></p>
+      <p>Lá no céu, a Estrelinha Lua entendeu o pedido. Ela se sentou bem pertinho da janela de Pedro e começou a brilhar com toda a força do seu coração. Seu brilho dançava como uma música suave. Era como se ela estivesse cantando uma canção de ninar feita de luz.</p>
+    </div>
+    <span class="pg-num">5</span>
+  </div>
+
+  <!-- ============================================================
+       PAGE 6 — Star Dance (FULL BLEED)
+       ============================================================ -->
+  <div class="illustration-page pg6">
+    <div id="stars6" class="art-bg"></div>
+
+    <div class="art-content" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+      <svg viewBox="0 0 400 380" style="width:80%;max-width:500px;height:auto;" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Central glow -->
+        <circle cx="200" cy="170" r="140" fill="url(#sg1)" opacity="0.05"/>
+        <!-- Star circle (dancing around) -->
+        <circle cx="200" cy="170" r="90" stroke="#ffd700" stroke-width="0.5" opacity="0.1" stroke-dasharray="4,6"/>
+        <!-- Dancing stars positioned in a circle -->
+        <circle cx="200" cy="80" r="12" fill="#ffd700" opacity="0.9">
+          <animate attributeName="r" values="10;14;10" dur="1.5s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.6;1;0.6" dur="1.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="200" cy="80" r="18" fill="url(#sg1)" opacity="0.15">
+          <animate attributeName="r" values="15;22;15" dur="1.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="290" cy="130" r="9" fill="#ffd700" opacity="0.8">
+          <animate attributeName="r" values="7;11;7" dur="1.8s" repeatCount="indefinite" begin="0.2s"/>
+        </circle>
+        <circle cx="290" cy="130" r="14" fill="url(#sg1)" opacity="0.12">
+          <animate attributeName="r" values="12;17;12" dur="1.8s" repeatCount="indefinite" begin="0.2s"/>
+        </circle>
+        <circle cx="280" cy="240" r="10" fill="#fff" opacity="0.7">
+          <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite" begin="0.4s"/>
+        </circle>
+        <circle cx="280" cy="240" r="15" fill="url(#sg1)" opacity="0.1">
+          <animate attributeName="r" values="13;18;13" dur="2s" repeatCount="indefinite" begin="0.4s"/>
+        </circle>
+        <circle cx="120" cy="240" r="9" fill="#ffd700" opacity="0.8">
+          <animate attributeName="r" values="7;11;7" dur="1.7s" repeatCount="indefinite" begin="0.6s"/>
+        </circle>
+        <circle cx="120" cy="240" r="14" fill="url(#sg1)" opacity="0.12">
+          <animate attributeName="r" values="12;17;12" dur="1.7s" repeatCount="indefinite" begin="0.6s"/>
+        </circle>
+        <circle cx="110" cy="130" r="11" fill="#ffd700" opacity="0.85">
+          <animate attributeName="r" values="9;13;9" dur="1.6s" repeatCount="indefinite" begin="0.3s"/>
+        </circle>
+        <circle cx="110" cy="130" r="16" fill="url(#sg1)" opacity="0.12">
+          <animate attributeName="r" values="14;19;14" dur="1.6s" repeatCount="indefinite" begin="0.3s"/>
+        </circle>
+        <circle cx="200" cy="260" r="8" fill="#fff" opacity="0.6">
+          <animate attributeName="r" values="6;10;6" dur="2.2s" repeatCount="indefinite" begin="0.5s"/>
+        </circle>
+        <!-- Center star (Lua) -->
+        <circle cx="200" cy="170" r="25" fill="#ffd700" opacity="0.9"/>
+        <circle cx="200" cy="170" r="22" fill="url(#sg2)"/>
+        <!-- Lua face -->
+        <circle cx="194" cy="166" r="2.5" fill="#7a5500"/>
+        <circle cx="206" cy="166" r="2.5" fill="#7a5500"/>
+        <path d="M197,174 Q200,178 203,174" stroke="#7a5500" stroke-width="1.5" fill="none"/>
+        <!-- Sparkles -->
+        <circle cx="160" cy="190" r="2" fill="#ffd700"><animate attributeName="opacity" values="0;0.8;0" dur="1.5s" repeatCount="indefinite"/></circle>
+        <circle cx="240" cy="190" r="2.5" fill="#fff"><animate attributeName="opacity" values="0;0.7;0" dur="2s" repeatCount="indefinite" begin="0.5s"/></circle>
+        <circle cx="200" cy="120" r="2" fill="#ffd700"><animate attributeName="opacity" values="0;0.6;0" dur="1.8s" repeatCount="indefinite" begin="0.3s"/></circle>
+      </svg>
+    </div>
+
+    <div class="text-overlay">
+      <h2>A dança das estrelas</h2>
+      <p>Uma a uma, as outras estrelas foram acordando. Viram Lua brilhando com tanto carinho para o menino e resolveram ajudar. Formaram um círculo de luz ao redor da casa de Pedro. Parecia uma roda de ciranda no céu!</p>
+      <p><em style="font-family:'Playfair Display',serif;font-weight:700;font-style:italic;color:var(--gold);">— Olha só — disse uma estrela velhinha — quando a gente se junta, a noite fica mais bonita!</em></p>
+      <p>Pedro viu aquela festa de luzes e sorriu. Seus olhos foram ficando pesados... pesados...</p>
+    </div>
+    <span class="pg-num">6</span>
+  </div>
+
+  <!-- ============================================================
+       PAGE 7 — The Dream (FULL BLEED)
+       ============================================================ -->
+  <div class="illustration-page pg7">
+    <div id="stars7" class="art-bg"></div>
+
+    <div class="art-content" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+      <svg viewBox="0 0 400 380" style="width:80%;max-width:500px;height:auto;" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Dream bubble -->
+        <ellipse cx="200" cy="180" rx="130" ry="120" fill="#e3f2fd" opacity="0.05"/>
+        <ellipse cx="200" cy="180" rx="100" ry="95" fill="#e3f2fd" opacity="0.08"/>
+        <!-- Cloud bed -->
+        <ellipse cx="200" cy="220" rx="80" ry="22" fill="#fff" opacity="0.15"/>
+        <ellipse cx="160" cy="218" rx="40" ry="18" fill="#fff" opacity="0.1"/>
+        <ellipse cx="240" cy="218" rx="35" ry="16" fill="#fff" opacity="0.1"/>
+        <ellipse cx="200" cy="215" rx="55" ry="14" fill="#fff" opacity="0.12"/>
+        <!-- Pedro on cloud -->
+        <circle cx="200" cy="190" r="16" fill="#f5d6a8" opacity="0.5"/>
+        <ellipse cx="200" cy="205" rx="18" ry="12" fill="#fce4ec" opacity="0.25"/>
+        <!-- Sleepy eyes -->
+        <path d="M193,188 Q196,191 199,188" stroke="#4a3f4a" stroke-width="1" opacity="0.4" fill="none"/>
+        <path d="M201,188 Q204,191 207,188" stroke="#4a3f4a" stroke-width="1" opacity="0.4" fill="none"/>
+        <!-- Smile -->
+        <path d="M195,195 Q200,199 205,195" stroke="#4a3f4a" stroke-width="1" opacity="0.3" fill="none"/>
+        <!-- Stars in the dream -->
+        <circle cx="140" cy="130" r="4" fill="#ffd700" opacity="0.6"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/></circle>
+        <circle cx="260" cy="125" r="3.5" fill="#ffd700" opacity="0.5"><animate attributeName="opacity" values="0.2;0.7;0.2" dur="2.5s" repeatCount="indefinite"/></circle>
+        <circle cx="170" cy="110" r="3" fill="#fff" opacity="0.4"><animate attributeName="opacity" values="0.3;0.9;0.3" dur="1.8s" repeatCount="indefinite"/></circle>
+        <circle cx="230" cy="108" r="2.5" fill="#fff" opacity="0.4"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3s" repeatCount="indefinite"/></circle>
+        <circle cx="120" cy="150" r="2.5" fill="#ffd700" opacity="0.3"><animate attributeName="opacity" values="0.2;0.7;0.2" dur="2.2s" repeatCount="indefinite"/></circle>
+        <circle cx="280" cy="150" r="3" fill="#ffd700" opacity="0.4"><animate attributeName="opacity" values="0.1;0.5;0.1" dur="2.8s" repeatCount="indefinite"/></circle>
+        <!-- Sparkles -->
+        <circle cx="150" cy="160" r="1.8" fill="#fff"><animate attributeName="opacity" values="0;0.6;0" dur="1.5s" repeatCount="indefinite"/></circle>
+        <circle cx="250" cy="160" r="2" fill="#ffd700"><animate attributeName="opacity" values="0;0.5;0" dur="2s" repeatCount="indefinite" begin="0.5s"/></circle>
+        <circle cx="200" cy="140" r="1.5" fill="#fff"><animate attributeName="opacity" values="0;0.4;0" dur="2.5s" repeatCount="indefinite" begin="0.3s"/></circle>
+        <!-- Small moon -->
+        <circle cx="290" cy="70" r="15" fill="url(#cg1)" opacity="0.5"/>
+        <circle cx="296" cy="67" r="12" fill="#1a1a5e"/>
+      </svg>
+    </div>
+
+    <div class="text-overlay">
+      <h2>O sono chegou</h2>
+      <p>O quarto de Pedro foi ficando mais quentinho. Seu cobertor parecia uma nuvem macia. Seu travesseiro, uma poção mágica de sonhos.</p>
+      <p><em style="font-family:'Playfair Display',serif;font-weight:700;font-style:italic;color:var(--gold);">— Obrigado, estrelinha...</em></p>
+      <p>Lua sorriu (estrelas sorriem piscando, sabia?). Ela viu Pedro fechar os olhos e finalmente dormir. E no rosto dele, um sorriso apareceu. Ele estava sonhando. Sonhando que voava entre as estrelas, montado numa nuvem fofinha.</p>
+    </div>
+    <span class="pg-num">7</span>
+  </div>
+
+  <!-- ============================================================
+       PAGE 8 — Time to Rest (FULL BLEED)
+       ============================================================ -->
+  <div class="illustration-page pg8">
+    <div id="stars8" class="art-bg"></div>
+
+    <div class="art-content" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+      <svg viewBox="0 0 400 380" style="width:75%;max-width:480px;height:auto;" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Quiet glow -->
+        <circle cx="200" cy="150" r="100" fill="url(#sg1)" opacity="0.05"/>
+        <!-- Sleeping star -->
+        <circle cx="200" cy="150" r="40" fill="#ffd700" opacity="0.2"/>
+        <circle cx="200" cy="150" r="28" fill="#ffd700" opacity="0.15"/>
+        <circle cx="200" cy="150" r="15" fill="#ffd700" opacity="0.3"/>
+        <!-- Closed eyes -->
+        <path d="M188,147 Q191,150 194,147" stroke="#7a5500" stroke-width="1.5" fill="none" opacity="0.5"/>
+        <path d="M206,147 Q209,150 212,147" stroke="#7a5500" stroke-width="1.5" fill="none" opacity="0.5"/>
+        <!-- Peaceful smile -->
+        <path d="M195,156 Q200,160 205,156" stroke="#7a5500" stroke-width="1" fill="none" opacity="0.4"/>
+        <!-- ZZZ floating up -->
+        <text x="178" y="130" font-family="Quicksand" font-size="10" fill="#ffd700" opacity="0.4">z</text>
+        <text x="182" y="118" font-family="Quicksand" font-size="13" fill="#ffd700" opacity="0.3">z</text>
+        <text x="188" y="104" font-family="Quicksand" font-size="16" fill="#ffd700" opacity="0.2">Z</text>
+        <!-- Moon nearby -->
+        <circle cx="280" cy="80" r="30" fill="url(#cg1)" opacity="0.3"/>
+        <circle cx="292" cy="75" r="25" fill="#15123a"/>
+        <!-- Fairy dust (falling gently) -->
+        <circle cx="140" cy="120" r="2" fill="#fff"><animate attributeName="cy" values="120;250" dur="4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.6;0" dur="4s" repeatCount="indefinite"/></circle>
+        <circle cx="170" cy="100" r="1.5" fill="#ffd700"><animate attributeName="cy" values="100;260" dur="5s" repeatCount="indefinite" begin="0.5s"/><animate attributeName="opacity" values="0.5;0" dur="5s" repeatCount="indefinite" begin="0.5s"/></circle>
+        <circle cx="230" cy="110" r="1.8" fill="#fff"><animate attributeName="cy" values="110;270" dur="4.5s" repeatCount="indefinite" begin="1s"/><animate attributeName="opacity" values="0.4;0" dur="4.5s" repeatCount="indefinite" begin="1s"/></circle>
+        <circle cx="260" cy="130" r="1.3" fill="#ffd700"><animate attributeName="cy" values="130;280" dur="5.5s" repeatCount="indefinite" begin="0.3s"/><animate attributeName="opacity" values="0.3;0" dur="5.5s" repeatCount="indefinite" begin="0.3s"/></circle>
+        <!-- Child sleeping below -->
+        <ellipse cx="200" cy="310" rx="45" ry="10" fill="#fce4ec" opacity="0.1"/>
+        <rect x="168" y="285" width="64" height="28" rx="4" fill="#e8d5f5" opacity="0.12"/>
+        <circle cx="200" cy="280" r="10" fill="#f5d6a8" opacity="0.1"/>
+        <!-- Stars -->
+        <circle cx="100" cy="60" r="2" fill="#ffd700"><animate attributeName="opacity" values="0.2;0.6;0.2" dur="3s" repeatCount="indefinite"/></circle>
+        <circle cx="300" cy="150" r="2.5" fill="#fff"><animate attributeName="opacity" values="0.1;0.5;0.1" dur="2.5s" repeatCount="indefinite"/></circle>
+      </svg>
+    </div>
+
+    <div class="text-overlay">
+      <h2>Hora de descansar</h2>
+      <p>A Fada dos Sonhos voltou.</p>
+      <p><em style="font-family:'Playfair Display',serif;font-weight:700;font-style:italic;color:var(--gold);">— Viu só? Você conseguiu! Agora pode dormir tranquila. Seu brilho não vai se apagar. Ele vai descansar. Amanhã você volta ainda mais forte.</em></p>
+      <p>E assim, a Estrelinha Lua fechou os olhos. Seu brilho foi ficando suave, suave, como a respiração de um bebê dormindo. Lá embaixo, Pedro também dormia. Os dois, juntos, no mesmo sonho.</p>
+    </div>
+    <span class="pg-num">8</span>
+  </div>
+
+  <!-- ============================================================
+       PAGE 9 — Good Night
+       ============================================================ -->
+  <div class="pg9">
+    <svg style="width:100px;height:100px;margin-bottom:0.5rem;" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="30" fill="url(#cg1)" opacity="0.8"/>
+      <circle cx="58" cy="45" r="25" fill="#15123a"/>
+    </svg>
+
+    <h2>Bons sonhos</h2>
+    <div class="divider" style="background:linear-gradient(90deg,transparent,var(--gold),transparent);"></div>
+    <p>
+      Então, meu querido amiguinho, está na hora de você também dormir.<br><br>
+      Lembre-se: lá no céu tem uma estrelinha chamada Lua que cuida de você.<br><br>
+      Feche os olhos, respire fundo, e deixe o sono chegar.<br><br>
+      <strong style="color:var(--gold);font-size:1.1rem;">Boa noite. Bons sonhos.</strong>
+    </p>
+    <div class="sdance" style="margin-top:1rem;">
+      <div class="sd"></div><div class="sd"></div><div class="sd"></div>
+      <div class="sd"></div><div class="sd"></div><div class="sd"></div><div class="sd"></div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SALES INFOGRAPHIC
+       ============================================================ -->
+  <div class="info">
+    <h2>Por que este livro é especial?</h2>
+
+    <div class="srow">
+      <div class="si"><div class="num">10</div><div class="lbl">Páginas Ilustradas</div></div>
+      <div class="si"><div class="num">100%</div><div class="lbl">Ilustração Vetorial</div></div>
+      <div class="si"><div class="num">2-6</div><div class="lbl">Faixa Etária</div></div>
+      <div class="si"><div class="num">+200</div><div class="lbl">Horas de Design</div></div>
+    </div>
+
+    <div class="bgrid">
+      <div class="bcard">
+        <div class="ic">🎨</div>
+        <h4>Ilustrações Exclusivas em SVG</h4>
+        <p>Cada página tem uma ilustração vetorial original com animações suaves. Qualidade HD em qualquer tamanho.</p>
+      </div>
+      <div class="bcard">
+        <div class="ic">📖</div>
+        <h4>Texto Acolhedor e Poético</h4>
+        <p>Linguagem cuidadosamente escrita para ajudar a criança a relaxar e entrar no mundo dos sonhos.</p>
+      </div>
+      <div class="bcard">
+        <div class="ic">🧠</div>
+        <h4>Desenvolvimento Emocional</h4>
+        <p>Ensina sobre empatia, amizade e a importância do descanso de forma lúdica e afetiva.</p>
+      </div>
+      <div class="bcard">
+        <div class="ic">📱</div>
+        <h4>Formato Digital Profissional</h4>
+        <p>Pronto para imprimir ou ler em qualquer dispositivo. PDF em A4 com qualidade de livraria.</p>
+      </div>
+    </div>
+
+    <div class="stable">
+      <div><span class="l">Formato</span><span class="v">A4 (21x29,7 cm)</span></div>
+      <div><span class="l">Páginas</span><span class="v">10 ilustradas + capa</span></div>
+      <div><span class="l">Acabamento</span><span class="v">Digital vetorial HD</span></div>
+      <div><span class="l">Idioma</span><span class="v">Português (PT-BR)</span></div>
+      <div><span class="l">Autor</span><span class="v">Marcos Roberto</span></div>
+      <div><span class="l">Ilustrações</span><span class="v">SVG animado original</span></div>
+    </div>
+
+    <div class="pbox">
+      <p class="old">De R$ 57,90</p>
+      <p class="cur">R$ 19,90</p>
+      <p class="note">Pagamento único — acesso vitalício ao PDF + HTML interativo</p>
+      <div class="cta">📥 Adquirir Agora</div>
+    </div>
+
+    <div class="testi">
+      <p>"Meu filho pede toda noite antes de dormir. As ilustrações são lindas e a história acalma ele na hora. Recomendo demais!"</p>
+      <p class="au">— Ana Carolina, mãe do Pedro (3 anos)</p>
+    </div>
+
+    <div class="testi" style="margin-top:0.5rem;">
+      <p>"Uso na sala de aula com meus alunos da educação infantil. Eles amam a Estrelinha Lua e sempre pedem bis!"</p>
+      <p class="au">— Profa. Juliana Mendes, Educação Infantil</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Generate background stars for each page
+function makeStars(containerId, count) {
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('div');
+    s.className = 'deco-star';
+    const sz = Math.random() * 2.5 + 0.5;
+    s.style.cssText = `
+      width:${sz}px;height:${sz}px;
+      left:${Math.random()*100}%;
+      top:${Math.random()*100}%;
+      --d:${2+Math.random()*4}s;
+      --dd:${Math.random()*5}s;
+      opacity:${0.1+Math.random()*0.3};
+    `;
+    c.appendChild(s);
+  }
+}
+
+makeStars('stars1', 50);
+makeStars('stars2', 45);
+makeStars('stars3', 50);
+makeStars('stars4', 40);
+makeStars('stars5', 45);
+makeStars('stars6', 55);
+makeStars('stars7', 50);
+makeStars('stars8', 45);
+
+function gerarPDF() {
+  const btn = event.target;
+  btn.textContent = '⏳ Gerando...';
+  btn.disabled = true;
+  const opt = {
+    margin: [0,0,0,0],
+    filename: 'o-sonho-da-estrelinha-lua.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 3, letterRendering: true, useCORS: true, logging: false },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+  };
+  html2pdf().set(opt).from(document.getElementById('book')).save().then(function() {
+    btn.textContent = '✅ PDF Salvo!';
+    setTimeout(() => {
+      btn.textContent = '⬇️ Baixar PDF';
+      btn.disabled = false;
+    }, 2000);
+  });
+}
+
+// SVG gradient defs (injected via JS for scope)
+const defs = `
+<svg style="position:absolute;width:0;height:0;">
+  <defs>
+    <radialGradient id="sg1" cx="50%" cy="50%">
+      <stop offset="0%" stop-color="#ffd700"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+    <radialGradient id="sg2" cx="40%" cy="40%">
+      <stop offset="0%" stop-color="#fff8dc"/>
+      <stop offset="100%" stop-color="#ffd700"/>
+    </radialGradient>
+    <radialGradient id="cg1" cx="35%" cy="35%">
+      <stop offset="0%" stop-color="#fff8dc"/>
+      <stop offset="60%" stop-color="#ffd700"/>
+      <stop offset="100%" stop-color="#e5a500"/>
+    </radialGradient>
+    <radialGradient id="fg1" cx="50%" cy="50%">
+      <stop offset="0%" stop-color="#fff8dc"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+  </defs>
+</svg>`;
+document.body.insertAdjacentHTML('beforeend', defs);
+</script>
+</body>
+</html>

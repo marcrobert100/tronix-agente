@@ -1,0 +1,7 @@
+*.pdf
+*.pyc
+__pycache__/
+node_modules/
+.env
+.DS_Store
+thumbs.db

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InfoEngine — Sistema de Infográficos</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system/_variables.css">
+<link rel="stylesheet" href="design-system/_typography.css">
+<link rel="stylesheet" href="design-system/_components.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: linear-gradient(135deg, var(--night-900), var(--night-800));
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-8);
+}
+
+.hero {
+  text-align: center;
+  padding: var(--space-12) var(--space-8);
+  max-width: 700px;
+}
+
+.hero h1 {
+  color: var(--gold-400);
+  font-size: var(--font-size-4xl);
+  margin-bottom: var(--space-4);
+}
+
+.hero p {
+  color: rgba(255,255,255,0.6);
+  font-size: var(--font-size-lg);
+  margin: 0 auto;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-6);
+  max-width: 1100px;
+  width: 100%;
+  margin: var(--space-8) 0;
+}
+
+.card-template {
+  background: rgba(255,255,255,0.05);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all 0.3s;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.card-template:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255,215,0,0.2);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.card-template .preview {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, var(--night-700), var(--night-800));
+}
+
+.card-template .info {
+  padding: var(--space-6);
+}
+
+.card-template .info h3 {
+  color: var(--gold-400);
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--space-2);
+}
+
+.card-template .info p {
+  color: rgba(255,255,255,0.5);
+  font-size: var(--font-size-sm);
+  margin: 0;
+  line-height: var(--line-height-normal);
+}
+
+.card-template .info .tags {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.tag {
+  padding: 0.2rem 0.8rem;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.tag-infantil { background: rgba(255,215,0,0.15); color: var(--gold-400); }
+.tag-pdf { background: rgba(255,122,90,0.15); color: var(--coral-400); }
+.tag-svg { background: rgba(100,200,255,0.15); color: #80d8ff; }
+
+.preview-icon svg {
+  width: 80px;
+  height: 80px;
+  opacity: 0.4;
+}
+
+.stats {
+  display: flex;
+  gap: var(--space-8);
+  margin: var(--space-8) 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat .num {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: var(--font-size-3xl);
+  color: var(--gold-400);
+}
+
+.stat .lbl {
+  font-size: var(--font-size-sm);
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.footer {
+  margin-top: var(--space-12);
+  padding: var(--space-8);
+  text-align: center;
+  color: rgba(255,255,255,0.2);
+  font-size: var(--font-size-sm);
+}
+
+@media (max-width: 640px) {
+  .hero h1 { font-size: var(--font-size-3xl); }
+  .gallery { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>InfoEngine</h1>
+  <p>Sistema profissional de criação de infográficos, livros infantis e materiais visuais com templates HTML/CSS/SVG de alta qualidade.</p>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="num">2</div><div class="lbl">Templates</div></div>
+  <div class="stat"><div class="num">1</div><div class="lbl">Design System</div></div>
+  <div class="stat"><div class="num">2</div><div class="lbl">Ferramentas</div></div>
+  <div class="stat"><div class="num">SVG</div><div class="lbl">Ilustrações</div></div>
+</div>
+
+<div class="gallery">
+  <a href="templates/infantil/o-sonho-da-estrelinha-lua.html" class="card-template" style="text-decoration:none;color:inherit;">
+    <div class="preview">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+        <circle cx="55" cy="25" r="18" fill="#ffd700" opacity="0.8"/>
+        <circle cx="62" cy="22" r="15" fill="none"/>
+        <circle cx="25" cy="50" r="3" fill="#ffd700" opacity="0.5"/>
+        <circle cx="15" cy="35" r="2" fill="#fff" opacity="0.4"/>
+        <circle cx="60" cy="55" r="1.5" fill="#fff" opacity="0.3"/>
+        <circle cx="40" cy="15" r="2.5" fill="#ffd700" opacity="0.6"/>
+        <rect x="12" y="58" width="25" height="15" rx="3" fill="#1a1a5e" opacity="0.5"/>
+        <circle cx="22" cy="64" r="4" fill="#fce4ec" opacity="0.6"/>
+      </svg>
+    </div>
+    <div class="info">
+      <h3>O Sonho da Estrelinha Lua</h3>
+      <p>Livro infantil ilustrado com 10 páginas em SVG vetorial. Exporta para PDF com um clique.</p>
+      <div class="tags">
+        <span class="tag tag-infantil">Infantil</span>
+        <span class="tag tag-pdf">PDF</span>
+        <span class="tag tag-svg">SVG</span>
+      </div>
+    </div>
+  </a>
+
+  <div class="card-template" style="opacity:0.5;cursor:default;">
+    <div class="preview">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+        <rect x="10" y="15" width="60" height="50" rx="4" fill="none" stroke="#ffd700" stroke-width="1" opacity="0.3"/>
+        <line x1="20" y1="30" x2="60" y2="30" stroke="#ffd700" stroke-width="1" opacity="0.2"/>
+        <line x1="20" y1="40" x2="50" y2="40" stroke="#ffd700" stroke-width="1" opacity="0.2"/>
+        <line x1="20" y1="50" x2="55" y2="50" stroke="#ffd700" stroke-width="1" opacity="0.2"/>
+        <rect x="25" y="20" width="30" height="6" rx="1" fill="#ffd700" opacity="0.4"/>
+      </svg>
+    </div>
+    <div class="info">
+      <h3>Infográfico Profissional</h3>
+      <p>Template de infográfico de vendas com grid de benefícios, estatísticas, tabela de specs e CTA.</p>
+      <div class="tags">
+        <span class="tag tag-infantil">Infográfico</span>
+        <span class="tag tag-pdf">PDF</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  InfoEngine &mdash; Marcos Roberto &mdash; MIT License
+</div>
+</body>
+</html>
