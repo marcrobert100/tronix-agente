@@ -18,11 +18,11 @@ if os.path.exists(env_path):
             if v and k not in os.environ:
                 os.environ[k] = str(v)
 
-OR_KEY = (os.environ.get("OPENROUTER_API_KEY") or os.environ.get("ANTHROPIC_API_KEY") or "")
+OR_KEY = (os.environ.get("OPENROUTER_API_KEY") or os.environ.get("NVIDIA_API_KEY") or os.environ.get("ANTHROPIC_API_KEY") or "")
 if OR_KEY and not os.environ.get("OPENROUTER_API_KEY"):
     os.environ["OPENROUTER_API_KEY"] = OR_KEY
 
-LLM_MODEL = os.environ.get("TRONIX_LLM", "openrouter/google/gemini-2.0-flash-exp")
+LLM_MODEL = os.environ.get("TRONIX_LLM", "openrouter/nvidia/llama-3.1-nemotron-ultra-253b-v1")
 
 def carregar_memoria():
     with open(MEMORIA_PATH, "r", encoding="utf-8") as f:
