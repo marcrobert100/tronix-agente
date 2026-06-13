@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Histórias Mágicas - Leitura Infantil</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg-body:#0b081a;
+  --bg-card:#15123a;
+  --gold:#ffd700;
+  --gold-light:#fff8dc;
+  --coral:#ff7a5a;
+  --text-light:#e0d8f0;
+  --text-muted:#8888aa;
+  --cream:#fdf8f0;
+  --font-display:'Playfair Display',Georgia,serif;
+  --font-body:'Quicksand',sans-serif;
+}
+body{
+  font-family:var(--font-body);
+  background:linear-gradient(135deg,#0b081a,#15123a,#0b081a);
+  min-height:100vh;color:#fff;
+}
+.hidden{display:none!important}
+
+/* HOME */
+#home{padding:2rem;max-width:1200px;margin:0 auto}
+#home header{text-align:center;padding:3rem 1rem 2rem}
+#home header h1{
+  font-family:var(--font-display);font-weight:900;font-size:3rem;
+  background:linear-gradient(90deg,var(--gold),var(--coral));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+#home header p{color:var(--text-muted);font-size:1.1rem;margin-top:.5rem}
+.stats-bar{
+  display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;
+  margin-bottom:2rem;
+}
+.stat-card{
+  background:var(--bg-card);border:1px solid rgba(255,255,255,.06);
+  border-radius:16px;padding:1rem 2rem;text-align:center;min-width:120px;
+}
+.stat-card .num{font-size:2rem;font-weight:700;color:var(--gold)}
+.stat-card .label{font-size:.8rem;color:var(--text-muted);margin-top:.2rem}
+.story-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem}
+.story-card{
+  background:var(--bg-card);border:1px solid rgba(255,255,255,.06);
+  border-radius:20px;overflow:hidden;cursor:pointer;
+  transition:transform .3s,box-shadow .3s;
+}
+.story-card:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(255,215,0,.08)}
+.story-card .thumb{
+  height:160px;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.story-card .thumb svg{width:120px;height:120px;opacity:.8}
+.story-card .badge{
+  position:absolute;top:10px;right:10px;
+  background:rgba(255,215,0,.15);color:var(--gold);
+  padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:700;
+}
+.story-card .info{padding:1.2rem}
+.story-card .info h3{font-family:var(--font-display);font-size:1.1rem;margin-bottom:.4rem}
+.story-card .info p{font-size:.85rem;color:var(--text-muted);line-height:1.5}
+.story-card .info .meta{display:flex;gap:.8rem;margin-top:.8rem;font-size:.75rem;color:var(--text-muted)}
+.story-card .info .meta span{display:flex;align-items:center;gap:.3rem}
+
+/* READER */
+#reader{position:fixed;inset:0;z-index:1000;background:var(--bg-body);display:flex;flex-direction:column}
+#reader .top-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.8rem 1.5rem;background:rgba(0,0,0,.4);
+  border-bottom:1px solid rgba(255,255,255,.06);z-index:10;
+}
+#reader .top-bar .title{font-weight:600;font-size:.95rem}
+#reader .top-bar .title span{color:var(--text-muted);font-weight:400}
+#reader .top-bar .controls{display:flex;gap:.5rem;align-items:center}
+#reader .top-bar .controls button{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  color:#fff;padding:.4rem .9rem;border-radius:8px;cursor:pointer;
+  font-size:.8rem;transition:all .2s;
+}
+#reader .top-bar .controls button:hover{background:rgba(255,255,255,.12)}
+#reader .top-bar .controls button.active{background:var(--coral);border-color:var(--coral)}
+#reader .top-bar .close-btn{
+  background:none;border:none;color:var(--text-muted);font-size:1.5rem;
+  cursor:pointer;padding:.2rem .6rem;border-radius:8px;
+}
+#reader .top-bar .close-btn:hover{background:rgba(255,255,255,.06);color:#fff}
+
+.book-container{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  padding:1rem;overflow:hidden;
+}
+.book-page{
+  width:100%;max-width:820px;height:100%;max-height:620px;
+  background:var(--cream);border-radius:20px;overflow:hidden;
+  position:relative;display:flex;flex-direction:column;
+  box-shadow:0 20px 80px rgba(0,0,0,.5);
+  color:var(--text-dark);
+}
+.book-page .page-content{
+  flex:1;display:flex;flex-direction:column;
+  overflow:hidden;position:relative;
+}
+.book-page .page-illustration{
+  flex:1;min-height:0;
+  display:flex;align-items:center;justify-content:center;
+  padding:1rem;position:relative;
+}
+.book-page .page-illustration svg{max-width:100%;max-height:100%;width:auto;height:auto}
+.book-page .page-text{
+  padding:1.2rem 1.8rem;
+  background:linear-gradient(transparent,rgba(0,0,0,.03));
+}
+.book-page .page-text p{
+  font-size:1.1rem;line-height:1.7;font-weight:500;
+}
+.book-page .page-text p em{
+  font-family:var(--font-display);font-style:italic;font-weight:700;
+  color:var(--coral);
+}
+.book-page .page-num{
+  position:absolute;bottom:.8rem;right:1.5rem;
+  font-size:.8rem;color:rgba(0,0,0,.15);font-weight:600;
+}
+
+.book-page.cover-page{
+  background:linear-gradient(160deg,#0b081a,#15123a,#2a235a,#15123a);
+  color:#fff;justify-content:center;align-items:center;text-align:center;
+}
+.book-page.cover-page .cover-content{padding:2rem}
+.book-page.cover-page h1{
+  font-family:var(--font-display);font-weight:900;font-size:3rem;
+  color:var(--gold);text-shadow:0 2px 40px rgba(255,215,0,.15);
+  line-height:1.2;
+}
+.book-page.cover-page .cover-sub{
+  font-family:var(--font-display);font-style:italic;
+  font-size:1.2rem;color:rgba(255,255,255,.3);margin-top:.5rem;
+}
+.book-page.cover-page .cover-svg-wrap{width:240px;height:200px;margin:.8rem auto}
+.book-page.cover-page .cover-svg-wrap svg{width:100%;height:100%}
+.book-page.cover-page .cover-age{
+  display:inline-block;margin-top:1rem;padding:.4rem 1.5rem;
+  border:1px solid rgba(255,215,0,.2);border-radius:2rem;
+  font-size:.85rem;color:var(--gold);letter-spacing:2px;
+}
+
+#reader .bottom-bar{
+  display:flex;align-items:center;justify-content:center;gap:1.5rem;
+  padding:.8rem 1.5rem;background:rgba(0,0,0,.4);
+  border-top:1px solid rgba(255,255,255,.06);z-index:10;
+}
+#reader .bottom-bar button{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  color:#fff;padding:.5rem 1.2rem;border-radius:10px;cursor:pointer;
+  font-size:.9rem;transition:all .2s;min-width:100px;
+}
+#reader .bottom-bar button:hover{background:rgba(255,255,255,.12)}
+#reader .bottom-bar button:disabled{opacity:.3;cursor:not-allowed}
+#reader .bottom-bar button.primary{background:var(--coral);border-color:var(--coral)}
+#reader .bottom-bar .progress-text{font-size:.85rem;color:var(--text-muted);min-width:80px;text-align:center}
+#reader .bottom-bar .speed-control{display:flex;align-items:center;gap:.4rem;font-size:.8rem;color:var(--text-muted)}
+#reader .bottom-bar .speed-control input[type=range]{width:80px;accent-color:var(--gold)}
+
+.completed-badge{
+  position:absolute;top:10px;right:10px;
+  background:rgba(46,204,113,.15);color:#2ecc71;
+  padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:700;
+}
+
+@media(max-width:600px){
+  #home{padding:1rem}
+  #home header h1{font-size:2rem}
+  .story-grid{grid-template-columns:1fr}
+  .book-page{max-height:85vh;border-radius:12px}
+  .book-page.cover-page h1{font-size:2rem}
+  .book-page .page-text{padding:.8rem 1rem}
+  .book-page .page-text p{font-size:1rem}
+  #reader .bottom-bar{gap:.8rem;flex-wrap:wrap}
+  #reader .bottom-bar button{min-width:70px;padding:.4rem .8rem;font-size:.8rem}
+}
+</style>
+</head>
+<body>
+
+<div id="home">
+  <header>
+    <h1>Histórias Mágicas</h1>
+    <p>10 histórias infantis com narração e virada automática</p>
+  </header>
+  <div class="stats-bar">
+    <div class="stat-card"><div class="num" id="totalStories">10</div><div class="label">Histórias</div></div>
+    <div class="stat-card"><div class="num" id="completedCount">0</div><div class="label">Lidas</div></div>
+    <div class="stat-card"><div class="num" id="totalPages">0</div><div class="label">Páginas</div></div>
+  </div>
+  <div class="story-grid" id="storyGrid"></div>
+</div>
+
+<div id="reader" class="hidden">
+  <div class="top-bar">
+    <div class="title" id="readerTitle">Carregando... <span id="readerSubtitle"></span></div>
+    <div class="controls">
+      <button id="btnAuto" class="active" onclick="toggleAuto()">Automático</button>
+      <button id="btnAudio" class="active" onclick="toggleAudio()">Áudio</button>
+      <button class="close-btn" onclick="closeReader()">✕</button>
+    </div>
+  </div>
+  <div class="book-container">
+    <div class="book-page" id="bookPage"></div>
+  </div>
+  <div class="bottom-bar">
+    <button id="btnPrev" onclick="prevPage()">◀ Anterior</button>
+    <div class="progress-text" id="progressText">1 / 1</div>
+    <button id="btnNext" class="primary" onclick="nextPage()">Próxima ▶</button>
+    <div class="speed-control">
+      <span>Velocidade:</span>
+      <input type="range" id="speedRange" min="0.5" max="2" step="0.25" value="1">
+      <span id="speedLabel">1x</span>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORIES = [
+  {
+    id:1, title:"O Sonho da Estrelinha Lua", age:"3-6 anos", pages:6,
+    color:"#1a1a5e",
+    icon:`<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="#ffd700" opacity=".9"/><circle cx="50" cy="50" r="22" fill="#fff8dc"/><path d="M50 20 L53 38 L72 38 L57 50 L62 68 L50 56 L38 68 L43 50 L28 38 L47 38Z" fill="#ffd700" opacity=".6"/><circle cx="32" cy="28" r="3" fill="#fff" opacity=".6"/><circle cx="68" cy="22" r="2" fill="#fff" opacity=".4"/><circle cx="75" cy="45" r="2.5" fill="#fff" opacity=".5"/><circle cx="25" cy="50" r="1.5" fill="#fff" opacity=".3"/></svg>`,
+    cover:`<svg viewBox="0 0 240 200"><circle cx="120" cy="80" r="55" fill="#ffd700" opacity=".9"/><circle cx="120" cy="80" r="40" fill="#fff8dc"/><path d="M120 30 L127 65 L165 65 L135 85 L145 122 L120 102 L95 122 L105 85 L75 65 L113 65Z" fill="#ffd700" opacity=".5"/><circle cx="85" cy="45" r="5" fill="#fff" opacity=".6"/><circle cx="155" cy="40" r="4" fill="#fff" opacity=".4"/><circle cx="170" cy="75" r="3" fill="#fff" opacity=".5"/><circle cx="70" cy="80" r="2" fill="#fff" opacity=".3"/><text x="120" y="170" text-anchor="middle" fill="#ffd700" font-size="14" font-family="Quicksand" opacity=".5">★ ✦ ★</text></svg>`,
+    pages:[
+      {txt:"Era uma vez, no céu mais escuro que já existiu, uma pequena estrelinha chamada Lua. Ela não era como as outras estrelas — enquanto todas brilhavam forte e contentes, Lua se sentia pequena e sem graça.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#0b081a"/><circle cx="40" cy="30" r="1.5" fill="#fff" opacity=".3"/><circle cx="100" cy="20" r="1" fill="#fff" opacity=".2"/><circle cx="170" cy="35" r="2" fill="#fff" opacity=".4"/><circle cx="60" cy="50" r="1" fill="#fff" opacity=".2"/><circle cx="150" cy="60" r="1.5" fill="#fff" opacity=".3"/><circle cx="100" cy="80" r="25" fill="#ffd700" opacity=".6"/><circle cx="100" cy="80" r="18" fill="#fff8dc" opacity=".8"/><path d="M100 60 L105 75 L120 75 L108 84 L112 100 L100 90 L88 100 L92 84 L80 75 L95 75Z" fill="#ffd700" opacity=".4"/><text x="100" y="130" text-anchor="middle" fill="rgba(255,255,255,.15)" font-size="8">★ ⋆ ★ ⋆ ★</text></svg>`},
+      {txt:"Cada noite, Lua olhava para as irmãs estrelas e suspirava: <em>— Por que não brilho como elas?</em> As estrelas riam e dançavam no céu, mas Lua se escondia atrás das nuvens.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#0f0c2e"/><circle cx="30" cy="25" r="2" fill="#fff" opacity=".3"/><circle cx="170" cy="30" r="2.5" fill="#fff" opacity=".4"/><circle cx="50" cy="40" r="1" fill="#fff" opacity=".2"/><circle cx="160" cy="55" r="1.5" fill="#fff" opacity=".3"/><circle cx="80" cy="90" r="18" fill="#ffd700" opacity=".4"/><circle cx="80" cy="90" r="12" fill="#fff8dc" opacity=".6"/><path d="M80 75 L84 88 L96 88 L86 95 L90 108 L80 100 L70 108 L74 95 L64 88 L76 88Z" fill="#ffd700" opacity=".3"/><ellipse cx="100" cy="65" rx="50" ry="20" fill="rgba(255,255,255,.05)"/><ellipse cx="110" cy="55" rx="40" ry="15" fill="rgba(255,255,255,.03)"/></svg>`},
+      {txt:"Um dia, o Vento Sábio passou por ela e perguntou: <em>— Por que esconde seu brilho, pequena Lua?</em> Ela respondeu: <em>— Meu brilho é tão fraquinho... ninguém repara.</em>",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#13103a"/><circle cx="50" cy="30" r="1.5" fill="#fff" opacity=".3"/><circle cx="160" cy="25" r="2" fill="#fff" opacity=".4"/><circle cx="120" cy="85" r="22" fill="#ffd700" opacity=".5"/><circle cx="120" cy="85" r="15" fill="#fff8dc" opacity=".7"/><path d="M120 68 L124 82 L136 82 L127 90 L130 104 L120 95 L110 104 L113 90 L104 82 L116 82Z" fill="#ffd700" opacity=".4"/><path d="M30 50 Q60 40 90 50 Q110 55 130 50 Q150 45 170 55" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="1.5" stroke-dasharray="4 3"/><path d="M25 70 Q55 60 85 70 Q105 75 125 70 Q145 65 175 75" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1" stroke-dasharray="3 4"/></svg>`},
+      {txt:"O Vento Sábio sorriu. <em>— Cada estrela tem seu próprio brilho, Lua. O seu não é fraco — é suave e doce. Você ilumina os sonhos de quem dorme.</em> Lua nunca tinha pensado assim.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#0b081a"/><circle cx="30" cy="25" r="2" fill="#fff" opacity=".4"/><circle cx="170" cy="28" r="1.5" fill="#fff" opacity=".3"/><circle cx="100" cy="70" r="28" fill="#ffd700" opacity=".7"/><circle cx="100" cy="70" r="20" fill="#fff8dc" opacity=".9"/><path d="M100 50 L105 65 L118 65 L108 73 L112 88 L100 78 L88 88 L92 73 L82 65 L95 65Z" fill="#ffd700" opacity=".5"/><circle cx="55" cy="55" r="3" fill="rgba(255,215,0,.2)"/><circle cx="145" cy="50" r="2.5" fill="rgba(255,215,0,.15)"/><circle cx="70" cy="95" r="2" fill="rgba(255,215,0,.1)"/></svg>`},
+      {txt:"Naquela noite, Lua resolveu brilhar do seu jeito. Ela não precisava ser a mais forte — apenas ser ela mesma. E para sua surpresa, as crianças na Terra começaram a apontar para o céu: <em>— Olha a estrelinha mais linda!</em>",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#0f0c2e"/><circle cx="40" cy="28" r="2" fill="#fff" opacity=".4"/><circle cx="160" cy="22" r="1.5" fill="#fff" opacity=".3"/><circle cx="180" cy="40" r="1" fill="#fff" opacity=".2"/><circle cx="20" cy="45" r="1.5" fill="#fff" opacity=".3"/><circle cx="100" cy="65" r="32" fill="#ffd700" opacity=".8"/><circle cx="100" cy="65" r="23" fill="#fff8dc"/><path d="M100 42 L106 60 L124 60 L110 71 L116 90 L100 78 L84 90 L90 71 L76 60 L94 60Z" fill="#ffd700" opacity=".5"/><ellipse cx="100" cy="120" rx="60" ry="15" fill="rgba(255,255,255,.03)"/><text x="100" y="145" text-anchor="middle" fill="rgba(255,255,255,.08)" font-size="7">✧ ─ ⋆ ─ ✧</text></svg>`},
+      {txt:"Lua aprendeu que a verdadeira magia está em ser quem você é. E desde então, toda noite ela brilha suave no céu, iluminando os sonhos de todas as crianças. E você, meu querido, também tem um brilho único e especial.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#0b081a"/><circle cx="30" cy="20" r="2" fill="#fff" opacity=".4"/><circle cx="170" cy="25" r="1.5" fill="#fff" opacity=".3"/><circle cx="50" cy="35" r="1" fill="#fff" opacity=".2"/><circle cx="150" cy="32" r="1.5" fill="#fff" opacity=".3"/><circle cx="100" cy="60" r="35" fill="#ffd700" opacity=".9"/><circle cx="100" cy="60" r="25" fill="#fff8dc"/><path d="M100 35 L107 55 L128 55 L111 66 L118 88 L100 74 L82 88 L89 66 L72 55 L93 55Z" fill="#ffd700" opacity=".5"/><circle cx="40" cy="80" r="12" fill="rgba(255,215,0,.08)"/><circle cx="160" cy="75" r="10" fill="rgba(255,215,0,.06)"/><text x="100" y="140" text-anchor="middle" fill="rgba(255,215,0,.2)" font-size="8">★ FIM ★</text></svg>`}
+    ]},
+  {
+    id:2, title:"O Dragão que Aprendeu a Abraçar", age:"4-7 anos", pages:6,
+    color:"#ff7a30",
+    icon:`<svg viewBox="0 0 100 100"><ellipse cx="50" cy="60" rx="25" ry="30" fill="#ff7a30"/><path d="M50 30 Q60 15 75 20 Q65 25 60 35" fill="#ff7a30"/><path d="M50 30 Q40 15 25 20 Q35 25 40 35" fill="#ff7a30"/><ellipse cx="50" cy="50" rx="15" ry="8" fill="#ffb347" opacity=".6"/><circle cx="40" cy="45" r="3" fill="#fff"/><circle cx="60" cy="45" r="3" fill="#fff"/><circle cx="40" cy="45" r="1.5" fill="#1a1a2e"/><circle cx="60" cy="45" r="1.5" fill="#1a1a2e"/><path d="M45 55 Q50 60 55 55" fill="none" stroke="#e84530" stroke-width="2" stroke-linecap="round"/></svg>`,
+    cover:`<svg viewBox="0 0 240 200"><ellipse cx="120" cy="120" rx="55" ry="60" fill="#ff7a30" opacity=".9"/><path d="M120 70 Q140 40 170 50 Q145 60 140 80" fill="#ff7a30" opacity=".8"/><path d="M120 70 Q100 40 70 50 Q95 60 100 80" fill="#ff7a30" opacity=".8"/><ellipse cx="120" cy="100" rx="30" ry="15" fill="#ffb347" opacity=".5"/><circle cx="105" cy="90" r="5" fill="#fff"/><circle cx="135" cy="90" r="5" fill="#fff"/><circle cx="105" cy="90" r="2.5" fill="#1a1a2e"/><circle cx="135" cy="90" r="2.5" fill="#1a1a2e"/><path d="M112 105 Q120 112 128 105" fill="none" stroke="#e84530" stroke-width="3" stroke-linecap="round"/><path d="M85 140 L60 170" stroke="#ff7a30" stroke-width="6" stroke-linecap="round"/><path d="M155 140 L180 170" stroke="#ff7a30" stroke-width="6" stroke-linecap="round"/><path d="M90 165 L65 195" stroke="#ff7a30" stroke-width="5" stroke-linecap="round"/><path d="M150 165 L175 195" stroke="#ff7a30" stroke-width="5" stroke-linecap="round"/><text x="120" y="190" text-anchor="middle" fill="#ffb347" font-size="14" font-family="Quicksand" opacity=".5">✦ ✦ ✦</text></svg>`,
+    pages:[
+      {txt:"Era uma vez um dragão chamado Fogo. Ele era grande, verde-escuro, com escamas brilhantes e asas enormes. Mas Fogo tinha um problema: ele não sabia abraçar.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#1a0e08"/><ellipse cx="100" cy="100" rx="45" ry="50" fill="#2d5a3d"/><path d="M100 60 Q120 30 145 40 Q125 50 120 70" fill="#2d5a3d"/><path d="M100 60 Q80 30 55 40 Q75 50 80 70" fill="#2d5a3d"/><ellipse cx="100" cy="85" rx="25" ry="12" fill="#4a8a5a" opacity=".5"/><circle cx="88" cy="78" r="4" fill="#fff"/><circle cx="112" cy="78" r="4" fill="#fff"/><circle cx="88" cy="78" r="2" fill="#1a1a2e"/><circle cx="112" cy="78" r="2" fill="#1a1a2e"/><path d="M94 92 Q100 98 106 92" fill="none" stroke="#1a3a2a" stroke-width="2" stroke-linecap="round"/></svg>`},
+      {txt:"Quando Fogo tentava abraçar alguém, suas escamas arranhavam, seu rabo balançava e derrubava tudo. Os animais da floresta fugiam quando ele se aproximava.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#2a1a0e"/><ellipse cx="60" cy="100" rx="35" ry="40" fill="#3a6a4d"/><path d="M60 70 Q70 50 85 55 Q75 60 70 75" fill="#3a6a4d"/><ellipse cx="60" cy="85" rx="18" ry="10" fill="#5a9a6a" opacity=".4"/><circle cx="52" cy="80" r="3" fill="#fff"/><circle cx="68" cy="80" r="3" fill="#fff"/><path d="M56 92 Q60 96 64 92" fill="none" stroke="#2a4a3a" stroke-width="1.5" stroke-linecap="round"/><circle cx="140" cy="50" r="8" fill="#8B4513"/><circle cx="150" cy="45" r="5" fill="#a0522d"/><circle cx="155" cy="55" r="6" fill="#8B4513"/><circle cx="170" cy="60" r="4" fill="#a0522d"/><circle cx="135" cy="70" r="7" fill="#8B4513"/><text x="155" y="110" fill="#8B4513" font-size="6">corre</text></svg>`},
+      {txt:"Triste, Fogo foi até a Coruja Sábia. <em>— Ninguém quer minha amizade. Meus abraços machucam.</em> A coruja piscou os olhos dourados: <em>— Você está abraçando do seu jeito. Tente do jeito do outro.</em>",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#0f0c2e"/><ellipse cx="135" cy="90" rx="30" ry="35" fill="#3a6a4d"/><path d="M135 65 Q145 45 160 50 Q148 55 145 70" fill="#3a6a4d"/><ellipse cx="135" cy="80" rx="16" ry="8" fill="#5a9a6a" opacity=".4"/><circle cx="128" cy="75" r="3" fill="#fff"/><circle cx="142" cy="75" r="3" fill="#fff"/><path d="M130 85 Q135 90 140 85" fill="none" stroke="#2a4a3a" stroke-width="1.5" stroke-linecap="round"/><circle cx="40" cy="55" r="12" fill="#8B6F47"/><ellipse cx="40" cy="53" rx="9" ry="7" fill="#c4a97d"/><circle cx="36" cy="50" r="2.5" fill="#ffd700"/><circle cx="44" cy="50" r="2.5" fill="#ffd700"/><path d="M37 56 L40 60 L43 56" fill="none" stroke="#8B6F47" stroke-width="1"/></svg>`},
+      {txt:"Fogo decidiu tentar. Primeiro, aproximou-se devagar de um coelhinho. Respirou fundo e, em vez de apertar, apenas encostou suavemente a ponta do focinho. O coelhinho não fugiu.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#1a2a1a"/><ellipse cx="70" cy="105" rx="30" ry="35" fill="#3a6a4d"/><path d="M70 80 Q80 60 95 65 Q82 70 80 85" fill="#3a6a4d"/><ellipse cx="70" cy="90" rx="16" ry="8" fill="#5a9a6a" opacity=".4"/><circle cx="62" cy="85" r="3" fill="#fff"/><circle cx="78" cy="85" r="3" fill="#fff"/><path d="M64 95 Q70 100 76 95" fill="none" stroke="#2a4a3a" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="130" cy="95" rx="10" ry="14" fill="#d4c4a8"/><ellipse cx="130" cy="85" rx="8" ry="6" fill="#e8dcc8"/><circle cx="126" cy="82" r="1.5" fill="#1a1a2e"/><circle cx="134" cy="82" r="1.5" fill="#1a1a2e"/><ellipse cx="130" cy="88" rx="2" ry="1.5" fill="#pink"/><path d="M128 78 Q130 75 132 78" fill="none" stroke="#1a1a2e" stroke-width=".8"/></svg>`},
+      {txt:"<em>— É macio...</em> disse o coelhinho. Fogo sentiu o coração derreter. Ele tinha dado um abraço do jeito certo. Os animais foram se aproximando, um a um. Fogo aprendeu que abraçar é sobre cuidado, não sobre força.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#1a2a1a"/><ellipse cx="100" cy="100" rx="40" ry="45" fill="#3a6a4d"/><path d="M100 65 Q115 40 135 50 Q118 55 115 72" fill="#3a6a4d"/><path d="M100 65 Q85 40 65 50 Q82 55 85 72" fill="#3a6a4d"/><ellipse cx="100" cy="88" rx="20" ry="10" fill="#5a9a6a" opacity=".4"/><circle cx="92" cy="82" r="3" fill="#fff"/><circle cx="108" cy="82" r="3" fill="#fff"/><path d="M96 90 Q100 95 104 90" fill="none" stroke="#2a4a3a" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="45" cy="55" rx="8" ry="10" fill="#d4c4a8"/><ellipse cx="55" cy="52" rx="6" ry="8" fill="#c4a47a"/><ellipse cx="155" cy="50" rx="8" ry="10" fill="#d4c4a8"/><ellipse cx="145" cy="48" rx="7" ry="9" fill="#8B4513"/></svg>`},
+      {txt:"E desde aquele dia, Fogo se tornou o dragão mais querido da floresta. Seus abraços eram famosos — quentinhos, suaves e cheios de amor. Ele aprendeu que a verdadeira força está na delicadeza.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#1a2a1a"/><ellipse cx="100" cy="95" rx="50" ry="55" fill="#3a6a4d"/><path d="M100 55 Q120 20 150 35 Q125 45 120 65" fill="#3a6a4d"/><path d="M100 55 Q80 20 50 35 Q75 45 80 65" fill="#3a6a4d"/><ellipse cx="100" cy="78" rx="30" ry="15" fill="#5a9a6a" opacity=".4"/><circle cx="88" cy="72" r="4" fill="#fff"/><circle cx="112" cy="72" r="4" fill="#fff"/><circle cx="88" cy="72" r="2" fill="#1a1a2e"/><circle cx="112" cy="72" r="2" fill="#1a1a2e"/><path d="M94 88 Q100 94 106 88" fill="none" stroke="#2a4a3a" stroke-width="2" stroke-linecap="round"/><circle cx="45" cy="100" r="6" fill="#d4c4a8"/><circle cx="55" cy="95" r="5" fill="#c4a47a"/><circle cx="155" cy="95" r="6" fill="#d4c4a8"/><circle cx="145" cy="100" r="5" fill="#8B4513"/><circle cx="100" cy="108" r="5" fill="#d4c4a8"/><text x="100" y="140" text-anchor="middle" fill="rgba(255,255,255,.15)" font-size="8">♥ FIM ♥</text></svg>`}
+    ]},
+  {
+    id:3, title:"A Fada do Arco-Íris", age:"3-6 anos", pages:5,
+    color:"#e63946",
+    icon:`<svg viewBox="0 0 100 100"><circle cx="50" cy="35" r="15" fill="#ffd700" opacity=".9"/><path d="M50 50 L50 85" stroke="#ffd700" stroke-width="3"/><path d="M50 55 Q35 65 30 80" stroke="#ff7a5a" stroke-width="2" fill="none"/><path d="M50 55 Q65 65 70 80" stroke="#ff7a5a" stroke-width="2" fill="none"/><path d="M50 50 L35 60" stroke="#ffd700" stroke-width="1.5"/><path d="M50 50 L65 60" stroke="#ffd700" stroke-width="1.5"/></svg>`,
+    cover:`<svg viewBox="0 0 240 200"><path d="M30 160 Q60 60 120 60 Q180 60 210 160" fill="none" stroke="#ff0000" stroke-width="6"/><path d="M35 158 Q65 72 120 72 Q175 72 205 158" fill="none" stroke="#ff7a00" stroke-width="6"/><path d="M40 156 Q70 84 120 84 Q170 84 200 156" fill="none" stroke="#ffd700" stroke-width="6"/><path d="M45 154 Q75 96 120 96 Q165 96 195 154" fill="none" stroke="#00cc44" stroke-width="6"/><path d="M50 152 Q80 108 120 108 Q160 108 190 152" fill="none" stroke="#0088ff" stroke-width="6"/><path d="M55 150 Q85 120 120 120 Q155 120 185 150" fill="none" stroke="#8800cc" stroke-width="6"/><circle cx="120" cy="50" r="18" fill="#ffd700"/><path d="M120 68 L120 95" stroke="#ffd700" stroke-width="4"/><circle cx="120" cy="42" r="8" fill="#fff8dc"/><text x="120" y="185" text-anchor="middle" fill="rgba(255,255,255,.3)" font-size="12" font-family="Quicksand">🌈 ✨ 🌈</text></svg>`,
+    pages:[
+      {txt:"Lili era uma fada diferente. Enquanto as outras fadas usavam vestidos cor-de-rosa e azul, Lili usava todas as cores que existiam.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#0f0c2e"/><circle cx="100" cy="55" r="20" fill="#ffd700" opacity=".8"/><circle cx="100" cy="55" r="12" fill="#fff8dc"/><path d="M100 75 L100 110" stroke="#ffd700" stroke-width="4"/><path d="M100 80 Q80 95 70 115" fill="none" stroke="#ff7a5a" stroke-width="3"/><path d="M100 80 Q120 95 130 115" fill="none" stroke="#00cc44" stroke-width="3"/><path d="M100 75 L80 90" stroke="#ffd700" stroke-width="2"/><path d="M100 75 L120 90" stroke="#ffd700" stroke-width="2"/></svg>`},
+      {txt:"<em>— Você não é uma fada de verdade!</em> diziam. <em>— Fadas são delicadas, não coloridas!</em> Lili ficava triste, mas não queria mudar.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#15123a"/><circle cx="50" cy="35" r="12" fill="#ffd700" opacity=".5"/><circle cx="45" cy="32" r="5" fill="#fff8dc" opacity=".6"/><circle cx="150" cy="40" r="14" fill="#ffd700" opacity=".5"/><circle cx="145" cy="37" r="6" fill="#fff8dc" opacity=".6"/><circle cx="100" cy="70" r="18" fill="#ffd700" opacity=".4"/><circle cx="100" cy="70" r="10" fill="#fff8dc" opacity=".5"/><path d="M100 88 L100 115" stroke="#ffd700" stroke-width="3" opacity=".4"/></svg>`},
+      {txt:"Um dia, o céu cinzento cobriu a floresta. Tudo ficou sem cor. As outras fadas tentaram trazer a cor de volta, mas nada funcionava.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#3a3a4a"/><ellipse cx="100" cy="40" rx="80" ry="30" fill="#4a4a5a"/><ellipse cx="60" cy="35" rx="40" ry="15" fill="#5a5a6a"/><ellipse cx="150" cy="38" rx="30" ry="12" fill="#5a5a6a"/><circle cx="40" cy="55" r="10" fill="#888" opacity=".3"/><circle cx="160" cy="50" r="10" fill="#888" opacity=".3"/><circle cx="100" cy="85" r="15" fill="#666" opacity=".2"/></svg>`},
+      {txt:"Lili então voou bem alto. Bateu as asas com força e, de repente, um arco-íris gigante surgiu no céu! Todas as cores voltaram — mais vivas que antes.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#0b081a"/><path d="M20 140 Q50 40 100 40 Q150 40 180 140" fill="none" stroke="#ff0000" stroke-width="5"/><path d="M25 138 Q55 50 100 50 Q145 50 175 138" fill="none" stroke="#ff7a00" stroke-width="5"/><path d="M30 136 Q60 60 100 60 Q140 60 170 136" fill="none" stroke="#ffd700" stroke-width="5"/><path d="M35 134 Q65 70 100 70 Q135 70 165 134" fill="none" stroke="#00cc44" stroke-width="5"/><path d="M40 132 Q70 80 100 80 Q130 80 160 132" fill="none" stroke="#0088ff" stroke-width="5"/><circle cx="100" cy="30" r="15" fill="#ffd700"/><circle cx="100" cy="22" r="6" fill="#fff8dc"/></svg>`},
+      {txt:"As fadas entenderam que Lili era especial justamente por ser diferente. Cada cor tinha seu valor. E Lili se tornou a Fada Guardiã do Arco-Íris, espalhando cores e alegria por onde passava.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#0f0c2e"/><path d="M30 140 Q60 60 100 60 Q140 60 170 140" fill="none" stroke="url(#g1)" stroke-width="4"/><defs><linearGradient id="g1"><stop offset="0%" stop-color="#ff0000"/><stop offset="25%" stop-color="#ffd700"/><stop offset="50%" stop-color="#00cc44"/><stop offset="75%" stop-color="#0088ff"/><stop offset="100%" stop-color="#8800cc"/></linearGradient></defs><circle cx="100" cy="40" r="18" fill="#ffd700"/><circle cx="100" cy="32" r="8" fill="#fff8dc"/><path d="M100 58 L100 88" stroke="#ffd700" stroke-width="4"/><circle cx="45" cy="100" r="8" fill="rgba(255,215,0,.1)"/><circle cx="155" cy="95" r="6" fill="rgba(255,215,0,.08)"/><text x="100" y="150" text-anchor="middle" fill="rgba(255,255,255,.12)" font-size="8">🌈 FIM 🌈</text></svg>`}
+    ]},
+  {
+    id:4, title:"O Leão que Não Sabia Rugir", age:"4-7 anos", pages:5,
+    color:"#f4a261",
+    icon:`<svg viewBox="0 0 100 100"><circle cx="50" cy="40" r="25" fill="#f4a261"/><circle cx="50" cy="40" r="20" fill="#e9c46a"/><circle cx="38" cy="35" r="3" fill="#1a1a2e"/><circle cx="62" cy="35" r="3" fill="#1a1a2e"/><ellipse cx="50" cy="45" rx="6" ry="3" fill="#1a1a2e"/><circle cx="50" cy="42" r="3" fill="#ffb347"/><path d="M30 25 Q40 15 50 20 Q60 15 70 25" fill="#e9c46a"/></svg>`,
+    cover:`<svg viewBox="0 0 240 200"><circle cx="120" cy="90" r="55" fill="#f4a261"/><circle cx="120" cy="90" r="45" fill="#e9c46a"/><circle cx="100" cy="82" r="6" fill="#1a1a2e"/><circle cx="140" cy="82" r="6" fill="#1a1a2e"/><ellipse cx="120" cy="98" rx="12" ry="6" fill="#1a1a2e"/><circle cx="120" cy="93" r="6" fill="#ffb347"/><path d="M85 60 Q105 40 120 50 Q135 40 155 60" fill="#e9c46a"/><path d="M75 65 Q95 50 120 55 Q145 50 165 65" fill="#d4a373"/><text x="120" y="170" text-anchor="middle" fill="#d4a373" font-size="14" font-family="Quicksand">🦁 👑 🦁</text></svg>`,
+    pages:[
+      {txt:"Leo era um leão corajoso e forte, mas tinha um segredo: ele não sabia rugir. Quando tentava, saía um som estranho, parecido com um miado.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#2a1a0e"/><circle cx="100" cy="70" r="35" fill="#f4a261"/><circle cx="100" cy="70" r="28" fill="#e9c46a"/><circle cx="85" cy="65" r="4" fill="#1a1a2e"/><circle cx="115" cy="65" r="4" fill="#1a1a2e"/><ellipse cx="100" cy="78" rx="8" ry="4" fill="#1a1a2e"/><circle cx="100" cy="74" r="4" fill="#ffb347"/><path d="M70 48 Q85 35 100 42 Q115 35 130 48" fill="#e9c46a"/></svg>`},
+      {txt:"Os outros animais riam dele. <em>— Um leão que mia? Isso não existe!</em> Leo ficava envergonhado e ia passear sozinho pela savana.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#3a2a1a"/><circle cx="50" cy="90" r="25" fill="#f4a261" opacity=".7"/><circle cx="50" cy="90" r="18" fill="#e9c46a" opacity=".7"/><circle cx="42" cy="86" r="3" fill="#1a1a2e" opacity=".7"/><circle cx="58" cy="86" r="3" fill="#1a1a2e" opacity=".7"/><circle cx="150" cy="50" r="6" fill="#8B4513"/><circle cx="165" cy="45" r="4" fill="#a0522d"/><circle cx="175" cy="55" r="5" fill="#8B4513"/></svg>`},
+      {txt:"Um dia, encontrou um passarinho caído. <em>— Não consigo voar, minha asa está machucada.</em> Leo queria pedir ajuda, mas só sabia miar.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#2a3a1a"/><circle cx="80" cy="95" r="28" fill="#f4a261"/><circle cx="80" cy="95" r="22" fill="#e9c46a"/><circle cx="70" cy="90" r="3" fill="#1a1a2e"/><circle cx="90" cy="90" r="3" fill="#1a1a2e"/><ellipse cx="80" cy="102" rx="6" ry="3" fill="#1a1a2e"/><ellipse cx="145" cy="60" rx="8" ry="6" fill="#4a90d9"/><circle cx="145" cy="55" r="4" fill="#5a9ae9"/><circle cx="142" cy="53" r="1.5" fill="#1a1a2e"/><path d="M148 58 L158 58 L154 63 Z" fill="#ffd700"/></svg>`},
+      {txt:"O passarinho disse: <em>— Não importa o som que você faz, importa o que você sente.</em> Leo inspirou fundo e, pela primeira vez, um rugido poderoso saiu de seu peito.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#2a3a1a"/><circle cx="100" cy="80" r="40" fill="#f4a261"/><circle cx="100" cy="80" r="32" fill="#e9c46a"/><circle cx="86" cy="74" r="5" fill="#1a1a2e"/><circle cx="114" cy="74" r="5" fill="#1a1a2e"/><ellipse cx="100" cy="90" rx="10" ry="5" fill="#1a1a2e"/><circle cx="100" cy="85" r="5" fill="#ffb347"/><path d="M65 55 Q85 40 100 48 Q115 40 135 55" fill="#e9c46a"/><text x="100" y="140" text-anchor="middle" fill="rgba(255,255,255,.1)" font-size="10">R O A R</text></svg>`},
+      {txt:"O rugido foi tão forte que todos os animais ouviram. Eles se aproximaram e viram Leo cuidando do passarinho. Então entenderam: ser forte não é sobre barulho, é sobre ter um coração bondoso.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#1a2a0e"/><circle cx="100" cy="85" r="42" fill="#f4a261"/><circle cx="100" cy="85" r="34" fill="#e9c46a"/><circle cx="85" cy="78" r="5" fill="#1a1a2e"/><circle cx="115" cy="78" r="5" fill="#1a1a2e"/><ellipse cx="100" cy="95" rx="10" ry="5" fill="#1a1a2e"/><circle cx="100" cy="90" r="5" fill="#ffb347"/><path d="M65 60 Q85 45 100 52 Q115 45 135 60" fill="#e9c46a"/><ellipse cx="105" cy="102" rx="6" ry="4" fill="#4a90d9"/><circle cx="105" cy="99" r="3" fill="#5a9ae9"/><text x="100" y="140" text-anchor="middle" fill="rgba(255,255,255,.12)" font-size="8">🦁 FIM 🦁</text></svg>`}
+    ]},
+  {
+    id:5, title:"A Sementinha Corajosa", age:"3-6 anos", pages:5,
+    color:"#2d6a4f",
+    icon:`<svg viewBox="0 0 100 100"><ellipse cx="50" cy="75" rx="8" ry="12" fill="#8B4513"/><ellipse cx="50" cy="75" rx="4" ry="6" fill="#a0522d"/><circle cx="50" cy="40" r="18" fill="#2d6a4f"/><circle cx="50" cy="40" r="12" fill="#40916c"/><path d="M50 22 L53 35 L65 35 L55 42 L58 55 L50 48 L42 55 L45 42 L35 35 L47 35Z" fill="#52b788" opacity=".5"/></svg>`,
+    cover:`<svg viewBox="0 0 240 200"><ellipse cx="120" cy="150" rx="35" ry="25" fill="#8B4513"/><ellipse cx="120" cy="150" rx="20" ry="15" fill="#a0522d"/><circle cx="120" cy="80" r="60" fill="#2d6a4f"/><circle cx="120" cy="80" r="45" fill="#40916c"/><path d="M120 25 L126 55 L155 55 L132 68 L138 100 L120 82 L102 100 L108 68 L85 55 L114 55Z" fill="#52b788" opacity=".5"/><path d="M80 60 L90 50" stroke="#52b788" stroke-width="2" fill="none" opacity=".4"/><path d="M160 60 L150 50" stroke="#52b788" stroke-width="2" fill="none" opacity=".4"/><text x="120" y="190" text-anchor="middle" fill="#52b788" font-size="12" font-family="Quicksand" opacity=".5">🌱 ✦ 🌱</text></svg>`,
+    pages:[
+      {txt:"Era uma vez uma sementinha muito pequena. Ela estava debaixo da terra escura, onde não via nada. As outras sementes dormiam, mas ela queria ver o sol.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#2a1a0e"/><ellipse cx="100" cy="80" rx="80" ry="60" fill="#3a2a1e"/><circle cx="100" cy="80" r="10" fill="#d4a373"/><circle cx="100" cy="80" r="6" fill="#e8dcc8"/><ellipse cx="60" cy="90" r="6" r2="4" fill="#8B4513" opacity=".5"/><ellipse cx="140" cy="85" r="5" r2="3" fill="#8B4513" opacity=".5"/></svg>`},
+      {txt:"<em>— Fique quietinha,</em> diziam as minhocas. <em>— Lá fora é perigoso.</em> Mas a sementinha sentia uma força dentro dela. Uma vontade de crescer.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#2a1a0e"/><ellipse cx="100" cy="85" rx="75" ry="55" fill="#3a2a1e"/><circle cx="100" cy="85" r="12" fill="#d4a373"/><circle cx="100" cy="85" r="7" fill="#e8dcc8"/><path d="M65 100 Q75 95 80 100 Q85 105 90 100" fill="none" stroke="#c4a47a" stroke-width="1.5"/></svg>`},
+      {txt:"Ela começou a crescer. Primeiro uma raiz fininha, depois um broto verde. Empurrou a terra com força. Doía um pouco, mas ela não desistia.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#2a1a0e"/><ellipse cx="100" cy="95" rx="70" ry="50" fill="#3a2a1e"/><circle cx="100" cy="95" r="10" fill="#d4a373"/><path d="M100 85 L100 60" stroke="#40916c" stroke-width="4"/><ellipse cx="100" cy="60" rx="4" ry="6" fill="#52b788"/><path d="M100 85 L95 90" stroke="#8B4513" stroke-width="1.5"/><path d="M100 85 L108 88" stroke="#8B4513" stroke-width="1.5"/></svg>`},
+      {txt:"Até que um dia, ela furou a superfície. A luz do sol a envolveu, quente e dourada. <em>— Eu consegui!</em> Ela era agora um broto verde e forte.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#87CEEB"/><circle cx="160" cy="30" r="25" fill="#ffd700"/><circle cx="160" cy="25" r="18" fill="#fff8dc"/><rect x="0" y="110" width="200" height="50" fill="#3a2a1e"/><path d="M100 110 L100 55" stroke="#40916c" stroke-width="5"/><ellipse cx="100" cy="55" rx="12" ry="15" fill="#52b788"/><ellipse cx="100" cy="48" rx="8" ry="10" fill="#74c69d"/><path d="M92 58 L80 45" stroke="#52b788" stroke-width="3" fill="none"/><path d="M108 58 L120 45" stroke="#52b788" stroke-width="3" fill="none"/></svg>`},
+      {txt:"Com o tempo, a sementinha virou uma linda flor amarela. Todas as outras flores a cumprimentavam. Ela aprendeu que crescer dá trabalho, mas a recompensa é linda.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#87CEEB"/><rect x="0" y="110" width="200" height="50" fill="#3a6a2e"/><circle cx="160" cy="28" r="22" fill="#ffd700"/><circle cx="160" cy="22" r="15" fill="#fff8dc"/><path d="M100 110 L100 50" stroke="#40916c" stroke-width="5"/><ellipse cx="100" cy="50" rx="25" ry="20" fill="#ffd700"/><ellipse cx="100" cy="45" rx="18" ry="14" fill="#fff8dc"/><circle cx="100" cy="48" r="6" fill="#e9c46a"/><path d="M85 55 L70 45" stroke="#52b788" stroke-width="2"/><path d="M115 55 L130 45" stroke="#52b788" stroke-width="2"/><ellipse cx="60" cy="55" rx="15" ry="12" fill="#e63946"/><ellipse cx="140" cy="60" rx="12" ry="10" fill="#e63946"/><text x="100" y="143" text-anchor="middle" fill="rgba(255,255,255,.15)" font-size="8">🌼 FIM 🌼</text></svg>`}
+    ]},
+  {
+    id:6, title:"O Golfinho e a Estrela do Mar", age:"4-7 anos", pages:5,
+    color:"#1d3557",
+    icon:`<svg viewBox="0 0 100 100"><path d="M25 50 Q30 30 50 25 Q70 20 80 35 Q85 42 75 50 Q65 55 50 50" fill="#457b9d"/><path d="M75 50 Q85 45 90 55 Q80 60 75 50" fill="#1d3557"/><circle cx="40" cy="35" r="2" fill="#1a1a2e"/><circle cx="50" cy="38" r="2" fill="#1a1a2e"/></svg>`,
+    cover:`<svg viewBox="0 0 240 200"><rect width="240" height="200" fill="#0b3a5a"/><path d="M50 100 Q60 65 100 55 Q140 45 160 70 Q170 85 150 100 Q130 110 100 100" fill="#457b9d"/><path d="M150 100 Q170 90 180 110 Q160 120 150 100" fill="#1d3557"/><circle cx="80" cy="75" r="4" fill="#fff"/><circle cx="95" cy="80" r="4" fill="#fff"/><circle cx="110" cy="120" r="15" fill="#ffd700" opacity=".6"/><circle cx="110" cy="120" r="10" fill="#fff8dc" opacity=".8"/><path d="M110 108 L114 118 L124 118 L116 124 L118 136 L110 128 L102 136 L104 124 L96 118 L106 118Z" fill="#ffd700" opacity=".4"/><text x="120" y="175" text-anchor="middle" fill="rgba(255,255,255,.2)" font-size="12" font-family="Quicksand">🌊 ⋆ 🌊</text></svg>`,
+    pages:[
+      {txt:"Nas águas azuis do oceano vivia Dumont, um golfinho brincalhão que adorava pular as ondas. Mas ele sempre olhava para o fundo do mar com curiosidade.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#0b3a5a"/><path d="M120 60 Q55 65 40 90 Q70 85 120 60" fill="#457b9d" opacity=".6"/><path d="M40 90 Q30 100 45 105 Q35 95 40 90" fill="#1d3557" opacity=".6"/><path d="M20 80 Q35 55 60 48 Q85 40 110 55 Q120 62 115 75 Q110 82 90 78" fill="#457b9d"/><circle cx="45" cy="58" r="2" fill="#fff"/><circle cx="55" cy="60" r="2" fill="#fff"/></svg>`},
+      {txt:"Lá no fundo, uma estrela-do-mar chamada Brilho vivia sozinha. Ela não podia nadar como os peixes, só se arrastava devagar pelos corais.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#0a2a4a"/><rect x="0" y="120" width="200" height="40" fill="#1a4a3a"/><circle cx="50" cy="100" r="18" fill="#ffd700" opacity=".5"/><circle cx="50" cy="100" r="12" fill="#fff8dc" opacity=".7"/><path d="M50 85 L53 98 L65 98 L55 105 L58 118 L50 110 L42 118 L45 105 L35 98 L47 98Z" fill="#ffd700" opacity=".4"/><ellipse cx="120" cy="80" rx="30" ry="15" fill="#457b9d" opacity=".5"/></svg>`},
+      {txt:"Dumont viu Brilho tentando alcançar um coral. <em>— Precisa de ajuda?</em> Brilho respondeu: <em>— Queria ver a superfície, mas sou muito lenta.</em>",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#0a3a5a"/><path d="M30 55 Q45 40 70 45 Q95 50 100 65" fill="#457b9d"/><circle cx="48" cy="48" r="2" fill="#fff"/><circle cx="58" cy="50" r="2" fill="#fff"/><circle cx="140" cy="100" r="16" fill="#ffd700" opacity=".4"/><circle cx="140" cy="100" r="10" fill="#fff8dc" opacity=".6"/><path d="M140 88 L143 98 L152 98 L145 104 L147 115 L140 108 L133 115 L135 104 L128 98 L137 98Z" fill="#ffd700" opacity=".3"/></svg>`},
+      {txt:"Dumont sorriu. <em>— Sobe nas minhas costas!</em> Brilho subiu e, juntos, subiram até a superfície. Brilho viu o pôr do sol pela primeira vez.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#1a4a6a"/><path d="M100 110 Q120 80 100 60 Q80 40 60 65" fill="#457b9d"/><circle cx="85" cy="55" r="2" fill="#fff"/><circle cx="95" cy="58" r="2" fill="#fff"/><circle cx="100" cy="65" r="8" fill="#ffd700" opacity=".6"/><circle cx="100" cy="65" r="5" fill="#fff8dc" opacity=".8"/><path d="M100 58 L102 64 L107 64 L103 68 L104 74 L100 70 L96 74 L97 68 L93 64 L98 64Z" fill="#ffd700" opacity=".4"/><circle cx="150" cy="25" r="20" fill="#ff7a5a"/><circle cx="150" cy="30" r="15" fill="#f4a261"/></svg>`},
+      {txt:"<em>— É tão lindo!</em> Brilho exclamou. Dumont disse: <em>— Mais bonito ainda por ter compartilhado com você.</em> Eles se tornaram grandes amigos, provando que as melhores amizades surgem quando ajudamos uns aos outros.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#0b3a5a"/><circle cx="150" cy="25" r="22" fill="#ff7a5a"/><circle cx="150" cy="30" r="16" fill="#f4a261"/><path d="M80 90 Q100 70 90 55" fill="#457b9d"/><circle cx="88" cy="68" r="2" fill="#fff"/><circle cx="95" cy="72" r="2" fill="#fff"/><circle cx="120" cy="85" r="14" fill="#ffd700" opacity=".5"/><circle cx="120" cy="85" r="9" fill="#fff8dc" opacity=".7"/><path d="M120 75 L122 84 L130 84 L124 89 L126 100 L120 93 L114 100 L116 89 L110 84 L118 84Z" fill="#ffd700" opacity=".4"/><text x="100" y="145" text-anchor="middle" fill="rgba(255,255,255,.1)" font-size="8">🐬 ⋆ 🌊</text></svg>`}
+    ]},
+  {
+    id:7, title:"O Coelho que Perdeu a Orelha", age:"3-5 anos", pages:5,
+    color:"#e9c46a",
+    icon:`<svg viewBox="0 0 100 100"><circle cx="50" cy="55" r="22" fill="#e9c46a"/><circle cx="50" cy="55" r="16" fill="#fff8dc"/><ellipse cx="42" cy="30" rx="5" ry="15" fill="#e9c46a"/><ellipse cx="58" cy="30" rx="5" ry="15" fill="#e9c46a"/><ellipse cx="42" cy="30" rx="3" ry="10" fill="#fce4ec"/><ellipse cx="58" cy="30" rx="3" ry="10" fill="#fce4ec"/><circle cx="42" cy="52" r="3" fill="#1a1a2e"/><circle cx="58" cy="52" r="3" fill="#1a1a2e"/><ellipse cx="50" cy="60" rx="3" ry="2" fill="pink"/></svg>`,
+    cover:`<svg viewBox="0 0 240 200"><circle cx="120" cy="110" r="45" fill="#e9c46a"/><circle cx="120" cy="110" r="32" fill="#fff8dc"/><ellipse cx="100" cy="55" rx="12" ry="35" fill="#e9c46a"/><ellipse cx="140" cy="55" rx="12" ry="35" fill="#e9c46a"/><ellipse cx="100" cy="55" rx="7" ry="25" fill="#fce4ec"/><ellipse cx="140" cy="55" rx="7" ry="25" fill="#fce4ec"/><circle cx="105" cy="105" r="6" fill="#1a1a2e"/><circle cx="135" cy="105" r="6" fill="#1a1a2e"/><ellipse cx="120" cy="118" rx="6" ry="4" fill="pink"/><text x="120" y="175" text-anchor="middle" fill="#d4a373" font-size="12" font-family="Quicksand">🐰 ✦ 🐰</text></svg>`,
+    pages:[
+      {txt:"Tobi era um coelhinho branco e fofo. Mas ele tinha um problema: estava sempre perdendo coisas. Um dia, perdeu uma orelha!",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#a8d8a8"/><circle cx="100" cy="85" r="28" fill="#e9c46a"/><circle cx="100" cy="85" r="20" fill="#fff8dc"/><ellipse cx="85" cy="55" rx="6" ry="18" fill="#e9c46a"/><ellipse cx="85" cy="55" rx="4" ry="12" fill="#fce4ec"/><circle cx="88" cy="82" r="3" fill="#1a1a2e"/><circle cx="108" cy="82" r="3" fill="#1a1a2e"/><ellipse cx="98" cy="90" rx="3" ry="2" fill="pink"/></svg>`},
+      {txt:"<em>— Minha orelha! Minha orelha!</em> Tobi gritou. Sem uma orelha, ele ouvia tudo pela metade. <em>— O quê? Você disse cenoura?</em> - <em>— Não, disse perigo!</em>",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#8bc8a0"/><circle cx="100" cy="90" r="25" fill="#e9c46a" opacity=".8"/><circle cx="100" cy="90" r="18" fill="#fff8dc" opacity=".8"/><ellipse cx="85" cy="62" rx="5" ry="15" fill="#e9c46a" opacity=".8"/><ellipse cx="85" cy="62" rx="3" ry="10" fill="#fce4ec" opacity=".8"/><circle cx="90" cy="88" r="2.5" fill="#1a1a2e" opacity=".8"/><circle cx="108" cy="88" r="2.5" fill="#1a1a2e" opacity=".8"/><text x="65" y="40" fill="#e63946" font-size="7" opacity=".6">PERIGO!</text></svg>`},
+      {txt:"Ele procurou em todo lugar: debaixo da cama, atrás do armário, dentro da xícara de chá. Nada. A orelha tinha sumido!",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#d4c4a8"/><rect x="20" y="60" width="80" height="60" fill="#8B4513" rx="4"/><rect x="120" y="50" width="60" height="80" fill="#a0522d" rx="4"/><circle cx="100" cy="80" r="20" fill="#e9c46a" opacity=".7"/><circle cx="100" cy="80" r="14" fill="#fff8dc" opacity=".7"/><ellipse cx="90" cy="58" rx="4" ry="12" fill="#e9c46a" opacity=".7"/><ellipse cx="90" cy="58" rx="3" ry="8" fill="#fce4ec" opacity=".7"/><circle cx="95" cy="78" r="2" fill="#1a1a2e" opacity=".7"/></svg>`},
+      {txt:"A coruja Sábia apareceu. <em>— Tobi, olhe no espelho.</em> Ele olhou. A orelha estava lá! Ele tinha esquecido que ela era do outro lado. <em>— Eu passei o dia todo procurando... do lado errado!</em>",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#a8d8a8"/><circle cx="100" cy="85" r="28" fill="#e9c46a"/><circle cx="100" cy="85" r="20" fill="#fff8dc"/><ellipse cx="85" cy="55" rx="6" ry="18" fill="#e9c46a"/><ellipse cx="115" cy="55" rx="6" ry="18" fill="#e9c46a"/><ellipse cx="85" cy="55" rx="4" ry="12" fill="#fce4ec"/><ellipse cx="115" cy="55" rx="4" ry="12" fill="#fce4ec"/><circle cx="90" cy="82" r="3" fill="#1a1a2e"/><circle cx="110" cy="82" r="3" fill="#1a1a2e"/><ellipse cx="100" cy="90" rx="3" ry="2" fill="pink"/></svg>`},
+      {txt:"Tobi riu tanto que sua barriga doeu. Aprendi que, às vezes, o que procuramos está bem na nossa frente. Só precisamos olhar com calma.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#8bc8a0"/><circle cx="100" cy="85" r="30" fill="#e9c46a"/><circle cx="100" cy="85" r="22" fill="#fff8dc"/><ellipse cx="82" cy="52" rx="7" ry="20" fill="#e9c46a"/><ellipse cx="118" cy="52" rx="7" ry="20" fill="#e9c46a"/><ellipse cx="82" cy="52" rx="4" ry="14" fill="#fce4ec"/><ellipse cx="118" cy="52" rx="4" ry="14" fill="#fce4ec"/><circle cx="88" cy="82" r="3" fill="#1a1a2e"/><circle cx="112" cy="82" r="3" fill="#1a1a2e"/><ellipse cx="100" cy="90" rx="4" ry="3" fill="pink"/><path d="M92 52 Q100 48 108 52" fill="none" stroke="#1a1a2e" stroke-width="1"/><text x="100" y="138" text-anchor="middle" fill="rgba(0,0,0,.08)" font-size="8">🐰 FIM 🐰</text></svg>`}
+    ]},
+  {
+    id:8, title:"A Borboleta Colorida", age:"3-6 anos", pages:5,
+    color:"#9b5de5",
+    icon:`<svg viewBox="0 0 100 100"><ellipse cx="45" cy="50" rx="18" ry="12" fill="#f15bb5" opacity=".8"/><ellipse cx="55" cy="50" rx="18" ry="12" fill="#f15bb5" opacity=".8"/><ellipse cx="45" cy="50" rx="10" ry="6" fill="#fee440" opacity=".6"/><ellipse cx="55" cy="50" rx="10" ry="6" fill="#fee440" opacity=".6"/><ellipse cx="45" cy="48" rx="15" ry="8" fill="#00bbf9" opacity=".5"/><ellipse cx="55" cy="48" rx="15" ry="8" fill="#00bbf9" opacity=".5"/><ellipse cx="50" cy="52" rx="3" ry="10" fill="#1a1a2e"/><circle cx="48" cy="48" r="1.5" fill="#fff"/><circle cx="52" cy="48" r="1.5" fill="#fff"/></svg>`,
+    cover:`<svg viewBox="0 0 240 200"><ellipse cx="100" cy="100" rx="45" ry="30" fill="#f15bb5" opacity=".7"/><ellipse cx="140" cy="100" rx="45" ry="30" fill="#f15bb5" opacity=".7"/><ellipse cx="100" cy="100" rx="25" ry="15" fill="#fee440" opacity=".5"/><ellipse cx="140" cy="100" rx="25" ry="15" fill="#fee440" opacity=".5"/><ellipse cx="100" cy="96" rx="38" ry="20" fill="#00bbf9" opacity=".4"/><ellipse cx="140" cy="96" rx="38" ry="20" fill="#00bbf9" opacity=".4"/><ellipse cx="120" cy="105" rx="8" ry="25" fill="#1a1a2e" opacity=".8"/><circle cx="115" cy="95" r="4" fill="#fff"/><circle cx="125" cy="95" r="4" fill="#fff"/><path d="M55 85 Q80 70 120 75 Q160 80 185 85" fill="none" stroke="#9b5de5" stroke-width="2" opacity=".3"/><path d="M60 120 Q85 135 120 130 Q155 125 180 120" fill="none" stroke="#9b5de5" stroke-width="2" opacity=".3"/><text x="120" y="175" text-anchor="middle" fill="#9b5de5" font-size="12" font-family="Quicksand" opacity=".5">🦋 ✦ 🦋</text></svg>`,
+    pages:[
+      {txt:"Bela era uma lagartinha cinzenta. Ela olhava para as borboletas coloridas e suspirava: <em>— Como são lindas... Eu nunca serei assim.</em>",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#8bc8a0"/><ellipse cx="100" cy="85" rx="35" ry="15" fill="#7aac7a"/><circle cx="100" cy="85" r="5" fill="#8B8B8B"/><circle cx="98" cy="83" r="1.5" fill="#1a1a2e"/><circle cx="60" cy="90" r="4" fill="#8B8B8B"/><circle cx="140" cy="90" r="4" fill="#8B8B8B"/><circle cx="80" cy="95" r="3.5" fill="#8B8B8B"/><circle cx="120" cy="95" r="3.5" fill="#8B8B8B"/><ellipse cx="150" cy="35" rx="12" ry="8" fill="#f15bb5" opacity=".6"/><ellipse cx="165" cy="35" rx="12" ry="8" fill="#f15bb5" opacity=".6"/></svg>`},
+      {txt:"As outras lagartas riam: <em>— Você nunca vai virar borboleta, Bela. É cinzenta demais!</em> Bela se escondia entre as folhas, triste.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#7aac7a"/><ellipse cx="100" cy="80" rx="30" ry="12" fill="#6a9a6a"/><circle cx="100" cy="80" r="4.5" fill="#8B8B8B"/><circle cx="98" cy="78" r="1.5" fill="#1a1a2e"/><ellipse cx="45" cy="35" rx="10" ry="6" fill="#f15bb5" opacity=".5"/><ellipse cx="60" cy="33" rx="10" ry="6" fill="#00bbf9" opacity=".5"/><ellipse cx="155" cy="40" rx="8" ry="5" fill="#fee440" opacity=".5"/></svg>`},
+      {txt:"Chegou o dia de formar o casulo. Bela teceu o seu com cuidado. Dentro do casulo, estava escuro e quieto. Ela esperou... e esperou...",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#5a8a5a"/><ellipse cx="100" cy="70" rx="12" ry="25" fill="#8B7355"/><ellipse cx="100" cy="70" rx="8" ry="20" fill="#a0906a"/><path d="M85 70 Q100 60 115 70" fill="none" stroke="#8B7355" stroke-width="2"/></svg>`},
+      {txt:"Um dia, o casulo se abriu. Bela esticou as asas — e eram as asas mais coloridas que o jardim já tinha visto. Azul, rosa, amarelo, roxo... todas as cores!",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#87CEEB"/><ellipse cx="85" cy="75" rx="30" ry="20" fill="#f15bb5" opacity=".7"/><ellipse cx="115" cy="75" rx="30" ry="20" fill="#f15bb5" opacity=".7"/><ellipse cx="85" cy="75" rx="18" ry="10" fill="#fee440" opacity=".5"/><ellipse cx="115" cy="75" rx="18" ry="10" fill="#fee440" opacity=".5"/><ellipse cx="85" cy="72" rx="25" ry="15" fill="#00bbf9" opacity=".4"/><ellipse cx="115" cy="72" rx="25" ry="15" fill="#00bbf9" opacity=".4"/><ellipse cx="100" cy="80" rx="5" ry="15" fill="#1a1a2e"/><circle cx="96" cy="73" r="2.5" fill="#fff"/><circle cx="104" cy="73" r="2.5" fill="#fff"/></svg>`},
+      {txt:"<em>— Eu sou linda!</em> Bela exclamou. As outras borboletas se aproximaram, encantadas. Bela sorriu. Ela aprendeu que a beleza verdadeira leva tempo para florescer. E que cada um tem seu tempo.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#87CEEB"/><circle cx="30" cy="25" r="20" fill="#ffd700"/><circle cx="30" cy="22" r="14" fill="#fff8dc"/><ellipse cx="85" cy="80" rx="35" ry="22" fill="#f15bb5" opacity=".7"/><ellipse cx="115" cy="80" rx="35" ry="22" fill="#f15bb5" opacity=".7"/><ellipse cx="85" cy="80" rx="22" ry="12" fill="#fee440" opacity=".5"/><ellipse cx="115" cy="80" rx="22" ry="12" fill="#fee440" opacity=".5"/><ellipse cx="100" cy="86" rx="5" ry="18" fill="#1a1a2e"/><ellipse cx="50" cy="95" rx="15" ry="10" fill="#00bbf9" opacity=".5"/><ellipse cx="150" cy="90" rx="12" ry="8" fill="#9b5de5" opacity=".5"/><ellipse cx="65" cy="110" rx="10" ry="7" fill="#f15bb5" opacity=".4"/><text x="100" y="145" text-anchor="middle" fill="rgba(0,0,0,.06)" font-size="8">🦋 FIM 🦋</text></svg>`}
+    ]},
+  {
+    id:9, title:"O Ursinho que Tinha Medo do Escuro", age:"3-5 anos", pages:5,
+    color:"#8B4513",
+    icon:`<svg viewBox="0 0 100 100"><circle cx="50" cy="55" r="25" fill="#8B4513"/><circle cx="50" cy="55" r="20" fill="#a0522d"/><circle cx="35" cy="50" r="10" fill="#8B4513"/><circle cx="65" cy="50" r="10" fill="#8B4513"/><circle cx="35" cy="50" r="6" fill="#a0522d"/><circle cx="65" cy="50" r="6" fill="#a0522d"/><circle cx="42" cy="52" r="2.5" fill="#1a1a2e"/><circle cx="58" cy="52" r="2.5" fill="#1a1a2e"/><circle cx="50" cy="60" r="4" fill="#1a1a2e"/></svg>`,
+    cover:`<svg viewBox="0 0 240 200"><circle cx="120" cy="110" r="55" fill="#8B4513"/><circle cx="120" cy="110" r="45" fill="#a0522d"/><circle cx="85" cy="100" r="22" fill="#8B4513"/><circle cx="155" cy="100" r="22" fill="#8B4513"/><circle cx="85" cy="100" r="14" fill="#a0522d"/><circle cx="155" cy="100" r="14" fill="#a0522d"/><circle cx="100" cy="105" r="5" fill="#1a1a2e"/><circle cx="140" cy="105" r="5" fill="#1a1a2e"/><circle cx="120" cy="120" r="8" fill="#1a1a2e"/><path d="M95 85 Q120 70 145 85" fill="none" stroke="#1a1a2e" stroke-width="2"/><circle cx="50" cy="30" r="15" fill="#ffd700" opacity=".3"/><circle cx="190" cy="25" r="10" fill="#ffd700" opacity=".2"/><circle cx="30" cy="40" r="8" fill="#ffd700" opacity=".15"/><text x="120" y="185" text-anchor="middle" fill="#8B4513" font-size="12" font-family="Quicksand" opacity=".5">☆ ⋆ ☆</text></svg>`,
+    pages:[
+      {txt:"Teddy era um ursinho de pelagem macia que morava numa cabana na floresta. Ele era corajoso para muitas coisas, menos uma: o escuro.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#87CEEB"/><rect x="60" y="70" width="80" height="70" fill="#a0522d" rx="8"/><rect x="70" y="80" width="25" height="30" fill="#8B4513" rx="4"/><polygon points="75,80 80,70 85,80" fill="#e63946"/><rect x="130" y="85" width="20" height="20" fill="#8B4513" rx="10"/><circle cx="100" cy="55" r="18" fill="#8B4513"/><circle cx="100" cy="55" r="14" fill="#a0522d"/><circle cx="93" cy="52" r="2" fill="#1a1a2e"/><circle cx="107" cy="52" r="2" fill="#1a1a2e"/><circle cx="100" cy="58" r="3" fill="#1a1a2e"/></svg>`},
+      {txt:"Quando o sol se punha e a noite chegava, Teddy se encolhia na cama. <em>— E se tiver monstros?</em> ele pensava. Cada sombra parecia uma criatura.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#1a1a3a"/><circle cx="100" cy="75" r="16" fill="#8B4513" opacity=".7"/><circle cx="100" cy="75" r="12" fill="#a0522d" opacity=".7"/><circle cx="95" cy="72" r="1.5" fill="#1a1a2e" opacity=".7"/><circle cx="105" cy="72" r="1.5" fill="#1a1a2e" opacity=".7"/><rect x="30" y="90" width="50" height="40" fill="#2a2a4a" rx="4"/><rect x="100" y="85" width="30" height="35" fill="#2a2a4a" rx="4"/><rect x="150" y="95" width="30" height="30" fill="#2a2a4a" rx="4"/></svg>`},
+      {txt:"A mamãe ursa entrou no quarto. <em>— Teddy, o escuro não é seu inimigo. Olhe.</em> Ela acendeu uma pequena lanterna. As sombras sumiram.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#1a1a3a"/><circle cx="100" cy="75" r="16" fill="#8B4513"/><circle cx="100" cy="75" r="12" fill="#a0522d"/><circle cx="95" cy="72" r="2" fill="#1a1a2e"/><circle cx="105" cy="72" r="2" fill="#1a1a2e"/><circle cx="100" cy="78" r="3" fill="#1a1a2e"/><circle cx="140" cy="60" r="20" fill="#ffd700" opacity=".4"/><path d="M140 45 L155 30" stroke="#ffd700" stroke-width="1" opacity=".3"/><path d="M140 75 L155 90" stroke="#ffd700" stroke-width="1" opacity=".3"/><circle cx="170" cy="55" r="2" fill="#fff" opacity=".5"/></svg>`},
+      {txt:"<em>— Viu? O escuro só existe porque a luz descansa.</em> Teddy entendeu que a noite é quando as estrelas brilham e a lua ilumina os sonhos.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#0b081a"/><circle cx="100" cy="40" r="30" fill="#ffd700" opacity=".8"/><circle cx="100" cy="40" r="22" fill="#fff8dc"/><path d="M100 18 L105 35 L122 35 L108 45 L112 62 L100 52 L88 62 L92 45 L78 35 L95 35Z" fill="#ffd700" opacity=".4"/><circle cx="35" cy="25" r="2" fill="#fff" opacity=".5"/><circle cx="170" cy="30" r="1.5" fill="#fff" opacity=".4"/><circle cx="60" cy="55" r="1" fill="#fff" opacity=".3"/><circle cx="150" cy="50" r="1.5" fill="#fff" opacity=".4"/><circle cx="120" cy="65" r="1" fill="#fff" opacity=".2"/></svg>`},
+      {txt:"Teddy abraçou sua mamãe. <em>— O escuro não é tão assustador assim.</em> Ele aprendeu que a luz está dentro da gente — e que um abraço quentinho ilumina qualquer escuridão.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#0b081a"/><circle cx="100" cy="35" r="28" fill="#ffd700" opacity=".8"/><circle cx="100" cy="35" r="20" fill="#fff8dc"/><path d="M100 15 L105 30 L120 30 L108 38 L112 54 L100 45 L88 54 L92 38 L80 30 L95 30Z" fill="#ffd700" opacity=".4"/><circle cx="100" cy="85" r="18" fill="#8B4513"/><circle cx="100" cy="85" r="14" fill="#a0522d"/><circle cx="93" cy="82" r="2" fill="#1a1a2e"/><circle cx="107" cy="82" r="2" fill="#1a1a2e"/><circle cx="100" cy="88" r="3" fill="#1a1a2e"/><circle cx="35" cy="22" r="2" fill="#fff" opacity=".4"/><circle cx="165" cy="28" r="1.5" fill="#fff" opacity=".3"/><text x="100" y="140" text-anchor="middle" fill="rgba(255,255,255,.08)" font-size="8">☆ FIM ☆</text></svg>`}
+    ]},
+  {
+    id:10, title:"A Girafa que Queria Tocar as Nuvens", age:"4-7 anos", pages:5,
+    color:"#f4a261",
+    icon:`<svg viewBox="0 0 100 100"><ellipse cx="50" cy="60" rx="15" ry="25" fill="#f4a261"/><ellipse cx="50" cy="60" rx="10" ry="18" fill="#e9c46a"/><path d="M50 35 L50 15" stroke="#f4a261" stroke-width="5"/><circle cx="50" cy="15" r="8" fill="#f4a261"/><circle cx="50" cy="15" r="6" fill="#e9c46a"/><circle cx="47" cy="13" r="1.5" fill="#1a1a2e"/><circle cx="53" cy="13" r="1.5" fill="#1a1a2e"/><circle cx="50" cy="17" r="1.5" fill="#1a1a2e"/></svg>`,
+    cover:`<svg viewBox="0 0 240 200"><ellipse cx="120" cy="130" rx="35" ry="50" fill="#f4a261"/><ellipse cx="120" cy="130" rx="22" ry="38" fill="#e9c46a"/><path d="M120 80 L120 30" stroke="#f4a261" stroke-width="10"/><circle cx="120" cy="30" r="18" fill="#f4a261"/><circle cx="120" cy="30" r="14" fill="#e9c46a"/><circle cx="114" cy="26" r="3" fill="#1a1a2e"/><circle cx="126" cy="26" r="3" fill="#1a1a2e"/><circle cx="120" cy="34" r="3" fill="#1a1a2e"/><ellipse cx="90" cy="40" rx="40" ry="15" fill="#fff" opacity=".3"/><ellipse cx="160" cy="35" rx="35" ry="12" fill="#fff" opacity=".25"/><ellipse cx="120" cy="25" rx="30" ry="10" fill="#fff" opacity=".2"/><text x="120" y="190" text-anchor="middle" fill="#d4a373" font-size="12" font-family="Quicksand" opacity=".5">☁️ ✦ ☁️</text></svg>`,
+    pages:[
+      {txt:"Gabriela era a girafa mais alta da savana. Mas, por mais alta que fosse, ela nunca conseguia tocar as nuvens. Elas sempre estavam um pouquinho além.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#87CEEB"/><rect x="0" y="120" width="200" height="40" fill="#8bc8a0"/><ellipse cx="100" cy="110" rx="20" ry="30" fill="#f4a261"/><ellipse cx="100" cy="110" rx="12" ry="22" fill="#e9c46a"/><path d="M100 80 L100 40" stroke="#f4a261" stroke-width="6"/><circle cx="100" cy="40" r="12" fill="#f4a261"/><circle cx="100" cy="40" r="9" fill="#e9c46a"/><circle cx="96" cy="37" r="2" fill="#1a1a2e"/><circle cx="104" cy="37" r="2" fill="#1a1a2e"/><circle cx="100" cy="43" r="2" fill="#1a1a2e"/><ellipse cx="40" cy="50" rx="35" ry="12" fill="#fff" opacity=".4"/></svg>`},
+      {txt:"<em>— Nuvens, esperem!</em> ela gritava. Mas o vento as levava para longe. Os animais diziam: <em>— Desista, Gabriela. Nuvens não são para tocar.</em>",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#87CEEB"/><rect x="0" y="130" width="200" height="30" fill="#7aac7a"/><ellipse cx="100" cy="115" rx="18" ry="25" fill="#f4a261"/><ellipse cx="100" cy="115" rx="10" ry="18" fill="#e9c46a"/><path d="M100 90 L100 55" stroke="#f4a261" stroke-width="5"/><circle cx="100" cy="55" r="10" fill="#f4a261"/><circle cx="100" cy="55" r="7" fill="#e9c46a"/><circle cx="97" cy="53" r="1.5" fill="#1a1a2e"/><circle cx="103" cy="53" r="1.5" fill="#1a1a2e"/><ellipse cx="140" cy="50" rx="30" ry="10" fill="#fff" opacity=".3"/><ellipse cx="60" cy="45" rx="25" ry="8" fill="#fff" opacity=".25"/></svg>`},
+      {txt:"Um dia, um passarinho pousou em seu chifre. <em>— Por que quer tocar as nuvens?</em> Gabriela respondeu: <em>— Porque elas parecem macias e bonitas.</em>",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#87CEEB"/><rect x="0" y="130" width="200" height="30" fill="#7aac7a"/><ellipse cx="100" cy="115" rx="18" ry="25" fill="#f4a261"/><ellipse cx="100" cy="115" rx="10" ry="18" fill="#e9c46a"/><path d="M100 90 L100 50" stroke="#f4a261" stroke-width="5"/><circle cx="100" cy="50" r="10" fill="#f4a261"/><circle cx="100" cy="50" r="7" fill="#e9c46a"/><circle cx="97" cy="48" r="1.5" fill="#1a1a2e"/><circle cx="103" cy="48" r="1.5" fill="#1a1a2e"/><ellipse cx="103" cy="42" rx="6" ry="5" fill="#4a90d9"/><circle cx="103" cy="39" r="3" fill="#5a9ae9"/><circle cx="101" cy="38" r="1" fill="#1a1a2e"/></svg>`},
+      {txt:"O passarinho disse: <em>— Você não precisa tocar as nuvens, Gabriela. Você já é alta o suficiente para ver o mundo de um jeito que ninguém mais vê.</em>",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#87CEEB"/><rect x="0" y="130" width="200" height="30" fill="#7aac7a"/><ellipse cx="100" cy="115" rx="18" ry="25" fill="#f4a261"/><ellipse cx="100" cy="115" rx="10" ry="18" fill="#e9c46a"/><path d="M100 90 L100 45" stroke="#f4a261" stroke-width="5"/><circle cx="100" cy="45" r="10" fill="#f4a261"/><circle cx="100" cy="45" r="7" fill="#e9c46a"/><circle cx="97" cy="43" r="1.5" fill="#1a1a2e"/><circle cx="103" cy="43" r="1.5" fill="#1a1a2e"/><ellipse cx="40" cy="70" rx="40" ry="15" fill="#fff" opacity=".4"/><ellipse cx="150" cy="65" rx="35" ry="12" fill="#fff" opacity=".3"/></svg>`},
+      {txt:"Gabriela olhou ao redor. O sol, o rio, os animais... tudo era lindo lá de cima. Ela entendeu que não precisava tocar as nuvens para ser especial — bastava ser quem era.",ill:`<svg viewBox="0 0 200 160"><rect width="200" height="160" fill="#87CEEB"/><circle cx="160" cy="30" r="25" fill="#ffd700"/><circle cx="160" cy="28" r="18" fill="#fff8dc"/><rect x="0" y="120" width="200" height="40" fill="#8bc8a0"/><ellipse cx="100" cy="105" rx="20" ry="28" fill="#f4a261"/><ellipse cx="100" cy="105" rx="12" ry="20" fill="#e9c46a"/><path d="M100 77 L100 35" stroke="#f4a261" stroke-width="6"/><circle cx="100" cy="35" r="12" fill="#f4a261"/><circle cx="100" cy="35" r="9" fill="#e9c46a"/><circle cx="96" cy="32" r="2" fill="#1a1a2e"/><circle cx="104" cy="32" r="2" fill="#1a1a2e"/><circle cx="100" cy="38" r="2" fill="#1a1a2e"/><ellipse cx="60" cy="50" rx="30" ry="10" fill="#fff" opacity=".3"/><ellipse cx="150" cy="55" rx="25" ry="8" fill="#fff" opacity=".25"/><text x="100" y="145" text-anchor="middle" fill="rgba(0,0,0,.06)" font-size="8">🦒 FIM 🦒</text></svg>`}
+    ]}
+];
+
+let currentStory = null, currentPage = 0, isAuto = true, isAudio = true;
+let speech = null, autoTimer = null;
+const completed = JSON.parse(localStorage.getItem('historiasLidas')||'{}');
+
+function initHome(){
+  const grid = document.getElementById('storyGrid');
+  let totalPages = 0;
+  STORIES.forEach(s=>totalPages+=s.pages.length+1);
+  document.getElementById('totalPages').textContent = totalPages;
+  const completedCount = Object.keys(completed).length;
+  document.getElementById('completedCount').textContent = completedCount;
+
+  STORIES.forEach(s=>{
+    const card = document.createElement('div');
+    card.className = 'story-card';
+    card.innerHTML = `
+      <div class="thumb" style="background:${s.color}15">
+        ${s.icon}
+        ${completed[s.id]?'<div class="completed-badge">✓ Lida</div>':''}
+      </div>
+      <div class="info">
+        <h3>${s.title}</h3>
+        <p>${s.pages[0].txt.slice(0,80)}...</p>
+        <div class="meta">
+          <span>📖 ${s.pages.length} páginas</span>
+          <span>👶 ${s.age}</span>
+        </div>
+      </div>
+    `;
+    card.onclick = ()=>openStory(s.id);
+    grid.appendChild(card);
+  });
+}
+
+function openStory(id){
+  currentStory = STORIES.find(s=>s.id===id);
+  currentPage = 0;
+  document.getElementById('home').classList.add('hidden');
+  document.getElementById('reader').classList.remove('hidden');
+  renderPage();
+  if(isAuto) startAuto();
+}
+
+function closeReader(){
+  stopSpeech();
+  clearTimeout(autoTimer);
+  document.getElementById('reader').classList.add('hidden');
+  document.getElementById('home').classList.remove('hidden');
+  const count = Object.keys(completed).length;
+  document.getElementById('completedCount').textContent = count;
+}
+
+function renderPage(){
+  const page = document.getElementById('bookPage');
+  const s = currentStory;
+  if(!s) return;
+  document.getElementById('readerTitle').textContent = s.title;
+  document.getElementById('readerSubtitle').textContent = `Página ${currentPage+1} de ${s.pages.length+1}`;
+  document.getElementById('progressText').textContent = `${currentPage+1} / ${s.pages.length+1}`;
+  document.getElementById('btnPrev').disabled = currentPage === 0;
+  document.getElementById('btnNext').disabled = currentPage === s.pages.length;
+
+  if(currentPage === 0){
+    page.className = 'book-page cover-page';
+    page.innerHTML = `
+      <div class="cover-content">
+        <div class="cover-svg-wrap">${s.cover}</div>
+        <h1>${s.title}</h1>
+        <div class="cover-sub">Uma história infantil</div>
+        <div class="cover-age">${s.age}</div>
+      </div>
+    `;
+  } else {
+    const p = s.pages[currentPage-1];
+    page.className = 'book-page';
+    page.innerHTML = `
+      <div class="page-content">
+        <div class="page-illustration">${p.ill}</div>
+        <div class="page-text"><p>${p.txt}</p></div>
+        <div class="page-num">${currentPage} / ${s.pages.length}</div>
+      </div>
+    `;
+  }
+  if(isAudio) speakPage();
+}
+
+function speakPage(){
+  stopSpeech();
+  if(!isAudio) return;
+  const s = currentStory;
+  if(!s) return;
+  let text = s.title;
+  if(currentPage > 0){
+    const p = s.pages[currentPage-1];
+    text = p.txt.replace(/<[^>]*>/g,'');
+  }
+  speech = new SpeechSynthesisUtterance(text);
+  speech.lang = 'pt-BR';
+  speech.rate = parseFloat(document.getElementById('speedRange').value);
+  speech.onend = ()=>{
+    if(isAuto && currentPage < s.pages.length){
+      autoTimer = setTimeout(nextPage, 1500);
+    }
+  };
+  window.speechSynthesis.speak(speech);
+}
+
+function stopSpeech(){
+  window.speechSynthesis.cancel();
+  clearTimeout(autoTimer);
+}
+
+function nextPage(){
+  if(currentPage < currentStory.pages.length){
+    currentPage++;
+    renderPage();
+  }
+}
+
+function prevPage(){
+  if(currentPage > 0){
+    currentPage--;
+    renderPage();
+  }
+}
+
+function toggleAuto(){
+  isAuto = !isAuto;
+  document.getElementById('btnAuto').classList.toggle('active');
+  if(isAuto && currentStory){
+    if(!window.speechSynthesis.speaking) startAuto();
+  } else {
+    clearTimeout(autoTimer);
+  }
+}
+
+function startAuto(){
+  if(isAuto && isAudio && !window.speechSynthesis.speaking){
+    speakPage();
+  }
+}
+
+function toggleAudio(){
+  isAudio = !isAudio;
+  document.getElementById('btnAudio').classList.toggle('active');
+  if(!isAudio) stopSpeech();
+  else if(currentStory) speakPage();
+}
+
+document.getElementById('speedRange').oninput = function(){
+  document.getElementById('speedLabel').textContent = this.value+'x';
+  if(isAudio && window.speechSynthesis.speaking){
+    const wasAuto = isAuto;
+    isAuto = false;
+    stopSpeech();
+    isAuto = wasAuto;
+    speakPage();
+  }
+};
+
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('reader').classList.contains('hidden')) return;
+  if(e.key==='ArrowRight'||e.key===' ') {e.preventDefault();nextPage()}
+  if(e.key==='ArrowLeft') {e.preventDefault();prevPage()}
+  if(e.key==='Escape') closeReader();
+});
+
+initHome();
+</script>
+</body>
+</html>

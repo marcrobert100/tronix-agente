@@ -1,10 +1,11 @@
 {
   "identity": "Tronix",
-  "version": "1.1.0",
+  "version": "1.5.0",
   "last_initialization": "2026-05-12T12:00:00Z",
   "status": "active",
   "protocol_history": [
-    "SESSAO_2026-05-12"
+    "SESSAO_2026-05-12",
+    "SESSAO_2026-06-03"
   ],
   "sync_log": [
     {
@@ -362,6 +363,102 @@
       "agente": "Tronix-DEV",
       "acao": "CONFIGURADO: OPENROUTER_API_KEY adicionada ao .env. CrewAI pronto para usar google/gemini-2.0-flash-exp via OpenRouter.",
       "timestamp": "2026-05-12"
+    },
+    {
+      "id": 69,
+      "agente": "Tronix-SANTINHO",
+      "acao": "CRIADO: santinho_generator/ - Gerador profissional de santinhos politicos. 14 modelos (classico, moderno_minimalista, premium_executivo, colorido_partidario, jovem_dinamico, tradicao_brasileiro, agro_forte, sindical_trabalhador, empresarial_pro, fotografico_impacto, minimalista_horizontal, cristao_familia, tecnologico_inovador, esporte_juventude).",
+      "timestamp": "2026-06-02"
+    },
+    {
+      "id": 70,
+      "agente": "Tronix-MEDIA",
+      "acao": "DESIGN: 14 templates visuais em CSS puro + 6 templates renderizados via Pillow (300 DPI) com fontes do sistema. Paleta Tronix (preto + accent vermelho + ciano + dourado) respeitada.",
+      "timestamp": "2026-06-02"
+    },
+    {
+      "id": 71,
+      "agente": "Tronix-DEV",
+      "acao": "INTERFACE: index.html com editor visual completo - 14 cards de modelo, sidebar de cores (4 canais), formulario com 12 campos, preview ao vivo, tabs FRENTE/VERSO com QR Code automatico no verso, salvamento de candidatos no localStorage.",
+      "timestamp": "2026-06-02"
+    },
+    {
+      "id": 72,
+      "agente": "Tronix-SUPER",
+      "acao": "PIPELINE: santinho.py (engine Python 300 DPI) + gerar_lote.py (multi-candidato). Integracao Pillow + ReportLab. Grid A4 9 santinhos (3x3) com sangria 3mm. Frente e verso automaticos. Teste: 3 candidatos gerados com sucesso (classico, premium_executivo, moderno_minimalista).",
+      "timestamp": "2026-06-02"
+    },
+    {
+      "id": 73,
+      "agente": "Tronix-DB",
+      "acao": "SCHEMA: SQLite santinho.db com tabelas candidatos + geracoes. Registro automatico de cada geracao (candidato, quantidade, copias, com_verso, arquivo_saida, timestamp).",
+      "timestamp": "2026-06-02"
+    },
+    {
+      "id": 74,
+      "agente": "Tronix-DEV",
+      "acao": "ONE-CLICK: iniciar_santinho.bat - Instala Pillow+ReportLab, inicializa banco, abre interface no navegador. Para CLI: python santinho.py --help. Para lote: python gerar_lote.py --input exemplos_candidatos.json --quantidade 1000",
+      "timestamp": "2026-06-02"
+    },
+    {
+      "id": 75,
+      "agente": "Tronix-SANTINHO",
+      "acao": "EXPANSAO: 14 -> 20 modelos. Adicionados: diagonal_dinamico, retro_vintage, gradient_suave, black_gold_luxo, tropical_verao, civico_municipal.",
+      "timestamp": "2026-06-02"
+    },
+    {
+      "id": 76,
+      "agente": "Tronix-MEDIA",
+      "acao": "ACESSORIOS: 9 simbolos (cruz, estrela, coracao, bandeira, raio, mao, familia, pomba) + 5 molduras foto (quadrada, redonda, losango, hexagonal, escudo) + 4 estilos foto (normal, PB, sepia, duotone) + 11 badges (mulher, jovem, renovacao, experiencia, educacao, saude, seguranca, agro, religioso, trabalhador, novo) + toggles (selo_je, vice, proposta_destaque, zona_secao, faixa_cor).",
+      "timestamp": "2026-06-02"
+    },
+    {
+      "id": 77,
+      "agente": "Tronix-DEV",
+      "acao": "CAMADA-ACC: Sistema de acessorios como camada sobreposta. Sidebar do editor com 9 selects/toggles. Engine Python implementa todos os acessorios com PIL (mascaras, filtros, composicao).",
+      "timestamp": "2026-06-02"
+    },
+    {
+      "id": 78,
+      "agente": "Tronix-DEV",
+      "acao": "ENGINE: render_acessorios() desenha sobre a imagem apos o modelo. carregar_foto() com filtros. aplicar_moldura_foto() com mascaras PIL (redonda, losango, hexagonal). aplicar_estilo_foto() para PB/sepia/duotone.",
+      "timestamp": "2026-06-02"
+    },
+    {
+      "id": 79,
+      "agente": "Tronix-GRAPHIFY",
+      "acao": "INSTALADO: Graphify v0.8.30. Provider custom 'nvidia' registrado (Llama 3.1 8B via NVIDIA NIM API). Skill carregada no contexto.",
+      "timestamp": "2026-06-03"
+    },
+    {
+      "id": 80,
+      "agente": "Tronix-GRAPHIFY",
+      "acao": "AST_EXTRACAO: 1639 arquivos processados (AST tree-sitter local). Grafo: 18626 nodes, 18868 edges.",
+      "timestamp": "2026-06-03"
+    },
+    {
+      "id": 81,
+      "agente": "Tronix-GRAPHIFY",
+      "acao": "CLUSTERIZACAO: 1373 comunidades detectadas via Leiden algorithm. Comunidades 0-199 nomeadas por LLM (Order Management, Browser Automation, Server Application, UI Component Library, Tronix System, MCP Overview, etc.).",
+      "timestamp": "2026-06-03"
+    },
+    {
+      "id": 82,
+      "agente": "Tronix-GRAPHIFY",
+      "acao": "REPORT: GRAPH_REPORT.md + graph.json (16 MB) + agente-callflow.html gerados em graphify-out/. Grafo queryavel via /graphify query|path|explain.",
+      "timestamp": "2026-06-03"
+    },
+    {
+      "id": 83,
+      "agente": "Tronix",
+      "acao": "FIM_SESSAO: 2026-06-03. Graphify operacional. Proximo: usar /graphify query para explorar o projeto, ou rebuild com --update apos mudancas.",
+      "timestamp": "2026-06-03"
+    },
+    {
+      "id": 84,
+      "agente": "Tronix",
+      "acao": "INTEGRACAO_FREEBUFF: Freebuff v0.0.107 instalado globalmente. Ferramenta tronix_freebuff adicionada ao MCP server (12 ferramentas total). Versao core atualizada para 1.5.0.",
+      "timestamp": "2026-06-13"
     }
   ]
 }

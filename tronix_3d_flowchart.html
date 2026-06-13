@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRONIX 3D - Arquitetura do Sistema</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+  background: #0a0a0f; 
+  overflow: hidden; 
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  color: #fff;
+}
+#canvas3d { display: block; }
+
+/* HUD Overlay */
+.hud {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+.hud-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px 30px;
+}
+.hud-title {
+  background: linear-gradient(135deg, rgba(255,122,48,0.15), rgba(255,215,0,0.1));
+  border: 1px solid rgba(255,122,48,0.4);
+  border-radius: 12px;
+  padding: 15px 25px;
+  backdrop-filter: blur(20px);
+}
+.hud-title h1 {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #ff7a30, #ffd700, #ff7a30);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+.hud-title p {
+  font-size: 11px;
+  color: rgba(255,215,0,0.6);
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+.hud-stats {
+  display: flex;
+  gap: 12px;
+}
+.stat-box {
+  background: rgba(255,122,48,0.08);
+  border: 1px solid rgba(255,122,48,0.3);
+  border-radius: 10px;
+  padding: 12px 18px;
+  backdrop-filter: blur(15px);
+  text-align: center;
+  min-width: 80px;
+}
+.stat-box .num {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffd700;
+  display: block;
+}
+.stat-box .label {
+  font-size: 9px;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Tooltip */
+.tooltip {
+  position: fixed;
+  background: rgba(10,10,20,0.95);
+  border: 1px solid rgba(255,122,48,0.6);
+  border-radius: 10px;
+  padding: 16px 20px;
+  max-width: 320px;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 0.3s;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 30px rgba(255,122,48,0.2);
+}
+.tooltip.show { opacity: 1; }
+.tooltip h3 {
+  color: #ff7a30;
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+.tooltip p {
+  color: rgba(255,255,255,0.7);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.tooltip .tag {
+  display: inline-block;
+  background: rgba(255,215,0,0.15);
+  border: 1px solid rgba(255,215,0,0.3);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 10px;
+  color: #ffd700;
+  margin-top: 8px;
+  margin-right: 4px;
+}
+
+/* Controls */
+.controls {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+.ctrl-btn {
+  background: rgba(255,122,48,0.1);
+  border: 1px solid rgba(255,122,48,0.4);
+  color: #ffd700;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 1px;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+}
+.ctrl-btn:hover {
+  background: rgba(255,122,48,0.3);
+  border-color: #ff7a30;
+  box-shadow: 0 0 20px rgba(255,122,48,0.3);
+}
+.ctrl-btn.active {
+  background: rgba(255,122,48,0.4);
+  border-color: #ffd700;
+}
+
+/* Legend */
+.legend {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  background: rgba(10,10,20,0.8);
+  border: 1px solid rgba(255,122,48,0.2);
+  border-radius: 10px;
+  padding: 15px;
+  z-index: 10;
+  backdrop-filter: blur(15px);
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+}
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* Scanline effect */
+.scanlines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255,122,48,0.015) 2px,
+    rgba(255,122,48,0.015) 4px
+  );
+}
+
+/* Corner accents */
+.corner {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  z-index: 10;
+  pointer-events: none;
+}
+.corner::before, .corner::after {
+  content: '';
+  position: absolute;
+  background: rgba(255,122,48,0.5);
+}
+.corner-tl { top: 10px; left: 10px; }
+.corner-tl::before { width: 20px; height: 2px; top: 0; left: 0; }
+.corner-tl::after { width: 2px; height: 20px; top: 0; left: 0; }
+.corner-tr { top: 10px; right: 10px; }
+.corner-tr::before { width: 20px; height: 2px; top: 0; right: 0; }
+.corner-tr::after { width: 2px; height: 20px; top: 0; right: 0; }
+.corner-bl { bottom: 10px; left: 10px; }
+.corner-bl::before { width: 20px; height: 2px; bottom: 0; left: 0; }
+.corner-bl::after { width: 2px; height: 20px; bottom: 0; left: 0; }
+.corner-br { bottom: 10px; right: 10px; }
+.corner-br::before { width: 20px; height: 2px; bottom: 0; right: 0; }
+.corner-br::after { width: 2px; height: 20px; bottom: 0; right: 0; }
+
+/* Loading */
+.loader {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #0a0a0f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: opacity 1s;
+}
+.loader.done { opacity: 0; pointer-events: none; }
+.loader-inner {
+  text-align: center;
+}
+.loader-ring {
+  width: 80px; height: 80px;
+  border: 3px solid rgba(255,122,48,0.1);
+  border-top-color: #ff7a30;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loader-text {
+  color: #ffd700;
+  letter-spacing: 4px;
+  font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<div class="loader" id="loader">
+  <div class="loader-inner">
+    <div class="loader-ring"></div>
+    <div class="loader-text">CARREGANDO TRONIX...</div>
+  </div>
+</div>
+
+<div class="scanlines"></div>
+<div class="corner corner-tl"></div>
+<div class="corner corner-tr"></div>
+<div class="corner corner-bl"></div>
+<div class="corner corner-br"></div>
+
+<div class="hud">
+  <div class="hud-top">
+    <div class="hud-title">
+      <h1>TRONIX</h1>
+      <p>SISTEMA UNIFICADO v1.5.0 — ARQUITETURA 3D</p>
+    </div>
+    <div class="hud-stats">
+      <div class="stat-box"><span class="num">12</span><span class="label">Ferramentas</span></div>
+      <div class="stat-box"><span class="num">11</span><span class="label">Agentes</span></div>
+      <div class="stat-box"><span class="num">1</span><span class="label">Gateway</span></div>
+      <div class="stat-box"><span class="num">v1.5</span><span class="label">Core</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip">
+  <h3 id="tt-title"></h3>
+  <p id="tt-desc"></p>
+  <div id="tt-tags"></div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#ff7a30"></div>Core / Gateway</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#ffd700"></div>Agentes AI</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#00d4ff"></div>Integrações</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#ff4081"></div>Mídias</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#76ff03"></div>Dados</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#b388ff"></div>Infraestrutura</div>
+</div>
+
+<div class="controls">
+  <button class="ctrl-btn active" onclick="setView('auto')">AUTO</button>
+  <button class="ctrl-btn" onclick="setView('top')">TOP VIEW</button>
+  <button class="ctrl-btn" onclick="setView('front')">FRONTAL</button>
+  <button class="ctrl-btn" onclick="setView('orbit')">ORBITAR</button>
+  <button class="ctrl-btn" onclick="toggleLabels()">LABELS</button>
+  <button class="ctrl-btn" onclick="toggleParticles()">PARTICLES</button>
+</div>
+
+<canvas id="canvas3d"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ==================== DATA ====================
+const NODES = [
+  // Core
+  { id: 'gateway', name: 'API GATEWAY', desc: 'FastAPI v2.0 | Porta 8081\nWebSocket + REST + Background Tasks\nRoteamento central de todas as requisições', color: 0xff7a30, size: 1.8, pos: [0, 0, 0], group: 'core', tags: ['FastAPI', 'WebSocket', 'v2.0'] },
+  { id: 'mcp', name: 'MCP SERVER', desc: 'Model Context Protocol v2025-03-26\n12 ferramentas registradas\nIntegra com Claude Desktop, TRAE SOLO', color: 0xff7a30, size: 1.4, pos: [-4, 0, 2], group: 'core', tags: ['MCP', '12 Tools', 'JSON-RPC'] },
+  { id: 'core', name: 'TRONIX CORE', desc: 'Identidade do sistema v1.5.0\nConfigurações centrais e skills\nMemória persistente', color: 0xff7a30, size: 1.3, pos: [4, 0, 2], group: 'core', tags: ['v1.5.0', 'Config', 'Skills'] },
+  
+  // Agentes
+  { id: 'dev', name: 'DEV', desc: 'Desenvolvimento e manutenção de código\nPython, PHP, JS, FFmpeg\nCria e mantém scripts do ecossistema', color: 0xffd700, size: 1.0, pos: [-6, 3, -1], group: 'agentes', tags: ['Python', 'PHP', 'JS'] },
+  { id: 'media', name: 'MEDIA', desc: 'Geração de mídia: imagens, vídeos, áudio\nPipeline Cloudflare SDXL + Ken Burns\nCoordena produção audiovisual', color: 0xffd700, size: 1.0, pos: [-4, 3, -2], group: 'agentes', tags: ['Imagens', 'Vídeos', 'Áudio'] },
+  { id: 'super', name: 'SUPER', desc: 'Editor de voz e legendas\nEdge-TTS com AntonioNeural\nFFmpeg para mixagem final', color: 0xffd700, size: 1.0, pos: [-2, 3, -1], group: 'agentes', tags: ['Edge-TTS', 'FFmpeg', 'Legendas'] },
+  { id: 'roteirista', name: 'ROTEIRISTA', desc: 'Criação de roteiros criativos\nMini-novelas, vídeos promocionais\nStorytelling para redes sociais', color: 0xffd700, size: 1.0, pos: [0, 3.5, -2], group: 'agentes', tags: ['Roteiros', 'Storytelling', 'PT-BR'] },
+  { id: 'diretor', name: 'DIRETOR', desc: 'Planejamento e direção de cenas\nPrompts de imagem, transições\nOrquestra pipeline de produção', color: 0xffd700, size: 1.0, pos: [2, 3, -1], group: 'agentes', tags: ['Prompts', 'Cenas', 'Produção'] },
+  { id: 'ig', name: 'IG', desc: 'Postagem automática no Instagram\nReels, Stories, Feed\nvia instagrapi', color: 0xffd700, size: 0.9, pos: [4, 3, -2], group: 'agentes', tags: ['Instagram', 'Reels', 'Feed'] },
+  { id: 'yt', name: 'YT', desc: 'Upload no YouTube via OAuth 2.0\nGerenciamento de vídeos\nThumbnails e metadados', color: 0xffd700, size: 0.9, pos: [6, 3, -1], group: 'agentes', tags: ['YouTube', 'OAuth', 'Upload'] },
+  { id: 'db', name: 'DB', desc: 'Gerenciamento SQLite\nLogs, registros, métricas\nBanco tronix.db', color: 0x76ff03, size: 0.9, pos: [-3, -3, 1], group: 'dados', tags: ['SQLite', 'Logs', 'Métricas'] },
+  { id: 'infra', name: 'INFRA', desc: 'Infraestrutura e DevOps\nDocker, MinIO, NCA-Toolkit\nMonitoramento via /health', color: 0xb388ff, size: 0.9, pos: [3, -3, 1], group: 'infra', tags: ['Docker', 'MinIO', 'Monitoramento'] },
+  { id: 'research', name: 'RESEARCH', desc: 'Pesquisa de ferramentas e tendências\nAnálise de novos modelos\nEvolução constante do sistema', color: 0xffd700, size: 0.9, pos: [0, 4, -3], group: 'agentes', tags: ['Pesquisa', 'Tendências', 'IA'] },
+  { id: 'sync', name: 'SYNC', desc: 'Sincronização entre agentes\nEstado consistente\nCoordenação de memória', color: 0xffd700, size: 0.9, pos: [-1, -3, 2], group: 'agentes', tags: ['Sync', 'Estado', 'Coordenação'] },
+  
+  // Integrações
+  { id: 'n8n', name: 'N8N', desc: 'Workflow Engine v2.20.6\nPipeline automatizado\nWebhook: tronix-pipeline', color: 0x00d4ff, size: 1.2, pos: [5, -2, 3], group: 'integracoes', tags: ['n8n', 'Workflows', 'v2.20.6'] },
+  { id: 'freebuff', name: 'FREEBUFF', desc: 'Coding agent CLI gratuito (Nova integração!)\nDeepSeek V4 Pro/Flash, Kimi K2.6\nAd-supported, sem assinatura', color: 0x00d4ff, size: 1.1, pos: [-5, -2, 3], group: 'integracoes', tags: ['Free', 'DeepSeek', 'CLI'] },
+  { id: 'langflow', name: 'LANGFLOW', desc: 'Interface visual de workflows\nv1.9.2 na porta 7860\nDrag & drop de agentes', color: 0x00d4ff, size: 1.0, pos: [-6, -3, -1], group: 'integracoes', tags: ['Visual', 'Workflows', 'v1.9.2'] },
+  
+  // Mídias
+  { id: 'edge_tts', name: 'EDGE-TTS', desc: 'Síntese de voz neural\npt-BR-AntonioNeural\nGratuito via Microsoft', color: 0xff4081, size: 0.9, pos: [2, -3, -2], group: 'midias', tags: ['Voz', 'Neural', 'PT-BR'] },
+  { id: 'cloudflare', name: 'CLOUDFLARE SDXL', desc: 'Geração de imagens via IA\nStable Diffusion XL Base 1.0\nWorkers AI (1024x1024)', color: 0xff4081, size: 1.0, pos: [0, -3.5, -2], group: 'midias', tags: ['SDXL', '1024x1024', 'IA'] },
+  { id: 'ffmpeg', name: 'FFMPEG', desc: 'Processamento de vídeo\nKen Burns, zoom, pan\nCodec H.264, CRF 15', color: 0xff4081, size: 0.9, pos: [4, -3, -2], group: 'midias', tags: ['H.264', 'Ken Burns', '30fps'] },
+  
+  // Dados
+  { id: 'sqlite', name: 'SQLite DB', desc: 'tronix.db\nTabelas: conteudo, pipeline_log\nMemória persistente do sistema', color: 0x76ff03, size: 1.0, pos: [-2, -3.5, -1], group: 'dados', tags: ['conteudo', 'pipeline_log', 'memoria'] },
+  { id: 'memoria', name: 'MEMÓRIA', desc: 'memoria_tronix.json\nHistórico de ações\núltimas 100 entradas', color: 0x76ff03, size: 0.9, pos: [2, -4, 0], group: 'dados', tags: ['JSON', 'Histórico', '100 entries'] },
+];
+
+const EDGES = [
+  // Gateway connections
+  { from: 'gateway', to: 'mcp', color: 0xff7a30 },
+  { from: 'gateway', to: 'core', color: 0xff7a30 },
+  { from: 'gateway', to: 'n8n', color: 0x00d4ff },
+  { from: 'gateway', to: 'freebuff', color: 0x00d4ff },
+  
+  // MCP tools
+  { from: 'mcp', to: 'dev', color: 0xffd700 },
+  { from: 'mcp', to: 'media', color: 0xffd700 },
+  { from: 'mcp', to: 'super', color: 0xffd700 },
+  { from: 'mcp', to: 'roteirista', color: 0xffd700 },
+  { from: 'mcp', to: 'diretor', color: 0xffd700 },
+  
+  // Agent connections
+  { from: 'dev', to: 'infra', color: 0xb388ff },
+  { from: 'media', to: 'cloudflare', color: 0xff4081 },
+  { from: 'media', to: 'ffmpeg', color: 0xff4081 },
+  { from: 'super', to: 'edge_tts', color: 0xff4081 },
+  { from: 'roteirista', to: 'diretor', color: 0xffd700 },
+  { from: 'diretor', to: 'media', color: 0xffd700 },
+  { from: 'ig', to: 'media', color: 0xffd700 },
+  { from: 'yt', to: 'media', color: 0xffd700 },
+  
+  // Data
+  { from: 'db', to: 'sqlite', color: 0x76ff03 },
+  { from: 'sync', to: 'memoria', color: 0x76ff03 },
+  { from: 'gateway', to: 'db', color: 0x76ff03 },
+  
+  // Infra
+  { from: 'infra', to: 'langflow', color: 0xb388ff },
+  { from: 'n8n', to: 'ffmpeg', color: 0x00d4ff },
+];
+
+// ==================== THREE.JS SETUP ====================
+const canvas = document.getElementById('canvas3d');
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+camera.position.set(0, 8, 18);
+camera.lookAt(0, 0, 0);
+
+// Fog
+scene.fog = new THREE.FogExp2(0x0a0a0f, 0.025);
+
+// Lights
+const ambientLight = new THREE.AmbientLight(0x222244, 0.4);
+scene.add(ambientLight);
+
+const dirLight = new THREE.DirectionalLight(0xffd700, 0.8);
+dirLight.position.set(10, 20, 10);
+dirLight.castShadow = true;
+scene.add(dirLight);
+
+const pointLight1 = new THREE.PointLight(0xff7a30, 1.5, 30);
+pointLight1.position.set(0, 5, 0);
+scene.add(pointLight1);
+
+const pointLight2 = new THREE.PointLight(0x00d4ff, 1, 25);
+pointLight2.position.set(-8, 3, 5);
+scene.add(pointLight2);
+
+const pointLight3 = new THREE.PointLight(0xff4081, 0.8, 20);
+pointLight3.position.set(8, -2, -5);
+scene.add(pointLight3);
+
+// ==================== GRID FLOOR ====================
+const gridHelper = new THREE.GridHelper(40, 40, 0xff7a30, 0x1a1a2e);
+gridHelper.position.y = -5;
+gridHelper.material.opacity = 0.3;
+gridHelper.material.transparent = true;
+scene.add(gridHelper);
+
+// Ground plane
+const groundGeo = new THREE.PlaneGeometry(60, 60);
+const groundMat = new THREE.MeshStandardMaterial({ 
+  color: 0x0a0a1a, 
+  transparent: true, 
+  opacity: 0.5,
+  metalness: 0.8,
+  roughness: 0.2
+});
+const ground = new THREE.Mesh(groundGeo, groundMat);
+ground.rotation.x = -Math.PI / 2;
+ground.position.y = -5;
+ground.receiveShadow = true;
+scene.add(ground);
+
+// ==================== NODES ====================
+const nodeMeshes = [];
+const nodeMap = {};
+const labelSprites = [];
+let showLabels = true;
+
+function createNode(node) {
+  const group = new THREE.Group();
+  
+  // Main geometry
+  let geo;
+  if (node.size > 1.3) {
+    geo = new THREE.OctahedronGeometry(node.size, 1);
+  } else if (node.group === 'core') {
+    geo = new THREE.DodecahedronGeometry(node.size, 0);
+  } else {
+    geo = new THREE.BoxGeometry(node.size * 1.5, node.size * 1.5, node.size * 1.5);
+  }
+  
+  const mat = new THREE.MeshStandardMaterial({
+    color: node.color,
+    emissive: node.color,
+    emissiveIntensity: 0.3,
+    metalness: 0.6,
+    roughness: 0.2,
+    wireframe: false,
+  });
+  
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  mesh.userData = node;
+  group.add(mesh);
+  
+  // Glow ring
+  const ringGeo = new THREE.RingGeometry(node.size * 1.3, node.size * 1.5, 32);
+  const ringMat = new THREE.MeshBasicMaterial({
+    color: node.color,
+    transparent: true,
+    opacity: 0.15,
+    side: THREE.DoubleSide
+  });
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.rotation.x = Math.PI / 2;
+  group.add(ring);
+  
+  // Wireframe overlay
+  const wireGeo = new THREE.EdgesGeometry(geo);
+  const wireMat = new THREE.LineBasicMaterial({ color: node.color, transparent: true, opacity: 0.4 });
+  const wireframe = new THREE.LineSegments(wireGeo, wireMat);
+  group.add(wireframe);
+  
+  group.position.set(...node.pos);
+  scene.add(group);
+  
+  nodeMeshes.push({ group, mesh, node, ring });
+  nodeMap[node.id] = { group, mesh };
+  
+  // Text label
+  createLabel(node);
+}
+
+function createLabel(node) {
+  const canvas2d = document.createElement('canvas');
+  const ctx = canvas2d.getContext('2d');
+  canvas2d.width = 512;
+  canvas2d.height = 128;
+  
+  ctx.clearRect(0, 0, 512, 128);
+  ctx.fillStyle = 'rgba(255,255,255,0.95)';
+  ctx.font = 'bold 48px Segoe UI, Arial';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(node.name, 256, 64);
+  
+  const texture = new THREE.CanvasTexture(canvas2d);
+  texture.minFilter = THREE.LinearFilter;
+  
+  const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0.9 });
+  const sprite = new THREE.Sprite(spriteMat);
+  sprite.position.set(node.pos[0], node.pos[1] + node.size + 0.8, node.pos[2]);
+  sprite.scale.set(3, 0.75, 1);
+  scene.add(sprite);
+  labelSprites.push(sprite);
+}
+
+NODES.forEach(createNode);
+
+// ==================== EDGES ====================
+const edgeLines = [];
+
+function createEdge(edge) {
+  const from = nodeMap[edge.from];
+  const to = nodeMap[edge.to];
+  if (!from || !to) return;
+  
+  const points = [];
+  const fromPos = from.group.position;
+  const toPos = to.group.position;
+  
+  // Curved line
+  const mid = new THREE.Vector3(
+    (fromPos.x + toPos.x) / 2,
+    (fromPos.y + toPos.y) / 2 + 1.5,
+    (fromPos.z + toPos.z) / 2
+  );
+  
+  const curve = new THREE.QuadraticBezierCurve3(fromPos, mid, toPos);
+  const curvePoints = curve.getPoints(30);
+  
+  const geometry = new THREE.BufferGeometry().setFromPoints(curvePoints);
+  const material = new THREE.LineBasicMaterial({
+    color: edge.color,
+    transparent: true,
+    opacity: 0.5,
+    linewidth: 2
+  });
+  
+  const line = new THREE.Line(geometry, material);
+  scene.add(line);
+  edgeLines.push({ line, edge, curve });
+}
+
+EDGES.forEach(createEdge);
+
+// ==================== PARTICLES ====================
+let particlesEnabled = true;
+const particleCount = 800;
+const particleGeo = new THREE.BufferGeometry();
+const particlePositions = new Float32Array(particleCount * 3);
+const particleColors = new Float32Array(particleCount * 3);
+const particleSpeeds = [];
+
+const particlePalette = [
+  new THREE.Color(0xff7a30),
+  new THREE.Color(0xffd700),
+  new THREE.Color(0x00d4ff),
+  new THREE.Color(0xff4081),
+];
+
+for (let i = 0; i < particleCount; i++) {
+  particlePositions[i * 3] = (Math.random() - 0.5) * 40;
+  particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 20;
+  particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 40;
+  
+  const color = particlePalette[Math.floor(Math.random() * particlePalette.length)];
+  particleColors[i * 3] = color.r;
+  particleColors[i * 3 + 1] = color.g;
+  particleColors[i * 3 + 2] = color.b;
+  
+  particleSpeeds.push({
+    x: (Math.random() - 0.5) * 0.02,
+    y: (Math.random() - 0.5) * 0.015,
+    z: (Math.random() - 0.5) * 0.02,
+  });
+}
+
+particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+particleGeo.setAttribute('color', new THREE.BufferAttribute(particleColors, 3));
+
+const particleMat = new THREE.PointsMaterial({
+  size: 0.12,
+  vertexColors: true,
+  transparent: true,
+  opacity: 0.7,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false,
+});
+
+const particles = new THREE.Points(particleGeo, particleMat);
+scene.add(particles);
+
+// ==================== ENERGY BEAMS ====================
+const beamGroup = new THREE.Group();
+scene.add(beamGroup);
+
+function createBeams() {
+  for (let i = 0; i < 5; i++) {
+    const curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3((Math.random()-0.5)*30, -5, (Math.random()-0.5)*30),
+      new THREE.Vector3((Math.random()-0.5)*20, Math.random()*10-5, (Math.random()-0.5)*20),
+      new THREE.Vector3((Math.random()-0.5)*30, Math.random()*15-5, (Math.random()-0.5)*30),
+    ]);
+    
+    const tubeGeo = new THREE.TubeGeometry(curve, 50, 0.03, 8, false);
+    const tubeMat = new THREE.MeshBasicMaterial({
+      color: particlePalette[i % particlePalette.length],
+      transparent: true,
+      opacity: 0.15,
+    });
+    const tube = new THREE.Mesh(tubeGeo, tubeMat);
+    beamGroup.add(tube);
+  }
+}
+createBeams();
+
+// ==================== RAYCASTER (TOOLTIP) ====================
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+const tooltip = document.getElementById('tooltip');
+let hoveredNode = null;
+
+canvas.addEventListener('mousemove', (e) => {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  
+  raycaster.setFromCamera(mouse, camera);
+  const meshes = nodeMeshes.map(n => n.mesh);
+  const intersects = raycaster.intersectObjects(meshes);
+  
+  if (intersects.length > 0) {
+    const obj = intersects[0].object;
+    const node = obj.userData;
+    
+    if (hoveredNode !== node.id) {
+      hoveredNode = node.id;
+      document.getElementById('tt-title').textContent = node.name;
+      document.getElementById('tt-desc').textContent = node.desc;
+      document.getElementById('tt-tags').innerHTML = node.tags.map(t => `<span class="tag">${t}</span>`).join('');
+      tooltip.classList.add('show');
+    }
+    
+    tooltip.style.left = e.clientX + 20 + 'px';
+    tooltip.style.top = e.clientY - 20 + 'px';
+    
+    canvas.style.cursor = 'pointer';
+    obj.material.emissiveIntensity = 0.8;
+  } else {
+    tooltip.classList.remove('show');
+    hoveredNode = null;
+    canvas.style.cursor = 'grab';
+    
+    nodeMeshes.forEach(n => {
+      if (n.node.id !== hoveredNode) {
+        n.mesh.material.emissiveIntensity = 0.3;
+      }
+    });
+  }
+});
+
+// ==================== CONTROLS ====================
+let autoRotate = true;
+let viewMode = 'auto';
+let orbitAngle = 0;
+
+function setView(mode) {
+  viewMode = mode;
+  document.querySelectorAll('.ctrl-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  if (mode === 'auto') {
+    autoRotate = true;
+  } else if (mode === 'top') {
+    autoRotate = false;
+    camera.position.set(0, 25, 0.1);
+    camera.lookAt(0, 0, 0);
+  } else if (mode === 'front') {
+    autoRotate = false;
+    camera.position.set(0, 5, 20);
+    camera.lookAt(0, 0, 0);
+  } else if (mode === 'orbit') {
+    autoRotate = true;
+    orbitAngle = 0;
+  }
+}
+
+function toggleLabels() {
+  showLabels = !showLabels;
+  labelSprites.forEach(s => { s.visible = showLabels; });
+}
+
+function toggleParticles() {
+  particlesEnabled = !particlesEnabled;
+  particles.visible = particlesEnabled;
+}
+
+// ==================== ANIMATION ====================
+const clock = new THREE.Clock();
+let time = 0;
+
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = clock.getDelta();
+  time += dt;
+  
+  // Camera
+  if (viewMode === 'auto' || viewMode === 'orbit') {
+    if (viewMode === 'orbit') {
+      orbitAngle += dt * 0.3;
+      camera.position.x = Math.sin(orbitAngle) * 20;
+      camera.position.z = Math.cos(orbitAngle) * 20;
+      camera.position.y = 8 + Math.sin(time * 0.2) * 3;
+    } else {
+      camera.position.x = Math.sin(time * 0.15) * 5;
+      camera.position.y = 8 + Math.sin(time * 0.1) * 2;
+      camera.position.z = 18 + Math.cos(time * 0.12) * 3;
+    }
+    camera.lookAt(0, 0, 0);
+  }
+  
+  // Node animations
+  nodeMeshes.forEach((n, i) => {
+    n.mesh.rotation.y += dt * (0.3 + i * 0.05);
+    n.mesh.rotation.x += dt * 0.15;
+    n.group.position.y = n.node.pos[1] + Math.sin(time * 0.8 + i * 0.5) * 0.15;
+    
+    // Ring pulse
+    n.ring.material.opacity = 0.1 + Math.sin(time * 2 + i) * 0.05;
+    const ringScale = 1 + Math.sin(time * 1.5 + i * 0.3) * 0.05;
+    n.ring.scale.set(ringScale, ringScale, ringScale);
+  });
+  
+  // Edge pulse
+  edgeLines.forEach((e, i) => {
+    e.line.material.opacity = 0.3 + Math.sin(time * 3 + i * 0.5) * 0.2;
+  });
+  
+  // Particles
+  if (particlesEnabled) {
+    const positions = particles.geometry.attributes.position.array;
+    for (let i = 0; i < particleCount; i++) {
+      positions[i * 3] += particleSpeeds[i].x;
+      positions[i * 3 + 1] += particleSpeeds[i].y;
+      positions[i * 3 + 2] += particleSpeeds[i].z;
+      
+      if (Math.abs(positions[i * 3]) > 20) particleSpeeds[i].x *= -1;
+      if (Math.abs(positions[i * 3 + 1]) > 10) particleSpeeds[i].y *= -1;
+      if (Math.abs(positions[i * 3 + 2]) > 20) particleSpeeds[i].z *= -1;
+    }
+    particles.geometry.attributes.position.needsUpdate = true;
+  }
+  
+  // Lights animation
+  pointLight1.position.x = Math.sin(time * 0.5) * 8;
+  pointLight1.position.z = Math.cos(time * 0.5) * 8;
+  pointLight2.position.y = 3 + Math.sin(time * 0.7) * 2;
+  
+  renderer.render(scene, camera);
+}
+
+// ==================== RESIZE ====================
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// ==================== START ====================
+setTimeout(() => {
+  document.getElementById('loader').classList.add('done');
+  animate();
+}, 1500);
+</script>
+</body>
+</html>
