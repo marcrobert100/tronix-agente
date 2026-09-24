@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tronix Santinho Generator - Santinhos Politicos Pro</title>
+<link rel="stylesheet" href="css/styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">TRX</span>
+    <div>
+      <h1>Tronix Santinho Generator</h1>
+      <small>Santinhos profissionais em quantidade · v1.0 · 14 modelos</small>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn ghost" id="btn-salvar">Salvar Candidato</button>
+    <button class="btn ghost" id="btn-carregar">Carregar</button>
+    <button class="btn primary" id="btn-pdf-uni">PDF Unitario</button>
+    <button class="btn accent" id="btn-pdf-lote">Gerar Lote</button>
+  </div>
+</header>
+
+<main class="layout">
+
+  <aside class="sidebar">
+    <h3>Modelos</h3>
+    <div class="modelos-grid" id="modelos-grid"></div>
+
+    <h3 style="margin-top:24px;">Cores</h3>
+    <div class="cores-grid">
+      <label>Primaria <input type="color" id="cor-primaria" value="#c8102e"></label>
+      <label>Secundaria <input type="color" id="cor-secundaria" value="#1a1a1a"></label>
+      <label>Texto <input type="color" id="cor-texto" value="#ffffff"></label>
+      <label>Destaque <input type="color" id="cor-destaque" value="#ffd700"></label>
+    </div>
+
+    <h3 style="margin-top:24px;">Acessorios</h3>
+
+    <label class="acc-label">Simbolo de fundo
+      <select id="acc-simbolo" class="acc-select">
+        <option value="nenhum">Nenhum</option>
+        <option value="cruz">✝ Cruz</option>
+        <option value="estrela">★ Estrela</option>
+        <option value="coracao">♥ Coracao</option>
+        <option value="bandeira">⚑ Bandeira</option>
+        <option value="raio">⚡ Raio</option>
+        <option value="mao">✋ Mao</option>
+        <option value="familia">Familia</option>
+        <option value="pomba">Pomba</option>
+      </select>
+    </label>
+
+    <label class="acc-label">Moldura da foto
+      <select id="acc-moldura" class="acc-select">
+        <option value="quadrada">Quadrada</option>
+        <option value="redonda">Redonda</option>
+        <option value="losango">Losango</option>
+        <option value="hexagonal">Hexagonal</option>
+        <option value="escudo">Escudo</option>
+      </select>
+    </label>
+
+    <label class="acc-label">Estilo da foto
+      <select id="acc-estilo-foto" class="acc-select">
+        <option value="normal">Normal</option>
+        <option value="pb">Preto e Branco</option>
+        <option value="sepia">Sepia</option>
+        <option value="duotone">Duotone</option>
+      </select>
+    </label>
+
+    <label class="acc-label">Badge / Tag
+      <select id="acc-badge" class="acc-select">
+        <option value="nenhum">Nenhum</option>
+        <option value="mulher">♀ Mulher</option>
+        <option value="jovem">★ Juventude</option>
+        <option value="renovacao">↻ Renovacao</option>
+        <option value="experiencia">✓ Experiencia</option>
+        <option value="educacao">Educacao</option>
+        <option value="saude">Saude</option>
+        <option value="seguranca">Seguranca</option>
+        <option value="agro">Agro</option>
+        <option value="religioso">Cristao</option>
+        <option value="trabalhador">Trabalhador</option>
+        <option value="novo">NOVO</option>
+      </select>
+    </label>
+
+    <label class="acc-label">Proposta destaque
+      <input type="text" id="acc-proposta" maxlength="40" placeholder="Ex: Saude para todos">
+    </label>
+
+    <label class="acc-label">Vice
+      <input type="text" id="acc-vice" maxlength="30" placeholder="Nome do vice">
+    </label>
+
+    <label class="acc-label">Zona / Secao
+      <input type="text" id="acc-zona" maxlength="15" placeholder="123/0045">
+    </label>
+
+    <div class="acc-toggles">
+      <label class="acc-toggle">
+        <input type="checkbox" id="acc-selo-je">
+        <span>Selo Justica Eleitoral</span>
+      </label>
+      <label class="acc-toggle">
+        <input type="checkbox" id="acc-faixa-cor" checked>
+        <span>Faixa de cor inferior</span>
+      </label>
+    </div>
+  </aside>
+
+  <section class="editor">
+    <h3>Dados do Candidato</h3>
+    <div class="form-grid">
+      <label>Nome completo
+        <input type="text" id="f-nome" value="Maria da Silva Santos" placeholder="Nome do candidato">
+      </label>
+      <label>Cargo pretendido
+        <select id="f-cargo">
+          <option>Vereador(a)</option>
+          <option>Prefeito(a)</option>
+          <option>Vice-Prefeito(a)</option>
+          <option>Deputado(a) Estadual</option>
+          <option>Deputado(a) Federal</option>
+          <option>Senador(a)</option>
+          <option>Governador(a)</option>
+          <option>Vice-Governador(a)</option>
+          <option>Presidente(a)</option>
+        </select>
+      </label>
+      <label>Partido
+        <input type="text" id="f-partido" value="PARTIDO" placeholder="Sigla ou nome do partido">
+      </label>
+      <label>Numero (urna)
+        <input type="text" id="f-numero" value="12345" maxlength="5" placeholder="12345">
+      </label>
+      <label>Cidade/UF
+        <input type="text" id="f-cidade" value="Vicosa - AL" placeholder="Cidade - UF">
+      </label>
+      <label>Slogan (linha 1)
+        <input type="text" id="f-slogan1" value="Juntos pela nossa gente" placeholder="Slogan principal">
+      </label>
+      <label>Slogan (linha 2)
+        <input type="text" id="f-slogan2" value="Honestidade, trabalho e compromisso" placeholder="Sub-slogan">
+      </label>
+      <label>WhatsApp
+        <input type="text" id="f-whatsapp" value="(82) 99999-9999" placeholder="(99) 99999-9999">
+      </label>
+      <label>Instagram
+        <input type="text" id="f-instagram" value="@mariasantos" placeholder="@usuario">
+      </label>
+      <label>Site/Link
+        <input type="text" id="f-site" value="https://mariasantos.com.br" placeholder="https://...">
+      </label>
+      <label>Coligacao
+        <input type="text" id="f-coligacao" value="ALIANCA POR ALAGOAS" placeholder="Nome da coligacao">
+      </label>
+    </div>
+
+    <h3 style="margin-top:18px;">Propostas (verso)</h3>
+    <div class="propostas">
+      <textarea id="f-propostas" rows="6" placeholder="Liste 3 a 5 propostas, uma por linha">Saude digna para todos
+Educacao de qualidade
+Emprego e renda
+Seguranca para a familia
+Agricultura familiar forte</textarea>
+    </div>
+
+    <h3 style="margin-top:18px;">Foto do Candidato</h3>
+    <div class="foto-upload">
+      <input type="file" id="f-foto" accept="image/*">
+      <small>JPG ou PNG. A foto sera ajustada automaticamente.</small>
+    </div>
+
+    <h3 style="margin-top:18px;">Quantidade para Lote</h3>
+    <div class="form-grid">
+      <label>Quantidade de santinhos
+        <input type="number" id="f-quantidade" value="100" min="1" max="10000">
+      </label>
+      <label>Copias por pagina A4
+        <select id="f-copias">
+          <option value="9">9 santinhos (3x3) · 70x100mm</option>
+          <option value="6">6 santinhos (3x2) · 70x148mm</option>
+          <option value="8">8 santinhos (4x2) · 52x148mm</option>
+          <option value="10">10 santinhos (5x2) · 42x148mm</option>
+        </select>
+      </label>
+      <label>Frente e verso
+        <select id="f-verso">
+          <option value="sim">Sim - imprimir nos 2 lados</option>
+          <option value="nao">Nao - so frente</option>
+        </select>
+      </label>
+      <label>Nome do arquivo
+        <input type="text" id="f-arquivo" value="santinho_maria_santos" placeholder="santinho_...">
+      </label>
+    </div>
+  </section>
+
+  <section class="preview-area">
+    <h3>Preview ao vivo</h3>
+    <div class="preview-tabs">
+      <button class="tab active" data-lado="frente">FRENTE</button>
+      <button class="tab" data-lado="verso">VERSO</button>
+    </div>
+
+    <div class="santinho-wrapper">
+      <div class="santinho-container" id="santinho-container"></div>
+    </div>
+
+    <div class="dimensoes-info">
+      <small>Tamanho real: <strong>70mm x 100mm</strong> · Sangria 3mm · CMYK recomendado para grafica</small>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <span>Tronix Santinho Generator · Equipe: DEV + MEDIA + SUPER + DB + IG + INFRA + ROTEIRISTA + DIRETOR</span>
+  <span id="status-msg">Pronto</span>
+</footer>
+
+<div class="loading-overlay" id="loading-overlay" hidden>
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <div id="loading-msg">Processando...</div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <small>Dica: Para grandes lotes (1000+), use o CLI: <code>python santinho.py --nome "X" --numero "12345" --quantidade 1000</code></small>
+  </div>
+</div>
+
+<div class="modal" id="modal-carregar" hidden>
+  <div class="modal-content">
+    <h3>Candidatos salvos</h3>
+    <div id="lista-candidatos"></div>
+    <button class="btn ghost" id="btn-fechar-modal">Fechar</button>
+  </div>
+</div>
+
+<script src="js/templates.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Sonho da Estrelinha Lua</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --cream: #fdf8f0;
+  --coral: #ff7a5a;
+  --gold: #ffd700;
+  --gold-light: #f5a623;
+  --blue-sky: #e3f2fd;
+  --night: #0b081a;
+  --text-dark: #1a1a2e;
+  --text-soft: #4a3f4a;
+}
+body {
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(160deg,#ffeedd 0%,#ffe3ec 50%,#e3f2ff 100%);
+  min-height:100vh; display:flex; align-items:center; justify-content:center; padding:16px;
+}
+.book {
+  width:min(880px,100%); background:var(--cream); border-radius:28px;
+  box-shadow:0 18px 50px rgba(140,90,60,.22); overflow:hidden; position:relative;
+}
+.page { display:none; animation:pop .45s ease; }
+.page.active { display:block; }
+@keyframes pop { from { opacity:0; transform:translateX(28px);} to { opacity:1; transform:none;} }
+.art { width:100%; background:#fff; border-bottom:6px dotted var(--gold); }
+.art svg { width:100%; height:auto; display:block; }
+.content { padding:26px 34px 20px; text-align:center; }
+.content p {
+  font-family: 'Playfair Display', serif;
+  font-size:clamp(19px,2.6vw,25px); line-height:1.75; color:var(--text-dark); letter-spacing:.5px;
+}
+.content .dialogue {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--coral);
+  margin-top: 12px;
+  font-size: clamp(17px,2.2vw,22px);
+}
+.cover .content h1 {
+  font-family: 'Playfair Display', serif;
+  font-size:clamp(30px,5vw,44px); color:var(--coral); margin-bottom:8px;
+}
+.cover .content h2 {
+  font-family: 'Quicksand', sans-serif;
+  font-size:clamp(15px,2.2vw,19px); color:#a0886b; font-weight:normal; margin-bottom:6px;
+}
+.badge { display:inline-block; background:#ffe9c7; color:#c07830; border-radius:999px; padding:4px 14px; font-size:14px; margin-bottom:14px; }
+.btn {
+  border:none; cursor:pointer; border-radius:999px; font-family:'Quicksand',sans-serif;
+  transition:transform .12s, box-shadow .12s;
+}
+.btn:active { transform:scale(.94); }
+.btn:focus-visible { outline:3px solid #385e98; outline-offset:3px; }
+.btn-big {
+  background:var(--coral); color:#fff; font-size:21px; padding:14px 44px;
+  box-shadow:0 6px 0 #e07f2e; margin:10px 0 6px;
+}
+.btn-play {
+  background:#6bc86b; color:#fff; font-size:17px; padding:10px 26px;
+  box-shadow:0 5px 0 #4da34d; margin-top:14px;
+}
+.btn-play.playing { background:#f4766e; box-shadow:0 5px 0 #c9534c; }
+.nav {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 22px 20px; gap:10px;
+}
+.btn-nav {
+  background:var(--gold); color:#9a6a2f; font-size:18px; padding:9px 22px; box-shadow:0 4px 0 #e6b877;
+}
+.btn-nav:disabled { opacity:.35; cursor:default; box-shadow:none; }
+.dots { display:flex; gap:7px; flex-wrap:wrap; justify-content:center; }
+.dot { width:11px; height:11px; border-radius:50%; background:#eadbc4; cursor:pointer; transition:.2s; }
+.dot.on { background:var(--coral); transform:scale(1.35); }
+.toolbar { position:absolute; top:14px; right:16px; z-index:5; display:flex; gap:8px; }
+.btn-auto { background:#8fb8f0; color:#fff; font-size:14px; padding:8px 16px; box-shadow:0 4px 0 #6c93c9; }
+.btn-auto.on { background:#f4766e; box-shadow:0 4px 0 #c9534c; }
+.btn-whatsapp { background:#25d366; color:#fff; font-size:14px; padding:8px 16px; box-shadow:0 4px 0 #1da851; }
+.btn-pdf { background:#e74c3c; color:#fff; font-size:14px; padding:8px 16px; box-shadow:0 4px 0 #c0392b; }
+.pageno { font-size:13px; color:#c4ab88; margin-top:10px; }
+.end-emoji { font-size:56px; margin:6px 0 10px; }
+.page-number { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); font-size:12px; color:rgba(255,255,255,0.7); }
+@media (max-width:560px) {
+  body { padding:8px; }
+  .book { border-radius:18px; }
+  .content { padding:22px 20px 16px; }
+  .nav { padding:12px 12px 16px; }
+  .btn-nav { padding:9px 14px; font-size:16px; }
+  .toolbar { top:10px; right:10px; }
+}
+</style>
+</head>
+<body>
+<div class="book" id="livro">
+  <div class="toolbar">
+    <button class="btn btn-pdf" type="button" onclick="exportarPDF()">📄 PDF</button>
+    <button class="btn btn-whatsapp" type="button" onclick="compartilharWhatsApp()">📱 WhatsApp</button>
+    <button class="btn btn-auto" id="autoBtn" type="button" onclick="toggleAuto()">…</button>
+  </div>
+  <div id="pages" aria-live="polite"></div>
+  <div class="nav" aria-label="Navegação">
+    <button class="btn btn-nav" id="prevBtn" type="button" onclick="go(-1)"></button>
+    <div class="dots" id="dots" aria-label="Selecionar página"></div>
+    <button class="btn btn-nav" id="nextBtn" type="button" onclick="go(1)"></button>
+  </div>
+</div>
+<script>
+const LIVRO = {"titulo":"O Sonho da Estrelinha Lua","subtitulo":"Uma história para embalar os sonhos","autor":"Marcos Roberto","faixa_etaria":"2 — 6 anos","lang":"pt-BR","texto_final":"Algumas coisas bonitas precisam de um pouquinho de paciência. Boa noite, estrelinha.","capa_svg":"\u003csvg viewBox=\"0 0 800 600\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n  \u003cdefs\u003e\n    \u003clinearGradient id=\"sky-cover\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n      \u003cstop offset=\"0\" stop-color=\"#0b081a\"/\u003e\n      \u003cstop offset=\"0.45\" stop-color=\"#15123a\"/\u003e\n      \u003cstop offset=\"0.75\" stop-color=\"#1f1b4e\"/\u003e\n      \u003cstop offset=\"1\" stop-color=\"#2a235a\"/\u003e\n    \u003c/linearGradient\u003e\n    \u003cradialGradient id=\"glow-cover\" cx=\"50%\" cy=\"50%\" r=\"50%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#ffd700\" stop-opacity=\"0.3\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#ffd700\" stop-opacity=\"0\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \n  \u003crect width=\"800\" height=\"600\" fill=\"url(#sky-cover)\"/\u003e\n  \n  \u003c!-- Estrelas de fundo com tamanhos variados --\u003e\n  \u003cg fill=\"#fff\"\u003e\n    \u003ccircle cx=\"80\" cy=\"60\" r=\"1.5\" opacity=\"0.8\"/\u003e\n    \u003ccircle cx=\"150\" cy=\"120\" r=\"1\" opacity=\"0.5\"/\u003e\n    \u003ccircle cx=\"220\" cy=\"40\" r=\"2\" opacity=\"0.7\"/\u003e\n    \u003ccircle cx=\"300\" cy=\"90\" r=\"1.2\" opacity=\"0.6\"/\u003e\n    \u003ccircle cx=\"380\" cy=\"30\" r=\"1.8\" opacity=\"0.65\"/\u003e\n    \u003ccircle cx=\"450\" cy=\"70\" r=\"1\" opacity=\"0.5\"/\u003e\n    \u003ccircle cx=\"520\" cy=\"45\" r=\"2.2\" opacity=\"0.75\"/\u003e\n    \u003ccircle cx=\"600\" cy=\"110\" r=\"1.3\" opacity=\"0.55\"/\u003e\n    \u003ccircle cx=\"680\" cy=\"50\" r=\"1.6\" opacity=\"0.6\"/\u003e\n    \u003ccircle cx=\"750\" cy=\"90\" r=\"1\" opacity=\"0.45\"/\u003e\n    \u003ccircle cx=\"100\" cy=\"200\" r=\"1.4\" opacity=\"0.5\"/\u003e\n    \u003ccircle cx=\"200\" cy=\"160\" r=\"1\" opacity=\"0.4\"/\u003e\n    \u003ccircle cx=\"350\" cy=\"140\" r=\"1.6\" opacity=\"0.55\"/\u003e\n    \u003ccircle cx=\"500\" cy=\"160\" r=\"1.2\" opacity=\"0.5\"/\u003e\n    \u003ccircle cx=\"620\" cy=\"190\" r=\"1.8\" opacity=\"0.6\"/\u003e\n    \u003ccircle cx=\"720\" cy=\"150\" r=\"1\" opacity=\"0.4\"/\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Nuvens com profundidade --\u003e\n  \u003cg opacity=\"0.1\"\u003e\n    \u003cellipse cx=\"140\" cy=\"180\" rx=\"90\" ry=\"28\" fill=\"#fff\"/\u003e\n    \u003cellipse cx=\"180\" cy=\"168\" rx=\"70\" ry=\"22\" fill=\"#fff\"/\u003e\n    \u003cellipse cx=\"100\" cy=\"174\" rx=\"55\" ry=\"20\" fill=\"#fff\"/\u003e\n    \u003cellipse cx=\"140\" cy=\"186\" rx=\"75\" ry=\"24\" fill=\"#fff\"/\u003e\n  \u003c/g\u003e\n  \u003cg opacity=\"0.08\"\u003e\n    \u003cellipse cx=\"620\" cy=\"210\" rx=\"100\" ry=\"32\" fill=\"#fff\"/\u003e\n    \u003cellipse cx=\"670\" cy=\"196\" rx=\"75\" ry=\"25\" fill=\"#fff\"/\u003e\n    \u003cellipse cx=\"570\" cy=\"202\" rx=\"60\" ry=\"22\" fill=\"#fff\"/\u003e\n    \u003cellipse cx=\"620\" cy=\"218\" rx=\"85\" ry=\"26\" fill=\"#fff\"/\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Lua cheia ao fundo --\u003e\n  \u003ccircle cx=\"660\" cy=\"95\" r=\"58\" fill=\"#ffd700\" opacity=\"0.9\"/\u003e\n  \u003ccircle cx=\"648\" cy=\"88\" r=\"52\" fill=\"#0b081a\" opacity=\"0.95\"/\u003e\n  \u003ccircle cx=\"654\" cy=\"92\" r=\"47\" fill=\"#ffd700\" opacity=\"0.85\"/\u003e\n  \u003ccircle cx=\"660\" cy=\"95\" r=\"85\" fill=\"url(#glow-cover)\"/\u003e\n  \u003c!-- Crateras --\u003e\n  \u003ccircle cx=\"640\" cy=\"85\" r=\"6\" fill=\"#f5a623\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"665\" cy=\"105\" r=\"4\" fill=\"#f5a623\" opacity=\"0.25\"/\u003e\n  \u003ccircle cx=\"655\" cy=\"115\" r=\"3\" fill=\"#f5a623\" opacity=\"0.2\"/\u003e\n  \n  \u003c!-- Colinas em camadas --\u003e\n  \u003cellipse cx=\"400\" cy=\"660\" rx=\"580\" ry=\"160\" fill=\"#1f1b4e\"/\u003e\n  \u003cellipse cx=\"200\" cy=\"690\" rx=\"320\" ry=\"130\" fill=\"#15123a\"/\u003e\n  \u003cellipse cx=\"620\" cy=\"680\" rx=\"350\" ry=\"140\" fill=\"#15123a\"/\u003e\n  \n  \u003c!-- Árvores silhueta --\u003e\n  \u003cg fill=\"#0b081a\" opacity=\"0.6\"\u003e\n    \u003crect x=\"120\" y=\"500\" width=\"8\" height=\"40\" rx=\"3\"/\u003e\n    \u003ccircle cx=\"124\" cy=\"495\" r=\"22\"/\u003e\n    \u003ccircle cx=\"110\" cy=\"500\" r=\"16\"/\u003e\n    \u003ccircle cx=\"138\" cy=\"500\" r=\"16\"/\u003e\n    \n    \u003crect x=\"680\" y=\"510\" width=\"7\" height=\"35\" rx=\"3\"/\u003e\n    \u003ccircle cx=\"683\" cy=\"505\" r=\"18\"/\u003e\n    \u003ccircle cx=\"672\" cy=\"510\" r=\"13\"/\u003e\n    \u003ccircle cx=\"694\" cy=\"510\" r=\"13\"/\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Estrela Lua (protagonista) --\u003e\n  \u003cg transform=\"translate(320,230)\"\u003e\n    \u003ccircle cx=\"80\" cy=\"80\" r=\"90\" fill=\"url(#glow-cover)\"/\u003e\n    \u003cg opacity=\"1.0\"\u003e\n  \u003c!-- Sombra --\u003e\n  \u003cellipse cx=\"80\" cy=\"129.4\" rx=\"39.0\" ry=\"7.800000000000001\" fill=\"#000\" opacity=\"0.1\"/\u003e\n  \u003c!-- Corpo com gradiente --\u003e\n  \u003cdefs\u003e\n    \u003cradialGradient id=\"star-grad-capa-lua\" cx=\"40%\" cy=\"35%\" r=\"70%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#fff8dc\"/\u003e\n      \u003cstop offset=\"50%\" stop-color=\"#f5a623\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#f5a623\" stop-opacity=\"0.85\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \u003cpolygon points=\"80,34.5 87.8,64.4 124.2,64.4 93.0,85.2 106.0,119.0 80,98.2 54.0,119.0 67.0,85.2 35.8,64.4 72.2,64.4\" fill=\"url(#star-grad-capa-lua)\" stroke=\"#f5a623\" stroke-width=\"1.9500000000000002\"/\u003e\n  \u003c!-- Brilho interno --\u003e\n  \u003cpolygon points=\"80,34.5 87.8,64.4 124.2,64.4 93.0,85.2 106.0,119.0 80,98.2 54.0,119.0 67.0,85.2 35.8,64.4 72.2,64.4\" fill=\"url(#star-grad-capa-lua)\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"69.6\" cy=\"77.4\" r=\"4.55\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"90.4\" cy=\"77.4\" r=\"4.55\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"68.3\" cy=\"76.1\" r=\"1.56\" fill=\"#fff\"/\u003e\u003ccircle cx=\"89.1\" cy=\"76.1\" r=\"1.56\" fill=\"#fff\"/\u003e\u003cellipse cx=\"61.8\" cy=\"87.8\" rx=\"6.5\" ry=\"3.9000000000000004\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003cellipse cx=\"98.2\" cy=\"87.8\" rx=\"6.5\" ry=\"3.9000000000000004\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003cpath d=\"M69.6 93.0 Q80 103.4 90.4 93.0\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"3.25\" stroke-linecap=\"round\"/\u003e\n\u003c/g\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Texto --\u003e\n  \u003ctext x=\"400\" y=\"430\" text-anchor=\"middle\" font-family=\"'Playfair Display',serif\" \n        font-size=\"40\" fill=\"#ffd700\" font-weight=\"700\" opacity=\"0.95\"\u003eO Sonho da Estrelinha Lua\u003c/text\u003e\n  \u003ctext x=\"400\" y=\"468\" text-anchor=\"middle\" font-family=\"'Quicksand',sans-serif\" \n        font-size=\"17\" fill=\"#a0886b\" opacity=\"0.9\"\u003eUma história para embalar os sonhos\u003c/text\u003e\n  \n  \u003c!-- Estrelas caindo --\u003e\n  \u003ccircle cx=\"300\" cy=\"520\" r=\"3\" fill=\"#ffd700\" opacity=\"0.4\"/\u003e\n  \u003ccircle cx=\"340\" cy=\"540\" r=\"2\" fill=\"#ffd700\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"460\" cy=\"530\" r=\"2.5\" fill=\"#ffd700\" opacity=\"0.35\"/\u003e\n  \u003ccircle cx=\"510\" cy=\"550\" r=\"2\" fill=\"#ffd700\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"400\" cy=\"560\" r=\"1.5\" fill=\"#ffd700\" opacity=\"0.25\"/\u003e\n\u003c/svg\u003e","paginas":[{"texto":"Lá no céu, bem alto, morava uma estrelinha chamada Lua. Ela era a menor de todas, mas tinha o brilho mais bonito que já existiu.","dialogo":"Ai, que soninho! Será que as crianças lá embaixo também estão com sono?","svg":"\u003csvg viewBox=\"0 0 800 600\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n  \u003cdefs\u003e\n    \u003clinearGradient id=\"sky-01\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n      \u003cstop offset=\"0\" stop-color=\"#0b081a\"/\u003e\n      \u003cstop offset=\"0.5\" stop-color=\"#15123a\"/\u003e\n      \u003cstop offset=\"1\" stop-color=\"#1f1b4e\"/\u003e\n    \u003c/linearGradient\u003e\n    \u003cradialGradient id=\"glow-01\" cx=\"50%\" cy=\"50%\" r=\"50%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#ffd700\" stop-opacity=\"0.35\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#ffd700\" stop-opacity=\"0\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \n  \u003crect width=\"800\" height=\"600\" fill=\"url(#sky-01)\"/\u003e\n  \n  \u003cg fill=\"#fff\"\u003e\n    \u003ccircle cx=\"80\" cy=\"50\" r=\"1.5\" opacity=\"0.8\"/\u003e\n    \u003ccircle cx=\"180\" cy=\"80\" r=\"1\" opacity=\"0.5\"/\u003e\n    \u003ccircle cx=\"280\" cy=\"40\" r=\"2\" opacity=\"0.7\"/\u003e\n    \u003ccircle cx=\"380\" cy=\"70\" r=\"1.2\" opacity=\"0.6\"/\u003e\n    \u003ccircle cx=\"480\" cy=\"35\" r=\"1.8\" opacity=\"0.65\"/\u003e\n    \u003ccircle cx=\"580\" cy=\"60\" r=\"1\" opacity=\"0.5\"/\u003e\n    \u003ccircle cx=\"680\" cy=\"45\" r=\"2.2\" opacity=\"0.75\"/\u003e\n    \u003ccircle cx=\"740\" cy=\"90\" r=\"1.3\" opacity=\"0.55\"/\u003e\n    \u003ccircle cx=\"120\" cy=\"140\" r=\"1.4\" opacity=\"0.5\"/\u003e\n    \u003ccircle cx=\"350\" cy=\"120\" r=\"1.6\" opacity=\"0.55\"/\u003e\n    \u003ccircle cx=\"520\" cy=\"130\" r=\"1.2\" opacity=\"0.5\"/\u003e\n    \u003ccircle cx=\"650\" cy=\"100\" r=\"1.5\" opacity=\"0.6\"/\u003e\n    \u003ccircle cx=\"720\" cy=\"150\" r=\"1\" opacity=\"0.45\"/\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Nuvens --\u003e\n  \u003cg opacity=\"0.1\"\u003e\n    \u003cellipse cx=\"150\" cy=\"170\" rx=\"80\" ry=\"25\" fill=\"#fff\"/\u003e\n    \u003cellipse cx=\"185\" cy=\"160\" rx=\"60\" ry=\"20\" fill=\"#fff\"/\u003e\n    \u003cellipse cx=\"115\" cy=\"165\" rx=\"50\" ry=\"18\" fill=\"#fff\"/\u003e\n    \u003cellipse cx=\"150\" cy=\"178\" rx=\"70\" ry=\"22\" fill=\"#fff\"/\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Colinas --\u003e\n  \u003cellipse cx=\"400\" cy=\"660\" rx=\"580\" ry=\"160\" fill=\"#1f1b4e\"/\u003e\n  \u003cellipse cx=\"200\" cy=\"690\" rx=\"320\" ry=\"130\" fill=\"#15123a\"/\u003e\n  \n  \u003c!-- Árvores --\u003e\n  \u003cg fill=\"#0b081a\" opacity=\"0.5\"\u003e\n    \u003crect x=\"120\" y=\"500\" width=\"7\" height=\"35\" rx=\"3\"/\u003e\n    \u003ccircle cx=\"123\" cy=\"495\" r=\"20\"/\u003e\n    \u003ccircle cx=\"110\" cy=\"500\" r=\"14\"/\u003e\n    \u003ccircle cx=\"136\" cy=\"500\" r=\"14\"/\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Estrela Lua --\u003e\n  \u003cg transform=\"translate(300,200)\"\u003e\n    \u003ccircle cx=\"80\" cy=\"80\" r=\"80\" fill=\"url(#glow-01)\"/\u003e\n    \u003cg opacity=\"1.0\"\u003e\n  \u003c!-- Sombra --\u003e\n  \u003cellipse cx=\"80\" cy=\"123.69999999999999\" rx=\"34.5\" ry=\"6.8999999999999995\" fill=\"#000\" opacity=\"0.1\"/\u003e\n  \u003c!-- Corpo com gradiente --\u003e\n  \u003cdefs\u003e\n    \u003cradialGradient id=\"star-grad-p1-lua\" cx=\"40%\" cy=\"35%\" r=\"70%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#fff8dc\"/\u003e\n      \u003cstop offset=\"50%\" stop-color=\"#f5a623\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#f5a623\" stop-opacity=\"0.85\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \u003cpolygon points=\"80,39.75 86.9,66.2 119.1,66.2 91.5,84.6 103.0,114.5 80,96.1 57.0,114.5 68.5,84.6 40.900000000000006,66.2 73.1,66.2\" fill=\"url(#star-grad-p1-lua)\" stroke=\"#f5a623\" stroke-width=\"1.7249999999999999\"/\u003e\n  \u003c!-- Brilho interno --\u003e\n  \u003cpolygon points=\"80,39.75 86.9,66.2 119.1,66.2 91.5,84.6 103.0,114.5 80,96.1 57.0,114.5 68.5,84.6 40.900000000000006,66.2 73.1,66.2\" fill=\"url(#star-grad-p1-lua)\" opacity=\"0.3\"/\u003e\n  \u003cpath d=\"M66.2 77.7 Q70.8 82.3 75.4 77.7\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"2.3\" stroke-linecap=\"round\"/\u003e\u003cpath d=\"M84.6 77.7 Q89.2 82.3 93.8 77.7\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"2.3\" stroke-linecap=\"round\"/\u003e\u003cpath d=\"M74.25 91.5 Q80 96.1 85.75 91.5\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"2.3\" stroke-linecap=\"round\"/\u003e\n\u003c/g\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- \"z z z\" --\u003e\n  \u003ctext x=\"430\" y=\"280\" font-family=\"'Quicksand',sans-serif\" font-size=\"24\" fill=\"#ffd700\" opacity=\"0.3\" font-weight=\"600\"\u003ez\u003c/text\u003e\n  \u003ctext x=\"460\" y=\"260\" font-family=\"'Quicksand',sans-serif\" font-size=\"18\" fill=\"#ffd700\" opacity=\"0.25\" font-weight=\"600\"\u003ez\u003c/text\u003e\n\u003c/svg\u003e","audio":""},{"texto":"Foi quando uma luz suave e dourada apareceu ao seu lado. Era a Fada dos Sonhos, com seu vestido feito de névoa e cabelos de luar.","dialogo":"Estrelinha Lua, por que você está tão cansada?","svg":"\u003csvg viewBox=\"0 0 800 600\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n  \u003cdefs\u003e\n    \u003clinearGradient id=\"sky-02\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n      \u003cstop offset=\"0\" stop-color=\"#0b081a\"/\u003e\n      \u003cstop offset=\"0.5\" stop-color=\"#15123a\"/\u003e\n      \u003cstop offset=\"1\" stop-color=\"#2a235a\"/\u003e\n    \u003c/linearGradient\u003e\n    \u003cradialGradient id=\"glow-02\" cx=\"50%\" cy=\"50%\" r=\"50%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#ffd700\" stop-opacity=\"0.35\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#ffd700\" stop-opacity=\"0\"/\u003e\n    \u003c/radialGradient\u003e\n    \u003clinearGradient id=\"asa-02\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#fce4ec\" stop-opacity=\"0.6\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#fce4ec\" stop-opacity=\"0.2\"/\u003e\n    \u003c/linearGradient\u003e\n  \u003c/defs\u003e\n  \n  \u003crect width=\"800\" height=\"600\" fill=\"url(#sky-02)\"/\u003e\n  \n  \u003cg fill=\"#fff\"\u003e\n    \u003ccircle cx=\"100\" cy=\"55\" r=\"1.8\" opacity=\"0.7\"/\u003e\n    \u003ccircle cx=\"250\" cy=\"35\" r=\"2\" opacity=\"0.65\"/\u003e\n    \u003ccircle cx=\"450\" cy=\"50\" r=\"1.5\" opacity=\"0.6\"/\u003e\n    \u003ccircle cx=\"620\" cy=\"40\" r=\"2.2\" opacity=\"0.7\"/\u003e\n    \u003ccircle cx=\"740\" cy=\"80\" r=\"1.3\" opacity=\"0.5\"/\u003e\n    \u003ccircle cx=\"350\" cy=\"90\" r=\"1.2\" opacity=\"0.5\"/\u003e\n    \u003ccircle cx=\"550\" cy=\"100\" r=\"1.5\" opacity=\"0.55\"/\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Colinas --\u003e\n  \u003cellipse cx=\"400\" cy=\"660\" rx=\"580\" ry=\"160\" fill=\"#1f1b4e\"/\u003e\n  \n  \u003c!-- Lua --\u003e\n  \u003cg transform=\"translate(280,210)\"\u003e\n    \u003ccircle cx=\"80\" cy=\"80\" r=\"75\" fill=\"url(#glow-02)\"/\u003e\n    \u003cg opacity=\"1.0\"\u003e\n  \u003c!-- Sombra --\u003e\n  \u003cellipse cx=\"80\" cy=\"121.80000000000001\" rx=\"33.0\" ry=\"6.6000000000000005\" fill=\"#000\" opacity=\"0.1\"/\u003e\n  \u003c!-- Corpo com gradiente --\u003e\n  \u003cdefs\u003e\n    \u003cradialGradient id=\"star-grad-p2-lua\" cx=\"40%\" cy=\"35%\" r=\"70%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#fff8dc\"/\u003e\n      \u003cstop offset=\"50%\" stop-color=\"#f5a623\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#f5a623\" stop-opacity=\"0.85\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \u003cpolygon points=\"80,41.5 86.6,66.8 117.4,66.8 91.0,84.4 102.0,113.0 80,95.4 58.0,113.0 69.0,84.4 42.599999999999994,66.8 73.4,66.8\" fill=\"url(#star-grad-p2-lua)\" stroke=\"#f5a623\" stroke-width=\"1.6500000000000001\"/\u003e\n  \u003c!-- Brilho interno --\u003e\n  \u003cpolygon points=\"80,41.5 86.6,66.8 117.4,66.8 91.0,84.4 102.0,113.0 80,95.4 58.0,113.0 69.0,84.4 42.599999999999994,66.8 73.4,66.8\" fill=\"url(#star-grad-p2-lua)\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"71.2\" cy=\"77.8\" r=\"3.3000000000000003\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"88.8\" cy=\"77.8\" r=\"3.3000000000000003\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"70.1\" cy=\"76.7\" r=\"1.32\" fill=\"#fff\"/\u003e\u003ccircle cx=\"87.7\" cy=\"76.7\" r=\"1.32\" fill=\"#fff\"/\u003e\u003cpath d=\"M74.5 91.0 Q80 94.3 85.5 91.0\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"2.2\" stroke-linecap=\"round\"/\u003e\n\u003c/g\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Fada --\u003e\n  \u003cg transform=\"translate(480,190)\"\u003e\n    \u003c!-- Asas --\u003e\n    \u003cpath d=\"M50 30 Q-10 10 -20 60 Q10 90 50 70 Z\" fill=\"url(#asa-02)\" stroke=\"#fce4ec\" stroke-width=\"1\" opacity=\"0.8\"/\u003e\n    \u003cpath d=\"M50 30 Q110 10 120 60 Q90 90 50 70 Z\" fill=\"url(#asa-02)\" stroke=\"#fce4ec\" stroke-width=\"1\" opacity=\"0.8\"/\u003e\n    \u003c!-- Véu de fada --\u003e\n    \u003cellipse cx=\"50\" cy=\"40\" rx=\"35\" ry=\"55\" fill=\"#fce4ec\" opacity=\"0.15\"/\u003e\n    \n    \u003c!-- Corpo --\u003e\n    \u003cellipse cx=\"50\" cy=\"90\" rx=\"20\" ry=\"40\" fill=\"#fce4ec\" opacity=\"0.85\"/\u003e\n    \u003c!-- Vestido --\u003e\n    \u003cpath d=\"M30 75 Q50 70 70 75 L75 130 Q50 140 25 130 Z\" fill=\"#fce4ec\" opacity=\"0.7\"/\u003e\n    \n    \u003c!-- Cabeça --\u003e\n    \u003ccircle cx=\"50\" cy=\"45\" r=\"22\" fill=\"#ffd9c0\"/\u003e\n    \u003ccircle cx=\"44\" cy=\"42\" r=\"3\" fill=\"#1a1a2e\"/\u003e\n    \u003ccircle cx=\"56\" cy=\"42\" r=\"3\" fill=\"#1a1a2e\"/\u003e\n    \u003ccircle cx=\"45\" cy=\"41\" r=\"1\" fill=\"#fff\"/\u003e\n    \u003ccircle cx=\"57\" cy=\"41\" r=\"1\" fill=\"#fff\"/\u003e\n    \u003cpath d=\"M46 50 Q50 54 54 50\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"1.5\" stroke-linecap=\"round\"/\u003e\n    \u003c!-- Bochechas --\u003e\n    \u003cellipse cx=\"40\" cy=\"48\" rx=\"5\" ry=\"3\" fill=\"#ff8a80\" opacity=\"0.4\"/\u003e\n    \u003cellipse cx=\"60\" cy=\"48\" rx=\"5\" ry=\"3\" fill=\"#ff8a80\" opacity=\"0.4\"/\u003e\n    \u003c!-- Cabelo --\u003e\n    \u003cpath d=\"M28 45 Q22 10 50 18 Q78 10 72 45 Q65 25 50 30 Q35 25 28 45 Z\" fill=\"#ffd700\" opacity=\"0.9\"/\u003e\n    \u003c!-- Coroa de estrelas --\u003e\n    \u003cpolygon points=\"40,20 42,25 47,25 43,29 45,34 40,31 35,34 37,29 33,25 38,25\" fill=\"#ffd700\" opacity=\"0.8\"/\u003e\n    \n    \u003c!-- Varinha mágica --\u003e\n    \u003cline x1=\"75\" y1=\"60\" x2=\"105\" y2=\"30\" stroke=\"#f5a623\" stroke-width=\"2.5\"/\u003e\n    \u003ccircle cx=\"105\" cy=\"30\" r=\"6\" fill=\"#ffd700\" opacity=\"0.9\"/\u003e\n    \u003ccircle cx=\"105\" cy=\"30\" r=\"14\" fill=\"url(#glow-02)\"/\u003e\n    \n    \u003c!-- Brilhos mágicos --\u003e\n    \u003ccircle cx=\"95\" cy=\"45\" r=\"2.5\" fill=\"#ffd700\" opacity=\"0.6\"/\u003e\n    \u003ccircle cx=\"115\" cy=\"50\" r=\"2\" fill=\"#ffd700\" opacity=\"0.5\"/\u003e\n    \u003ccircle cx=\"100\" cy=\"60\" r=\"1.8\" fill=\"#ffd700\" opacity=\"0.45\"/\u003e\n    \u003ccircle cx=\"120\" cy=\"40\" r=\"1.5\" fill=\"#ffd700\" opacity=\"0.4\"/\u003e\n  \u003c/g\u003e\n\u003c/svg\u003e","audio":""},{"texto":"Lua arregalou os olhos. A Fada sorriu e contou um segredo que só as estrelas conhecem.","dialogo":"Querida estrelinha, quando você dorme, seu brilho descansa. E quando descansa, ele fica ainda mais forte!","svg":"\u003csvg viewBox=\"0 0 800 600\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n  \u003cdefs\u003e\n    \u003clinearGradient id=\"sky-03\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n      \u003cstop offset=\"0\" stop-color=\"#0b081a\"/\u003e\n      \u003cstop offset=\"0.5\" stop-color=\"#15123a\"/\u003e\n      \u003cstop offset=\"1\" stop-color=\"#2a235a\"/\u003e\n    \u003c/linearGradient\u003e\n    \u003cradialGradient id=\"glow-03\" cx=\"50%\" cy=\"50%\" r=\"50%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#ffd700\" stop-opacity=\"0.3\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#ffd700\" stop-opacity=\"0\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \n  \u003crect width=\"800\" height=\"600\" fill=\"url(#sky-03)\"/\u003e\n  \n  \u003cg fill=\"#fff\"\u003e\n    \u003ccircle cx=\"100\" cy=\"55\" r=\"1.5\" opacity=\"0.7\"/\u003e\n    \u003ccircle cx=\"280\" cy=\"35\" r=\"2\" opacity=\"0.65\"/\u003e\n    \u003ccircle cx=\"480\" cy=\"50\" r=\"1.8\" opacity=\"0.6\"/\u003e\n    \u003ccircle cx=\"650\" cy=\"45\" r=\"1.5\" opacity=\"0.55\"/\u003e\n    \u003ccircle cx=\"350\" cy=\"85\" r=\"1.2\" opacity=\"0.5\"/\u003e\n    \u003ccircle cx=\"520\" cy=\"95\" r=\"1.3\" opacity=\"0.5\"/\u003e\n  \u003c/g\u003e\n  \n  \u003cellipse cx=\"400\" cy=\"660\" rx=\"580\" ry=\"160\" fill=\"#1f1b4e\"/\u003e\n  \n  \u003c!-- Lua --\u003e\n  \u003cg transform=\"translate(260,200)\"\u003e\n    \u003ccircle cx=\"80\" cy=\"80\" r=\"70\" fill=\"url(#glow-03)\"/\u003e\n    \u003cg opacity=\"1.0\"\u003e\n  \u003c!-- Sombra --\u003e\n  \u003cellipse cx=\"80\" cy=\"118.0\" rx=\"30.0\" ry=\"6.0\" fill=\"#000\" opacity=\"0.1\"/\u003e\n  \u003c!-- Corpo com gradiente --\u003e\n  \u003cdefs\u003e\n    \u003cradialGradient id=\"star-grad-p3-lua\" cx=\"40%\" cy=\"35%\" r=\"70%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#fff8dc\"/\u003e\n      \u003cstop offset=\"50%\" stop-color=\"#f5a623\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#f5a623\" stop-opacity=\"0.85\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \u003cpolygon points=\"80,45.0 86.0,68.0 114.0,68.0 90.0,84.0 100.0,110.0 80,94.0 60.0,110.0 70.0,84.0 46.0,68.0 74.0,68.0\" fill=\"url(#star-grad-p3-lua)\" stroke=\"#f5a623\" stroke-width=\"1.5\"/\u003e\n  \u003c!-- Brilho interno --\u003e\n  \u003cpolygon points=\"80,45.0 86.0,68.0 114.0,68.0 90.0,84.0 100.0,110.0 80,94.0 60.0,110.0 70.0,84.0 46.0,68.0 74.0,68.0\" fill=\"url(#star-grad-p3-lua)\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"72.0\" cy=\"78.0\" r=\"4.5\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"88.0\" cy=\"78.0\" r=\"4.5\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"71.0\" cy=\"77.0\" r=\"1.2\" fill=\"#fff\"/\u003e\u003ccircle cx=\"87.0\" cy=\"77.0\" r=\"1.2\" fill=\"#fff\"/\u003e\u003cellipse cx=\"65.0\" cy=\"86.0\" rx=\"5.0\" ry=\"3.0\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003cellipse cx=\"95.0\" cy=\"86.0\" rx=\"5.0\" ry=\"3.0\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003ccircle cx=\"80\" cy=\"92.0\" r=\"4.0\" fill=\"#1a1a2e\"/\u003e\n\u003c/g\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Fada --\u003e\n  \u003cg transform=\"translate(440,180)\"\u003e\n    \u003cpath d=\"M45 25 Q-5 5 -15 55 Q15 85 45 65 Z\" fill=\"#fce4ec\" opacity=\"0.4\" stroke=\"#fce4ec\" stroke-width=\"1\"/\u003e\n    \u003cpath d=\"M45 25 Q95 5 105 55 Q75 85 45 65 Z\" fill=\"#fce4ec\" opacity=\"0.4\" stroke=\"#fce4ec\" stroke-width=\"1\"/\u003e\n    \u003cellipse cx=\"45\" cy=\"85\" rx=\"18\" ry=\"38\" fill=\"#fce4ec\" opacity=\"0.8\"/\u003e\n    \u003ccircle cx=\"45\" cy=\"40\" r=\"20\" fill=\"#ffd9c0\"/\u003e\n    \u003ccircle cx=\"40\" cy=\"38\" r=\"2.5\" fill=\"#1a1a2e\"/\u003e\n    \u003ccircle cx=\"50\" cy=\"38\" r=\"2.5\" fill=\"#1a1a2e\"/\u003e\n    \u003ccircle cx=\"41\" cy=\"37\" r=\"1\" fill=\"#fff\"/\u003e\n    \u003ccircle cx=\"51\" cy=\"37\" r=\"1\" fill=\"#fff\"/\u003e\n    \u003cpath d=\"M42 45 Q45 48 48 45\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"1.5\" stroke-linecap=\"round\"/\u003e\n    \u003cellipse cx=\"36\" cy=\"43\" rx=\"4\" ry=\"2.5\" fill=\"#ff8a80\" opacity=\"0.4\"/\u003e\n    \u003cellipse cx=\"54\" cy=\"43\" rx=\"4\" ry=\"2.5\" fill=\"#ff8a80\" opacity=\"0.4\"/\u003e\n    \u003cpath d=\"M26 40 Q22 8 45 16 Q68 8 64 40 Q58 22 45 27 Q32 22 26 40 Z\" fill=\"#ffd700\" opacity=\"0.85\"/\u003e\n    \u003cline x1=\"65\" y1=\"55\" x2=\"90\" y2=\"30\" stroke=\"#f5a623\" stroke-width=\"2.5\"/\u003e\n    \u003ccircle cx=\"90\" cy=\"30\" r=\"5\" fill=\"#ffd700\" opacity=\"0.9\"/\u003e\n    \u003ccircle cx=\"90\" cy=\"30\" r=\"12\" fill=\"url(#glow-03)\"/\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Símbolos de segredo (coração + estrela) --\u003e\n  \u003cg opacity=\"0.4\" fill=\"#ffd700\"\u003e\n    \u003cpath d=\"M380 280 C375 275 365 275 365 285 C365 295 380 305 380 305 C380 305 395 295 395 285 C395 275 385 275 380 280 Z\"/\u003e\n    \u003cpolygon points=\"420,270 423,278 432,278 425,284 428,292 420,287 412,292 415,284 408,278 417,278\" opacity=\"0.5\"/\u003e\n  \u003c/g\u003e\n  \u003ccircle cx=\"400\" cy=\"310\" r=\"3\" fill=\"#ffd700\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"410\" cy=\"325\" r=\"2\" fill=\"#ffd700\" opacity=\"0.25\"/\u003e\n  \u003ccircle cx=\"390\" cy=\"330\" r=\"2.5\" fill=\"#ffd700\" opacity=\"0.28\"/\u003e\n\u003c/svg\u003e","audio":""},{"texto":"Lua olhou para baixo e viu uma casinha com uma luz acesa. Dentro, um menino chamado Pedro estava sentado na cama, olhando pela janela.","dialogo":"Oi, estrelinha...","svg":"\u003csvg viewBox=\"0 0 800 600\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n  \u003cdefs\u003e\n    \u003clinearGradient id=\"sky-04\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n      \u003cstop offset=\"0\" stop-color=\"#0b081a\"/\u003e\n      \u003cstop offset=\"0.35\" stop-color=\"#15123a\"/\u003e\n      \u003cstop offset=\"1\" stop-color=\"#1f1b4e\"/\u003e\n    \u003c/linearGradient\u003e\n    \u003clinearGradient id=\"janela-04\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n      \u003cstop offset=\"0\" stop-color=\"#1a1a5e\"/\u003e\n      \u003cstop offset=\"0.7\" stop-color=\"#2a235a\"/\u003e\n      \u003cstop offset=\"1\" stop-color=\"#15123a\"/\u003e\n    \u003c/linearGradient\u003e\n    \u003clinearGradient id=\"luz-04\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n      \u003cstop offset=\"0\" stop-color=\"#ffd700\" stop-opacity=\"0.5\"/\u003e\n      \u003cstop offset=\"1\" stop-color=\"#ffd700\" stop-opacity=\"0.15\"/\u003e\n    \u003c/linearGradient\u003e\n  \u003c/defs\u003e\n  \n  \u003crect width=\"800\" height=\"600\" fill=\"url(#sky-04)\"/\u003e\n  \n  \u003cg fill=\"#fff\"\u003e\n    \u003ccircle cx=\"80\" cy=\"50\" r=\"1.5\" opacity=\"0.7\"/\u003e\n    \u003ccircle cx=\"220\" cy=\"35\" r=\"2\" opacity=\"0.65\"/\u003e\n    \u003ccircle cx=\"600\" cy=\"45\" r=\"1.8\" opacity=\"0.6\"/\u003e\n    \u003ccircle cx=\"700\" cy=\"70\" r=\"1.3\" opacity=\"0.5\"/\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Casa detalhada --\u003e\n  \u003cg\u003e\n    \u003c!-- Parede --\u003e\n    \u003crect x=\"240\" y=\"240\" width=\"320\" height=\"260\" rx=\"6\" fill=\"#2a235a\"/\u003e\n    \u003crect x=\"240\" y=\"240\" width=\"320\" height=\"260\" rx=\"6\" fill=\"#1f1b4e\" opacity=\"0.3\"/\u003e\n    \u003c!-- Telhado --\u003e\n    \u003cpolygon points=\"230,245 400,140 570,245\" fill=\"#15123a\"/\u003e\n    \u003cpolygon points=\"235,245 400,150 565,245\" fill=\"#0b081a\" opacity=\"0.5\"/\u003e\n    \u003c!-- Porta --\u003e\n    \u003crect x=\"375\" y=\"350\" width=\"50\" height=\"80\" rx=\"6\" fill=\"#8b6914\"/\u003e\n    \u003crect x=\"380\" y=\"355\" width=\"40\" height=\"70\" rx=\"4\" fill=\"#a0886b\" opacity=\"0.6\"/\u003e\n    \u003ccircle cx=\"415\" cy=\"390\" r=\"3\" fill=\"#ffd700\"/\u003e\n    \u003c!-- Janela 1 --\u003e\n    \u003crect x=\"280\" y=\"280\" width=\"85\" height=\"75\" rx=\"4\" fill=\"url(#janela-04)\"/\u003e\n    \u003crect x=\"280\" y=\"280\" width=\"85\" height=\"75\" rx=\"4\" fill=\"url(#luz-04)\"/\u003e\n    \u003cline x1=\"322\" y1=\"280\" x2=\"322\" y2=\"355\" stroke=\"#1f1b4e\" stroke-width=\"2.5\"/\u003e\n    \u003cline x1=\"280\" y1=\"317\" x2=\"365\" y2=\"317\" stroke=\"#1f1b4e\" stroke-width=\"2.5\"/\u003e\n    \u003crect x=\"275\" y=\"275\" width=\"95\" height=\"85\" rx=\"6\" fill=\"none\" stroke=\"#8b6914\" stroke-width=\"3\"/\u003e\n    \u003c!-- Janela 2 --\u003e\n    \u003crect x=\"435\" y=\"280\" width=\"85\" height=\"75\" rx=\"4\" fill=\"url(#janela-04)\"/\u003e\n    \u003crect x=\"435\" y=\"280\" width=\"85\" height=\"75\" rx=\"4\" fill=\"url(#luz-04)\" opacity=\"0.7\"/\u003e\n    \u003cline x1=\"477\" y1=\"280\" x2=\"477\" y2=\"355\" stroke=\"#1f1b4e\" stroke-width=\"2.5\"/\u003e\n    \u003cline x1=\"435\" y1=\"317\" x2=\"520\" y2=\"317\" stroke=\"#1f1b4e\" stroke-width=\"2.5\"/\u003e\n    \u003crect x=\"430\" y=\"275\" width=\"95\" height=\"85\" rx=\"6\" fill=\"none\" stroke=\"#8b6914\" stroke-width=\"3\"/\u003e\n    \u003c!-- Detalhes da parede --\u003e\n    \u003crect x=\"255\" y=\"255\" width=\"20\" height=\"20\" rx=\"3\" fill=\"#8b6914\" opacity=\"0.4\"/\u003e\n    \u003crect x=\"525\" y=\"255\" width=\"20\" height=\"20\" rx=\"3\" fill=\"#8b6914\" opacity=\"0.4\"/\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Chão --\u003e\n  \u003crect x=\"240\" y=\"500\" width=\"320\" height=\"50\" rx=\"6\" fill=\"#1f1b4e\"/\u003e\n  \u003crect x=\"240\" y=\"500\" width=\"320\" height=\"50\" rx=\"6\" fill=\"#15123a\" opacity=\"0.4\"/\u003e\n  \n  \u003c!-- Pedro na cama --\u003e\n  \u003cg transform=\"translate(300,370)\"\u003e\n    \u003c!-- Cabeceira --\u003e\n    \u003crect x=\"-5\" y=\"30\" width=\"15\" height=\"80\" rx=\"4\" fill=\"#8b6914\"/\u003e\n    \u003c!-- Colchão --\u003e\n    \u003crect x=\"5\" y=\"70\" width=\"160\" height=\"45\" rx=\"8\" fill=\"#a0886b\" opacity=\"0.5\"/\u003e\n    \u003c!-- Cobertor --\u003e\n    \u003cpath d=\"M15 60 Q90 50 175 60 L175 115 L15 115 Z\" fill=\"#69aee6\" opacity=\"0.8\"/\u003e\n    \u003cpath d=\"M15 60 Q90 50 175 60 L175 80 Q90 70 15 80 Z\" fill=\"#8fc5f0\" opacity=\"0.5\"/\u003e\n    \u003c!-- Travesseiro --\u003e\n    \u003cellipse cx=\"45\" cy=\"65\" rx=\"30\" ry=\"15\" fill=\"#fdf8f0\" opacity=\"0.8\"/\u003e\n    \u003c!-- Pedro --\u003e\n    \u003ccircle cx=\"45\" cy=\"55\" r=\"20\" fill=\"#ffd9c0\"/\u003e\n    \u003ccircle cx=\"40\" cy=\"52\" r=\"3\" fill=\"#1a1a2e\"/\u003e\n    \u003ccircle cx=\"50\" cy=\"52\" r=\"3\" fill=\"#1a1a2e\"/\u003e\n    \u003ccircle cx=\"41\" cy=\"51\" r=\"1\" fill=\"#fff\"/\u003e\n    \u003ccircle cx=\"51\" cy=\"51\" r=\"1\" fill=\"#fff\"/\u003e\n    \u003cpath d=\"M42 60 Q45 63 48 60\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"1.5\" stroke-linecap=\"round\"/\u003e\n    \u003cellipse cx=\"35\" cy=\"58\" rx=\"5\" ry=\"3\" fill=\"#ff8a80\" opacity=\"0.3\"/\u003e\n    \u003cellipse cx=\"55\" cy=\"58\" rx=\"5\" ry=\"3\" fill=\"#ff8a80\" opacity=\"0.3\"/\u003e\n    \u003cpath d=\"M26 55 Q22 35 45 40 Q68 35 64 55 Q58 42 45 46 Q32 42 26 55 Z\" fill=\"#8b6914\"/\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Lua olhando pela janela --\u003e\n  \u003cg transform=\"translate(540,160)\"\u003e\n    \u003ccircle cx=\"30\" cy=\"30\" r=\"14\" fill=\"url(#luz-04)\"/\u003e\n    \u003cg opacity=\"0.8\"\u003e\n  \u003c!-- Sombra --\u003e\n  \u003cellipse cx=\"30\" cy=\"45.2\" rx=\"12.0\" ry=\"2.4000000000000004\" fill=\"#000\" opacity=\"0.1\"/\u003e\n  \u003c!-- Corpo com gradiente --\u003e\n  \u003cdefs\u003e\n    \u003cradialGradient id=\"star-grad-p4-lua-janela\" cx=\"40%\" cy=\"35%\" r=\"70%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#fff8dc\"/\u003e\n      \u003cstop offset=\"50%\" stop-color=\"#f5a623\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#f5a623\" stop-opacity=\"0.85\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \u003cpolygon points=\"30,16.0 32.4,25.2 43.6,25.2 34.0,31.6 38.0,42.0 30,35.6 22.0,42.0 26.0,31.6 16.4,25.2 27.6,25.2\" fill=\"url(#star-grad-p4-lua-janela)\" stroke=\"#f5a623\" stroke-width=\"0.6000000000000001\"/\u003e\n  \u003c!-- Brilho interno --\u003e\n  \u003cpolygon points=\"30,16.0 32.4,25.2 43.6,25.2 34.0,31.6 38.0,42.0 30,35.6 22.0,42.0 26.0,31.6 16.4,25.2 27.6,25.2\" fill=\"url(#star-grad-p4-lua-janela)\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"26.8\" cy=\"29.2\" r=\"1.4000000000000001\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"33.2\" cy=\"29.2\" r=\"1.4000000000000001\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"26.4\" cy=\"28.8\" r=\"0.48\" fill=\"#fff\"/\u003e\u003ccircle cx=\"32.8\" cy=\"28.8\" r=\"0.48\" fill=\"#fff\"/\u003e\u003cellipse cx=\"24.4\" cy=\"32.4\" rx=\"2.0\" ry=\"1.2000000000000002\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003cellipse cx=\"35.6\" cy=\"32.4\" rx=\"2.0\" ry=\"1.2000000000000002\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003cpath d=\"M26.8 34.0 Q30 37.2 33.2 34.0\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"1.0\" stroke-linecap=\"round\"/\u003e\n\u003c/g\u003e\n  \u003c/g\u003e\n\u003c/svg\u003e","audio":""},{"texto":"Lá no céu, a Estrelinha Lua entendeu. Ela se sentou bem pertinho da janela de Pedro e começou a brilhar com toda a força do seu coração.","dialogo":"Vou ficar comigo até eu dormir.","svg":"\u003csvg viewBox=\"0 0 800 600\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n  \u003cdefs\u003e\n    \u003clinearGradient id=\"sky-05\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n      \u003cstop offset=\"0\" stop-color=\"#0b081a\"/\u003e\n      \u003cstop offset=\"0.5\" stop-color=\"#15123a\"/\u003e\n      \u003cstop offset=\"1\" stop-color=\"#1f1b4e\"/\u003e\n    \u003c/linearGradient\u003e\n    \u003cradialGradient id=\"glow-05\" cx=\"50%\" cy=\"50%\" r=\"50%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#ffd700\" stop-opacity=\"0.4\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#ffd700\" stop-opacity=\"0\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \n  \u003crect width=\"800\" height=\"600\" fill=\"url(#sky-05)\"/\u003e\n  \n  \u003c!-- Lua cheia --\u003e\n  \u003ccircle cx=\"650\" cy=\"90\" r=\"52\" fill=\"#ffd700\"/\u003e\n  \u003ccircle cx=\"640\" cy=\"85\" r=\"47\" fill=\"#0b081a\"/\u003e\n  \u003ccircle cx=\"645\" cy=\"88\" r=\"42\" fill=\"#ffd700\" opacity=\"0.85\"/\u003e\n  \u003ccircle cx=\"650\" cy=\"90\" r=\"75\" fill=\"url(#glow-05)\"/\u003e\n  \n  \u003cg fill=\"#fff\"\u003e\n    \u003ccircle cx=\"100\" cy=\"55\" r=\"1.5\" opacity=\"0.7\"/\u003e\n    \u003ccircle cx=\"250\" cy=\"35\" r=\"2\" opacity=\"0.65\"/\u003e\n    \u003ccircle cx=\"420\" cy=\"50\" r=\"1.8\" opacity=\"0.6\"/\u003e\n    \u003ccircle cx=\"550\" cy=\"70\" r=\"1.3\" opacity=\"0.5\"/\u003e\n  \u003c/g\u003e\n  \n  \u003cellipse cx=\"400\" cy=\"660\" rx=\"580\" ry=\"160\" fill=\"#1f1b4e\"/\u003e\n  \n  \u003c!-- Lua estrela brilhando --\u003e\n  \u003cg transform=\"translate(270,130)\"\u003e\n    \u003ccircle cx=\"70\" cy=\"70\" r=\"85\" fill=\"url(#glow-05)\"/\u003e\n    \u003cg opacity=\"1.0\"\u003e\n  \u003c!-- Sombra --\u003e\n  \u003cellipse cx=\"70\" cy=\"111.80000000000001\" rx=\"33.0\" ry=\"6.6000000000000005\" fill=\"#000\" opacity=\"0.1\"/\u003e\n  \u003c!-- Corpo com gradiente --\u003e\n  \u003cdefs\u003e\n    \u003cradialGradient id=\"star-grad-p5-lua\" cx=\"40%\" cy=\"35%\" r=\"70%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#fff8dc\"/\u003e\n      \u003cstop offset=\"50%\" stop-color=\"#f5a623\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#f5a623\" stop-opacity=\"0.85\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \u003cpolygon points=\"70,31.5 76.6,56.8 107.4,56.8 81.0,74.4 92.0,103.0 70,85.4 48.0,103.0 59.0,74.4 32.599999999999994,56.8 63.4,56.8\" fill=\"url(#star-grad-p5-lua)\" stroke=\"#f5a623\" stroke-width=\"1.6500000000000001\"/\u003e\n  \u003c!-- Brilho interno --\u003e\n  \u003cpolygon points=\"70,31.5 76.6,56.8 107.4,56.8 81.0,74.4 92.0,103.0 70,85.4 48.0,103.0 59.0,74.4 32.599999999999994,56.8 63.4,56.8\" fill=\"url(#star-grad-p5-lua)\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"61.2\" cy=\"67.8\" r=\"3.8500000000000005\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"78.8\" cy=\"67.8\" r=\"3.8500000000000005\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"60.1\" cy=\"66.7\" r=\"1.32\" fill=\"#fff\"/\u003e\u003ccircle cx=\"77.7\" cy=\"66.7\" r=\"1.32\" fill=\"#fff\"/\u003e\u003cellipse cx=\"54.599999999999994\" cy=\"76.6\" rx=\"5.5\" ry=\"3.3000000000000003\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003cellipse cx=\"85.4\" cy=\"76.6\" rx=\"5.5\" ry=\"3.3000000000000003\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003cpath d=\"M61.2 81.0 Q70 89.8 78.8 81.0\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"2.75\" stroke-linecap=\"round\"/\u003e\n\u003c/g\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Casa de Pedro --\u003e\n  \u003cg transform=\"translate(380,330)\"\u003e\n    \u003crect x=\"0\" y=\"50\" width=\"130\" height=\"110\" rx=\"6\" fill=\"#2a235a\"/\u003e\n    \u003cpolygon points=\"0,50 65,12 130,50\" fill=\"#15123a\"/\u003e\n    \u003crect x=\"45\" y=\"105\" width=\"40\" height=\"55\" rx=\"4\" fill=\"#8b6914\"/\u003e\n    \u003crect x=\"20\" y=\"70\" width=\"35\" height=\"30\" rx=\"3\" fill=\"#ffd700\" opacity=\"0.4\"/\u003e\n    \u003crect x=\"75\" y=\"70\" width=\"35\" height=\"30\" rx=\"3\" fill=\"#ffd700\" opacity=\"0.35\"/\u003e\n    \u003c!-- Pedro na janela --\u003e\n    \u003ccircle cx=\"37\" cy=\"83\" r=\"10\" fill=\"#ffd9c0\"/\u003e\n    \u003ccircle cx=\"34\" cy=\"80\" r=\"2\" fill=\"#1a1a2e\"/\u003e\n    \u003ccircle cx=\"40\" cy=\"80\" r=\"2\" fill=\"#1a1a2e\"/\u003e\n    \u003cpath d=\"M35 86 Q37 89 39 86\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"1\" stroke-linecap=\"round\"/\u003e\n    \u003cpath d=\"M22 83 Q20 68 37 72 Q54 68 52 83 Q48 72 37 76 Q26 72 22 83 Z\" fill=\"#8b6914\"/\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Feixe de luz --\u003e\n  \u003cpath d=\"M340 200 Q390 260 410 360\" fill=\"none\" stroke=\"#ffd700\" stroke-width=\"3\" opacity=\"0.25\" stroke-dasharray=\"8,5\"/\u003e\n  \u003ccircle cx=\"375\" cy=\"280\" r=\"4\" fill=\"#ffd700\" opacity=\"0.4\"/\u003e\n  \u003ccircle cx=\"392\" cy=\"310\" r=\"3\" fill=\"#ffd700\" opacity=\"0.35\"/\u003e\n  \u003ccircle cx=\"405\" cy=\"340\" r=\"3.5\" fill=\"#ffd700\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"360\" cy=\"250\" r=\"2.5\" fill=\"#ffd700\" opacity=\"0.3\"/\u003e\n\u003c/svg\u003e","audio":""},{"texto":"Uma a uma, as outras estrelas foram acordando. Viram Lua brilhando com tanto carinho e resolveram ajudar.","dialogo":"Olha só — quando a gente se junta, a noite fica mais bonita!","svg":"\u003csvg viewBox=\"0 0 800 600\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n  \u003cdefs\u003e\n    \u003clinearGradient id=\"sky-06\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n      \u003cstop offset=\"0\" stop-color=\"#0b081a\"/\u003e\n      \u003cstop offset=\"0.5\" stop-color=\"#15123a\"/\u003e\n      \u003cstop offset=\"1\" stop-color=\"#1f1b4e\"/\u003e\n    \u003c/linearGradient\u003e\n    \u003cradialGradient id=\"glow-06\" cx=\"50%\" cy=\"50%\" r=\"50%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#ffd700\" stop-opacity=\"0.35\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#ffd700\" stop-opacity=\"0\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \n  \u003crect width=\"800\" height=\"600\" fill=\"url(#sky-06)\"/\u003e\n  \n  \u003cellipse cx=\"400\" cy=\"660\" rx=\"580\" ry=\"160\" fill=\"#1f1b4e\"/\u003e\n  \u003cellipse cx=\"200\" cy=\"690\" rx=\"300\" ry=\"130\" fill=\"#15123a\"/\u003e\n  \u003cellipse cx=\"600\" cy=\"680\" rx=\"320\" ry=\"140\" fill=\"#15123a\"/\u003e\n  \n  \u003c!-- Lua no centro --\u003e\n  \u003cg transform=\"translate(320,170)\"\u003e\n    \u003ccircle cx=\"80\" cy=\"80\" r=\"95\" fill=\"url(#glow-06)\"/\u003e\n    \u003cg opacity=\"1.0\"\u003e\n  \u003c!-- Sombra --\u003e\n  \u003cellipse cx=\"80\" cy=\"127.5\" rx=\"37.5\" ry=\"7.5\" fill=\"#000\" opacity=\"0.1\"/\u003e\n  \u003c!-- Corpo com gradiente --\u003e\n  \u003cdefs\u003e\n    \u003cradialGradient id=\"star-grad-p6-lua-central\" cx=\"40%\" cy=\"35%\" r=\"70%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#fff8dc\"/\u003e\n      \u003cstop offset=\"50%\" stop-color=\"#f5a623\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#f5a623\" stop-opacity=\"0.85\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \u003cpolygon points=\"80,36.25 87.5,65.0 122.5,65.0 92.5,85.0 105.0,117.5 80,97.5 55.0,117.5 67.5,85.0 37.5,65.0 72.5,65.0\" fill=\"url(#star-grad-p6-lua-central)\" stroke=\"#f5a623\" stroke-width=\"1.875\"/\u003e\n  \u003c!-- Brilho interno --\u003e\n  \u003cpolygon points=\"80,36.25 87.5,65.0 122.5,65.0 92.5,85.0 105.0,117.5 80,97.5 55.0,117.5 67.5,85.0 37.5,65.0 72.5,65.0\" fill=\"url(#star-grad-p6-lua-central)\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"70.0\" cy=\"77.5\" r=\"4.375\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"90.0\" cy=\"77.5\" r=\"4.375\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"68.75\" cy=\"76.25\" r=\"1.5\" fill=\"#fff\"/\u003e\u003ccircle cx=\"88.75\" cy=\"76.25\" r=\"1.5\" fill=\"#fff\"/\u003e\u003cellipse cx=\"62.5\" cy=\"87.5\" rx=\"6.25\" ry=\"3.75\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003cellipse cx=\"97.5\" cy=\"87.5\" rx=\"6.25\" ry=\"3.75\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003cpath d=\"M70.0 92.5 Q80 102.5 90.0 92.5\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"3.125\" stroke-linecap=\"round\"/\u003e\n\u003c/g\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Estrelas menores dançando --\u003e\n  \u003cg transform=\"translate(110,140)\"\u003e\n    \u003ccircle cx=\"25\" cy=\"25\" r=\"35\" fill=\"url(#glow-06)\" opacity=\"0.5\"/\u003e\n    \u003cg opacity=\"0.85\"\u003e\n  \u003c!-- Sombra --\u003e\n  \u003cellipse cx=\"25\" cy=\"38.3\" rx=\"10.5\" ry=\"2.0999999999999996\" fill=\"#000\" opacity=\"0.1\"/\u003e\n  \u003c!-- Corpo com gradiente --\u003e\n  \u003cdefs\u003e\n    \u003cradialGradient id=\"star-grad-p6-lua-esq\" cx=\"40%\" cy=\"35%\" r=\"70%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#fff8dc\"/\u003e\n      \u003cstop offset=\"50%\" stop-color=\"#f5a623\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#f5a623\" stop-opacity=\"0.85\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \u003cpolygon points=\"25,12.75 27.1,20.8 36.9,20.8 28.5,26.4 32.0,35.5 25,29.9 18.0,35.5 21.5,26.4 13.100000000000001,20.8 22.9,20.8\" fill=\"url(#star-grad-p6-lua-esq)\" stroke=\"#f5a623\" stroke-width=\"0.5249999999999999\"/\u003e\n  \u003c!-- Brilho interno --\u003e\n  \u003cpolygon points=\"25,12.75 27.1,20.8 36.9,20.8 28.5,26.4 32.0,35.5 25,29.9 18.0,35.5 21.5,26.4 13.100000000000001,20.8 22.9,20.8\" fill=\"url(#star-grad-p6-lua-esq)\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"22.2\" cy=\"24.3\" r=\"1.2249999999999999\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"27.8\" cy=\"24.3\" r=\"1.2249999999999999\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"21.85\" cy=\"23.95\" r=\"0.42\" fill=\"#fff\"/\u003e\u003ccircle cx=\"27.45\" cy=\"23.95\" r=\"0.42\" fill=\"#fff\"/\u003e\u003cellipse cx=\"20.1\" cy=\"27.1\" rx=\"1.75\" ry=\"1.0499999999999998\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003cellipse cx=\"29.9\" cy=\"27.1\" rx=\"1.75\" ry=\"1.0499999999999998\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003cpath d=\"M22.2 28.5 Q25 31.3 27.8 28.5\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"0.875\" stroke-linecap=\"round\"/\u003e\n\u003c/g\u003e\n  \u003c/g\u003e\n  \n  \u003cg transform=\"translate(580,120)\"\u003e\n    \u003ccircle cx=\"25\" cy=\"25\" r=\"35\" fill=\"url(#glow-06)\" opacity=\"0.5\"/\u003e\n    \u003cg opacity=\"0.8\"\u003e\n  \u003c!-- Sombra --\u003e\n  \u003cellipse cx=\"25\" cy=\"37.16\" rx=\"9.6\" ry=\"1.92\" fill=\"#000\" opacity=\"0.1\"/\u003e\n  \u003c!-- Corpo com gradiente --\u003e\n  \u003cdefs\u003e\n    \u003cradialGradient id=\"star-grad-p6-lua-dir\" cx=\"40%\" cy=\"35%\" r=\"70%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#fff8dc\"/\u003e\n      \u003cstop offset=\"50%\" stop-color=\"#f5a623\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#f5a623\" stop-opacity=\"0.85\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \u003cpolygon points=\"25,13.799999999999999 26.92,21.16 35.88,21.16 28.2,26.28 31.4,34.6 25,29.48 18.6,34.6 21.8,26.28 14.12,21.16 23.08,21.16\" fill=\"url(#star-grad-p6-lua-dir)\" stroke=\"#f5a623\" stroke-width=\"0.48\"/\u003e\n  \u003c!-- Brilho interno --\u003e\n  \u003cpolygon points=\"25,13.799999999999999 26.92,21.16 35.88,21.16 28.2,26.28 31.4,34.6 25,29.48 18.6,34.6 21.8,26.28 14.12,21.16 23.08,21.16\" fill=\"url(#star-grad-p6-lua-dir)\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"22.44\" cy=\"24.36\" r=\"1.44\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"27.56\" cy=\"24.36\" r=\"1.44\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"22.12\" cy=\"24.04\" r=\"0.384\" fill=\"#fff\"/\u003e\u003ccircle cx=\"27.240000000000002\" cy=\"24.04\" r=\"0.384\" fill=\"#fff\"/\u003e\u003cellipse cx=\"20.2\" cy=\"26.92\" rx=\"1.6\" ry=\"0.96\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003cellipse cx=\"29.8\" cy=\"26.92\" rx=\"1.6\" ry=\"0.96\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003ccircle cx=\"25\" cy=\"28.84\" r=\"1.28\" fill=\"#1a1a2e\"/\u003e\n\u003c/g\u003e\n  \u003c/g\u003e\n  \n  \u003cg transform=\"translate(190,290)\"\u003e\n    \u003ccircle cx=\"20\" cy=\"20\" r=\"28\" fill=\"url(#glow-06)\" opacity=\"0.4\"/\u003e\n    \u003cg opacity=\"0.75\"\u003e\n  \u003c!-- Sombra --\u003e\n  \u003cellipse cx=\"20\" cy=\"30.64\" rx=\"8.4\" ry=\"1.6800000000000002\" fill=\"#000\" opacity=\"0.1\"/\u003e\n  \u003c!-- Corpo com gradiente --\u003e\n  \u003cdefs\u003e\n    \u003cradialGradient id=\"star-grad-p6-lua-baixo-esq\" cx=\"40%\" cy=\"35%\" r=\"70%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#fff8dc\"/\u003e\n      \u003cstop offset=\"50%\" stop-color=\"#f5a623\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#f5a623\" stop-opacity=\"0.85\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \u003cpolygon points=\"20,10.2 21.68,16.64 29.520000000000003,16.64 22.8,21.12 25.6,28.4 20,23.92 14.399999999999999,28.4 17.2,21.12 10.479999999999999,16.64 18.32,16.64\" fill=\"url(#star-grad-p6-lua-baixo-esq)\" stroke=\"#f5a623\" stroke-width=\"0.42000000000000004\"/\u003e\n  \u003c!-- Brilho interno --\u003e\n  \u003cpolygon points=\"20,10.2 21.68,16.64 29.520000000000003,16.64 22.8,21.12 25.6,28.4 20,23.92 14.399999999999999,28.4 17.2,21.12 10.479999999999999,16.64 18.32,16.64\" fill=\"url(#star-grad-p6-lua-baixo-esq)\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"17.759999999999998\" cy=\"19.44\" r=\"0.8400000000000001\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"22.240000000000002\" cy=\"19.44\" r=\"0.8400000000000001\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"17.48\" cy=\"19.16\" r=\"0.336\" fill=\"#fff\"/\u003e\u003ccircle cx=\"21.96\" cy=\"19.16\" r=\"0.336\" fill=\"#fff\"/\u003e\u003cpath d=\"M18.6 22.8 Q20 23.64 21.4 22.8\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"0.56\" stroke-linecap=\"round\"/\u003e\n\u003c/g\u003e\n  \u003c/g\u003e\n  \n  \u003cg transform=\"translate(540,270)\"\u003e\n    \u003ccircle cx=\"20\" cy=\"20\" r=\"28\" fill=\"url(#glow-06)\" opacity=\"0.4\"/\u003e\n    \u003cg opacity=\"0.7\"\u003e\n  \u003c!-- Sombra --\u003e\n  \u003cellipse cx=\"20\" cy=\"31.4\" rx=\"9.0\" ry=\"1.7999999999999998\" fill=\"#000\" opacity=\"0.1\"/\u003e\n  \u003c!-- Corpo com gradiente --\u003e\n  \u003cdefs\u003e\n    \u003cradialGradient id=\"star-grad-p6-lua-baixo-dir\" cx=\"40%\" cy=\"35%\" r=\"70%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#fff8dc\"/\u003e\n      \u003cstop offset=\"50%\" stop-color=\"#f5a623\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#f5a623\" stop-opacity=\"0.85\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \u003cpolygon points=\"20,9.5 21.8,16.4 30.2,16.4 23.0,21.2 26.0,29.0 20,24.2 14.0,29.0 17.0,21.2 9.8,16.4 18.2,16.4\" fill=\"url(#star-grad-p6-lua-baixo-dir)\" stroke=\"#f5a623\" stroke-width=\"0.44999999999999996\"/\u003e\n  \u003c!-- Brilho interno --\u003e\n  \u003cpolygon points=\"20,9.5 21.8,16.4 30.2,16.4 23.0,21.2 26.0,29.0 20,24.2 14.0,29.0 17.0,21.2 9.8,16.4 18.2,16.4\" fill=\"url(#star-grad-p6-lua-baixo-dir)\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"17.6\" cy=\"19.4\" r=\"1.05\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"22.4\" cy=\"19.4\" r=\"1.05\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"17.3\" cy=\"19.1\" r=\"0.36\" fill=\"#fff\"/\u003e\u003ccircle cx=\"22.1\" cy=\"19.1\" r=\"0.36\" fill=\"#fff\"/\u003e\u003cellipse cx=\"15.8\" cy=\"21.8\" rx=\"1.5\" ry=\"0.8999999999999999\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003cellipse cx=\"24.2\" cy=\"21.8\" rx=\"1.5\" ry=\"0.8999999999999999\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003cpath d=\"M17.6 23.0 Q20 25.4 22.4 23.0\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"0.75\" stroke-linecap=\"round\"/\u003e\n\u003c/g\u003e\n  \u003c/g\u003e\n  \n  \u003cg transform=\"translate(340,330)\"\u003e\n    \u003ccircle cx=\"18\" cy=\"18\" r=\"24\" fill=\"url(#glow-06)\" opacity=\"0.35\"/\u003e\n    \u003cg opacity=\"0.65\"\u003e\n  \u003c!-- Sombra --\u003e\n  \u003cellipse cx=\"18\" cy=\"27.5\" rx=\"7.5\" ry=\"1.5\" fill=\"#000\" opacity=\"0.1\"/\u003e\n  \u003c!-- Corpo com gradiente --\u003e\n  \u003cdefs\u003e\n    \u003cradialGradient id=\"star-grad-p6-lua-centro-baixo\" cx=\"40%\" cy=\"35%\" r=\"70%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#fff8dc\"/\u003e\n      \u003cstop offset=\"50%\" stop-color=\"#f5a623\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#f5a623\" stop-opacity=\"0.85\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \u003cpolygon points=\"18,9.25 19.5,15.0 26.5,15.0 20.5,19.0 23.0,25.5 18,21.5 13.0,25.5 15.5,19.0 9.5,15.0 16.5,15.0\" fill=\"url(#star-grad-p6-lua-centro-baixo)\" stroke=\"#f5a623\" stroke-width=\"0.375\"/\u003e\n  \u003c!-- Brilho interno --\u003e\n  \u003cpolygon points=\"18,9.25 19.5,15.0 26.5,15.0 20.5,19.0 23.0,25.5 18,21.5 13.0,25.5 15.5,19.0 9.5,15.0 16.5,15.0\" fill=\"url(#star-grad-p6-lua-centro-baixo)\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"16.0\" cy=\"17.5\" r=\"0.75\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"20.0\" cy=\"17.5\" r=\"0.75\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"15.75\" cy=\"17.25\" r=\"0.3\" fill=\"#fff\"/\u003e\u003ccircle cx=\"19.75\" cy=\"17.25\" r=\"0.3\" fill=\"#fff\"/\u003e\u003cpath d=\"M16.75 20.5 Q18 21.25 19.25 20.5\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"0.5\" stroke-linecap=\"round\"/\u003e\n\u003c/g\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Brilhos conectando --\u003e\n  \u003ccircle cx=\"200\" cy=\"200\" r=\"3\" fill=\"#ffd700\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"280\" cy=\"250\" r=\"2.5\" fill=\"#ffd700\" opacity=\"0.25\"/\u003e\n  \u003ccircle cx=\"500\" cy=\"220\" r=\"3\" fill=\"#ffd700\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"560\" cy=\"260\" r=\"2.5\" fill=\"#ffd700\" opacity=\"0.25\"/\u003e\n  \u003ccircle cx=\"400\" cy=\"300\" r=\"2\" fill=\"#ffd700\" opacity=\"0.2\"/\u003e\n\u003c/svg\u003e","audio":""},{"texto":"O quarto de Pedro foi ficando mais quentinho. Seu cobertor parecia uma nuvem macia. Ele estava sonhando.","dialogo":"Obrigado, estrelinha...","svg":"\u003csvg viewBox=\"0 0 800 600\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n  \u003cdefs\u003e\n    \u003clinearGradient id=\"sky-07\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n      \u003cstop offset=\"0\" stop-color=\"#0b081a\"/\u003e\n      \u003cstop offset=\"0.4\" stop-color=\"#15123a\"/\u003e\n      \u003cstop offset=\"1\" stop-color=\"#2a235a\"/\u003e\n    \u003c/linearGradient\u003e\n    \u003cradialGradient id=\"glow-07\" cx=\"50%\" cy=\"50%\" r=\"50%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#ffd700\" stop-opacity=\"0.2\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#ffd700\" stop-opacity=\"0\"/\u003e\n    \u003c/radialGradient\u003e\n    \u003clinearGradient id=\"nuvem-07\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#fff\" stop-opacity=\"0.12\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#fff\" stop-opacity=\"0.04\"/\u003e\n    \u003c/linearGradient\u003e\n  \u003c/defs\u003e\n  \n  \u003crect width=\"800\" height=\"600\" fill=\"url(#sky-07)\"/\u003e\n  \n  \u003cg fill=\"#fff\"\u003e\n    \u003ccircle cx=\"100\" cy=\"50\" r=\"1.5\" opacity=\"0.6\"/\u003e\n    \u003ccircle cx=\"280\" cy=\"35\" r=\"2\" opacity=\"0.55\"/\u003e\n    \u003ccircle cx=\"500\" cy=\"45\" r=\"1.8\" opacity=\"0.5\"/\u003e\n    \u003ccircle cx=\"700\" cy=\"60\" r=\"1.5\" opacity=\"0.45\"/\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Nuvem de sonho grande --\u003e\n  \u003cellipse cx=\"400\" cy=\"300\" rx=\"220\" ry=\"90\" fill=\"url(#nuvem-07)\"/\u003e\n  \u003cellipse cx=\"380\" cy=\"285\" rx=\"180\" ry=\"75\" fill=\"url(#nuvem-07)\"/\u003e\n  \u003cellipse cx=\"420\" cy=\"315\" rx=\"150\" ry=\"65\" fill=\"url(#nuvem-07)\"/\u003e\n  \n  \u003c!-- Pedro sonhando --\u003e\n  \u003cg transform=\"translate(300,310)\"\u003e\n    \u003c!-- Cabeceira --\u003e\n    \u003crect x=\"-10\" y=\"30\" width=\"15\" height=\"85\" rx=\"4\" fill=\"#8b6914\" opacity=\"0.8\"/\u003e\n    \u003c!-- Colchão --\u003e\n    \u003crect x=\"5\" y=\"75\" width=\"185\" height=\"50\" rx=\"8\" fill=\"#a0886b\" opacity=\"0.4\"/\u003e\n    \u003c!-- Cobertor nuvem --\u003e\n    \u003cellipse cx=\"95\" cy=\"60\" rx=\"95\" ry=\"35\" fill=\"#e3f2fd\" opacity=\"0.55\"/\u003e\n    \u003cellipse cx=\"75\" cy=\"52\" rx=\"70\" ry=\"28\" fill=\"#fff\" opacity=\"0.45\"/\u003e\n    \u003cellipse cx=\"115\" cy=\"55\" rx=\"60\" ry=\"24\" fill=\"#fff\" opacity=\"0.4\"/\u003e\n    \u003c!-- Travesseiro --\u003e\n    \u003cellipse cx=\"45\" cy=\"55\" rx=\"35\" ry=\"18\" fill=\"#fdf8f0\" opacity=\"0.7\"/\u003e\n    \u003c!-- Pedro dormindo --\u003e\n    \u003ccircle cx=\"45\" cy=\"45\" r=\"22\" fill=\"#ffd9c0\"/\u003e\n    \u003cpath d=\"M35 43 Q38 47 44 43\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"1.5\" stroke-linecap=\"round\"/\u003e\n    \u003cpath d=\"M48 43 Q51 47 57 43\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"1.5\" stroke-linecap=\"round\"/\u003e\n    \u003cpath d=\"M42 53 Q45 57 50 53\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"1.5\" stroke-linecap=\"round\"/\u003e\n    \u003cpath d=\"M24 44 Q20 22 48 28 Q76 22 72 44 Q66 30 48 34 Q30 30 24 44 Z\" fill=\"#8b6914\"/\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Lua brilhando --\u003e\n  \u003cg transform=\"translate(340,110)\"\u003e\n    \u003ccircle cx=\"40\" cy=\"40\" r=\"40\" fill=\"url(#glow-07)\"/\u003e\n    \u003cg opacity=\"0.6\"\u003e\n  \u003c!-- Sombra --\u003e\n  \u003cellipse cx=\"40\" cy=\"59.0\" rx=\"15.0\" ry=\"3.0\" fill=\"#000\" opacity=\"0.1\"/\u003e\n  \u003c!-- Corpo com gradiente --\u003e\n  \u003cdefs\u003e\n    \u003cradialGradient id=\"star-grad-p7-lua\" cx=\"40%\" cy=\"35%\" r=\"70%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#fff8dc\"/\u003e\n      \u003cstop offset=\"50%\" stop-color=\"#f5a623\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#f5a623\" stop-opacity=\"0.85\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \u003cpolygon points=\"40,22.5 43.0,34.0 57.0,34.0 45.0,42.0 50.0,55.0 40,47.0 30.0,55.0 35.0,42.0 23.0,34.0 37.0,34.0\" fill=\"url(#star-grad-p7-lua)\" stroke=\"#f5a623\" stroke-width=\"0.75\"/\u003e\n  \u003c!-- Brilho interno --\u003e\n  \u003cpolygon points=\"40,22.5 43.0,34.0 57.0,34.0 45.0,42.0 50.0,55.0 40,47.0 30.0,55.0 35.0,42.0 23.0,34.0 37.0,34.0\" fill=\"url(#star-grad-p7-lua)\" opacity=\"0.3\"/\u003e\n  \u003ccircle cx=\"36.0\" cy=\"39.0\" r=\"1.75\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"44.0\" cy=\"39.0\" r=\"1.75\" fill=\"#1a1a2e\"/\u003e\u003ccircle cx=\"35.5\" cy=\"38.5\" r=\"0.6\" fill=\"#fff\"/\u003e\u003ccircle cx=\"43.5\" cy=\"38.5\" r=\"0.6\" fill=\"#fff\"/\u003e\u003cellipse cx=\"33.0\" cy=\"43.0\" rx=\"2.5\" ry=\"1.5\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003cellipse cx=\"47.0\" cy=\"43.0\" rx=\"2.5\" ry=\"1.5\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003cpath d=\"M36.0 45.0 Q40 49.0 44.0 45.0\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"1.25\" stroke-linecap=\"round\"/\u003e\n\u003c/g\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- Bolhas de sonho --\u003e\n  \u003ccircle cx=\"440\" cy=\"200\" r=\"10\" fill=\"#fff\" opacity=\"0.1\"/\u003e\n  \u003ccircle cx=\"465\" cy=\"175\" r=\"14\" fill=\"#fff\" opacity=\"0.08\"/\u003e\n  \u003ccircle cx=\"490\" cy=\"150\" r=\"18\" fill=\"#fff\" opacity=\"0.06\"/\u003e\n  \u003ccircle cx=\"515\" cy=\"120\" r=\"22\" fill=\"#fff\" opacity=\"0.05\"/\u003e\n  \u003ccircle cx=\"540\" cy=\"95\" r=\"26\" fill=\"#fff\" opacity=\"0.04\"/\u003e\n\u003c/svg\u003e","audio":""},{"texto":"E assim, a Estrelinha Lua fechou os olhos. Seu brilho foi ficando suave, suave, como a respiração de um bebê dormindo.","dialogo":"Viu só? Você conseguiu! Agora pode dormir tranquila.","svg":"\u003csvg viewBox=\"0 0 800 600\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n  \u003cdefs\u003e\n    \u003clinearGradient id=\"sky-08\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n      \u003cstop offset=\"0\" stop-color=\"#0b081a\"/\u003e\n      \u003cstop offset=\"0.5\" stop-color=\"#15123a\"/\u003e\n      \u003cstop offset=\"1\" stop-color=\"#1f1b4e\"/\u003e\n    \u003c/linearGradient\u003e\n    \u003cradialGradient id=\"glow-08\" cx=\"50%\" cy=\"50%\" r=\"50%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#ffd700\" stop-opacity=\"0.3\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#ffd700\" stop-opacity=\"0\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \n  \u003crect width=\"800\" height=\"600\" fill=\"url(#sky-08)\"/\u003e\n  \n  \u003c!-- Lua fraca --\u003e\n  \u003ccircle cx=\"650\" cy=\"90\" r=\"48\" fill=\"#ffd700\" opacity=\"0.25\"/\u003e\n  \u003ccircle cx=\"642\" cy=\"86\" r=\"43\" fill=\"#0b081a\" opacity=\"0.85\"/\u003e\n  \u003ccircle cx=\"646\" cy=\"88\" r=\"38\" fill=\"#ffd700\" opacity=\"0.2\"/\u003e\n  \u003ccircle cx=\"650\" cy=\"90\" r=\"70\" fill=\"url(#glow-08)\"/\u003e\n  \n  \u003cg fill=\"#fff\"\u003e\n    \u003ccircle cx=\"100\" cy=\"55\" r=\"1.2\" opacity=\"0.5\"/\u003e\n    \u003ccircle cx=\"280\" cy=\"40\" r=\"1.5\" opacity=\"0.45\"/\u003e\n    \u003ccircle cx=\"450\" cy=\"50\" r=\"1.3\" opacity=\"0.4\"/\u003e\n    \u003ccircle cx=\"600\" cy=\"35\" r=\"1.5\" opacity=\"0.45\"/\u003e\n    \u003ccircle cx=\"720\" cy=\"70\" r=\"1\" opacity=\"0.35\"/\u003e\n  \u003c/g\u003e\n  \n  \u003cellipse cx=\"400\" cy=\"660\" rx=\"580\" ry=\"160\" fill=\"#1f1b4e\"/\u003e\n  \u003cellipse cx=\"200\" cy=\"690\" rx=\"300\" ry=\"130\" fill=\"#15123a\"/\u003e\n  \n  \u003c!-- Lua estrela dormindo --\u003e\n  \u003cg transform=\"translate(300,170)\"\u003e\n    \u003ccircle cx=\"70\" cy=\"70\" r=\"65\" fill=\"url(#glow-08)\"/\u003e\n    \u003cg opacity=\"0.85\"\u003e\n  \u003c!-- Sombra --\u003e\n  \u003cellipse cx=\"70\" cy=\"108.0\" rx=\"30.0\" ry=\"6.0\" fill=\"#000\" opacity=\"0.1\"/\u003e\n  \u003c!-- Corpo com gradiente --\u003e\n  \u003cdefs\u003e\n    \u003cradialGradient id=\"star-grad-p8-lua\" cx=\"40%\" cy=\"35%\" r=\"70%\"\u003e\n      \u003cstop offset=\"0%\" stop-color=\"#fff8dc\"/\u003e\n      \u003cstop offset=\"50%\" stop-color=\"#f5a623\"/\u003e\n      \u003cstop offset=\"100%\" stop-color=\"#f5a623\" stop-opacity=\"0.85\"/\u003e\n    \u003c/radialGradient\u003e\n  \u003c/defs\u003e\n  \u003cpolygon points=\"70,35.0 76.0,58.0 104.0,58.0 80.0,74.0 90.0,100.0 70,84.0 50.0,100.0 60.0,74.0 36.0,58.0 64.0,58.0\" fill=\"url(#star-grad-p8-lua)\" stroke=\"#f5a623\" stroke-width=\"1.5\"/\u003e\n  \u003c!-- Brilho interno --\u003e\n  \u003cpolygon points=\"70,35.0 76.0,58.0 104.0,58.0 80.0,74.0 90.0,100.0 70,84.0 50.0,100.0 60.0,74.0 36.0,58.0 64.0,58.0\" fill=\"url(#star-grad-p8-lua)\" opacity=\"0.3\"/\u003e\n  \u003cpath d=\"M58.0 68.0 Q62.0 72.0 66.0 68.0\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"2.0\" stroke-linecap=\"round\"/\u003e\u003cpath d=\"M74.0 68.0 Q78.0 72.0 82.0 68.0\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"2.0\" stroke-linecap=\"round\"/\u003e\u003cpath d=\"M65.0 80.0 Q70 84.0 75.0 80.0\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"2.0\" stroke-linecap=\"round\"/\u003e\n\u003c/g\u003e\n  \u003c/g\u003e\n  \n  \u003c!-- \"z z z\" --\u003e\n  \u003ctext x=\"420\" y=\"160\" font-family=\"'Quicksand',sans-serif\" font-size=\"30\" fill=\"#ffd700\" opacity=\"0.35\" font-weight=\"600\"\u003ez\u003c/text\u003e\n  \u003ctext x=\"455\" y=\"135\" font-family=\"'Quicksand',sans-serif\" font-size=\"22\" fill=\"#ffd700\" opacity=\"0.28\" font-weight=\"600\"\u003ez\u003c/text\u003e\n  \u003ctext x=\"485\" y=\"115\" font-family=\"'Quicksand',sans-serif\" font-size=\"16\" fill=\"#ffd700\" opacity=\"0.2\" font-weight=\"600\"\u003ez\u003c/text\u003e\n  \n  \u003c!-- Pedro dormindo --\u003e\n  \u003cg transform=\"translate(320,370)\"\u003e\n    \u003crect x=\"-10\" y=\"30\" width=\"15\" height=\"80\" rx=\"4\" fill=\"#8b6914\" opacity=\"0.8\"/\u003e\n    \u003crect x=\"5\" y=\"72\" width=\"155\" height=\"45\" rx=\"8\" fill=\"#a0886b\" opacity=\"0.4\"/\u003e\n    \u003cellipse cx=\"85\" cy=\"58\" rx=\"80\" ry=\"30\" fill=\"#e3f2fd\" opacity=\"0.4\"/\u003e\n    \u003cellipse cx=\"65\" cy=\"50\" rx=\"55\" ry=\"22\" fill=\"#fff\" opacity=\"0.35\"/\u003e\n    \u003ccircle cx=\"50\" cy=\"48\" r=\"18\" fill=\"#ffd9c0\"/\u003e\n    \u003cpath d=\"M40 46 Q43 50 49 46\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"1.5\" stroke-linecap=\"round\"/\u003e\n    \u003cpath d=\"M53 46 Q56 50 62 46\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"1.5\" stroke-linecap=\"round\"/\u003e\n    \u003cpath d=\"M47 55 Q50 59 55 55\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"1.5\" stroke-linecap=\"round\"/\u003e\n    \u003cpath d=\"M30 47 Q26 28 50 33 Q74 28 70 47 Q64 34 50 38 Q36 34 30 47 Z\" fill=\"#8b6914\"/\u003e\n  \u003c/g\u003e\n\u003c/svg\u003e","audio":""}]};
+const WHATSAPP_NUM = "5582991856656";
+const T = {
+  listen:'🔊 Ouvir história', stop:'⏹ Parar', open:'Abrir livro 📖', again:'Ler de novo 🔄',
+  prev:'← Anterior', next:'Próxima →', auto:'▶ Auto-leitura', autoStop:'⏹ Parar auto-leitura',
+  theEnd:'— Fim —', endText:'Obrigado por ler! Boa noite!', ages:'Idade',
+  noTts:'Seu navegador não suporta narração. Tente Chrome ou Edge.',
+  whatsapp:'Compartilhar no WhatsApp',
+  pdf:'Salvar como PDF'
+};
+
+function escaparHTML(valor) {
+  return String(valor ?? '').replace(/[&<>"']/g, char => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  })[char]);
+}
+function textoHTML(valor) {
+  return escaparHTML(valor).replace(/\r?\n/g, '<br>');
+}
+function svgHTML(valor) {
+  return typeof valor === 'string' ? valor : '';
+}
+function el(html) {
+  const d = document.createElement('div');
+  d.innerHTML = html;
+  return d.firstElementChild;
+}
+
+/* ---------- Render ---------- */
+const pagesEl = document.getElementById('pages');
+const dotsEl = document.getElementById('dots');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const total = LIVRO.paginas.length + 2;
+let cur = 0;
+let auto = false;
+
+prevBtn.textContent = T.prev;
+nextBtn.textContent = T.next;
+prevBtn.setAttribute('aria-label', T.prev);
+nextBtn.setAttribute('aria-label', T.next);
+
+pagesEl.appendChild(el(`<div class="page cover active">
+  <div class="art">${svgHTML(LIVRO.capa_svg)}</div>
+  <div class="content">
+    <h1>${escaparHTML(LIVRO.titulo)}</h1>
+    <h2>${escaparHTML(LIVRO.subtitulo || '')}</h2>
+    <div class="badge">${escaparHTML(T.ages)} ${escaparHTML(LIVRO.faixa_etaria || '2 — 6 anos')}</div><br>
+    <button class="btn btn-big" type="button" onclick="go(1)">${escaparHTML(T.open)}</button>
+  </div>
+</div>`));
+
+LIVRO.paginas.forEach((p, i) => {
+  const dialogue = p.dialogo ? `<div class="dialogue">${textoHTML(p.dialogo)}</div>` : '';
+  pagesEl.appendChild(el(`<div class="page">
+    <div class="art">${svgHTML(p.svg)}</div>
+    <div class="content">
+      <p>${textoHTML(p.texto)}</p>
+      ${dialogue}
+      <button class="btn btn-play" type="button" data-idx="${i}" onclick="togglePlay(${i}, this)">${escaparHTML(T.listen)}</button>
+      <div class="pageno">${i + 1} / ${LIVRO.paginas.length}</div>
+    </div>
+  </div>`));
+});
+
+pagesEl.appendChild(el(`<div class="page">
+  <div class="content" style="padding:70px 34px;">
+    <div class="end-emoji" aria-hidden="true">🌙✨</div>
+    <h1 style="color:var(--coral);font-size:34px;margin-bottom:14px;font-family:'Playfair Display',serif;">${escaparHTML(T.theEnd)}</h1>
+    <p>${textoHTML(LIVRO.texto_final || T.endText)}</p>
+    <button class="btn btn-big" type="button" onclick="irInicio()">${escaparHTML(T.again)}</button>
+  </div>
+</div>`));
+
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('button');
+  d.type = 'button';
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.setAttribute('aria-label', `Ir para página ${i + 1}`);
+  d.onclick = () => show(i);
+  dotsEl.appendChild(d);
+}
+
+function show(i) {
+  pararSom();
+  cur = Math.max(0, Math.min(total - 1, i));
+  document.querySelectorAll('.page').forEach((p, k) => p.classList.toggle('active', k === cur));
+  document.querySelectorAll('.dot').forEach((d, k) => d.classList.toggle('on', k === cur));
+  prevBtn.disabled = cur === 0;
+  nextBtn.disabled = cur === total - 1;
+  if (auto) autoLer();
+}
+function go(delta) { show(cur + delta); }
+function irInicio() { auto = false; syncAutoBtn(); show(0); }
+document.addEventListener('keydown', event => {
+  if (event.key === 'ArrowRight') go(1);
+  if (event.key === 'ArrowLeft') go(-1);
+});
+
+/* ---------- Player: áudio embutido primeiro, fallback narração ---------- */
+let curAudio = null;
+let curBtn = null;
+let curUtter = null;
+let playToken = 0;
+
+function escolherVoz() {
+  const voices = speechSynthesis.getVoices();
+  const preferred = /Lucia|Google português|Natural|Microsoft/i;
+  return voices.find(v => v.lang.startsWith('pt') && preferred.test(v.name))
+      || voices.find(v => v.lang.startsWith('pt'))
+      || null;
+}
+if ('speechSynthesis' in window) speechSynthesis.getVoices();
+
+function pararSom() {
+  playToken += 1;
+  if (curAudio) {
+    curAudio.onended = null;
+    curAudio.onerror = null;
+    curAudio.pause();
+    curAudio = null;
+  }
+  if (curUtter) {
+    curUtter.onstart = null;
+    curUtter.onend = null;
+    curUtter.onerror = null;
+    curUtter = null;
+  }
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  if (curBtn) {
+    curBtn.classList.remove('playing');
+    curBtn.textContent = T.listen;
+    curBtn = null;
+  }
+}
+
+function tocarPagina(i, btn, onEnd) {
+  pararSom();
+  const token = playToken;
+  const pagina = LIVRO.paginas[i];
+  const textoCompleto = [pagina.texto, pagina.dialogo].filter(Boolean).join(' ');
+  const done = ok => {
+    if (token !== playToken) return;
+    if (btn) {
+      btn.classList.remove('playing');
+      btn.textContent = T.listen;
+    }
+    curBtn = null;
+    curAudio = null;
+    curUtter = null;
+    if (onEnd) onEnd(ok !== false);
+  };
+  if (btn) {
+    btn.classList.add('playing');
+    btn.textContent = T.stop;
+    curBtn = btn;
+  }
+  if (pagina.audio) {
+    curAudio = new Audio(pagina.audio);
+    curAudio.onended = () => done(true);
+    curAudio.onerror = () => {
+      curAudio = null;
+      falar(textoCompleto, done, token);
+    };
+    curAudio.play().catch(() => {
+      curAudio = null;
+      falar(textoCompleto, done, token);
+    });
+  } else {
+    falar(textoCompleto, done, token);
+  }
+}
+
+function falar(texto, done, token) {
+  if (!('speechSynthesis' in window)) {
+    alert(T.noTts);
+    done(false);
+    return;
+  }
+  const utterance = new SpeechSynthesisUtterance(String(texto || '').replace(/<[^>]+>/g, ''));
+  utterance.lang = 'pt-BR';
+  utterance.rate = 0.85;
+  utterance.pitch = 1.1;
+  const voz = escolherVoz();
+  if (voz) utterance.voice = voz;
+  let started = false;
+  const startedAt = Date.now();
+  utterance.onstart = () => { started = true; };
+  utterance.onend = () => done(started || Date.now() - startedAt > 500);
+  utterance.onerror = () => done(false);
+  curUtter = utterance;
+  speechSynthesis.speak(utterance);
+}
+
+function togglePlay(i, btn) {
+  if (curBtn === btn) {
+    auto = false;
+    syncAutoBtn();
+    pararSom();
+    return;
+  }
+  auto = false;
+  syncAutoBtn();
+  tocarPagina(i, btn, null);
+}
+
+/* ---------- Auto-leitura ---------- */
+function syncAutoBtn() {
+  const button = document.getElementById('autoBtn');
+  button.classList.toggle('on', auto);
+  button.textContent = auto ? T.autoStop : T.auto;
+  button.setAttribute('aria-label', button.textContent);
+}
+function toggleAuto() {
+  auto = !auto;
+  syncAutoBtn();
+  if (auto) {
+    if (cur === 0 || cur === total - 1) show(1);
+    else autoLer();
+  } else {
+    pararSom();
+  }
+}
+function autoLer() {
+  if (!auto) return;
+  if (cur === 0 || cur === total - 1) {
+    auto = false;
+    syncAutoBtn();
+    return;
+  }
+  const idx = cur - 1;
+  const pageAtStart = cur;
+  const btn = document.querySelector(`.btn-play[data-idx="${idx}"]`);
+  tocarPagina(idx, btn, ok => {
+    if (!ok) {
+      auto = false;
+      syncAutoBtn();
+      return;
+    }
+    if (auto && cur === pageAtStart) {
+      setTimeout(() => {
+        if (auto && cur === pageAtStart) go(1);
+      }, 700);
+    }
+  });
+}
+
+/* ---------- WhatsApp ---------- */
+function compartilharWhatsApp() {
+  const texto = encodeURIComponent(`📖 ${LIVRO.titulo}\n\n${LIVRO.subtitulo || ''}\n\nLeia no InfoEngine!`);
+  window.open(`https://wa.me/${WHATSAPP_NUM}?text=${texto}`, '_blank');
+}
+
+/* ---------- PDF ---------- */
+function exportarPDF() {
+  const element = document.getElementById('livro');
+  const opt = {
+    margin: 10,
+    filename: `${LIVRO.titulo.replace(/\s+/g, '_')}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+  html2pdf().set(opt).from(element).save();
+}
+
+syncAutoBtn();
+show(0);
+</script>
+</body>
+</html>

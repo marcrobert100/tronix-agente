@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tronix - Fluxograma do Sistema</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0a0a1a; color: #fff; min-height: 100vh; padding: 20px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 2.5rem; background: linear-gradient(135deg, #00d4ff, #7b2cbf); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header p { color: #888; margin-top: 10px; }
+        .flowchart { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .level { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .node { background: linear-gradient(145deg, #1a1a2e, #16213e); border: 2px solid #00d4ff; border-radius: 12px; padding: 20px; min-width: 180px; text-align: center; position: relative; transition: all 0.3s; }
+        .node:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,212,255,0.3); }
+        .node.core { border-color: #7b2cbf; background: linear-gradient(145deg, #2d1b4e, #1a1a2e); }
+        .node.gateway { border-color: #00ff88; }
+        .node.agent { border-color: #ff6b6b; min-width: 120px; padding: 15px; }
+        .node.service { border-color: #ffd93d; }
+        .node h3 { font-size: 1.1rem; margin-bottom: 8px; }
+        .node p { font-size: 0.85rem; color: #aaa; }
+        .node .port { font-size: 0.75rem; color: #00d4ff; margin-top: 5px; }
+        .arrow { font-size: 2rem; color: #00d4ff; }
+        .arrow.down { transform: rotate(90deg); }
+        .section { margin: 30px 0; width: 100%; max-width: 1200px; }
+        .section h2 { text-align: center; margin-bottom: 20px; color: #00d4ff; border-bottom: 2px solid #1a1a2e; padding-bottom: 10px; }
+        .agents-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        .scripts-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; background: #1a1a2e; padding: 20px; border-radius: 12px; }
+        .script-item { background: #16213e; padding: 10px; border-radius: 8px; font-size: 0.9rem; border-left: 3px solid #7b2cbf; }
+        .status { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
+        .status.on { background: #00ff88; }
+        .status.off { background: #ff6b6b; }
+        .legend { display: flex; gap: 20px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-color { width: 20px; height: 20px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>TRONIX SISTEMA</h1>
+        <p>Fluxograma Completo v1.5.0 | Viçosa-AL | Marcos Roberto</p>
+    </div>
+
+    <div class="legend">
+        <div class="legend-item"><div class="legend-color" style="background:#7b2cbf"></div> Core</div>
+        <div class="legend-item"><div class="legend-color" style="background:#00ff88"></div> Gateway</div>
+        <div class="legend-item"><div class="legend-color" style="background:#ff6b6b"></div> Agentes</div>
+        <div class="legend-item"><div class="legend-color" style="background:#ffd93d"></div> Serviços</div>
+    </div>
+
+    <div class="flowchart">
+        <!-- Nível 1: Usuário -->
+        <div class="level">
+            <div class="node core">
+                <h3>👤 MARCOS ROBERTO</h3>
+                <p>Viçosa-AL | PCsoluções</p>
+                <p>WhatsApp: 5582991856656</p>
+            </div>
+        </div>
+
+        <div class="arrow down">→</div>
+
+        <!-- Nível 2: Interface -->
+        <div class="level">
+            <div class="node gateway">
+                <h3>🗣️ OPENHUMAN</h3>
+                <p>Voice Commands</p>
+                <p>7 processos ativos</p>
+            </div>
+            <div class="node gateway">
+                <h3>🌐 API GATEWAY</h3>
+                <p>FastAPI REST</p>
+                <div class="port">Porta: 8081</div>
+            </div>
+            <div class="node service">
+                <h3>💻 FREEBUFF</h3>
+                <p>Coding Agent</p>
+                <p>v0.0.107</p>
+            </div>
+        </div>
+
+        <div class="arrow down">→</div>
+
+        <!-- Nível 3: Core -->
+        <div class="level">
+            <div class="node core">
+                <h3>🧠 TRONIX CORE</h3>
+                <p>CrewAI Multi-Agent</p>
+                <p>12 Agentes | 56 Scripts</p>
+            </div>
+        </div>
+
+        <div class="arrow down">→</div>
+
+        <!-- Nível 4: Agentes -->
+        <div class="section">
+            <h2>🤖 AGENTES CREWAI</h2>
+            <div class="agents-grid">
+                <div class="node agent"><h3>DEV</h3><p>Programador</p></div>
+                <div class="node agent"><h3>MEDIA</h3><p>Geração de Mídia</p></div>
+                <div class="node agent"><h3>SUPER</h3><p>Voz + Legenda</p></div>
+                <div class="node agent"><h3>ROTEIRISTA</h3><p>Roteiros</p></div>
+                <div class="node agent"><h3>DIRETOR</h3><p>Direção</p></div>
+                <div class="node agent"><h3>IG</h3><p>Instagram</p></div>
+                <div class="node agent"><h3>YT</h3><p>YouTube</p></div>
+                <div class="node agent"><h3>DB</h3><p>Banco de Dados</p></div>
+                <div class="node agent"><h3>INFRA</h3><p>Infraestrutura</p></div>
+                <div class="node agent"><h3>RESEARCH</h3><p>Pesquisa</p></div>
+                <div class="node agent"><h3>SYNC</h3><p>Sincronização</p></div>
+                <div class="node agent"><h3>OPENHUMAN</h3><p>Bridge</p></div>
+            </div>
+        </div>
+
+        <div class="arrow down">→</div>
+
+        <!-- Nível 5: Scripts -->
+        <div class="section">
+            <h2>📜 SCRIPTS (56)</h2>
+            <div class="scripts-list">
+                <div class="script-item">gera_imagem</div>
+                <div class="script-item">gera_video</div>
+                <div class="script-item">gerar_mini_novela</div>
+                <div class="script-item">animar_ia</div>
+                <div class="script-item">animar_replicate</div>
+                <div class="script-item">tronix_super_editor</div>
+                <div class="script-item">tronix_instagram</div>
+                <div class="script-item">tronix_youtube</div>
+                <div class="script-item">tronix_openhuman_agent</div>
+                <div class="script-item">openhuman_bridge</div>
+                <div class="script-item">openhuman_memoria_sync</div>
+                <div class="script-item">tronix_free_models</div>
+            </div>
+        </div>
+
+        <div class="arrow down">→</div>
+
+        <!-- Nível 6: Serviços -->
+        <div class="section">
+            <h2>⚙️ SERVIÇOS</h2>
+            <div class="level">
+                <div class="node service">
+                    <h3>☁️ OPENROUTER</h3>
+                    <p>40+ Modelos Grátis</p>
+                    <p><span class="status on"></span>Configurado</p>
+                </div>
+                <div class="node service">
+                    <h3>🎤 EDGE-TTS</h3>
+                    <p>pt-BR-AntonioNeural</p>
+                    <p><span class="status on"></span>Funcional</p>
+                </div>
+                <div class="node service">
+                    <h3>🗄️ SQLITE</h3>
+                    <p>tronix.db</p>
+                    <p><span class="status on"></span>Online</p>
+                </div>
+                <div class="node service">
+                    <h3>🎬 FFMPEG</h3>
+                    <p>Processamento Vídeo</p>
+                    <p><span class="status on"></span>Instalado</p>
+                </div>
+            </div>
+            <div class="level" style="margin-top: 15px;">
+                <div class="node service" style="opacity: 0.6;">
+                    <h3>📊 N8N</h3>
+                    <p>Workflows</p>
+                    <p><span class="status off"></span>Offline</p>
+                </div>
+                <div class="node service" style="opacity: 0.6;">
+                    <h3>🐳 DIFY</h3>
+                    <p>AI Apps</p>
+                    <p><span class="status off"></span>Offline</p>
+                </div>
+                <div class="node service" style="opacity: 0.6;">
+                    <h3>🔍 RAGFLOW</h3>
+                    <p>Engine RAG</p>
+                    <p><span class="status off"></span>Offline</p>
+                </div>
+                <div class="node service" style="opacity: 0.6;">
+                    <h3>🔗 LANGFLOW</h3>
+                    <p>Visual Agents</p>
+                    <p><span class="status off"></span>Offline</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow down">→</div>
+
+        <!-- Nível 7: Armazenamento -->
+        <div class="section">
+            <h2>💾 ARMAZENAMENTO</h2>
+            <div class="level">
+                <div class="node gateway">
+                    <h3>📁 MEMÓRIA</h3>
+                    <p>memoria_tronix.json</p>
+                    <p>81 ações registradas</p>
+                </div>
+                <div class="node gateway">
+                    <h3>📋 BANCO</h3>
+                    <p>tronix.db</p>
+                    <p>20 conteúdos | 11 logs</p>
+                </div>
+                <div class="node gateway">
+                    <h3>⚙️ CONFIG</h3>
+                    <p>tronix_core.json</p>
+                    <p>v1.5.0</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow down">→</div>
+
+        <!-- Nível 8: Projetos -->
+        <div class="section">
+            <h2>🎨 PROJETOS</h2>
+            <div class="level">
+                <div class="node core">
+                    <h3>📚 INFOENGINE</h3>
+                    <p>Livros + Infográficos</p>
+                    <p>6 Templates PWA</p>
+                </div>
+                <div class="node core">
+                    <h3>🗳️ SANTINHO</h3>
+                    <p>Generator Político</p>
+                    <p>20 Templates</p>
+                </div>
+                <div class="node core">
+                    <h3>🎬 PIPELINE</h3>
+                    <p>Cloudflare→Ken Burns→TTS</p>
+                    <p>Mini Novelas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Animação simples
+        document.querySelectorAll('.node').forEach((node, i) => {
+            node.style.animationDelay = `${i * 0.1}s`;
+        });
+    </script>
+</body>
+</html>

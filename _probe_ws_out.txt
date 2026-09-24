@@ -1,0 +1,6 @@
+ERR wss://api-blaze.playbet.io/replication/?group=roulette_games -> [Errno 11001] getaddrinfo failed
+ERR wss://api-blaze.playbet.io/replication/?group=double_platform -> [Errno 11001] getaddrinfo failed
+ERR wss://api-blaze.playbet.io/replication/?group=roulette_trends -> [Errno 11001] getaddrinfo failed
+ERR wss://api-blaze.playbet.io/consumer/roulette_games -> [Errno 11001] getaddrinfo failed
+ERR wss://blaze.com/ws -> HTTP/1.1 302 Found
+FIM

@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>__TITULO__</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Luckiest+Guy&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --comic-bg: #f7f3e8;
+  --panel-border: #222;
+  --bubble-bg: #fff;
+  --bubble-border: #222;
+  --narration-bg: #ffd54f;
+  --narration-border: #f9a825;
+  --title-color: #e53935;
+  --text-dark: #1a1a2e;
+  --accent: #ff6f00;
+}
+body {
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(160deg, #1a1a2e 0%, #16213e 100%);
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  padding: 16px; overflow: hidden;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23ff6f00' opacity='0.3'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23ff6f00'/%3E%3C/svg%3E") 16 16, auto;
+}
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(255,107,0,.06) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 50%, rgba(0,229,255,.06) 0%, transparent 60%);
+}
+#particles-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.book {
+  width: min(920px, 100%); position: relative; z-index: 1;
+  perspective: 2000px;
+}
+.book-inner {
+  background: var(--comic-bg); border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5), 0 0 40px rgba(255,107,0,.15);
+  border: 4px solid #333; position: relative; overflow: hidden;
+  transform-style: preserve-3d; transition: transform .6s cubic-bezier(.23,1,.32,1);
+}
+.page { display: none; transform-origin: left center; }
+.page.active { display: block; animation: pageIn .7s cubic-bezier(.23,1,.32,1); }
+@keyframes pageIn {
+  0% { transform: perspective(1200px) rotateY(-18deg) scale(.92); opacity: .5; }
+  100% { transform: perspective(1200px) rotateY(0) scale(1); opacity: 1; }
+}
+.page.exit { display: block; position: absolute; inset: 0; animation: pageOut .5s cubic-bezier(.6,0,.4,1); pointer-events: none; }
+@keyframes pageOut {
+  0% { transform: perspective(1200px) rotateY(0) scale(1); opacity: 1; }
+  100% { transform: perspective(1200px) rotateY(25deg) scale(.88); opacity: 0; }
+}
+.panel { position: relative; padding: 14px 14px 0; margin: 0; }
+.panel-border {
+  border: 4px solid var(--panel-border); border-radius: 4px;
+  overflow: hidden; position: relative; background: #111;
+  box-shadow: inset 0 0 0 2px #fff, 0 4px 12px rgba(0,0,0,.15);
+}
+.panel svg { width: 100%; height: auto; display: block; position: relative; z-index: 1; }
+.panel svg .reator-brilho { animation: pulseReactor 1.5s ease-in-out infinite; }
+@keyframes pulseReactor { 0%,100% { opacity:.3; } 50% { opacity:.8; } }
+.bubble {
+  position: absolute; z-index: 10; max-width: 300px;
+  background: var(--bubble-bg); border: 3px solid var(--bubble-border);
+  border-radius: 20px; padding: 10px 16px; font-family: 'Quicksand', sans-serif;
+  font-weight: 600; color: #222;
+  box-shadow: 4px 4px 0 rgba(0,0,0,.15); line-height: 1.35; text-align: center;
+  opacity: 0; transform: scale(.5); transition: all .4s cubic-bezier(.34,1.56,.64,1);
+  pointer-events: none;
+}
+.bubble.show { opacity: 1; transform: scale(1); }
+.bubble::after {
+  content: ''; position: absolute; width: 16px; height: 16px;
+  background: var(--bubble-bg); border: 3px solid var(--bubble-border);
+  transform: rotate(45deg); border-top: none; border-left: none;
+}
+.tr, .bubble-tr { top: 18px; right: 20px; }
+.tr::after, .bubble-tr::after { bottom: auto; top: -9px; left: 30px; transform: rotate(135deg); border-bottom: none; border-right: none; }
+.bl, .bubble-bl { bottom: 18px; left: 20px; }
+.bl::after, .bubble-bl::after { bottom: -9px; left: 30px; }
+.br, .bubble-br { bottom: 18px; right: 20px; }
+.br::after, .bubble-br::after { bottom: -9px; right: 30px; left: auto; }
+.tl, .bubble-tl { top: 18px; left: 20px; }
+.tl::after, .bubble-tl::after { bottom: auto; top: -9px; left: 30px; transform: rotate(135deg); border-bottom: none; border-right: none; }
+.bubble-char {
+  font-size: clamp(15px, 2vw, 19px); display: inline-block;
+  min-width: 20px; min-height: 1.2em;
+}
+.bubble-char::after { content: '|'; animation: blink 1s step-end infinite; color: #222; }
+.bubble-char.done::after { display: none; }
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+.narration {
+  background: var(--narration-bg); border: 3px solid var(--narration-border);
+  border-radius: 4px; padding: 12px 16px; margin: 10px 14px;
+  font-family: 'Quicksand', sans-serif; font-size: clamp(15px, 2.2vw, 18px);
+  color: #333; line-height: 1.6; text-align: center; font-weight: 500;
+  box-shadow: 3px 3px 0 rgba(0,0,0,.1);
+  position: relative; overflow: hidden;
+}
+.narration::before {
+  content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.4) 50%, transparent 100%);
+  transform: translateX(-100%); animation: shimmer 3s ease-in-out infinite;
+}
+@keyframes shimmer { 0% { transform:translateX(-100%); } 50% { transform:translateX(100%); } 100% { transform:translateX(100%); } }
+.sfx-overlay { position: absolute; inset: 0; z-index: 15; pointer-events: none; overflow: hidden; }
+.sfx-word {
+  position: absolute; font-family: 'Bangers', cursive; font-size: clamp(28px,4vw,48px);
+  color: #ff6f00; text-shadow: 2px 2px 0 #333, -1px -1px 0 #fff;
+  opacity: 0; pointer-events: none;
+  animation: sfxPop .8s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+@keyframes sfxPop {
+  0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+  40% { transform: scale(1.3) rotate(5deg); opacity: 1; }
+  70% { transform: scale(.95) rotate(-2deg); opacity: .9; }
+  100% { transform: scale(1) rotate(0); opacity: 0; }
+}
+.robo-clickable { cursor: pointer; transition: filter .2s; }
+.robo-clickable:hover { filter: brightness(1.15) drop-shadow(0 0 8px #ff6f00); }
+.robo-clickable.shake {
+  animation: shake .5s ease-in-out;
+}
+@keyframes shake {
+  0%,100% { transform: translate(0); }
+  10% { transform: translate(-4px,2px) rotate(-1deg); }
+  20% { transform: translate(3px,-1px) rotate(1deg); }
+  30% { transform: translate(-3px,1px); }
+  40% { transform: translate(2px,-2px) rotate(-.5deg); }
+  50% { transform: translate(-2px,2px) rotate(.5deg); }
+  60% { transform: translate(1px,-1px); }
+  70% { transform: translate(-1px,1px); }
+  80% { transform: translate(1px,-1px); }
+}
+.spark {
+  position: absolute; width: 6px; height: 6px; border-radius: 50%;
+  pointer-events: none; z-index: 20;
+  animation: sparkFly .8s ease-out forwards;
+}
+@keyframes sparkFly {
+  0% { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--tx),var(--ty)) scale(0); opacity: 0; }
+}
+.cover .panel { padding: 0; }
+.cover .panel-border { border: none; border-radius: 0; box-shadow: none; }
+.cover .content { text-align: center; padding: 18px 22px 10px; }
+.cover .content h1 {
+  font-family: 'Bangers', cursive; font-size: clamp(38px, 6vw, 54px);
+  color: var(--title-color); letter-spacing: 2px;
+  text-shadow: 3px 3px 0 #333, 5px 5px 0 rgba(0,0,0,.1);
+  margin-bottom: 4px; animation: titlePulse 2s ease-in-out infinite;
+}
+@keyframes titlePulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.02); } }
+.cover .content h2 {
+  font-family: 'Quicksand', sans-serif; font-size: clamp(16px, 2.4vw, 20px);
+  color: #666; font-weight: 500; margin-bottom: 4px;
+}
+.badge { display: inline-block; background: #222; color: #fff; border-radius: 4px; padding: 4px 14px; font-size: 14px; margin-bottom: 10px; font-family: 'Bangers', cursive; letter-spacing: 1px; }
+.btn {
+  border: none; cursor: pointer; border-radius: 4px; font-family: 'Bangers', cursive;
+  letter-spacing: 1px; transition: transform .12s, box-shadow .12s;
+  position: relative; overflow: hidden;
+}
+.btn::after {
+  content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,.3) 0%, transparent 50%);
+  pointer-events: none;
+}
+.btn:active { transform: scale(.88); }
+.btn:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+.btn-big {
+  background: var(--title-color); color: #fff; font-size: 24px; padding: 12px 44px;
+  box-shadow: 4px 4px 0 #b71c1c; margin: 8px 0 4px;
+  animation: floatBtn 2s ease-in-out infinite;
+}
+@keyframes floatBtn { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-4px); } }
+.btn-play {
+  background: #43a047; color: #fff; font-size: 14px; padding: 6px 18px;
+  box-shadow: 3px 3px 0 #2e7d32; margin-top: 6px;
+}
+.btn-play.playing { background: #e53935; box-shadow: 3px 3px 0 #b71c1c; animation: pulseBtn .6s infinite; }
+@keyframes pulseBtn { 0%,100% { transform:scale(1); } 50% { transform:scale(1.05); } }
+.nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px 12px; gap: 8px; background: #222; margin-top: 4px;
+  position: relative;
+}
+.nav-progress {
+  position: absolute; top: 0; left: 0; height: 3px;
+  background: linear-gradient(90deg, #ff6f00, #ffd54f);
+  transition: width .5s ease; width: 0%;
+}
+.btn-nav {
+  background: #ffd54f; color: #333; font-size: 16px; padding: 7px 18px;
+  box-shadow: 3px 3px 0 #f9a825; min-width: 90px;
+}
+.btn-nav:disabled { opacity: .3; cursor: default; box-shadow: none; transform: none !important; }
+.dots { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; }
+.dot { width: 10px; height: 10px; background: #555; cursor: pointer; transition: .2s; border-radius: 2px; }
+.dot.on { background: #ffd54f; transform: scale(1.4); box-shadow: 0 0 6px #ffd54f; }
+.toolbar {
+  position: absolute; top: 8px; right: 10px; z-index: 20; display: flex; gap: 4px;
+  flex-wrap: wrap; justify-content: flex-end;
+}
+.toolbar .btn { font-size: 11px; padding: 4px 10px; letter-spacing: .5px; }
+.btn-auto { background: #5c6bc0; color: #fff; box-shadow: 2px 2px 0 #3949ab; }
+.btn-auto.on { background: #e53935; box-shadow: 2px 2px 0 #b71c1c; }
+.btn-whatsapp { background: #25d366; color: #fff; box-shadow: 2px 2px 0 #1da851; }
+.btn-pdf { background: #e53935; color: #fff; box-shadow: 2px 2px 0 #b71c1c; }
+.btn-fullscreen { background: #333; color: #fff; box-shadow: 2px 2px 0 #111; }
+.btn-sound { background: #7b1fa2; color: #fff; box-shadow: 2px 2px 0 #4a148c; }
+.btn-sound.muted { background: #666; box-shadow: 2px 2px 0 #444; }
+.pageno { font-family: 'Bangers', cursive; font-size: 13px; color: #999; text-align: center; padding: 2px 0 6px; background: var(--comic-bg); }
+.end { text-align: center; padding: 50px 24px; }
+.end h1 { font-family: 'Bangers', cursive; font-size: 52px; color: var(--title-color); text-shadow: 3px 3px 0 #333; margin-bottom: 10px; }
+.end p { font-size: 18px; color: #444; margin-bottom: 16px; }
+.end-emoji { font-size: 72px; margin-bottom: 10px; display: inline-block; animation: bounceEmoji 1s ease-in-out infinite; }
+@keyframes bounceEmoji { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-10px); } }
+#confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1000; }
+.auto-read-overlay { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); z-index: 30; font-family: 'Bangers', cursive; color: #ff6f00; font-size: 14px; background: rgba(0,0,0,.7); padding: 4px 14px; border-radius: 20px; opacity: 0; transition: opacity .3s; pointer-events: none; white-space: nowrap; }
+.auto-read-overlay.show { opacity: 1; }
+@media (max-width:560px) {
+  body { padding: 6px; }
+  .panel { padding: 6px 6px 0; }
+  .narration { margin: 6px 6px; padding: 8px 10px; font-size: 14px; }
+  .nav { padding: 6px 6px 10px; }
+  .toolbar { top: 4px; right: 4px; }
+  .toolbar .btn { font-size: 10px; padding: 3px 7px; }
+  .bubble { max-width: 180px; font-size: 12px; padding: 5px 8px; }
+  .btn-nav { padding: 5px 12px; font-size: 14px; min-width: 60px; }
+  .cover .content h1 { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+<canvas id="particles-canvas"></canvas>
+<canvas id="confetti-canvas"></canvas>
+<div class="book" id="livro">
+  <div class="book-inner">
+  <div class="toolbar">
+    <button class="btn btn-sound" id="soundBtn" type="button" onclick="toggleSound()">🔊</button>
+    <button class="btn btn-fullscreen" type="button" onclick="toggleFullscreen()">⛶</button>
+    <button class="btn btn-pdf" type="button" onclick="exportarPDF()">PDF</button>
+    <button class="btn btn-whatsapp" type="button" onclick="compartilharWhatsApp()">Zap</button>
+    <button class="btn btn-auto" id="autoBtn" type="button" onclick="toggleAuto()">▶</button>
+  </div>
+  <div id="pages" aria-live="polite"></div>
+  <div class="nav" aria-label="Navegação">
+    <div class="nav-progress" id="progressBar"></div>
+    <button class="btn btn-nav" id="prevBtn" type="button" onclick="go(-1)"></button>
+    <div class="dots" id="dots" aria-label="Selecionar página"></div>
+    <button class="btn btn-nav" id="nextBtn" type="button" onclick="go(1)"></button>
+  </div>
+  <div class="auto-read-overlay" id="autoOverlay">▶ AUTO-LEITURA</div>
+  </div>
+</div>
+<script>
+const LIVRO = __DADOS_LIVRO__;
+const WHATSAPP_NUM = "5582991856656";
+const T = {
+  listen:'Ouvir', stop:'Parar', open:'COMEÇAR HQ!', again:'LER DE NOVO',
+  prev:'←', next:'→', auto:'▶', autoStop:'⏹',
+  theEnd:'FIM', endText:'Obrigado por ler esta aventura!',
+  ages:'IDADE',
+  noTts:'Navegador não suporta narração.',
+};
+
+/* ===== Audio Engine ===== */
+let audioCtx = null;
+let soundEnabled = true;
+
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playTone(freq, duration, type = 'square', vol = .15) {
+  if (!soundEnabled) return;
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    gain.gain.setValueAtTime(vol, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + duration);
+  } catch(e) {}
+}
+
+function playPageTurn() { playTone(800, .1, 'sine', .08); setTimeout(() => playTone(1000, .08, 'sine', .06), 60); }
+function playBeep() { playTone(1200, .12, 'square', .1); setTimeout(() => playTone(1500, .1, 'square', .08), 80); }
+function playBoop() { playTone(600, .15, 'sine', .1); setTimeout(() => playTone(400, .2, 'sine', .08), 100); }
+function playCelebration() {
+  [0,100,200,300,400].forEach((d,i) => setTimeout(() => playTone(400 + i*200, .15, 'square', .1), d));
+}
+function playSparkle() { playTone(2000, .08, 'sine', .06); setTimeout(() => playTone(2500, .06, 'sine', .04), 40); }
+
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  document.getElementById('soundBtn').textContent = soundEnabled ? '🔊' : '🔇';
+  document.getElementById('soundBtn').classList.toggle('muted', !soundEnabled);
+}
+
+/* ===== Particles Background ===== */
+(function initParticles() {
+  const c = document.getElementById('particles-canvas');
+  const ctx = c.getContext('2d');
+  let w, h, particles = [];
+  function resize() { w = c.width = innerWidth; h = c.height = innerHeight; }
+  resize();
+  addEventListener('resize', resize);
+  for (let i = 0; i < 40; i++) {
+    particles.push({ x: Math.random()*w, y: Math.random()*h, r: Math.random()*2+1, dx: (Math.random()-.5)*.4, dy: (Math.random()-.5)*.4, o: Math.random()*.4+.1 });
+  }
+  function draw() {
+    ctx.clearRect(0,0,w,h);
+    particles.forEach(p => {
+      p.x += p.dx; p.y += p.dy;
+      if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
+      if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(255,107,0,${p.o})`; ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ===== Confetti ===== */
+let confettiPieces = [];
+let confettiRunning = false;
+function launchConfetti() {
+  const c = document.getElementById('confetti-canvas');
+  const ctx = c.getContext('2d');
+  c.width = innerWidth; c.height = innerHeight;
+  const colors = ['#e53935','#ff6f00','#ffd54f','#43a047','#1e88e5','#7b1fa2','#00e5ff'];
+  if (!confettiRunning) {
+    confettiPieces = [];
+    for (let i = 0; i < 120; i++) {
+      confettiPieces.push({
+        x: Math.random()*c.width, y: -20 - Math.random()*200,
+        w: Math.random()*8+4, h: Math.random()*6+3,
+        color: colors[Math.floor(Math.random()*colors.length)],
+        vx: (Math.random()-.5)*4, vy: Math.random()*3+2,
+        r: Math.random()*360, dr: (Math.random()-.5)*8,
+        o: 1
+      });
+    }
+    confettiRunning = true;
+    function animateConfetti() {
+      ctx.clearRect(0,0,c.width,c.height);
+      let alive = false;
+      confettiPieces.forEach(p => {
+        p.x += p.vx; p.y += p.vy; p.r += p.dr;
+        p.vy += .04; p.o -= .002;
+        if (p.o <= 0) return;
+        alive = true;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r * Math.PI/180);
+        ctx.globalAlpha = Math.max(0, p.o);
+        ctx.fillStyle = p.color; ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+        ctx.restore();
+      });
+      if (alive) requestAnimationFrame(animateConfetti);
+      else { confettiRunning = false; ctx.clearRect(0,0,c.width,c.height); }
+    }
+    animateConfetti();
+    playCelebration();
+  }
+}
+
+/* ===== Page rendering ===== */
+function escaparHTML(v) { return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39'})[c]); }
+function textoHTML(v) { return escaparHTML(v).replace(/\r?\n/g,'<br>'); }
+function svgHTML(v) { return typeof v==='string'?v:''; }
+function el(h) { const d=document.createElement('div'); d.innerHTML=h; return d.firstElementChild; }
+
+const pagesEl = document.getElementById('pages');
+const dotsEl = document.getElementById('dots');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const progressBar = document.getElementById('progressBar');
+const total = LIVRO.paginas.length + 2;
+let cur = 0;
+let auto = false;
+
+prevBtn.textContent = T.prev;
+nextBtn.textContent = T.next;
+prevBtn.setAttribute('aria-label', T.prev);
+nextBtn.setAttribute('aria-label', T.next);
+
+let exitingEl = null;
+
+function addExitAnimation(oldPage) {
+  if (exitingEl) { exitingEl.remove(); exitingEl = null; }
+  const clone = oldPage.cloneNode(true);
+  clone.className = 'page exit';
+  oldPage.parentNode.appendChild(clone);
+  exitingEl = clone;
+  setTimeout(() => { if (exitingEl) { exitingEl.remove(); exitingEl = null; } }, 500);
+}
+
+pagesEl.appendChild(el(`<div class="page cover active">
+  <div class="panel"><div class="panel-border">${svgHTML(LIVRO.capa_svg)}</div></div>
+  <div class="content">
+    <h1>${escaparHTML(LIVRO.titulo)}</h1>
+    <h2>${escaparHTML(LIVRO.subtitulo || '')}</h2>
+    <div class="badge">${escaparHTML(T.ages)} ${escaparHTML(LIVRO.faixa_etaria || '2 — 6 anos')}</div><br>
+    <button class="btn btn-big" type="button" onclick="go(1)">${escaparHTML(T.open)}</button>
+  </div>
+</div>`));
+
+const sfxWords = ['BOOM!','ZAP!','WHAM!','BAM!','POW!','VRUM!','TCHUM!','BIP!','BOP!','ZZZT!'];
+
+LIVRO.paginas.forEach((p, i) => {
+  const bubblePos = p.dialogo_pos || 'tr';
+  const bubble = p.dialogo ? `<div class="bubble ${bubblePos}" id="b${i}"><span class="bubble-char" id="bc${i}">${textoHTML(p.dialogo)}</span></div>` : '';
+  const narration = p.texto ? `<div class="narration">${textoHTML(p.texto)}</div>` : '';
+  pagesEl.appendChild(el(`<div class="page">
+    <div class="panel"><div class="panel-border" id="panel${i}">
+      ${svgHTML(p.svg)}
+      <div class="sfx-overlay" id="sfx${i}"></div>
+      ${bubble}
+    </div></div>
+    ${narration}
+    <button class="btn btn-play" type="button" data-idx="${i}" onclick="togglePlay(${i}, this)">${escaparHTML(T.listen)}</button>
+    <div class="pageno">${i + 1} / ${LIVRO.paginas.length}</div>
+  </div>`));
+});
+
+// Final page
+pagesEl.appendChild(el(`<div class="page">
+  <div class="end">
+    <div class="end-emoji">🤖✨</div>
+    <h1>${escaparHTML(T.theEnd)}</h1>
+    <p>${textoHTML(LIVRO.texto_final || T.endText)}</p>
+    <button class="btn btn-big" type="button" onclick="irInicio()">${escaparHTML(T.again)}</button>
+  </div>
+</div>`));
+
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('button');
+  d.type = 'button'; d.className = 'dot' + (i===0?' on':'');
+  d.setAttribute('aria-label', `Página ${i+1}`);
+  d.onclick = () => show(i);
+  dotsEl.appendChild(d);
+}
+
+/* ===== Interactive robot ===== */
+function makeRoboInteractive() {
+  document.querySelectorAll('.page .panel-border svg g, .page .panel-border svg').forEach(el => {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', function(e) {
+      playBeep();
+      const panel = this.closest('.panel-border');
+      if (!panel) return;
+      panel.querySelectorAll('g').forEach(g => {
+        g.classList.add('shake');
+        setTimeout(() => g.classList.remove('shake'), 500);
+      });
+      const sparks = ['#ff6f00','#ffd54f','#00e5ff','#e53935'];
+      for (let i = 0; i < 8; i++) {
+        const sp = document.createElement('div');
+        sp.className = 'spark';
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 30 + Math.random() * 60;
+        sp.style.cssText = `--tx:${Math.cos(angle)*dist}px;--ty:${Math.sin(angle)*dist}px;
+          background:${sparks[Math.floor(Math.random()*sparks.length)]};
+          left:${50+Math.random()*40}%;top:${30+Math.random()*40}%;
+          width:${4+Math.random()*6}px;height:${4+Math.random()*6}px;`;
+        panel.appendChild(sp);
+        setTimeout(() => sp.remove(), 800);
+      }
+      popSFX(e, panel);
+    });
+  });
+}
+
+function popSFX(e, panel) {
+  const overlay = panel.querySelector('.sfx-overlay');
+  if (!overlay) return;
+  const word = sfxWords[Math.floor(Math.random() * sfxWords.length)];
+  const el = document.createElement('div');
+  el.className = 'sfx-word';
+  const x = 20 + Math.random() * 50;
+  const y = 10 + Math.random() * 40;
+  el.style.cssText = `left:${x}%;top:${y}%;content:'${word}';`;
+  el.textContent = word;
+  overlay.appendChild(el);
+  setTimeout(() => el.remove(), 800);
+  playSparkle();
+}
+
+/* ===== Typewriter bubbles ===== */
+function typeBubble(idx) {
+  const span = document.getElementById('bc' + idx);
+  const bubble = document.getElementById('b' + idx);
+  if (!span || !bubble) return;
+  bubble.classList.add('show');
+  const text = span.textContent;
+  span.textContent = '';
+  span.classList.remove('done');
+  let i = 0;
+  function type() {
+    if (i < text.length) {
+      span.textContent += text[i];
+      i++;
+      if (i % 3 === 0) playBoop();
+      setTimeout(type, 30 + Math.random() * 20);
+    } else {
+      span.classList.add('done');
+    }
+  }
+  type();
+}
+
+/* ===== Navigation ===== */
+function show(i) {
+  pararSom();
+  const oldCur = cur;
+  cur = Math.max(0, Math.min(total - 1, i));
+  if (cur !== oldCur && cur > 0 && cur < total - 1) playPageTurn();
+  document.querySelectorAll('.page').forEach((p, k) => {
+    if (k === cur) p.classList.add('active');
+    else p.classList.remove('active');
+  });
+  document.querySelectorAll('.dot').forEach((d, k) => d.classList.toggle('on', k === cur));
+  prevBtn.disabled = cur === 0;
+  nextBtn.disabled = cur === total - 1;
+  progressBar.style.width = ((cur / (total - 1)) * 100) + '%';
+  // Typewriter on page enter
+  if (cur > 0 && cur < total - 1) {
+    setTimeout(() => typeBubble(cur - 1), 300);
+  }
+  if (cur === total - 1) launchConfetti();
+  if (auto) autoLer();
+  syncAutoOverlay();
+}
+
+function go(delta) {
+  const oldEl = document.querySelector('.page.active');
+  if (oldEl && delta !== 0) addExitAnimation(oldEl);
+  show(cur + delta);
+}
+
+function irInicio() { auto = false; syncAutoBtn(); show(0); }
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') go(1);
+  if (e.key === 'ArrowLeft') go(-1);
+});
+
+/* ===== Touch/Swipe ===== */
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive:true});
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].screenX - touchStartX;
+  if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+}, {passive:true});
+
+/* ===== Speech ===== */
+let curAudio = null, curBtn = null, curUtter = null, playToken = 0;
+
+function escolherVoz() {
+  const v = speechSynthesis.getVoices();
+  return v.find(x => x.lang.startsWith('pt') && /Lucia|Google|Natural|Microsoft/i.test(x.name))
+      || v.find(x => x.lang.startsWith('pt')) || null;
+}
+if ('speechSynthesis' in window) speechSynthesis.getVoices();
+
+function pararSom() {
+  playToken++;
+  if (curAudio) { curAudio.onended=null; curAudio.onerror=null; curAudio.pause(); curAudio=null; }
+  if (curUtter) { curUtter.onstart=null; curUtter.onend=null; curUtter.onerror=null; curUtter=null; }
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  if (curBtn) { curBtn.classList.remove('playing'); curBtn.textContent=T.listen; curBtn=null; }
+}
+
+function tocarPagina(i, btn, onEnd) {
+  pararSom();
+  const token = playToken;
+  const p = LIVRO.paginas[i];
+  const txt = [p.texto, p.dialogo].filter(Boolean).join(' ');
+  const done = ok => {
+    if (token!==playToken) return;
+    if (btn) { btn.classList.remove('playing'); btn.textContent=T.listen; }
+    curBtn=null; curAudio=null; curUtter=null;
+    if (onEnd) onEnd(ok!==false);
+  };
+  if (btn) { btn.classList.add('playing'); btn.textContent=T.stop; curBtn=btn; }
+  if (p.audio) {
+    curAudio = new Audio(p.audio);
+    curAudio.onended = () => done(true);
+    curAudio.onerror = () => { curAudio=null; falar(txt,done,token); };
+    curAudio.play().catch(() => { curAudio=null; falar(txt,done,token); });
+  } else falar(txt, done, token);
+}
+
+function falar(texto, done, token) {
+  if (!('speechSynthesis' in window)) { alert(T.noTts); done(false); return; }
+  const u = new SpeechSynthesisUtterance(String(texto||'').replace(/<[^>]+>/g,''));
+  u.lang='pt-BR'; u.rate=.85; u.pitch=1.1;
+  const voz = escolherVoz(); if (voz) u.voice = voz;
+  let started=false; const t=Date.now();
+  u.onstart=()=>{started=true;};
+  u.onend=()=>done(started||Date.now()-t>500);
+  u.onerror=()=>done(false);
+  curUtter=u; speechSynthesis.speak(u);
+}
+
+function togglePlay(i, btn) {
+  if (curBtn===btn) { auto=false; syncAutoBtn(); pararSom(); return; }
+  auto=false; syncAutoBtn(); tocarPagina(i,btn,null);
+}
+
+/* ===== Auto-read ===== */
+function syncAutoBtn() {
+  const b = document.getElementById('autoBtn');
+  b.classList.toggle('on', auto);
+  b.textContent = auto ? T.autoStop : T.auto;
+  b.setAttribute('aria-label', b.textContent);
+}
+function syncAutoOverlay() {
+  const o = document.getElementById('autoOverlay');
+  o.classList.toggle('show', auto);
+}
+function toggleAuto() {
+  auto = !auto; syncAutoBtn(); syncAutoOverlay();
+  if (auto) { if (cur===0||cur===total-1) show(1); else autoLer(); }
+  else pararSom();
+}
+function autoLer() {
+  if (!auto) return;
+  if (cur===0||cur===total-1) { auto=false; syncAutoBtn(); syncAutoOverlay(); return; }
+  const idx=cur-1, pos=cur;
+  const btn = document.querySelector(`.btn-play[data-idx="${idx}"]`);
+  tocarPagina(idx, btn, ok => {
+    if (!ok) { auto=false; syncAutoBtn(); syncAutoOverlay(); return; }
+    if (auto && cur===pos) setTimeout(() => { if (auto && cur===pos) go(1); }, 600);
+  });
+}
+
+/* ===== Share & Export ===== */
+function compartilharWhatsApp() {
+  const t = encodeURIComponent(`📖 ${LIVRO.titulo}\n\n${LIVRO.subtitulo||''}\n\nLeia no InfoEngine!`);
+  window.open(`https://wa.me/${WHATSAPP_NUM}?text=${t}`, '_blank');
+}
+function exportarPDF() {
+  const el = document.getElementById('livro');
+  const opt = { margin:10, filename:`${LIVRO.titulo.replace(/\s+/g,'_')}.pdf`,
+    image:{type:'jpeg',quality:.98}, html2canvas:{scale:2}, jsPDF:{unit:'mm',format:'a4',orientation:'portrait'} };
+  html2pdf().set(opt).from(el).save();
+}
+function toggleFullscreen() {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+}
+
+/* ===== Init ===== */
+syncAutoBtn(); show(0);
+setTimeout(makeRoboInteractive, 100);
+</script>
+</body>
+</html>

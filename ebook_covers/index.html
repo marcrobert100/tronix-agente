@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Designer de Capas de Ebook — ERVAS: Indicações e Usos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#121212;
+    --panel:#1c1c1c;
+    --line:#2c2c2c;
+    --txt:#e8e8e8;
+    --dim:#9a9a9a;
+    --acc:#d4af37;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--txt);
+    font-family:'Poppins',system-ui,sans-serif;
+    display:flex;
+    min-height:100vh;
+  }
+
+  /* ============ SIDEBAR ============ */
+  .panel{
+    width:340px;
+    min-width:340px;
+    background:var(--panel);
+    border-right:1px solid var(--line);
+    padding:20px;
+    overflow-y:auto;
+    max-height:100vh;
+    position:sticky;
+    top:0;
+  }
+  .panel h1{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--acc);line-height:1.2}
+  .panel h1 span{display:block;font-size:.7rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;font-family:'Poppins',sans-serif;font-weight:600;margin-bottom:4px}
+  .panel h2{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:20px 0 8px;border-bottom:1px solid var(--line);padding-bottom:4px}
+  .field{margin-bottom:12px}
+  .field label{display:block;font-size:.72rem;color:var(--dim);margin-bottom:4px;font-weight:600}
+  .field input[type=text],.field input[type=number],.field textarea{
+    width:100%;background:#242424;border:1px solid var(--line);color:var(--txt);
+    padding:8px 10px;border-radius:6px;font-size:.85rem;font-family:'Poppins',sans-serif;
+    transition:border-color .2s;
+  }
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--acc)}
+  .field textarea{resize:vertical;min-height:54px}
+  .row{display:flex;gap:8px}
+  .row .field{flex:1}
+
+  /* modelos */
+  .models{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .model-card{
+    border:2px solid var(--line);border-radius:8px;padding:8px;cursor:pointer;
+    background:#202020;transition:all .2s;text-align:center;
+  }
+  .model-card.active{border-color:var(--acc);background:#26260f}
+  .model-card .sw{height:70px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.6rem}
+  .model-card span{font-size:.62rem;color:var(--dim);display:block;margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+
+  /* cores */
+  .colors{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .color-field{display:flex;align-items:center;gap:8px}
+  .color-field label{flex:1}
+  .color-field input[type=color]{width:38px;height:30px;border:none;background:none;cursor:pointer;padding:0}
+  .swatches{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px}
+  .sw{border-radius:6px;height:34px;cursor:pointer;border:1px solid #00000055}
+
+  /* ícones */
+  .icons{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+  .icon-btn{background:#242424;border:1px solid var(--line);border-radius:8px;padding:8px 0;font-size:1.15rem;cursor:pointer;transition:all .15s}
+  .icon-btn.active{border-color:var(--acc);background:#26260f}
+
+  .btn{
+    display:block;width:100%;text-align:center;padding:11px;border-radius:8px;cursor:pointer;
+    font-family:'Poppins',sans-serif;font-size:.85rem;font-weight:600;border:none;transition:all .2s;
+    margin-bottom:8px;
+  }
+  .btn-primary{background:var(--acc);color:#111}
+  .btn-primary:hover{filter:brightness(1.1)}
+  .btn-ghost{background:#242424;color:var(--txt);border:1px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--acc)}
+  .hint{font-size:.68rem;color:var(--dim);text-align:center;margin-top:6px}
+
+  /* ============ PREVIEW ============ */
+  .stage{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:30px;background:radial-gradient(circle at 50% 20%,#1d1d1d,#0b0b0b);
+    min-height:100vh;
+  }
+  .stage-frame{background:#000;border:1px solid var(--line);box-shadow:0 30px 60px rgba(0,0,0,.6);}
+  .cover{
+    width:450px;height:675px;position:relative;overflow:hidden;
+    font-family:'Cormorant Garamond',serif;
+    aspect-ratio:6/9;
+  }
+  .cover *{pointer-events:none}
+
+  /* ---------- TEMPLATES ---------- */
+  /* 1. Botânica Clássica */
+  .tpl-botanica{
+    background:var(--c-bg);
+    color:var(--c-txt);
+    display:flex;flex-direction:column;justify-content:space-between;padding:0;
+  }
+  .tpl-botanica .bot-leaves{
+    position:absolute;inset:0;display:flex;justify-content:space-between;align-items:stretch;
+    opacity:.14;
+  }
+  .tpl-botanica .bot-leaves svg{height:100%;width:auto;color:var(--c-pri)}
+  .tpl-botanica .topband{text-align:center;padding:26px 20px 0;position:relative}
+  .tpl-botanica .badge{
+    display:inline-block;border:1px solid var(--c-pri);color:var(--c-pri);
+    padding:5px 18px;font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;font-weight:600;
+  }
+  .tpl-botanica .band{border-top:2px solid var(--c-pri);width:70%;margin:14px auto 0}
+  .tpl-botanica .mid{position:relative;text-align:center;padding:0 40px}
+  .tpl-botanica .title{
+    font-family:'Playfair Display',serif;font-size:3.9rem;line-height:1.02;font-weight:800;
+    letter-spacing:.02em;text-transform:uppercase;
+  }
+  .tpl-botanica .subtitle{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.7rem;margin-top:14px;
+    color:var(--c-pri);
+  }
+  .tpl-botanica .seal{
+    width:150px;height:150px;margin:26px auto 0;border-radius:50%;
+    border:2px solid var(--c-pri);display:flex;align-items:center;justify-content:center;position:relative;
+    color:var(--c-pri);
+  }
+  .tpl-botanica .seal svg{width:80px;height:80px}
+  .tpl-botanica .bot{text-align:center;padding:0 24px 30px;position:relative}
+  .tpl-botanica .tagline{
+    font-size:1rem;line-height:1.5;max-width:340px;margin:0 auto 18px;font-style:italic;color:var(--c-dim);
+  }
+  .tpl-botanica .author{
+    font-size:1rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:var(--c-pri);margin-bottom:10px;
+  }
+  .tpl-botanica .price{
+    display:inline-block;font-family:'Playfair Display',serif;font-weight:800;font-size:1.4rem;
+    border:2px solid var(--c-pri);color:var(--c-pri);padding:6px 22px;border-radius:40px;
+  }
+
+  /* 2. Mística Natural */
+  .tpl-mistica{
+    background:linear-gradient(180deg,var(--c-bg),var(--c-bg2));
+    color:var(--c-txt);
+    display:flex;flex-direction:column;justify-content:space-between;padding:0;
+  }
+  .tpl-mistica .glow{
+    position:absolute;top:-40px;right:-40px;width:320px;height:320px;border-radius:50%;
+    background:radial-gradient(circle,var(--c-glow),transparent 65%);
+  }
+  .tpl-mistica .moon{position:absolute;top:34px;right:40px;color:var(--c-pri);z-index:2}
+  .tpl-mistica .moon svg{width:74px;height:74px;filter:drop-shadow(0 0 18px var(--c-glow))}
+  .tpl-mistica .topband{text-align:center;padding:30px 30px 0;position:relative;z-index:2}
+  .tpl-mistica .badge{
+    font-size:.68rem;letter-spacing:.34em;text-transform:uppercase;color:var(--c-pri);font-weight:600;
+  }
+  .tpl-mistica .starline{display:flex;gap:12px;justify-content:center;margin-top:10px;color:var(--c-pri);opacity:.8}
+  .tpl-mistica .starline svg{width:13px;height:13px}
+  .tpl-mistica .mid{text-align:center;padding:0 36px;position:relative;z-index:2}
+  .tpl-mistica .title{
+    font-family:'Playfair Display',serif;font-size:4.4rem;line-height:1;font-weight:800;
+    text-transform:uppercase;letter-spacing:.05em;text-shadow:0 0 30px var(--c-glow);
+  }
+  .tpl-mistica .subtitle{
+    font-style:italic;font-size:1.9rem;margin-top:16px;color:var(--c-pri);
+  }
+  .tpl-mistica .mandala{
+    width:170px;height:170px;margin:30px auto 0;border-radius:50%;position:relative;
+    display:flex;align-items:center;justify-content:center;color:var(--c-pri);
+  }
+  .tpl-mistica .mandala .ring{
+    position:absolute;inset:0;border:1px solid var(--c-pri);border-radius:50%;opacity:.55;
+    animation:spin 60s linear infinite;
+  }
+  .tpl-mistica .mandala .ring2{inset:9%;border-style:dashed;animation-direction:reverse}
+  .tpl-mistica .mandala svg{width:74px;height:74px;filter:drop-shadow(0 0 12px var(--c-glow))}
+  .tpl-mistica .bot{text-align:center;padding:0 30px 30px;position:relative;z-index:2}
+  .tpl-mistica .tagline{font-size:1rem;font-style:italic;line-height:1.55;max-width:340px;margin:0 auto 20px;color:var(--c-dim)}
+  .tpl-mistica .author{font-size:.98rem;letter-spacing:.26em;text-transform:uppercase;font-weight:600;color:var(--c-pri);margin-bottom:12px}
+  .tpl-mistica .price{
+    font-family:'Playfair Display',serif;font-weight:800;font-size:1.4rem;color:var(--c-bg);
+    background:var(--c-pri);display:inline-block;padding:7px 24px;border-radius:40px;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* 3. Premium Escuro */
+  .tpl-premium{
+    background:radial-gradient(120% 90% at 50% 0%,var(--c-bg2),var(--c-bg));
+    color:var(--c-txt);
+    display:flex;flex-direction:column;justify-content:space-between;padding:0;
+  }
+  .tpl-premium .frame{position:absolute;inset:16px;border:1px solid var(--c-pri);z-index:2;pointer-events:none}
+  .tpl-premium .frame::after{content:'';position:absolute;inset:6px;border:1px solid var(--c-pri);opacity:.35}
+  .tpl-premium .topband{text-align:center;padding:48px 30px 0;position:relative;z-index:3}
+  .tpl-premium .badge{
+    font-size:.66rem;letter-spacing:.4em;text-transform:uppercase;color:var(--c-pri);font-weight:600;
+  }
+  .tpl-premium .hr{width:110px;height:1px;background:linear-gradient(90deg,transparent,var(--c-pri),transparent);margin:16px auto 0}
+  .tpl-premium .mid{text-align:center;padding:0 40px;position:relative;z-index:3}
+  .tpl-premium .crest{margin:0 auto 22px;color:var(--c-pri)}
+  .tpl-premium .crest svg{width:64px;height:64px;filter:drop-shadow(0 0 14px var(--c-pri))}
+  .tpl-premium .title{
+    font-family:'Playfair Display',serif;font-size:4.1rem;line-height:1;font-weight:800;
+    text-transform:uppercase;letter-spacing:.06em;
+  }
+  .tpl-premium .subtitle{
+    font-style:italic;font-size:1.8rem;margin-top:16px;color:var(--c-pri);
+  }
+  .tpl-premium .bot{text-align:center;padding:0 30px 44px;position:relative;z-index:3}
+  .tpl-premium .tagline{font-size:.95rem;font-style:italic;line-height:1.55;max-width:330px;margin:0 auto 22px;color:var(--c-dim)}
+  .tpl-premium .author{font-size:.92rem;letter-spacing:.3em;text-transform:uppercase;font-weight:600;color:var(--c-pri);margin-bottom:12px}
+  .tpl-premium .price{font-family:'Playfair Display',serif;font-weight:800;font-size:1.35rem;color:var(--c-pri)}
+
+  /* 4. Minimal Clean */
+  .tpl-minimal{
+    background:var(--c-bg);
+    color:var(--c-txt);
+    display:flex;flex-direction:column;justify-content:space-between;padding:0;
+  }
+  .tpl-minimal .topband{text-align:center;padding:34px 30px 0;position:relative}
+  .tpl-minimal .badge{font-size:.66rem;letter-spacing:.4em;text-transform:uppercase;color:var(--c-pri);font-weight:600}
+  .tpl-minimal .mid{text-align:center;padding:0 40px;position:relative}
+  .tpl-minimal .leaf{margin:0 auto 20px;color:var(--c-pri)}
+  .tpl-minimal .leaf svg{width:72px;height:72px}
+  .tpl-minimal .title{
+    font-family:'Playfair Display',serif;font-size:4.3rem;line-height:1;font-weight:800;
+    text-transform:uppercase;letter-spacing:.02em;
+  }
+  .tpl-minimal .subtitle{font-size:1.35rem;margin-top:14px;letter-spacing:.05em;color:var(--c-dim);font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--c-pri)}
+  .tpl-minimal .rule{width:60px;height:2px;background:var(--c-pri);margin:22px auto 0}
+  .tpl-minimal .bot{text-align:center;padding:0 36px 36px;position:relative}
+  .tpl-minimal .tagline{font-size:.95rem;line-height:1.6;max-width:330px;margin:0 auto 24px;color:var(--c-dim);font-style:italic}
+  .tpl-minimal .author{font-size:.85rem;letter-spacing:.3em;text-transform:uppercase;font-weight:600;color:var(--c-pri);margin-bottom:8px}
+  .tpl-minimal .price{font-family:'Playfair Display',serif;font-weight:800;font-size:1.3rem}
+
+  @media print{
+    body{background:#fff}
+    .panel,.stage-btns,.hint{display:none!important}
+    .stage{padding:0;background:#fff;min-height:auto}
+    .stage-frame{border:none;box-shadow:none}
+    @page{size:6in 9in;margin:0}
+    .cover{width:6in;height:9in}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ PAINEL DE CONTROLE ============ -->
+<div class="panel">
+  <h1><span>Designer de Capas</span>ERVAS<br>Indicações e Usos</h1>
+
+  <h2>1. Modelo de Capa</h2>
+  <div class="models" id="models">
+    <div class="model-card active" data-tpl="botanica">
+      <div class="sw" style="background:#f5efe0;color:#2d6a4f">🌿</div>
+      <span>Botânica</span>
+    </div>
+    <div class="model-card" data-tpl="mistica">
+      <div class="sw" style="background:#0f3d2e;color:#ffd700">🌙</div>
+      <span>Mística</span>
+    </div>
+    <div class="model-card" data-tpl="premium">
+      <div class="sw" style="background:#111;color:#d4af37">👑</div>
+      <span>Premium</span>
+    </div>
+    <div class="model-card" data-tpl="minimal">
+      <div class="sw" style="background:#fff;color:#1a1a1a">🍃</div>
+      <span>Minimal</span>
+    </div>
+  </div>
+
+  <h2>2. Textos</h2>
+  <div class="field"><label>Texto do selo (topo)</label><input type="text" id="badge" value="O GUIA COMPLETO DAS ERVAS"></div>
+  <div class="field"><label>Título</label><input type="text" id="title" value="ERVAS"></div>
+  <div class="field"><label>Subtítulo</label><input type="text" id="subtitle" value="Indicações e Usos"></div>
+  <div class="field"><label>Frase / tagline</label><textarea id="tagline">As ervas e suas propriedades energéticas, místicas e medicinais — do cultivo ao uso no dia a dia.</textarea></div>
+  <div class="field"><label>Autor</label><input type="text" id="author" value=""></div>
+  <div class="field"><label>Preço</label><input type="text" id="price" value="R$ 19,90"></div>
+
+  <h2>3. Ícone central</h2>
+  <div class="icons" id="icons">
+    <button class="icon-btn active" data-icon="folha">🌿</button>
+    <button class="icon-btn" data-icon="lua">🌙</button>
+    <button class="icon-btn" data-icon="sol">☀️</button>
+    <button class="icon-btn" data-icon="estrela">⭐</button>
+    <button class="icon-btn" data-icon="gota">💧</button>
+  </div>
+
+  <h2>4. Cores</h2>
+  <div class="colors">
+    <div class="color-field"><label>Fundo</label><input type="color" id="c-bg" value="#f5efe0"></div>
+    <div class="color-field"><label>Fundo 2</label><input type="color" id="c-bg2" value="#0c3326"></div>
+    <div class="color-field"><label>Principal</label><input type="color" id="c-pri" value="#2d6a4f"></div>
+    <div class="color-field"><label>Texto</label><input type="color" id="c-txt" value="#22301f"></div>
+  </div>
+  <div class="swatches" id="swatches">
+    <div class="sw" style="background:#f5efe0"></div>
+    <div class="sw" style="background:#0f3d2e"></div>
+    <div class="sw" style="background:#2d6a4f"></div>
+    <div class="sw" style="background:#d4af37"></div>
+    <div class="sw" style="background:#111"></div>
+    <div class="sw" style="background:#e8f0e8"></div>
+    <div class="sw" style="background:#7a3b1e"></div>
+    <div class="sw" style="background:#1a1a5e"></div>
+    <div class="sw" style="background:#8c2f39"></div>
+    <div class="sw" style="background:#ffffff"></div>
+  </div>
+
+  <h2>5. Exportar</h2>
+  <button class="btn btn-primary" onclick="exportarPNG()">⬇️ Baixar Capa (PNG)</button>
+  <button class="btn btn-ghost" onclick="window.print()">🖨️ Salvar como PDF</button>
+  <button class="btn btn-ghost" onclick="enviarWhatsApp()">📱 Enviar via WhatsApp</button>
+  <button class="btn btn-ghost" onclick="resetar()">↩️ Restaurar padrão</button>
+  <p class="hint">Capa 6×9 pol (ebook). PNG sai em 225 DPI — pronto para venda.</p>
+</div>
+
+<!-- ============ PALCO / PREVIEW ============ -->
+<div class="stage">
+  <div class="stage-frame" id="stageFrame">
+    <div class="cover tpl-botanica" id="cover" data-tpl="botanica"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script>
+(function(){
+  var TEMPLATES = {
+    botanica:{bg:'#f5efe0',bg2:'#e3d7bb',pri:'#2d6a4f',txt:'#22301f',icon:'folha'},
+    mistica:{bg:'#0f3d2e',bg2:'#071e17',pri:'#ffd700',txt:'#f5efe0',icon:'lua'},
+    premium:{bg:'#111111',bg2:'#241b0a',pri:'#d4af37',txt:'#f6f0e4',icon:'coroa'},
+    minimal:{bg:'#ffffff',bg2:'#f2f5f0',pri:'#1a1a1a',txt:'#161616',icon:'folha'}
+  };
+  var cover=document.getElementById('cover'), current='botanica', currentIcon='folha';
+
+  var ICONS={
+    folha:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M56 8C32 8 14 26 10 52c26-2 46-20 46-44Z"/><path d="M14 50C26 38 36 28 46 18"/></svg>',
+    lua:'<svg viewBox="0 0 64 64" fill="currentColor"><path d="M40 6a26 26 0 1 0 18 40A22 22 0 0 1 40 6Z"/></svg>',
+    sol:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="32" cy="32" r="12" fill="currentColor" stroke="none"/><path d="M32 4v8M32 52v8M4 32h8M52 32h8M12 12l6 6M46 46l6 6M52 12l-6 6M18 46l-6 6"/></svg>',
+    estrela:'<svg viewBox="0 0 64 64" fill="currentColor"><path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/></svg>',
+    gota:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M32 6C22 20 12 30 12 42a20 20 0 0 0 40 0C52 30 42 20 32 6Z"/><path d="M32 54a12 12 0 0 1-12-12"/></svg>',
+    coroa:'<svg viewBox="0 0 64 64" fill="currentColor"><path d="M6 22l14 10 12-20 12 20 14-10-5 28H11L6 22Z"/><rect x="10" y="54" width="44" height="5" rx="2"/></svg>',
+    vela:'<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M32 6c2 6 2 10 2 12M28 14c-3 4-6 8-6 12a10 10 0 0 0 20 0c0-4-3-8-6-12"/><rect x="20" y="40" width="24" height="20" rx="3"/></svg>'
+  };
+
+  function setTpl(tpl){
+    current=tpl;
+    var p=TEMPLATES[tpl];
+    document.getElementById('c-bg').value=p.bg;
+    document.getElementById('c-bg2').value=p.bg2;
+    document.getElementById('c-pri').value=p.pri;
+    document.getElementById('c-txt').value=p.txt;
+    document.getElementById('cover').className='cover tpl-'+tpl;
+    document.querySelectorAll('.model-card').forEach(function(c){c.classList.toggle('active',c.dataset.tpl===tpl)});
+    applyVars(); render();
+  }
+
+  function applyVars(){
+    var s=cover.style;
+    s.setProperty('--c-bg',document.getElementById('c-bg').value);
+    s.setProperty('--c-bg2',document.getElementById('c-bg2').value);
+    s.setProperty('--c-pri',document.getElementById('c-pri').value);
+    s.setProperty('--c-txt',document.getElementById('c-txt').value);
+    var pri=document.getElementById('c-pri').value;
+    s.setProperty('--c-glow',hexToRgba(pri,.45));
+    s.setProperty('--c-dim',hexToRgba(document.getElementById('c-txt').value,.72));
+  }
+  function hexToRgba(hex,a){
+    var m=hex.replace('#',''); if(m.length===3)m=m.split('').map(c=>c+c).join('');
+    var n=parseInt(m,16);
+    return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';
+  }
+  function esc(t){return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+  function render(){
+    var badge=esc(document.getElementById('badge').value),
+        title=esc(document.getElementById('title').value),
+        sub=esc(document.getElementById('subtitle').value),
+        tag=esc(document.getElementById('tagline').value),
+        auth=esc(document.getElementById('author').value),
+        price=esc(document.getElementById('price').value),
+        icon=ICONS[currentIcon]||ICONS.folha,
+        s='';
+
+    if(current==='botanica'){
+      s='<div class="bot-leaves"><svg viewBox="0 0 120 400" fill="none" stroke="currentColor" stroke-width="4"><path d="M60 400V30C60 14 72 4 88 2c-8 14-8 30-4 44l-24 354"/><path d="M58 120C40 100 30 78 32 52c22 4 40 18 50 38l-24 30Z"/><path d="M62 210c-6-26-26-44-50-52 6 24 20 40 40 52Z"/></svg><svg viewBox="0 0 120 400" fill="none" stroke="currentColor" stroke-width="4"><path d="M60 400V30C60 14 48 4 32 2c8 14 8 30 4 44l24 354"/><path d="M62 120c18-20 30-42 32-68-22 4-40 18-50 38l18 30Z"/><path d="M58 210c6-26 26-44 50-52-6 24-20 40-40 52Z"/></svg></div>';
+      s+='<div class="topband"><span class="badge">'+badge+'</span><div class="band"></div></div>';
+      s+='<div class="mid"><div class="title">'+title+'</div><div class="subtitle">'+sub+'</div><div class="seal">'+icon+'</div></div>';
+      s+='<div class="bot"><div class="tagline">'+tag+'</div><div class="author">'+auth+'</div><div class="price">'+price+'</div></div>';
+    }
+    else if(current==='mistica'){
+      s='<div class="glow"></div><div class="moon">'+ICONS.lua+'</div>';
+      s+='<div class="topband"><span class="badge">'+badge+'</span><div class="starline">'+ICONS.estrela+ICONS.estrela+ICONS.estrela+'</div></div>';
+      s+='<div class="mid"><div class="title">'+title+'</div><div class="subtitle">'+sub+'</div><div class="mandala"><div class="ring"></div><div class="ring ring2"></div>'+icon+'</div></div>';
+      s+='<div class="bot"><div class="tagline">'+tag+'</div><div class="author">'+auth+'</div><div class="price">'+price+'</div></div>';
+    }
+    else if(current==='premium'){
+      s='<div class="frame"></div>';
+      s+='<div class="topband"><span class="badge">'+badge+'</span><div class="hr"></div></div>';
+      s+='<div class="mid"><div class="crest">'+ICONS.coroa+'</div><div class="title">'+title+'</div><div class="subtitle">'+sub+'</div></div>';
+      s+='<div class="bot"><div class="tagline">'+tag+'</div><div class="author">'+auth+'</div><div class="price">'+price+'</div></div>';
+    }
+    else{
+      s='<div class="topband"><span class="badge">'+badge+'</span></div>';
+      s+='<div class="mid"><div class="leaf">'+icon+'</div><div class="title">'+title+'</div><div class="subtitle">'+sub+'</div><div class="rule"></div></div>';
+      s+='<div class="bot"><div class="tagline">'+tag+'</div><div class="author">'+auth+'</div><div class="price">'+price+'</div></div>';
+    }
+    cover.innerHTML=s;
+  }
+
+  /* eventos */
+  document.querySelectorAll('.model-card').forEach(function(c){
+    c.onclick=function(){setTpl(c.dataset.tpl)};
+  });
+  document.querySelectorAll('.icon-btn').forEach(function(b){
+    b.onclick=function(){
+      document.querySelectorAll('.icon-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active'); currentIcon=b.dataset.icon; render();
+    };
+  });
+  document.querySelectorAll('.swatches .sw').forEach(function(sw){
+    sw.onclick=function(){
+      var hex=sw.style.background;
+      if(hex.startsWith('rgb')){
+        var p=hex.match(/\d+/g);
+        hex='#'+[p[0],p[1],p[2]].map(n=>(+n).toString(16).padStart(2,'0')).join('');
+      }
+      document.getElementById('c-bg').value=hex;
+      applyVars();
+    };
+  });
+  ['badge','title','subtitle','tagline','author','price'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',render);
+  });
+  ['c-bg','c-bg2','c-pri','c-txt'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',applyVars);
+  });
+
+  function resetar(){
+    setTpl('botanica');
+    document.getElementById('badge').value='O GUIA COMPLETO DAS ERVAS';
+    document.getElementById('title').value='ERVAS';
+    document.getElementById('subtitle').value='Indicações e Usos';
+    document.getElementById('tagline').value='As ervas e suas propriedades energéticas, místicas e medicinais — do cultivo ao uso no dia a dia.';
+    document.getElementById('author').value='';
+    document.getElementById('price').value='R$ 19,90';
+    render();
+  }
+  window.resetar=resetar;
+
+  function exportarPNG(){
+    if(typeof html2canvas==='undefined'){
+      alert('Falha ao carregar biblioteca de exportação. Verifique a internet ou use "Salvar como PDF".');
+      return;
+    }
+    html2canvas(cover,{scale:3,backgroundColor:null,useCORS:true}).then(function(canvas){
+      var a=document.createElement('a');
+      a.download='capa-ervas.png';
+      a.href=canvas.toDataURL('image/png');
+      a.click();
+    });
+  }
+  window.exportarPNG=exportarPNG;
+
+  function enviarWhatsApp(){
+    var link='https://wa.me/5582991856656?text='+encodeURIComponent('Olá! Tenho o ebook ERVAS: Indicações e Usos. Acesse a capa: http://localhost/agente/ebook_covers/');
+    window.open(link,'_blank');
+  }
+  window.enviarWhatsApp=enviarWhatsApp;
+
+  setTpl('botanica');
+})();
+</script>
+</body>
+</html>

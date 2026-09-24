@@ -1,0 +1,47 @@
+[
+  {
+    "nome": "Maria da Silva Santos",
+    "cargo": "Vereadora",
+    "partido": "UNIÃO",
+    "numero": "40123",
+    "cidade": "Viçosa - AL",
+    "slogan1": "Juntos pela nossa gente",
+    "slogan2": "Honestidade e trabalho",
+    "whatsapp": "(82) 99999-1111",
+    "instagram": "@mariasantos",
+    "site": "https://mariasantos.com.br",
+    "coligacao": "ALIANÇA POR ALAGOAS",
+    "propostas": "Saúde digna para todos\nEducação de qualidade\nEmprego e renda\nSegurança para a família\nAgricultura familiar",
+    "modelo": "classico"
+  },
+  {
+    "nome": "João Pedro Almeida",
+    "cargo": "Prefeito",
+    "partido": "PROGRESSISTAS",
+    "numero": "11",
+    "cidade": "Viçosa - AL",
+    "slogan1": "Experiência e resultado",
+    "slogan2": "Cuidando da nossa cidade",
+    "whatsapp": "(82) 99999-2222",
+    "instagram": "@joaopedro",
+    "site": "",
+    "coligacao": "PRA FRENTE VIÇOSA",
+    "propostas": "Saúde perto de casa\nEscolas modernas\nObras de infraestrutura\nApoio ao agricultor\nTransparência total",
+    "modelo": "premium_executivo"
+  },
+  {
+    "nome": "Ana Carolina Souza",
+    "cargo": "Deputada Estadual",
+    "partido": "PSD",
+    "numero": "55123",
+    "cidade": "Maceió - AL",
+    "slogan1": "A voz da mulher na ALE",
+    "slogan2": "Batalho por você",
+    "whatsapp": "(82) 99999-3333",
+    "instagram": "@anacarolina",
+    "site": "https://anacarolina.al",
+    "coligacao": "POR ALAGOAS",
+    "propostas": "Saúde da mulher\nCombate à violência\nEducação inclusiva\nGeração de emprego\nInfraestrutura regional",
+    "modelo": "moderno_minimalista"
+  }
+]

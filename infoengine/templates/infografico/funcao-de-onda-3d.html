@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Função de Onda 3D — InfoEngine</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#02040a; --c1:#00f5ff; --c2:#7b2fff; --c3:#ff6b35;
+  --c4:#00ff88; --c5:#ffd700; --font:'Exo 2',sans-serif;
+}
+body{background:var(--bg);font-family:var(--font);color:#e0f0ff;overflow:hidden;width:100vw;height:100vh;}
+#cv{position:fixed;inset:0;width:100%;height:100%;}
+
+/* UI */
+.ui{position:fixed;z-index:100;}
+
+.title{top:.8rem;left:.8rem;}
+.title h1{font-family:'Orbitron',monospace;font-size:clamp(.85rem,1.8vw,1.2rem);font-weight:900;
+  background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;}
+.title p{font-size:.65rem;color:rgba(0,245,255,.35);letter-spacing:2px;margin-top:.15rem;}
+
+.toolbar{top:.8rem;right:.8rem;display:flex;gap:.35rem;flex-wrap:wrap;justify-content:flex-end;}
+.toolbar button{background:rgba(0,245,255,.07);backdrop-filter:blur(12px);
+  border:1px solid rgba(0,245,255,.18);color:var(--c1);padding:.4rem .9rem;
+  border-radius:2rem;font-family:var(--font);font-weight:600;font-size:.7rem;
+  cursor:pointer;transition:all .25s;letter-spacing:.5px;}
+.toolbar button:hover{background:rgba(0,245,255,.18);transform:translateY(-2px);}
+.toolbar button.on{background:rgba(0,245,255,.22);border-color:var(--c1);
+  box-shadow:0 0 12px rgba(0,245,255,.3);}
+
+.panel{bottom:1rem;left:1rem;
+  background:rgba(2,4,10,.88);backdrop-filter:blur(14px);
+  border:1px solid rgba(0,245,255,.12);border-radius:16px;
+  padding:1rem 1.2rem;min-width:220px;}
+.panel h4{font-family:'Orbitron',monospace;font-size:.6rem;color:rgba(0,245,255,.45);
+  letter-spacing:2px;margin-bottom:.8rem;}
+.slider-row{margin-bottom:.6rem;}
+.slider-row label{display:flex;justify-content:space-between;font-size:.72rem;
+  color:rgba(224,240,255,.6);margin-bottom:.25rem;}
+.slider-row label span{color:var(--c1);font-weight:600;}
+input[type=range]{width:100%;-webkit-appearance:none;height:3px;
+  border-radius:2px;background:rgba(0,245,255,.15);outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;
+  border-radius:50%;background:var(--c1);cursor:pointer;box-shadow:0 0 6px var(--c1);}
+
+.info{bottom:1rem;right:1rem;
+  background:rgba(2,4,10,.88);backdrop-filter:blur(14px);
+  border:1px solid rgba(0,245,255,.1);border-radius:16px;
+  padding:.9rem 1.1rem;max-width:220px;}
+.info h4{font-family:'Orbitron',monospace;font-size:.6rem;color:rgba(0,245,255,.45);
+  letter-spacing:2px;margin-bottom:.6rem;}
+.eq{font-size:.78rem;color:rgba(224,240,255,.55);line-height:1.7;font-weight:300;}
+.eq strong{color:var(--c1);}
+
+.hint{bottom:50%;left:50%;transform:translate(-50%,50%);
+  font-size:.68rem;color:rgba(0,245,255,.3);letter-spacing:2px;pointer-events:none;
+  animation:fh 5s ease forwards;}
+@keyframes fh{0%{opacity:.7}80%{opacity:.7}100%{opacity:0}}
+
+@media(max-width:600px){
+  .panel,.info{display:none;}
+}
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+
+<!-- TÍTULO -->
+<div class="ui title">
+  <h1>FUNÇÃO DE ONDA 3D</h1>
+  <p>INFOENGINE · FÍSICA QUÂNTICA · VISUALIZAÇÃO</p>
+</div>
+
+<!-- TOOLBAR -->
+<div class="ui toolbar">
+  <button onclick="setMode('senoide')"    id="m-senoide"    class="on">〜 Senoide</button>
+  <button onclick="setMode('pacote')"     id="m-pacote"         >📦 Pacote</button>
+  <button onclick="setMode('estacionaria')" id="m-estacionaria" >🔁 Estacionária</button>
+  <button onclick="setMode('superficie')" id="m-superficie"     >🌊 Superfície</button>
+  <button onclick="setMode('orbital')"    id="m-orbital"        >⚛ Orbital</button>
+  <button onclick="togglePause()"         id="btn-pause"        >⏸ Pausar</button>
+  <button onclick="resetCam()"                                  >🔄 Reset</button>
+</div>
+
+<!-- PAINEL SLIDERS -->
+<div class="ui panel">
+  <h4>PARÂMETROS</h4>
+  <div class="slider-row">
+    <label>Amplitude <span id="lA">1.0</span></label>
+    <input type="range" id="sA" min="0.2" max="2" step="0.05" value="1"
+      oninput="A=+this.value;document.getElementById('lA').textContent=A.toFixed(1)">
+  </div>
+  <div class="slider-row">
+    <label>Frequência <span id="lF">1.0</span></label>
+    <input type="range" id="sF" min="0.3" max="4" step="0.1" value="1"
+      oninput="freq=+this.value;document.getElementById('lF').textContent=freq.toFixed(1)">
+  </div>
+  <div class="slider-row">
+    <label>Velocidade <span id="lV">1.0</span></label>
+    <input type="range" id="sV" min="0.1" max="4" step="0.1" value="1"
+      oninput="speed=+this.value;document.getElementById('lV').textContent=speed.toFixed(1)">
+  </div>
+  <div class="slider-row">
+    <label>Amortecimento <span id="lD">0.0</span></label>
+    <input type="range" id="sD" min="0" max="1" step="0.05" value="0"
+      oninput="damp=+this.value;document.getElementById('lD').textContent=damp.toFixed(2)">
+  </div>
+</div>
+
+<!-- INFO -->
+<div class="ui info">
+  <h4>EQUAÇÃO</h4>
+  <div class="eq" id="eq-text">
+    <strong>ψ(x,t)</strong> = A · sin(kx − ωt)<br><br>
+    k = 2π/λ &nbsp;·&nbsp; ω = 2πf<br>
+    λ = comprimento de onda<br>
+    f = frequência temporal
+  </div>
+</div>
+
+<div class="ui hint">🖱 Arraste · Scroll · Hover</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  FUNÇÃO DE ONDA 3D — Canvas 2D com projeção manual
+// ═══════════════════════════════════════════════════
+const cv  = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+
+// parâmetros da onda (ligados aos sliders)
+let A = 1, freq = 1, speed = 1, damp = 0;
+
+// câmera
+let rotX = 0.45, rotY = -0.55;
+let tRX  = 0.45, tRY  = -0.55;
+let camZ = 11, tCamZ = 11;
+let dragging = false, lmx = 0, lmy = 0;
+let paused = false;
+let t = 0;
+let mode = 'senoide';
+
+// ─── resize ───────────────────────────────────────
+function resize(){
+  cv.width  = innerWidth  * devicePixelRatio;
+  cv.height = innerHeight * devicePixelRatio;
+  cv.style.width  = innerWidth  + 'px';
+  cv.style.height = innerHeight + 'px';
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+}
+addEventListener('resize', resize); resize();
+
+// ─── 3D math ──────────────────────────────────────
+const ry=(p,a)=>({x:p.x*Math.cos(a)+p.z*Math.sin(a),y:p.y,z:-p.x*Math.sin(a)+p.z*Math.cos(a)});
+const rx=(p,a)=>({x:p.x,y:p.y*Math.cos(a)-p.z*Math.sin(a),z:p.y*Math.sin(a)+p.z*Math.cos(a)});
+function proj(p){
+  const fov=520, zd=p.z+camZ;
+  if(zd<.1)return null;
+  const s=fov/zd;
+  return{x:innerWidth/2+p.x*s, y:innerHeight/2-p.y*s, s};
+}
+function tr(x,y,z){
+  let p={x,y,z};
+  p=ry(p,rotY); p=rx(p,rotX); return p;
+}
+
+// ─── cores helpers ────────────────────────────────
+function hslWave(v){ // v ∈ [-1,1] → cor
+  const h = 200 + v*80;
+  const l = 45 + v*25;
+  return `hsl(${h},100%,${l}%)`;
+}
+function glowColor(v){
+  if(v> 0.5) return `rgba(0,245,255,`;
+  if(v<-0.5) return `rgba(123,47,255,`;
+  return `rgba(0,255,136,`;
+}
+
+// ─── EQUAÇÕES por modo ────────────────────────────
+const eqs = {
+  senoide:     `<strong>ψ(x,t)</strong> = A·e<sup>−dx</sup>·sin(kx−ωt)<br><br>k=2π/λ &nbsp;·&nbsp; ω=2πf<br>Onda viajante 1D com<br>amortecimento opcional`,
+  pacote:      `<strong>ψ(x,t)</strong> = A·e<sup>−x²/σ²</sup>·sin(kx−ωt)<br><br>Pacote gaussiano:<br>superposição localizada<br>de ondas de frequências próximas`,
+  estacionaria:`<strong>ψ(x,t)</strong> = 2A·sin(kx)·cos(ωt)<br><br>Superposição de ondas<br>em sentidos opostos.<br>Nós fixos no espaço`,
+  superficie:  `<strong>ψ(x,z,t)</strong> = A·sin(kx−ωt)·cos(kz)<br><br>Superfície 2D:<br>onda em membrana elástica<br>com nós na direção Z`,
+  orbital:     `<strong>|ψ|²</strong> = densidade de prob.<br>r = distância ao núcleo<br><br>Orbital tipo p:<br>lóbulos em fase opostas`,
+};
+
+function psi(x, z=0){
+  const k  = freq * Math.PI;
+  const om = freq * 2 * Math.PI * speed;
+  const d  = damp;
+  switch(mode){
+    case 'senoide':
+      return A * Math.exp(-d*Math.abs(x)*0.3) * Math.sin(k*x - om*t);
+    case 'pacote':
+      return A * Math.exp(-(x*x)/(3.5+0.1)) * Math.sin(k*x - om*t);
+    case 'estacionaria':
+      return A * 2 * Math.sin(k*x) * Math.cos(om*t);
+    case 'superficie':
+      return A * Math.sin(k*x - om*t) * Math.cos(k*z*0.7) * Math.exp(-d*Math.abs(x)*0.15);
+    case 'orbital':
+      { const r=Math.sqrt(x*x+z*z)+.001;
+        const theta=Math.atan2(z,x);
+        return A*Math.exp(-r*0.6)*Math.cos(theta)*Math.sin(om*t*0.3+r); }
+  }
+  return 0;
+}
+
+// ─── DRAW AXES ────────────────────────────────────
+function drawAxes(){
+  const axes=[
+    {from:[-5,0,0],to:[5,0,0],c:'rgba(0,245,255,.25)',lbl:'x'},
+    {from:[0,-2,0],to:[0,2,0],c:'rgba(0,255,136,.25)',lbl:'ψ'},
+    {from:[0,0,-4],to:[0,0,4],c:'rgba(123,47,255,.25)',lbl:'z'},
+  ];
+  axes.forEach(ax=>{
+    const p1=proj(tr(...ax.from)), p2=proj(tr(...ax.to));
+    if(!p1||!p2) return;
+    ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y);
+    ctx.strokeStyle=ax.c; ctx.lineWidth=1; ctx.stroke();
+    // tick
+    ctx.font=`600 ${Math.max(9,p2.s*.5)}px 'Orbitron',monospace`;
+    ctx.fillStyle=ax.c.replace('.25','.8');
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(ax.lbl, p2.x+8, p2.y-8);
+  });
+
+  // grade plano xz
+  ctx.strokeStyle='rgba(0,245,255,.04)';
+  ctx.lineWidth=.8;
+  for(let xi=-5;xi<=5;xi++){
+    const a=proj(tr(xi,0,-4)), b=proj(tr(xi,0,4));
+    if(a&&b){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
+  }
+  for(let zi=-4;zi<=4;zi++){
+    const a=proj(tr(-5,0,zi)), b=proj(tr(5,0,zi));
+    if(a&&b){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
+  }
+}
+
+// ─── DRAW WAVE 1D ────────────────────────────────
+function drawWave1D(){
+  const N=200, xMin=-5, xMax=5;
+  const pts=[];
+  for(let i=0;i<=N;i++){
+    const x=xMin+(xMax-xMin)*(i/N);
+    const y=psi(x);
+    pts.push({x,y,raw:y});
+  }
+
+  // sombra no plano y=0
+  ctx.beginPath();
+  pts.forEach((p,i)=>{
+    const q=proj(tr(p.x,0,0));
+    if(!q) return;
+    i===0?ctx.moveTo(q.x,q.y):ctx.lineTo(q.x,q.y);
+  });
+  ctx.strokeStyle='rgba(0,245,255,.08)'; ctx.lineWidth=1; ctx.stroke();
+
+  // linha vertical de cada ponto até a onda (colunas)
+  pts.forEach(p=>{
+    const top=proj(tr(p.x,p.raw,0));
+    const bot=proj(tr(p.x,0,0));
+    if(!top||!bot) return;
+    const gc=ctx.createLinearGradient(bot.x,bot.y,top.x,top.y);
+    const col = p.raw>=0?'0,245,255':'123,47,255';
+    gc.addColorStop(0,`rgba(${col},0)`);
+    gc.addColorStop(1,`rgba(${col},.25)`);
+    ctx.beginPath(); ctx.moveTo(bot.x,bot.y); ctx.lineTo(top.x,top.y);
+    ctx.strokeStyle=gc; ctx.lineWidth=Math.max(.5,top.s*.04); ctx.stroke();
+  });
+
+  // curva principal com gradiente dinâmico
+  for(let i=0;i<pts.length-1;i++){
+    const a=pts[i], b=pts[i+1];
+    const pa=proj(tr(a.x,a.raw,0)), pb=proj(tr(b.x,b.raw,0));
+    if(!pa||!pb) continue;
+    const v=(a.raw+b.raw)/2;
+    const gc=ctx.createLinearGradient(pa.x,pa.y,pb.x,pb.y);
+    const col=v>=0?`0,245,255`:`123,47,255`;
+    gc.addColorStop(0,`rgba(${col},.9)`);
+    gc.addColorStop(1,`rgba(${col},.9)`);
+    ctx.beginPath(); ctx.moveTo(pa.x,pa.y); ctx.lineTo(pb.x,pb.y);
+    ctx.strokeStyle=gc;
+    ctx.lineWidth=Math.max(1.5, pa.s*.12*(0.5+Math.abs(v)*0.5));
+    ctx.shadowColor=v>=0?'#00f5ff':'#7b2fff';
+    ctx.shadowBlur=Math.abs(v)*14;
+    ctx.stroke();
+  }
+  ctx.shadowBlur=0;
+
+  // pontos de crista/vale
+  for(let i=1;i<pts.length-1;i++){
+    if(Math.abs(pts[i].raw)>Math.abs(pts[i-1].raw) && Math.abs(pts[i].raw)>Math.abs(pts[i+1].raw) && Math.abs(pts[i].raw)>A*0.8){
+      const p=proj(tr(pts[i].x,pts[i].raw,0));
+      if(!p) continue;
+      ctx.beginPath(); ctx.arc(p.x,p.y,4,0,Math.PI*2);
+      ctx.fillStyle=pts[i].raw>0?'#00f5ff':'#7b2fff';
+      ctx.shadowColor=pts[i].raw>0?'#00f5ff':'#7b2fff'; ctx.shadowBlur=12;
+      ctx.fill(); ctx.shadowBlur=0;
+    }
+  }
+}
+
+// ─── DRAW SURFACE 2D ─────────────────────────────
+function drawSurface(){
+  const NX=60, NZ=40, xR=5, zR=4;
+  // grid de pontos
+  const grid=[];
+  for(let iz=0;iz<=NZ;iz++){
+    const row=[];
+    for(let ix=0;ix<=NX;ix++){
+      const x=(-xR)+(2*xR)*(ix/NX);
+      const z=(-zR)+(2*zR)*(iz/NZ);
+      const y=psi(x,z);
+      row.push({x,y,z});
+    }
+    grid.push(row);
+  }
+
+  // quads (linhas Z)
+  for(let iz=0;iz<NZ;iz++){
+    for(let ix=0;ix<NX;ix++){
+      const p00=grid[iz][ix], p10=grid[iz][ix+1];
+      const p01=grid[iz+1][ix], p11=grid[iz+1][ix+1];
+      const a=proj(tr(p00.x,p00.y,p00.z));
+      const b=proj(tr(p10.x,p10.y,p10.z));
+      const c=proj(tr(p11.x,p11.y,p11.z));
+      const d=proj(tr(p01.x,p01.y,p01.z));
+      if(!a||!b||!c||!d) continue;
+      const av=(p00.y+p10.y+p11.y+p01.y)/4;
+      const col=av>=0?`0,245,255`:`123,47,255`;
+      const alpha=0.12+Math.abs(av)*0.18;
+      ctx.beginPath(); ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.lineTo(c.x,c.y);ctx.lineTo(d.x,d.y);ctx.closePath();
+      ctx.fillStyle=`rgba(${col},${alpha})`;
+      ctx.fill();
+      ctx.strokeStyle=`rgba(${col},.3)`; ctx.lineWidth=.5; ctx.stroke();
+    }
+  }
+}
+
+// ─── DRAW ORBITAL ────────────────────────────────
+function drawOrbital(){
+  const N=120, R=4;
+  // nuvem de pontos 3D — varredura esférica
+  for(let it=0;it<N;it++){
+    for(let ip=0;ip<N;ip++){
+      const theta=(it/N)*Math.PI;
+      const phi  =(ip/N)*Math.PI*2;
+      const r    = R*(0.3+0.7*(it/N));
+      const px3  = r*Math.sin(theta)*Math.cos(phi);
+      const py3  = r*Math.cos(theta);
+      const pz3  = r*Math.sin(theta)*Math.sin(phi);
+      const prob = Math.exp(-r*0.7)*Math.pow(Math.sin(theta),2)*Math.pow(Math.cos(phi),2);
+      if(prob<0.01 || Math.random()>prob*8) continue;
+      const pp=proj(tr(px3,py3,pz3));
+      if(!pp) continue;
+      const col=phi<Math.PI?`0,245,255`:`123,47,255`;
+      const alpha=prob*2*(0.5+0.5*Math.sin(t*speed*2+phi));
+      ctx.beginPath();ctx.arc(pp.x,pp.y,Math.max(1,pp.s*.06),0,Math.PI*2);
+      ctx.fillStyle=`rgba(${col},${Math.min(.8,alpha)})`;
+      ctx.shadowColor=phi<Math.PI?'#00f5ff':'#7b2fff'; ctx.shadowBlur=6;
+      ctx.fill(); ctx.shadowBlur=0;
+    }
+  }
+}
+
+// ─── AMPLITUDE BAR ───────────────────────────────
+function drawAmplBar(){
+  const now=psi(0);
+  const bh=100, bw=8, bx=innerWidth-28, by=innerHeight/2-bh/2;
+  ctx.strokeStyle='rgba(0,245,255,.15)';ctx.lineWidth=1;
+  ctx.strokeRect(bx,by,bw,bh);
+  const fill=bh/2*(now/A);
+  ctx.fillStyle=now>=0?'rgba(0,245,255,.5)':'rgba(123,47,255,.5)';
+  ctx.fillRect(bx, innerHeight/2-fill, bw, Math.abs(fill));
+  ctx.font="600 9px 'Orbitron',monospace";
+  ctx.fillStyle='rgba(0,245,255,.4)'; ctx.textAlign='center';
+  ctx.fillText('ψ', bx+bw/2, by-10);
+  ctx.fillText(now.toFixed(2), bx+bw/2, by+bh+14);
+}
+
+// ─── MAIN LOOP ───────────────────────────────────
+function render(){
+  requestAnimationFrame(render);
+  const W=innerWidth, H=innerHeight;
+  ctx.clearRect(0,0,W,H);
+
+  // smooth camera
+  rotX+=(tRX-rotX)*.07; rotY+=(tRY-rotY)*.07; camZ+=(tCamZ-camZ)*.07;
+  if(!paused) t+=0.016;
+
+  // background subtle grid
+  ctx.strokeStyle='rgba(0,245,255,.025)'; ctx.lineWidth=.7;
+  const gs=70;
+  for(let x=0;x<W;x+=gs){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=gs){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+  // centro glow
+  const rg=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.min(W,H)*.5);
+  rg.addColorStop(0,'rgba(0,245,255,.04)'); rg.addColorStop(1,'transparent');
+  ctx.fillStyle=rg; ctx.fillRect(0,0,W,H);
+
+  drawAxes();
+
+  if(mode==='superficie') drawSurface();
+  else if(mode==='orbital') drawOrbital();
+  else drawWave1D();
+
+  drawAmplBar();
+
+  // info ψ(0,t)
+  ctx.font="600 10px 'Orbitron',monospace";
+  ctx.fillStyle='rgba(0,245,255,.3)'; ctx.textAlign='left';
+  ctx.fillText(`t = ${t.toFixed(2)}s`, 10, innerHeight-10);
+}
+render();
+
+// ─── CONTROLES ───────────────────────────────────
+function setMode(m){
+  mode=m;
+  document.querySelectorAll('.toolbar button').forEach(b=>b.classList.remove('on'));
+  document.getElementById('m-'+m).classList.add('on');
+  document.getElementById('eq-text').innerHTML=eqs[m];
+}
+function togglePause(){
+  paused=!paused;
+  document.getElementById('btn-pause').textContent=paused?'▶ Continuar':'⏸ Pausar';
+}
+function resetCam(){ tRX=0.45; tRY=-0.55; tCamZ=11; }
+function zoom(f){ tCamZ=Math.max(5,Math.min(22,tCamZ/f)); }
+
+// ─── MOUSE / TOUCH ───────────────────────────────
+cv.addEventListener('mousedown',e=>{dragging=true;lmx=e.clientX;lmy=e.clientY;});
+addEventListener('mouseup',()=>dragging=false);
+addEventListener('mousemove',e=>{
+  if(dragging){
+    tRY+=(e.clientX-lmx)*.008; tRX+=(e.clientY-lmy)*.005;
+    tRX=Math.max(-1.4,Math.min(1.4,tRX));
+    lmx=e.clientX;lmy=e.clientY;
+  }
+});
+cv.addEventListener('wheel',e=>{e.preventDefault();tCamZ=Math.max(5,Math.min(22,tCamZ+e.deltaY*.02));},{passive:false});
+
+let ltd=0;
+cv.addEventListener('touchstart',e=>{
+  if(e.touches.length===1){dragging=true;lmx=e.touches[0].clientX;lmy=e.touches[0].clientY;}
+  if(e.touches.length===2){const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;ltd=Math.sqrt(dx*dx+dy*dy);}
+},{passive:true});
+cv.addEventListener('touchend',()=>dragging=false,{passive:true});
+cv.addEventListener('touchmove',e=>{
+  if(e.touches.length===1&&dragging){
+    tRY+=(e.touches[0].clientX-lmx)*.008;tRX+=(e.touches[0].clientY-lmy)*.005;
+    tRX=Math.max(-1.4,Math.min(1.4,tRX));lmx=e.touches[0].clientX;lmy=e.touches[0].clientY;
+  }
+  if(e.touches.length===2){
+    const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;
+    const d=Math.sqrt(dx*dx+dy*dy);tCamZ=Math.max(5,Math.min(22,tCamZ+(ltd-d)*.05));ltd=d;
+  }
+},{passive:true});
+</script>
+</body>
+</html>

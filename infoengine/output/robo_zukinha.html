@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Robô Zukinha</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --cream: #fdf8f0;
+  --coral: #ff7a5a;
+  --gold: #ffd700;
+  --gold-light: #f5a623;
+  --blue-sky: #e3f2fd;
+  --night: #0b081a;
+  --text-dark: #1a1a2e;
+  --text-soft: #4a3f4a;
+}
+body {
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(160deg,#ffeedd 0%,#ffe3ec 50%,#e3f2ff 100%);
+  min-height:100vh; display:flex; align-items:center; justify-content:center; padding:16px;
+}
+.book {
+  width:min(880px,100%); background:var(--cream); border-radius:28px;
+  box-shadow:0 18px 50px rgba(140,90,60,.22); overflow:hidden; position:relative;
+}
+.page { display:none; animation:pop .45s ease; }
+.page.active { display:block; }
+@keyframes pop { from { opacity:0; transform:translateX(28px);} to { opacity:1; transform:none;} }
+.art { width:100%; background:#fff; border-bottom:6px dotted var(--gold); }
+.art svg { width:100%; height:auto; display:block; }
+.content { padding:26px 34px 20px; text-align:center; }
+.content p {
+  font-family: 'Playfair Display', serif;
+  font-size:clamp(19px,2.6vw,25px); line-height:1.75; color:var(--text-dark); letter-spacing:.5px;
+}
+.content .dialogue {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--coral);
+  margin-top: 12px;
+  font-size: clamp(17px,2.2vw,22px);
+}
+.cover .content h1 {
+  font-family: 'Playfair Display', serif;
+  font-size:clamp(30px,5vw,44px); color:var(--coral); margin-bottom:8px;
+}
+.cover .content h2 {
+  font-family: 'Quicksand', sans-serif;
+  font-size:clamp(15px,2.2vw,19px); color:#a0886b; font-weight:normal; margin-bottom:6px;
+}
+.badge { display:inline-block; background:#ffe9c7; color:#c07830; border-radius:999px; padding:4px 14px; font-size:14px; margin-bottom:14px; }
+.btn {
+  border:none; cursor:pointer; border-radius:999px; font-family:'Quicksand',sans-serif;
+  transition:transform .12s, box-shadow .12s;
+}
+.btn:active { transform:scale(.94); }
+.btn:focus-visible { outline:3px solid #385e98; outline-offset:3px; }
+.btn-big {
+  background:var(--coral); color:#fff; font-size:21px; padding:14px 44px;
+  box-shadow:0 6px 0 #e07f2e; margin:10px 0 6px;
+}
+.btn-play {
+  background:#6bc86b; color:#fff; font-size:17px; padding:10px 26px;
+  box-shadow:0 5px 0 #4da34d; margin-top:14px;
+}
+.btn-play.playing { background:#f4766e; box-shadow:0 5px 0 #c9534c; }
+.nav {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 22px 20px; gap:10px;
+}
+.btn-nav {
+  background:var(--gold); color:#9a6a2f; font-size:18px; padding:9px 22px; box-shadow:0 4px 0 #e6b877;
+}
+.btn-nav:disabled { opacity:.35; cursor:default; box-shadow:none; }
+.dots { display:flex; gap:7px; flex-wrap:wrap; justify-content:center; }
+.dot { width:11px; height:11px; border-radius:50%; background:#eadbc4; cursor:pointer; transition:.2s; }
+.dot.on { background:var(--coral); transform:scale(1.35); }
+.toolbar { position:absolute; top:14px; right:16px; z-index:5; display:flex; gap:8px; }
+.btn-auto { background:#8fb8f0; color:#fff; font-size:14px; padding:8px 16px; box-shadow:0 4px 0 #6c93c9; }
+.btn-auto.on { background:#f4766e; box-shadow:0 4px 0 #c9534c; }
+.btn-whatsapp { background:#25d366; color:#fff; font-size:14px; padding:8px 16px; box-shadow:0 4px 0 #1da851; }
+.btn-pdf { background:#e74c3c; color:#fff; font-size:14px; padding:8px 16px; box-shadow:0 4px 0 #c0392b; }
+.pageno { font-size:13px; color:#c4ab88; margin-top:10px; }
+.end-emoji { font-size:56px; margin:6px 0 10px; }
+.page-number { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); font-size:12px; color:rgba(255,255,255,0.7); }
+@media (max-width:560px) {
+  body { padding:8px; }
+  .book { border-radius:18px; }
+  .content { padding:22px 20px 16px; }
+  .nav { padding:12px 12px 16px; }
+  .btn-nav { padding:9px 14px; font-size:16px; }
+  .toolbar { top:10px; right:10px; }
+}
+</style>
+</head>
+<body>
+<div class="book" id="livro">
+  <div class="toolbar">
+    <button class="btn btn-pdf" type="button" onclick="exportarPDF()">📄 PDF</button>
+    <button class="btn btn-whatsapp" type="button" onclick="compartilharWhatsApp()">📱 WhatsApp</button>
+    <button class="btn btn-auto" id="autoBtn" type="button" onclick="toggleAuto()">…</button>
+  </div>
+  <div id="pages" aria-live="polite"></div>
+  <div class="nav" aria-label="Navegação">
+    <button class="btn btn-nav" id="prevBtn" type="button" onclick="go(-1)"></button>
+    <div class="dots" id="dots" aria-label="Selecionar página"></div>
+    <button class="btn btn-nav" id="nextBtn" type="button" onclick="go(1)"></button>
+  </div>
+</div>
+<script>
+const LIVRO = {"titulo":"Robô Zukinha","subtitulo":"O Robô Mais Doido da Galáxia","autor":"Marcos Roberto","faixa_etaria":"3 — 8 anos","lang":"pt-BR","texto_final":"Zukinha aprendeu: ser doido é ser feliz do seu próprio jeito. Fim!","capa_svg":"\u003csvg viewBox=\"0 0 800 600\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n\u003cdefs\u003e\n    \u003clinearGradient id=\"bg-capa\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"\u003e\n        \u003cstop offset=\"0%\" stop-color=\"#1a1a5e\"/\u003e\n        \u003cstop offset=\"40%\" stop-color=\"#2d1b69\"/\u003e\n        \u003cstop offset=\"70%\" stop-color=\"#4a148c\"/\u003e\n        \u003cstop offset=\"100%\" stop-color=\"#311b92\"/\u003e\n    \u003c/linearGradient\u003e\n    \u003cradialGradient id=\"glow-capa\" cx=\"50%\" cy=\"50%\" r=\"50%\"\u003e\n        \u003cstop offset=\"0%\" stop-color=\"#00e5ff\" stop-opacity=\"0.3\"/\u003e\n        \u003cstop offset=\"100%\" stop-color=\"#00e5ff\" stop-opacity=\"0\"/\u003e\n    \u003c/radialGradient\u003e\n    \u003cpattern id=\"circuitos\" x=\"0\" y=\"0\" width=\"40\" height=\"40\" patternUnits=\"userSpaceOnUse\"\u003e\n        \u003cpath d=\"M20 0 L20 40 M0 20 L40 20 M10 10 L30 30 M30 10 L10 30\" stroke=\"#00e5ff\" stroke-width=\"0.5\" opacity=\"0.1\" fill=\"none\"/\u003e\n        \u003ccircle cx=\"20\" cy=\"20\" r=\"2\" fill=\"#00e5ff\" opacity=\"0.15\"/\u003e\n    \u003c/pattern\u003e\n\u003c/defs\u003e\n\u003crect width=\"800\" height=\"600\" fill=\"url(#bg-capa)\"/\u003e\n\u003crect width=\"800\" height=\"600\" fill=\"url(#circuitos)\"/\u003e\n\u003ccircle cx=\"400\" cy=\"200\" r=\"180\" fill=\"url(#glow-capa)\"/\u003e\n\u003ccircle cx=\"100\" cy=\"80\" r=\"2\" fill=\"#fff\" opacity=\"0.6\"/\u003e\n\u003ccircle cx=\"200\" cy=\"50\" r=\"1.5\" fill=\"#fff\" opacity=\"0.5\"/\u003e\n\u003ccircle cx=\"600\" cy=\"60\" r=\"2.5\" fill=\"#fff\" opacity=\"0.6\"/\u003e\n\u003ccircle cx=\"700\" cy=\"120\" r=\"1.5\" fill=\"#fff\" opacity=\"0.4\"/\u003e\n\u003ccircle cx=\"150\" cy=\"150\" r=\"1\" fill=\"#fff\" opacity=\"0.5\"/\u003e\n\u003ccircle cx=\"680\" cy=\"180\" r=\"2\" fill=\"#fff\" opacity=\"0.45\"/\u003e\n\u003ccircle cx=\"50\" cy=\"200\" r=\"1.5\" fill=\"#fff\" opacity=\"0.4\"/\u003e\n\u003ccircle cx=\"750\" cy=\"80\" r=\"1\" fill=\"#fff\" opacity=\"0.5\"/\u003e\n\u003ctext x=\"400\" y=\"430\" text-anchor=\"middle\" font-family=\"'Playfair Display',serif\" font-size=\"52\" fill=\"#00e5ff\" font-weight=\"900\" opacity=\"0.95\" filter=\"url(#glow)\"\u003eRobô Zukinha\u003c/text\u003e\n\u003ctext x=\"400\" y=\"472\" text-anchor=\"middle\" font-family=\"'Quicksand',sans-serif\" font-size=\"20\" fill=\"#ffee58\" opacity=\"0.9\"\u003eO Robô Mais Doido da Galáxia\u003c/text\u003e\n\u003cg transform=\"translate(400,200)\"\u003e\n    \u003ccircle cx=\"0\" cy=\"0\" r=\"85\" fill=\"url(#glow-capa)\"/\u003e\n    \u003cg\u003e\n    \u003cdefs\u003e\n        \u003clinearGradient id=\"robo-grad-capa\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n            \u003cstop offset=\"0%\" stop-color=\"#00e5ff\"/\u003e\n            \u003cstop offset=\"100%\" stop-color=\"#2196f3\"/\u003e\n        \u003c/linearGradient\u003e\n    \u003c/defs\u003e\n    \n        \u003cline x1=\"0\" y1=\"-37.5\" x2=\"0\" y2=\"-57.0\" stroke=\"#555\" stroke-width=\"3.0\"/\u003e\n        \u003ccircle cx=\"0\" cy=\"-63.0\" r=\"6.0\" fill=\"#2196f3\" opacity=\"0.9\"/\u003e\n        \u003ccircle cx=\"0\" cy=\"-63.0\" r=\"3.0\" fill=\"#fff\" opacity=\"0.6\"/\u003e\n    \n        \u003ccircle cx=\"-27.0\" cy=\"-27.0\" r=\"3.0\" fill=\"#555\" stroke=\"#333\" stroke-width=\"1\"/\u003e\n        \u003cline x1=\"-30.0\" y1=\"-27.0\" x2=\"-24.0\" y2=\"-27.0\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n        \u003ccircle cx=\"27.0\" cy=\"-27.0\" r=\"3.0\" fill=\"#555\" stroke=\"#333\" stroke-width=\"1\"/\u003e\n        \u003cline x1=\"24.0\" y1=\"-27.0\" x2=\"30.0\" y2=\"-27.0\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n    \u003crect x=\"-33.0\" y=\"-33.0\" width=\"66.0\" height=\"66.0\" rx=\"12.0\" fill=\"url(#robo-grad-capa)\" stroke=\"#333\" stroke-width=\"2.25\"/\u003e\n    \u003crect x=\"-30.0\" y=\"-30.0\" width=\"60.0\" height=\"60.0\" rx=\"9.0\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.5\" opacity=\"0.3\"/\u003e\n    \u003cellipse cx=\"-18.0\" cy=\"-7.5\" rx=\"7.5\" ry=\"9.0\" fill=\"#fff\"/\u003e\n        \u003ccircle cx=\"-18.0\" cy=\"-6.0\" r=\"4.5\" fill=\"#1a1a2e\"/\u003e\n        \u003ccircle cx=\"-19.5\" cy=\"-9.0\" r=\"1.7999999999999998\" fill=\"#fff\"/\u003e\n        \u003cellipse cx=\"18.0\" cy=\"-7.5\" rx=\"7.5\" ry=\"9.0\" fill=\"#fff\"/\u003e\n        \u003ccircle cx=\"18.0\" cy=\"-6.0\" r=\"4.5\" fill=\"#1a1a2e\"/\u003e\n        \u003ccircle cx=\"16.5\" cy=\"-9.0\" r=\"1.7999999999999998\" fill=\"#fff\"/\u003e\n    \u003ccircle cx=\"-27.0\" cy=\"7.5\" r=\"6.0\" fill=\"#ff8a80\" opacity=\"0.4\"/\u003e\u003ccircle cx=\"27.0\" cy=\"7.5\" r=\"6.0\" fill=\"#ff8a80\" opacity=\"0.4\"/\u003e\n    \u003cpath d=\"M-12.0 18.0 Q0 33.0 12.0 18.0\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"3.75\" stroke-linecap=\"round\"/\u003e\n    \u003crect x=\"-12.0\" y=\"36.0\" width=\"24.0\" height=\"12.0\" rx=\"3.0\" fill=\"#555\"/\u003e\n    \u003ccircle cx=\"-7.5\" cy=\"42.0\" r=\"2.25\" fill=\"#ff1744\"/\u003e\n    \u003ccircle cx=\"0\" cy=\"42.0\" r=\"2.25\" fill=\"#00e5ff\"/\u003e\n    \u003ccircle cx=\"7.5\" cy=\"42.0\" r=\"2.25\" fill=\"#ffee58\"/\u003e\n\u003c/g\u003e\n\u003c/g\u003e\n\u003cellipse cx=\"400\" cy=\"660\" rx=\"580\" ry=\"160\" fill=\"#1a1a5e\" opacity=\"0.4\"/\u003e\n\u003cellipse cx=\"200\" cy=\"680\" rx=\"350\" ry=\"140\" fill=\"#2d1b69\" opacity=\"0.3\"/\u003e\n\u003cellipse cx=\"650\" cy=\"670\" rx=\"300\" ry=\"130\" fill=\"#311b92\" opacity=\"0.3\"/\u003e\n\u003ccircle cx=\"300\" cy=\"520\" r=\"3\" fill=\"#00e5ff\" opacity=\"0.4\"/\u003e\n\u003ccircle cx=\"350\" cy=\"540\" r=\"2\" fill=\"#00e5ff\" opacity=\"0.3\"/\u003e\n\u003ccircle cx=\"450\" cy=\"530\" r=\"2.5\" fill=\"#00e5ff\" opacity=\"0.35\"/\u003e\n\u003ccircle cx=\"500\" cy=\"550\" r=\"2\" fill=\"#00e5ff\" opacity=\"0.3\"/\u003e\n\u003c/svg\u003e","paginas":[{"texto":"Lá no laboratório do Vovô Chico, na noite de ontem, um raio muito forte caiu bem na tomada. E de repente... ZUKINHA ACORDOU!","dialogo":"Zzzt! Eu... estou... VIVO! Oba!","svg":"\u003csvg viewBox=\"0 0 800 600\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n\u003cdefs\u003e\n    \u003clinearGradient id=\"bg-01\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n        \u003cstop offset=\"0%\" stop-color=\"#1a1a5e\"/\u003e\n        \u003cstop offset=\"0.5\" stop-color=\"#2d1b69\"/\u003e\n        \u003cstop offset=\"100%\" stop-color=\"#311b92\"/\u003e\n    \u003c/linearGradient\u003e\n    \u003cradialGradient id=\"glow-01\" cx=\"50%\" cy=\"50%\" r=\"50%\"\u003e\n        \u003cstop offset=\"0%\" stop-color=\"#ffee58\" stop-opacity=\"0.4\"/\u003e\n        \u003cstop offset=\"100%\" stop-color=\"#ffee58\" stop-opacity=\"0\"/\u003e\n    \u003c/radialGradient\u003e\n\u003c/defs\u003e\n\u003crect width=\"800\" height=\"600\" fill=\"url(#bg-01)\"/\u003e\n\u003ccircle cx=\"400\" cy=\"200\" r=\"120\" fill=\"url(#glow-01)\"/\u003e\n\u003cg fill=\"#fff\" opacity=\"0.5\"\u003e\n    \u003ccircle cx=\"100\" cy=\"50\" r=\"1.5\"/\u003e\u003ccircle cx=\"250\" cy=\"40\" r=\"2\"/\u003e\n    \u003ccircle cx=\"450\" cy=\"55\" r=\"1.8\"/\u003e\u003ccircle cx=\"650\" cy=\"45\" r=\"1.5\"/\u003e\n    \u003ccircle cx=\"720\" cy=\"80\" r=\"1.2\"/\u003e\u003ccircle cx=\"180\" cy=\"100\" r=\"1.3\"/\u003e\n\u003c/g\u003e\n\u003cline x1=\"400\" y1=\"0\" x2=\"420\" y2=\"130\" stroke=\"#ffee58\" stroke-width=\"3\" opacity=\"0.6\"/\u003e\n\u003cline x1=\"380\" y1=\"0\" x2=\"360\" y2=\"140\" stroke=\"#ffee58\" stroke-width=\"2\" opacity=\"0.4\"/\u003e\n\u003cline x1=\"430\" y1=\"0\" x2=\"460\" y2=\"120\" stroke=\"#ffee58\" stroke-width=\"1.5\" opacity=\"0.3\"/\u003e\n\u003ccircle cx=\"420\" cy=\"0\" r=\"4\" fill=\"#ffee58\" opacity=\"0.8\"/\u003e\n\u003cellipse cx=\"400\" cy=\"660\" rx=\"580\" ry=\"160\" fill=\"#1a1a5e\" opacity=\"0.5\"/\u003e\n\u003crect x=\"280\" y=\"350\" width=\"240\" height=\"200\" rx=\"10\" fill=\"#2d1b69\" stroke=\"#4a148c\" stroke-width=\"2\"/\u003e\n\u003crect x=\"290\" y=\"360\" width=\"220\" height=\"180\" rx=\"8\" fill=\"#1a1a5e\"/\u003e\n\u003ccircle cx=\"320\" cy=\"380\" r=\"15\" fill=\"#00e5ff\" opacity=\"0.15\"/\u003e\n\u003ccircle cx=\"480\" cy=\"380\" r=\"15\" fill=\"#ff1744\" opacity=\"0.15\"/\u003e\n\u003crect x=\"310\" y=\"410\" width=\"180\" height=\"40\" rx=\"5\" fill=\"#311b92\"/\u003e\n\u003crect x=\"330\" y=\"420\" width=\"30\" height=\"20\" rx=\"3\" fill=\"#00e5ff\" opacity=\"0.5\"/\u003e\n\u003crect x=\"370\" y=\"420\" width=\"30\" height=\"20\" rx=\"3\" fill=\"#ff1744\" opacity=\"0.5\"/\u003e\n\u003crect x=\"410\" y=\"420\" width=\"30\" height=\"20\" rx=\"3\" fill=\"#ffee58\" opacity=\"0.5\"/\u003e\n\u003crect x=\"450\" y=\"420\" width=\"30\" height=\"20\" rx=\"3\" fill=\"#8fbf6b\" opacity=\"0.5\"/\u003e\n\u003cg transform=\"translate(400,220)\"\u003e\n    \u003cg\u003e\n    \u003cdefs\u003e\n        \u003clinearGradient id=\"robo-grad-p1\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n            \u003cstop offset=\"0%\" stop-color=\"#00e5ff\"/\u003e\n            \u003cstop offset=\"100%\" stop-color=\"#2196f3\"/\u003e\n        \u003c/linearGradient\u003e\n    \u003c/defs\u003e\n    \n        \u003cline x1=\"0\" y1=\"-32.5\" x2=\"0\" y2=\"-49.4\" stroke=\"#555\" stroke-width=\"2.6\"/\u003e\n        \u003ccircle cx=\"0\" cy=\"-54.6\" r=\"5.2\" fill=\"#2196f3\" opacity=\"0.9\"/\u003e\n        \u003ccircle cx=\"0\" cy=\"-54.6\" r=\"2.6\" fill=\"#fff\" opacity=\"0.6\"/\u003e\n    \n        \u003ccircle cx=\"-23.400000000000002\" cy=\"-23.400000000000002\" r=\"2.6\" fill=\"#555\" stroke=\"#333\" stroke-width=\"1\"/\u003e\n        \u003cline x1=\"-26.0\" y1=\"-23.400000000000002\" x2=\"-20.8\" y2=\"-23.400000000000002\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n        \u003ccircle cx=\"23.400000000000002\" cy=\"-23.400000000000002\" r=\"2.6\" fill=\"#555\" stroke=\"#333\" stroke-width=\"1\"/\u003e\n        \u003cline x1=\"20.8\" y1=\"-23.400000000000002\" x2=\"26.0\" y2=\"-23.400000000000002\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n    \u003crect x=\"-28.6\" y=\"-28.6\" width=\"57.2\" height=\"57.2\" rx=\"10.4\" fill=\"url(#robo-grad-p1)\" stroke=\"#333\" stroke-width=\"1.9500000000000002\"/\u003e\n    \u003crect x=\"-26.0\" y=\"-26.0\" width=\"52.0\" height=\"52.0\" rx=\"7.800000000000001\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.3\" opacity=\"0.3\"/\u003e\n    \u003ccircle cx=\"-18.2\" cy=\"-10.4\" r=\"7.800000000000001\" fill=\"#fff\"/\u003e\n        \u003ccircle cx=\"-15.600000000000001\" cy=\"-13.0\" r=\"3.9000000000000004\" fill=\"#ff1744\"/\u003e\n        \u003ccircle cx=\"20.8\" cy=\"-7.800000000000001\" r=\"6.5\" fill=\"#fff\"/\u003e\n        \u003ccircle cx=\"23.400000000000002\" cy=\"-10.4\" r=\"3.9000000000000004\" fill=\"#ff1744\"/\u003e\n    \u003ccircle cx=\"-26.0\" cy=\"3.9000000000000004\" r=\"6.5\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003ccircle cx=\"26.0\" cy=\"3.9000000000000004\" r=\"6.5\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\n    \u003cpath d=\"M-15.600000000000001 18.2 Q-2.6 33.800000000000004 7.800000000000001 15.600000000000001 Q10.4 23.400000000000002 18.2 18.2\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"3.25\" stroke-linecap=\"round\"/\u003e\n    \u003crect x=\"-10.4\" y=\"31.200000000000003\" width=\"20.8\" height=\"10.4\" rx=\"2.6\" fill=\"#555\"/\u003e\n    \u003ccircle cx=\"-6.5\" cy=\"36.4\" r=\"1.9500000000000002\" fill=\"#ff1744\"/\u003e\n    \u003ccircle cx=\"0\" cy=\"36.4\" r=\"1.9500000000000002\" fill=\"#00e5ff\"/\u003e\n    \u003ccircle cx=\"6.5\" cy=\"36.4\" r=\"1.9500000000000002\" fill=\"#ffee58\"/\u003e\n\u003c/g\u003e\n\u003c/g\u003e\n\u003ctext x=\"400\" y=\"530\" text-anchor=\"middle\" font-family=\"'Quicksand',sans-serif\" font-size=\"14\" fill=\"#00e5ff\" opacity=\"0.5\"\u003e⚡ BIP! BOP! BIP! ⚡\u003c/text\u003e\n\u003c/svg\u003e","audio":""},{"texto":"Zukinha pulou da mesa e colocou as antenas no lugar errado. Uma no olho e outra na boca!","dialogo":"Puft! Agora eu enxergo pelo nariz e cheiro pelos olhos!","svg":"\u003csvg viewBox=\"0 0 800 600\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n\u003cdefs\u003e\n    \u003clinearGradient id=\"bg-02\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n        \u003cstop offset=\"0%\" stop-color=\"#1a1a5e\"/\u003e\n        \u003cstop offset=\"0.5\" stop-color=\"#2d1b69\"/\u003e\n        \u003cstop offset=\"100%\" stop-color=\"#311b92\"/\u003e\n    \u003c/linearGradient\u003e\n\u003c/defs\u003e\n\u003crect width=\"800\" height=\"600\" fill=\"url(#bg-02)\"/\u003e\n\u003cg fill=\"#fff\" opacity=\"0.4\"\u003e\n    \u003ccircle cx=\"120\" cy=\"60\" r=\"1.5\"/\u003e\u003ccircle cx=\"300\" cy=\"45\" r=\"2\"/\u003e\n    \u003ccircle cx=\"550\" cy=\"50\" r=\"1.8\"/\u003e\u003ccircle cx=\"700\" cy=\"70\" r=\"1.3\"/\u003e\n\u003c/g\u003e\n\u003cellipse cx=\"400\" cy=\"660\" rx=\"580\" ry=\"160\" fill=\"#1a1a5e\" opacity=\"0.5\"/\u003e\n\u003crect x=\"300\" y=\"380\" width=\"200\" height=\"180\" rx=\"8\" fill=\"#311b92\" stroke=\"#4a148c\" stroke-width=\"1\"/\u003e\n\u003crect x=\"310\" y=\"390\" width=\"180\" height=\"160\" rx=\"5\" fill=\"#2d1b69\"/\u003e\n\u003cg transform=\"translate(400,220)\"\u003e\n    \u003cline x1=\"-10\" y1=\"-50\" x2=\"20\" y2=\"-70\" stroke=\"#555\" stroke-width=\"2\"/\u003e\n    \u003ccircle cx=\"22\" cy=\"-72\" r=\"4\" fill=\"#ff1744\"/\u003e\n    \u003cline x1=\"15\" y1=\"-52\" x2=\"-25\" y2=\"-68\" stroke=\"#555\" stroke-width=\"2\"/\u003e\n    \u003ccircle cx=\"-27\" cy=\"-70\" r=\"4\" fill=\"#00e5ff\"/\u003e\n    \u003cg\u003e\n    \u003cdefs\u003e\n        \u003clinearGradient id=\"robo-grad-p2\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n            \u003cstop offset=\"0%\" stop-color=\"#e8985a\"/\u003e\n            \u003cstop offset=\"100%\" stop-color=\"#ff7a5a\"/\u003e\n        \u003c/linearGradient\u003e\n    \u003c/defs\u003e\n    \n        \u003cline x1=\"0\" y1=\"-32.5\" x2=\"0\" y2=\"-49.4\" stroke=\"#555\" stroke-width=\"2.6\"/\u003e\n        \u003ccircle cx=\"0\" cy=\"-54.6\" r=\"5.2\" fill=\"#ff7a5a\" opacity=\"0.9\"/\u003e\n        \u003ccircle cx=\"0\" cy=\"-54.6\" r=\"2.6\" fill=\"#fff\" opacity=\"0.6\"/\u003e\n    \n        \u003ccircle cx=\"-23.400000000000002\" cy=\"-23.400000000000002\" r=\"2.6\" fill=\"#555\" stroke=\"#333\" stroke-width=\"1\"/\u003e\n        \u003cline x1=\"-26.0\" y1=\"-23.400000000000002\" x2=\"-20.8\" y2=\"-23.400000000000002\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n        \u003ccircle cx=\"23.400000000000002\" cy=\"-23.400000000000002\" r=\"2.6\" fill=\"#555\" stroke=\"#333\" stroke-width=\"1\"/\u003e\n        \u003cline x1=\"20.8\" y1=\"-23.400000000000002\" x2=\"26.0\" y2=\"-23.400000000000002\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n    \u003crect x=\"-28.6\" y=\"-28.6\" width=\"57.2\" height=\"57.2\" rx=\"10.4\" fill=\"url(#robo-grad-p2)\" stroke=\"#333\" stroke-width=\"1.9500000000000002\"/\u003e\n    \u003crect x=\"-26.0\" y=\"-26.0\" width=\"52.0\" height=\"52.0\" rx=\"7.800000000000001\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.3\" opacity=\"0.3\"/\u003e\n    \u003ccircle cx=\"-18.2\" cy=\"-10.4\" r=\"7.800000000000001\" fill=\"#fff\"/\u003e\n        \u003ccircle cx=\"-15.600000000000001\" cy=\"-13.0\" r=\"3.9000000000000004\" fill=\"#ff1744\"/\u003e\n        \u003ccircle cx=\"20.8\" cy=\"-7.800000000000001\" r=\"6.5\" fill=\"#fff\"/\u003e\n        \u003ccircle cx=\"23.400000000000002\" cy=\"-10.4\" r=\"3.9000000000000004\" fill=\"#ff1744\"/\u003e\n    \u003ccircle cx=\"-26.0\" cy=\"3.9000000000000004\" r=\"6.5\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003ccircle cx=\"26.0\" cy=\"3.9000000000000004\" r=\"6.5\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\n    \u003cpath d=\"M-15.600000000000001 18.2 Q-2.6 33.800000000000004 7.800000000000001 15.600000000000001 Q10.4 23.400000000000002 18.2 18.2\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"3.25\" stroke-linecap=\"round\"/\u003e\n    \u003crect x=\"-10.4\" y=\"31.200000000000003\" width=\"20.8\" height=\"10.4\" rx=\"2.6\" fill=\"#555\"/\u003e\n    \u003ccircle cx=\"-6.5\" cy=\"36.4\" r=\"1.9500000000000002\" fill=\"#ff1744\"/\u003e\n    \u003ccircle cx=\"0\" cy=\"36.4\" r=\"1.9500000000000002\" fill=\"#00e5ff\"/\u003e\n    \u003ccircle cx=\"6.5\" cy=\"36.4\" r=\"1.9500000000000002\" fill=\"#ffee58\"/\u003e\n\u003c/g\u003e\n\u003c/g\u003e\n\u003cellipse cx=\"330\" cy=\"380\" rx=\"60\" ry=\"15\" fill=\"#00e5ff\" opacity=\"0.08\"/\u003e\n\u003cellipse cx=\"470\" cy=\"380\" rx=\"60\" ry=\"15\" fill=\"#ff1744\" opacity=\"0.08\"/\u003e\n\u003c/svg\u003e","audio":""},{"texto":"Na cozinha, Zukinha tentou fazer café. Mas colocou pasta de dente no bule e café na escova.","dialogo":"Hmm, café com menta! O café mais refrescante do mundo!","svg":"\u003csvg viewBox=\"0 0 800 600\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n\u003cdefs\u003e\n    \u003clinearGradient id=\"bg-03\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n        \u003cstop offset=\"0%\" stop-color=\"#2d1b69\"/\u003e\n        \u003cstop offset=\"0.5\" stop-color=\"#1a1a5e\"/\u003e\n        \u003cstop offset=\"100%\" stop-color=\"#4a148c\"/\u003e\n    \u003c/linearGradient\u003e\n\u003c/defs\u003e\n\u003crect width=\"800\" height=\"600\" fill=\"url(#bg-03)\"/\u003e\n\u003crect x=\"0\" y=\"350\" width=\"800\" height=\"250\" fill=\"#311b92\"/\u003e\n\u003crect x=\"100\" y=\"200\" width=\"180\" height=\"150\" rx=\"6\" fill=\"#2d1b69\" stroke=\"#4a148c\" stroke-width=\"1\"/\u003e\n\u003crect x=\"520\" y=\"200\" width=\"180\" height=\"150\" rx=\"6\" fill=\"#2d1b69\" stroke=\"#4a148c\" stroke-width=\"1\"/\u003e\n\u003crect x=\"110\" y=\"210\" width=\"160\" height=\"130\" rx=\"4\" fill=\"#1a1a5e\"/\u003e\n\u003crect x=\"530\" y=\"210\" width=\"160\" height=\"130\" rx=\"4\" fill=\"#1a1a5e\"/\u003e\n\u003ccircle cx=\"190\" cy=\"260\" r=\"30\" fill=\"#8fbf6b\" opacity=\"0.3\"/\u003e\n\u003crect x=\"175\" y=\"245\" width=\"30\" height=\"30\" rx=\"3\" fill=\"#fff\" opacity=\"0.5\"/\u003e\n\u003ccircle cx=\"610\" cy=\"260\" r=\"30\" fill=\"#8b6914\" opacity=\"0.3\"/\u003e\n\u003ccircle cx=\"610\" cy=\"260\" r=\"12\" fill=\"#1a1a5e\"/\u003e\n\u003ccircle cx=\"610\" cy=\"260\" r=\"8\" fill=\"#8b6914\"/\u003e\n\u003cg transform=\"translate(400,220)\"\u003e\n    \u003cg\u003e\n    \u003cdefs\u003e\n        \u003clinearGradient id=\"robo-grad-p3\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n            \u003cstop offset=\"0%\" stop-color=\"#8fbf6b\"/\u003e\n            \u003cstop offset=\"100%\" stop-color=\"#5a8a4a\"/\u003e\n        \u003c/linearGradient\u003e\n    \u003c/defs\u003e\n    \n        \u003cline x1=\"0\" y1=\"-30.0\" x2=\"0\" y2=\"-45.6\" stroke=\"#555\" stroke-width=\"2.4\"/\u003e\n        \u003ccircle cx=\"0\" cy=\"-50.4\" r=\"4.8\" fill=\"#5a8a4a\" opacity=\"0.9\"/\u003e\n        \u003ccircle cx=\"0\" cy=\"-50.4\" r=\"2.4\" fill=\"#fff\" opacity=\"0.6\"/\u003e\n    \n        \u003ccircle cx=\"-21.599999999999998\" cy=\"-21.599999999999998\" r=\"2.4\" fill=\"#555\" stroke=\"#333\" stroke-width=\"1\"/\u003e\n        \u003cline x1=\"-24.0\" y1=\"-21.599999999999998\" x2=\"-19.2\" y2=\"-21.599999999999998\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n        \u003ccircle cx=\"21.599999999999998\" cy=\"-21.599999999999998\" r=\"2.4\" fill=\"#555\" stroke=\"#333\" stroke-width=\"1\"/\u003e\n        \u003cline x1=\"19.2\" y1=\"-21.599999999999998\" x2=\"24.0\" y2=\"-21.599999999999998\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n    \u003crect x=\"-26.4\" y=\"-26.4\" width=\"52.8\" height=\"52.8\" rx=\"9.6\" fill=\"url(#robo-grad-p3)\" stroke=\"#333\" stroke-width=\"1.7999999999999998\"/\u003e\n    \u003crect x=\"-24.0\" y=\"-24.0\" width=\"48.0\" height=\"48.0\" rx=\"7.199999999999999\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.2\" opacity=\"0.3\"/\u003e\n    \u003cellipse cx=\"-14.399999999999999\" cy=\"-6.0\" rx=\"6.0\" ry=\"7.199999999999999\" fill=\"#fff\"/\u003e\n        \u003ccircle cx=\"-14.399999999999999\" cy=\"-4.8\" r=\"3.5999999999999996\" fill=\"#1a1a2e\"/\u003e\n        \u003ccircle cx=\"-15.6\" cy=\"-7.199999999999999\" r=\"1.44\" fill=\"#fff\"/\u003e\n        \u003cellipse cx=\"14.399999999999999\" cy=\"-6.0\" rx=\"6.0\" ry=\"7.199999999999999\" fill=\"#fff\"/\u003e\n        \u003ccircle cx=\"14.399999999999999\" cy=\"-4.8\" r=\"3.5999999999999996\" fill=\"#1a1a2e\"/\u003e\n        \u003ccircle cx=\"13.2\" cy=\"-7.199999999999999\" r=\"1.44\" fill=\"#fff\"/\u003e\n    \u003ccircle cx=\"-21.599999999999998\" cy=\"6.0\" r=\"4.8\" fill=\"#ff8a80\" opacity=\"0.4\"/\u003e\u003ccircle cx=\"21.599999999999998\" cy=\"6.0\" r=\"4.8\" fill=\"#ff8a80\" opacity=\"0.4\"/\u003e\n    \u003cpath d=\"M-9.6 14.399999999999999 Q0 26.4 9.6 14.399999999999999\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"3.0\" stroke-linecap=\"round\"/\u003e\n    \u003crect x=\"-9.6\" y=\"28.799999999999997\" width=\"19.2\" height=\"9.6\" rx=\"2.4\" fill=\"#555\"/\u003e\n    \u003ccircle cx=\"-6.0\" cy=\"33.6\" r=\"1.7999999999999998\" fill=\"#ff1744\"/\u003e\n    \u003ccircle cx=\"0\" cy=\"33.6\" r=\"1.7999999999999998\" fill=\"#00e5ff\"/\u003e\n    \u003ccircle cx=\"6.0\" cy=\"33.6\" r=\"1.7999999999999998\" fill=\"#ffee58\"/\u003e\n\u003c/g\u003e\n\u003c/g\u003e\n\u003crect x=\"360\" y=\"350\" width=\"80\" height=\"250\" fill=\"#4a148c\" opacity=\"0.5\"/\u003e\n\u003crect x=\"365\" y=\"355\" width=\"70\" height=\"240\" fill=\"#2d1b69\" opacity=\"0.5\"/\u003e\n\u003ccircle cx=\"300\" cy=\"365\" r=\"5\" fill=\"#fff\" opacity=\"0.3\"\u003e  \u003canimate attributeName=\"opacity\" values=\"0.3;0.6;0.3\" dur=\"1s\" repeatCount=\"indefinite\"/\u003e\u003c/circle\u003e\n\u003ccircle cx=\"500\" cy=\"365\" r=\"5\" fill=\"#fff\" opacity=\"0.3\"\u003e  \u003canimate attributeName=\"opacity\" values=\"0.3;0.6;0.3\" dur=\"1.3s\" repeatCount=\"indefinite\"/\u003e\u003c/circle\u003e\n\u003c/svg\u003e","audio":""},{"texto":"Zukinha foi se vestir. Calçou a luva no pé, a meia na mão, e usou a calça como cachecol.","dialogo":"Estou elegantemente doido! A moda robô é assim!","svg":"\u003csvg viewBox=\"0 0 800 600\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n\u003cdefs\u003e\n    \u003clinearGradient id=\"bg-04\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n        \u003cstop offset=\"0%\" stop-color=\"#1a1a5e\"/\u003e\n        \u003cstop offset=\"0.5\" stop-color=\"#311b92\"/\u003e\n        \u003cstop offset=\"100%\" stop-color=\"#4a148c\"/\u003e\n    \u003c/linearGradient\u003e\n\u003c/defs\u003e\n\u003crect width=\"800\" height=\"600\" fill=\"url(#bg-04)\"/\u003e\n\u003cg fill=\"#fff\" opacity=\"0.4\"\u003e\n    \u003ccircle cx=\"80\" cy=\"50\" r=\"1.5\"/\u003e\u003ccircle cx=\"200\" cy=\"40\" r=\"2\"/\u003e\n    \u003ccircle cx=\"450\" cy=\"55\" r=\"1.8\"/\u003e\u003ccircle cx=\"680\" cy=\"45\" r=\"1.5\"/\u003e\n\u003c/g\u003e\n\u003cellipse cx=\"400\" cy=\"660\" rx=\"580\" ry=\"160\" fill=\"#1a1a5e\" opacity=\"0.5\"/\u003e\n\u003cellipse cx=\"200\" cy=\"680\" rx=\"300\" ry=\"130\" fill=\"#2d1b69\" opacity=\"0.3\"/\u003e\n\u003cg transform=\"translate(400,210)\"\u003e\n    \u003cg\u003e\n    \u003cdefs\u003e\n        \u003clinearGradient id=\"robo-grad-p4\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n            \u003cstop offset=\"0%\" stop-color=\"#ff7a5a\"/\u003e\n            \u003cstop offset=\"100%\" stop-color=\"#ff1744\"/\u003e\n        \u003c/linearGradient\u003e\n    \u003c/defs\u003e\n    \n        \u003cline x1=\"0\" y1=\"-30.0\" x2=\"0\" y2=\"-45.6\" stroke=\"#555\" stroke-width=\"2.4\"/\u003e\n        \u003ccircle cx=\"0\" cy=\"-50.4\" r=\"4.8\" fill=\"#ff1744\" opacity=\"0.9\"/\u003e\n        \u003ccircle cx=\"0\" cy=\"-50.4\" r=\"2.4\" fill=\"#fff\" opacity=\"0.6\"/\u003e\n    \n        \u003ccircle cx=\"-21.599999999999998\" cy=\"-21.599999999999998\" r=\"2.4\" fill=\"#555\" stroke=\"#333\" stroke-width=\"1\"/\u003e\n        \u003cline x1=\"-24.0\" y1=\"-21.599999999999998\" x2=\"-19.2\" y2=\"-21.599999999999998\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n        \u003ccircle cx=\"21.599999999999998\" cy=\"-21.599999999999998\" r=\"2.4\" fill=\"#555\" stroke=\"#333\" stroke-width=\"1\"/\u003e\n        \u003cline x1=\"19.2\" y1=\"-21.599999999999998\" x2=\"24.0\" y2=\"-21.599999999999998\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n    \u003crect x=\"-26.4\" y=\"-26.4\" width=\"52.8\" height=\"52.8\" rx=\"9.6\" fill=\"url(#robo-grad-p4)\" stroke=\"#333\" stroke-width=\"1.7999999999999998\"/\u003e\n    \u003crect x=\"-24.0\" y=\"-24.0\" width=\"48.0\" height=\"48.0\" rx=\"7.199999999999999\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.2\" opacity=\"0.3\"/\u003e\n    \u003cellipse cx=\"-14.399999999999999\" cy=\"-6.0\" rx=\"6.0\" ry=\"7.199999999999999\" fill=\"#fff\"/\u003e\n        \u003ccircle cx=\"-14.399999999999999\" cy=\"-4.8\" r=\"3.5999999999999996\" fill=\"#1a1a2e\"/\u003e\n        \u003ccircle cx=\"-15.6\" cy=\"-7.199999999999999\" r=\"1.44\" fill=\"#fff\"/\u003e\n        \u003cellipse cx=\"14.399999999999999\" cy=\"-6.0\" rx=\"6.0\" ry=\"7.199999999999999\" fill=\"#fff\"/\u003e\n        \u003ccircle cx=\"14.399999999999999\" cy=\"-4.8\" r=\"3.5999999999999996\" fill=\"#1a1a2e\"/\u003e\n        \u003ccircle cx=\"13.2\" cy=\"-7.199999999999999\" r=\"1.44\" fill=\"#fff\"/\u003e\n    \u003ccircle cx=\"-21.599999999999998\" cy=\"6.0\" r=\"4.8\" fill=\"#ff8a80\" opacity=\"0.4\"/\u003e\u003ccircle cx=\"21.599999999999998\" cy=\"6.0\" r=\"4.8\" fill=\"#ff8a80\" opacity=\"0.4\"/\u003e\n    \u003cpath d=\"M-9.6 14.399999999999999 Q0 26.4 9.6 14.399999999999999\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"3.0\" stroke-linecap=\"round\"/\u003e\n    \u003crect x=\"-9.6\" y=\"28.799999999999997\" width=\"19.2\" height=\"9.6\" rx=\"2.4\" fill=\"#555\"/\u003e\n    \u003ccircle cx=\"-6.0\" cy=\"33.6\" r=\"1.7999999999999998\" fill=\"#ff1744\"/\u003e\n    \u003ccircle cx=\"0\" cy=\"33.6\" r=\"1.7999999999999998\" fill=\"#00e5ff\"/\u003e\n    \u003ccircle cx=\"6.0\" cy=\"33.6\" r=\"1.7999999999999998\" fill=\"#ffee58\"/\u003e\n\u003c/g\u003e\n\u003c/g\u003e\n\u003crect x=\"320\" y=\"135\" width=\"60\" height=\"20\" rx=\"5\" fill=\"#ff1744\" opacity=\"0.6\" transform=\"rotate(-15,350,145)\"/\u003e\n\u003crect x=\"420\" y=\"135\" width=\"60\" height=\"20\" rx=\"5\" fill=\"#00e5ff\" opacity=\"0.6\" transform=\"rotate(15,450,145)\"/\u003e\n\u003crect x=\"340\" y=\"350\" width=\"50\" height=\"60\" rx=\"5\" fill=\"#ffee58\" opacity=\"0.4\" transform=\"rotate(-20,365,380)\"/\u003e\n\u003crect x=\"410\" y=\"350\" width=\"50\" height=\"60\" rx=\"5\" fill=\"#8fbf6b\" opacity=\"0.4\" transform=\"rotate(25,435,380)\"/\u003e\n\u003cpath d=\"M360 340 Q400 330 440 340\" fill=\"none\" stroke=\"#ff1744\" stroke-width=\"4\" opacity=\"0.3\"/\u003e\n\u003c/svg\u003e","audio":""},{"texto":"Uma música começou a tocar. Zukinha começou a dançar: chacoalhava as engrenagens, girava a hélice e apitava no ritmo!","dialogo":"Tchum tchum tchá! Sou o robô mais feliz da galáxia!","svg":"\u003csvg viewBox=\"0 0 800 600\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n\u003cdefs\u003e\n    \u003clinearGradient id=\"bg-05\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n        \u003cstop offset=\"0%\" stop-color=\"#311b92\"/\u003e\n        \u003cstop offset=\"0.5\" stop-color=\"#4a148c\"/\u003e\n        \u003cstop offset=\"100%\" stop-color=\"#1a1a5e\"/\u003e\n    \u003c/linearGradient\u003e\n    \u003cradialGradient id=\"glow-05\" cx=\"50%\" cy=\"50%\" r=\"50%\"\u003e\n        \u003cstop offset=\"0%\" stop-color=\"#00e5ff\" stop-opacity=\"0.25\"/\u003e\n        \u003cstop offset=\"100%\" stop-color=\"#00e5ff\" stop-opacity=\"0\"/\u003e\n    \u003c/radialGradient\u003e\n\u003c/defs\u003e\n\u003crect width=\"800\" height=\"600\" fill=\"url(#bg-05)\"/\u003e\n\u003ccircle cx=\"400\" cy=\"250\" r=\"150\" fill=\"url(#glow-05)\"/\u003e\n\u003cg fill=\"#fff\" opacity=\"0.5\"\u003e\n    \u003ccircle cx=\"120\" cy=\"60\" r=\"2\"/\u003e\u003ccircle cx=\"320\" cy=\"45\" r=\"1.5\"/\u003e\n    \u003ccircle cx=\"580\" cy=\"55\" r=\"2\"/\u003e\u003ccircle cx=\"720\" cy=\"70\" r=\"1.3\"/\u003e\n\u003c/g\u003e\n\u003cellipse cx=\"400\" cy=\"660\" rx=\"580\" ry=\"160\" fill=\"#1a1a5e\" opacity=\"0.5\"/\u003e\n\u003cg transform=\"translate(400,220)\"\u003e\n    \u003cg\u003e\n    \u003cdefs\u003e\n        \u003clinearGradient id=\"robo-grad-p5\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n            \u003cstop offset=\"0%\" stop-color=\"#ff1744\"/\u003e\n            \u003cstop offset=\"100%\" stop-color=\"#ff9100\"/\u003e\n        \u003c/linearGradient\u003e\n    \u003c/defs\u003e\n    \n        \u003cline x1=\"0\" y1=\"-35.0\" x2=\"0\" y2=\"-53.199999999999996\" stroke=\"#555\" stroke-width=\"2.8\"/\u003e\n        \u003ccircle cx=\"0\" cy=\"-58.8\" r=\"5.6\" fill=\"#ff9100\" opacity=\"0.9\"/\u003e\n        \u003ccircle cx=\"0\" cy=\"-58.8\" r=\"2.8\" fill=\"#fff\" opacity=\"0.6\"/\u003e\n    \n        \u003ccircle cx=\"-25.2\" cy=\"-25.2\" r=\"2.8\" fill=\"#555\" stroke=\"#333\" stroke-width=\"1\"/\u003e\n        \u003cline x1=\"-28.0\" y1=\"-25.2\" x2=\"-22.4\" y2=\"-25.2\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n        \u003ccircle cx=\"25.2\" cy=\"-25.2\" r=\"2.8\" fill=\"#555\" stroke=\"#333\" stroke-width=\"1\"/\u003e\n        \u003cline x1=\"22.4\" y1=\"-25.2\" x2=\"28.0\" y2=\"-25.2\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n    \u003crect x=\"-30.799999999999997\" y=\"-30.799999999999997\" width=\"61.599999999999994\" height=\"61.599999999999994\" rx=\"11.2\" fill=\"url(#robo-grad-p5)\" stroke=\"#333\" stroke-width=\"2.0999999999999996\"/\u003e\n    \u003crect x=\"-28.0\" y=\"-28.0\" width=\"56.0\" height=\"56.0\" rx=\"8.399999999999999\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.4\" opacity=\"0.3\"/\u003e\n    \u003ccircle cx=\"-19.599999999999998\" cy=\"-11.2\" r=\"8.399999999999999\" fill=\"#fff\"/\u003e\n        \u003ccircle cx=\"-16.799999999999997\" cy=\"-14.0\" r=\"4.199999999999999\" fill=\"#ff1744\"/\u003e\n        \u003ccircle cx=\"22.4\" cy=\"-8.399999999999999\" r=\"7.0\" fill=\"#fff\"/\u003e\n        \u003ccircle cx=\"25.2\" cy=\"-11.2\" r=\"4.199999999999999\" fill=\"#ff1744\"/\u003e\n    \u003ccircle cx=\"-28.0\" cy=\"4.199999999999999\" r=\"7.0\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003ccircle cx=\"28.0\" cy=\"4.199999999999999\" r=\"7.0\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\n    \u003cpath d=\"M-16.799999999999997 19.599999999999998 Q-2.8 36.4 8.399999999999999 16.799999999999997 Q11.2 25.2 19.599999999999998 19.599999999999998\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"3.5\" stroke-linecap=\"round\"/\u003e\n    \u003crect x=\"-11.2\" y=\"33.599999999999994\" width=\"22.4\" height=\"11.2\" rx=\"2.8\" fill=\"#555\"/\u003e\n    \u003ccircle cx=\"-7.0\" cy=\"39.199999999999996\" r=\"2.0999999999999996\" fill=\"#ff1744\"/\u003e\n    \u003ccircle cx=\"0\" cy=\"39.199999999999996\" r=\"2.0999999999999996\" fill=\"#00e5ff\"/\u003e\n    \u003ccircle cx=\"7.0\" cy=\"39.199999999999996\" r=\"2.0999999999999996\" fill=\"#ffee58\"/\u003e\n\u003c/g\u003e\n\u003c/g\u003e\n\u003ctext x=\"300\" y=\"375\" font-family=\"'Quicksand',sans-serif\" font-size=\"22\" fill=\"#00e5ff\" opacity=\"0.6\" transform=\"rotate(-15,300,375)\"\u003e♪\u003c/text\u003e\n\u003ctext x=\"480\" y=\"380\" font-family=\"'Quicksand',sans-serif\" font-size=\"28\" fill=\"#ff1744\" opacity=\"0.6\" transform=\"rotate(10,480,380)\"\u003e♫\u003c/text\u003e\n\u003ctext x=\"340\" y=\"400\" font-family=\"'Quicksand',sans-serif\" font-size=\"18\" fill=\"#ffee58\" opacity=\"0.5\" transform=\"rotate(-8,340,400)\"\u003e♪\u003c/text\u003e\n\u003ctext x=\"460\" y=\"410\" font-family=\"'Quicksand',sans-serif\" font-size=\"24\" fill=\"#8fbf6b\" opacity=\"0.5\" transform=\"rotate(12,460,410)\"\u003e♫\u003c/text\u003e\n\u003ccircle cx=\"280\" cy=\"340\" r=\"4\" fill=\"#00e5ff\" opacity=\"0.5\"\u003e  \u003canimate attributeName=\"r\" values=\"3;6;3\" dur=\"0.8s\" repeatCount=\"indefinite\"/\u003e\u003c/circle\u003e\n\u003ccircle cx=\"520\" cy=\"320\" r=\"3\" fill=\"#ff1744\" opacity=\"0.5\"\u003e  \u003canimate attributeName=\"r\" values=\"2;5;2\" dur=\"1s\" repeatCount=\"indefinite\"/\u003e\u003c/circle\u003e\n\u003ccircle cx=\"320\" cy=\"360\" r=\"3\" fill=\"#ffee58\" opacity=\"0.4\"\u003e  \u003canimate attributeName=\"r\" values=\"2;4;2\" dur=\"1.2s\" repeatCount=\"indefinite\"/\u003e\u003c/circle\u003e\n\u003ccircle cx=\"480\" cy=\"350\" r=\"4\" fill=\"#8fbf6b\" opacity=\"0.4\"\u003e  \u003canimate attributeName=\"r\" values=\"3;5;3\" dur=\"0.9s\" repeatCount=\"indefinite\"/\u003e\u003c/circle\u003e\n\u003c/svg\u003e","audio":""},{"texto":"Zukinha juntou sucata, parafusos e uma lata velha. Com faíscas e risadas, criou... ROBÔTCHUDO, seu novo amigo!","dialogo":"Você também é doido? Ah, que bom! Vamos bagunçar juntos!","svg":"\u003csvg viewBox=\"0 0 800 600\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n\u003cdefs\u003e\n    \u003clinearGradient id=\"bg-06\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n        \u003cstop offset=\"0%\" stop-color=\"#1a1a5e\"/\u003e\n        \u003cstop offset=\"0.5\" stop-color=\"#2d1b69\"/\u003e\n        \u003cstop offset=\"100%\" stop-color=\"#311b92\"/\u003e\n    \u003c/linearGradient\u003e\n\u003c/defs\u003e\n\u003crect width=\"800\" height=\"600\" fill=\"url(#bg-06)\"/\u003e\n\u003cellipse cx=\"400\" cy=\"660\" rx=\"580\" ry=\"160\" fill=\"#1a1a5e\" opacity=\"0.5\"/\u003e\n\u003cg fill=\"#fff\" opacity=\"0.4\"\u003e\n    \u003ccircle cx=\"100\" cy=\"50\" r=\"1.5\"/\u003e\u003ccircle cx=\"280\" cy=\"40\" r=\"2\"/\u003e\n    \u003ccircle cx=\"500\" cy=\"55\" r=\"1.8\"/\u003e\u003ccircle cx=\"700\" cy=\"45\" r=\"1.5\"/\u003e\n\u003c/g\u003e\n\u003cg transform=\"translate(280,220)\"\u003e\n    \u003cg\u003e\n    \u003cdefs\u003e\n        \u003clinearGradient id=\"robo-grad-p6a\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n            \u003cstop offset=\"0%\" stop-color=\"#00e5ff\"/\u003e\n            \u003cstop offset=\"100%\" stop-color=\"#2196f3\"/\u003e\n        \u003c/linearGradient\u003e\n    \u003c/defs\u003e\n    \n        \u003cline x1=\"0\" y1=\"-27.500000000000004\" x2=\"0\" y2=\"-41.800000000000004\" stroke=\"#555\" stroke-width=\"2.2\"/\u003e\n        \u003ccircle cx=\"0\" cy=\"-46.2\" r=\"4.4\" fill=\"#2196f3\" opacity=\"0.9\"/\u003e\n        \u003ccircle cx=\"0\" cy=\"-46.2\" r=\"2.2\" fill=\"#fff\" opacity=\"0.6\"/\u003e\n    \n        \u003ccircle cx=\"-19.8\" cy=\"-19.8\" r=\"2.2\" fill=\"#555\" stroke=\"#333\" stroke-width=\"1\"/\u003e\n        \u003cline x1=\"-22.0\" y1=\"-19.8\" x2=\"-17.6\" y2=\"-19.8\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n        \u003ccircle cx=\"19.8\" cy=\"-19.8\" r=\"2.2\" fill=\"#555\" stroke=\"#333\" stroke-width=\"1\"/\u003e\n        \u003cline x1=\"17.6\" y1=\"-19.8\" x2=\"22.0\" y2=\"-19.8\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n    \u003crect x=\"-24.200000000000003\" y=\"-24.200000000000003\" width=\"48.400000000000006\" height=\"48.400000000000006\" rx=\"8.8\" fill=\"url(#robo-grad-p6a)\" stroke=\"#333\" stroke-width=\"1.6500000000000001\"/\u003e\n    \u003crect x=\"-22.0\" y=\"-22.0\" width=\"44.0\" height=\"44.0\" rx=\"6.6000000000000005\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.1\" opacity=\"0.3\"/\u003e\n    \u003cellipse cx=\"-13.200000000000001\" cy=\"-5.5\" rx=\"5.5\" ry=\"6.6000000000000005\" fill=\"#fff\"/\u003e\n        \u003ccircle cx=\"-13.200000000000001\" cy=\"-4.4\" r=\"3.3000000000000003\" fill=\"#1a1a2e\"/\u003e\n        \u003ccircle cx=\"-14.3\" cy=\"-6.6000000000000005\" r=\"1.32\" fill=\"#fff\"/\u003e\n        \u003cellipse cx=\"13.200000000000001\" cy=\"-5.5\" rx=\"5.5\" ry=\"6.6000000000000005\" fill=\"#fff\"/\u003e\n        \u003ccircle cx=\"13.200000000000001\" cy=\"-4.4\" r=\"3.3000000000000003\" fill=\"#1a1a2e\"/\u003e\n        \u003ccircle cx=\"12.100000000000001\" cy=\"-6.6000000000000005\" r=\"1.32\" fill=\"#fff\"/\u003e\n    \u003ccircle cx=\"-19.8\" cy=\"5.5\" r=\"4.4\" fill=\"#ff8a80\" opacity=\"0.4\"/\u003e\u003ccircle cx=\"19.8\" cy=\"5.5\" r=\"4.4\" fill=\"#ff8a80\" opacity=\"0.4\"/\u003e\n    \u003cpath d=\"M-8.8 13.200000000000001 Q0 24.200000000000003 8.8 13.200000000000001\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"2.75\" stroke-linecap=\"round\"/\u003e\n    \u003crect x=\"-8.8\" y=\"26.400000000000002\" width=\"17.6\" height=\"8.8\" rx=\"2.2\" fill=\"#555\"/\u003e\n    \u003ccircle cx=\"-5.5\" cy=\"30.800000000000004\" r=\"1.6500000000000001\" fill=\"#ff1744\"/\u003e\n    \u003ccircle cx=\"0\" cy=\"30.800000000000004\" r=\"1.6500000000000001\" fill=\"#00e5ff\"/\u003e\n    \u003ccircle cx=\"5.5\" cy=\"30.800000000000004\" r=\"1.6500000000000001\" fill=\"#ffee58\"/\u003e\n\u003c/g\u003e\n\u003c/g\u003e\n\u003cg transform=\"translate(540,230)\"\u003e\n    \u003crect x=\"-25\" y=\"-28\" width=\"50\" height=\"56\" rx=\"10\" fill=\"#8b6914\" stroke=\"#5a8a4a\" stroke-width=\"2\"/\u003e\n    \u003crect x=\"-22\" y=\"-25\" width=\"44\" height=\"50\" rx=\"7\" fill=\"#5a8a4a\"/\u003e\n    \u003ccircle cx=\"-12\" cy=\"-10\" r=\"5\" fill=\"#fff\"/\u003e\u003ccircle cx=\"-12\" cy=\"-9\" r=\"3\" fill=\"#1a1a2e\"/\u003e\n    \u003ccircle cx=\"12\" cy=\"-10\" r=\"5\" fill=\"#fff\"/\u003e\u003ccircle cx=\"12\" cy=\"-9\" r=\"3\" fill=\"#1a1a2e\"/\u003e\n    \u003cpath d=\"M-8 4 Q0 10 8 4\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"2\" stroke-linecap=\"round\"/\u003e\n    \u003crect x=\"-5\" y=\"18\" width=\"10\" height=\"10\" rx=\"2\" fill=\"#8b6914\"/\u003e\n    \u003crect x=\"-3\" y=\"20\" width=\"6\" height=\"6\" rx=\"1\" fill=\"#ff1744\"/\u003e\n    \u003ccircle cx=\"0\" cy=\"-32\" r=\"3\" fill=\"#ff1744\"/\u003e\n\u003c/g\u003e\n\u003cpath d=\"M340 280 Q400 310 480 280\" fill=\"none\" stroke=\"#ffee58\" stroke-width=\"2\" opacity=\"0.4\" stroke-dasharray=\"6,4\"/\u003e\n\u003ccircle cx=\"400\" cy=\"300\" r=\"3\" fill=\"#ffee58\" opacity=\"0.5\"\u003e  \u003canimate attributeName=\"r\" values=\"2;5;2\" dur=\"1s\" repeatCount=\"indefinite\"/\u003e\u003c/circle\u003e\n\u003ccircle cx=\"420\" cy=\"290\" r=\"2\" fill=\"#00e5ff\" opacity=\"0.4\"\u003e  \u003canimate attributeName=\"r\" values=\"1;4;1\" dur=\"1.3s\" repeatCount=\"indefinite\"/\u003e\u003c/circle\u003e\n\u003c/svg\u003e","audio":""},{"texto":"Os dois robôs fizeram uma festa no laboratório. Jogaram confete de parafuso, soltaram bolhas de sabão elétricas e dançaram até o chão tremer.","dialogo":"Essa é a melhor festa robótica de todos os tempos! Wheee!","svg":"\u003csvg viewBox=\"0 0 800 600\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n\u003cdefs\u003e\n    \u003clinearGradient id=\"bg-07\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n        \u003cstop offset=\"0%\" stop-color=\"#311b92\"/\u003e\n        \u003cstop offset=\"0.5\" stop-color=\"#4a148c\"/\u003e\n        \u003cstop offset=\"100%\" stop-color=\"#1a1a5e\"/\u003e\n    \u003c/linearGradient\u003e\n    \u003cradialGradient id=\"glow-07\" cx=\"50%\" cy=\"50%\" r=\"50%\"\u003e\n        \u003cstop offset=\"0%\" stop-color=\"#ffee58\" stop-opacity=\"0.3\"/\u003e\n        \u003cstop offset=\"100%\" stop-color=\"#ffee58\" stop-opacity=\"0\"/\u003e\n    \u003c/radialGradient\u003e\n\u003c/defs\u003e\n\u003crect width=\"800\" height=\"600\" fill=\"url(#bg-07)\"/\u003e\n\u003ccircle cx=\"400\" cy=\"250\" r=\"160\" fill=\"url(#glow-07)\"/\u003e\n\u003cg fill=\"#fff\" opacity=\"0.5\"\u003e\n    \u003ccircle cx=\"80\" cy=\"50\" r=\"1.5\"/\u003e\u003ccircle cx=\"220\" cy=\"35\" r=\"2\"/\u003e\n    \u003ccircle cx=\"550\" cy=\"45\" r=\"1.8\"/\u003e\u003ccircle cx=\"720\" cy=\"60\" r=\"1.5\"/\u003e\n\u003c/g\u003e\n\u003cellipse cx=\"400\" cy=\"660\" rx=\"580\" ry=\"160\" fill=\"#1a1a5e\" opacity=\"0.5\"/\u003e\n\u003cg transform=\"translate(280,220)\"\u003e\n    \u003cg\u003e\n    \u003cdefs\u003e\n        \u003clinearGradient id=\"robo-grad-p7a\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n            \u003cstop offset=\"0%\" stop-color=\"#00e5ff\"/\u003e\n            \u003cstop offset=\"100%\" stop-color=\"#2196f3\"/\u003e\n        \u003c/linearGradient\u003e\n    \u003c/defs\u003e\n    \n        \u003cline x1=\"0\" y1=\"-25.0\" x2=\"0\" y2=\"-38.0\" stroke=\"#555\" stroke-width=\"2.0\"/\u003e\n        \u003ccircle cx=\"0\" cy=\"-42.0\" r=\"4.0\" fill=\"#2196f3\" opacity=\"0.9\"/\u003e\n        \u003ccircle cx=\"0\" cy=\"-42.0\" r=\"2.0\" fill=\"#fff\" opacity=\"0.6\"/\u003e\n    \n        \u003ccircle cx=\"-18.0\" cy=\"-18.0\" r=\"2.0\" fill=\"#555\" stroke=\"#333\" stroke-width=\"1\"/\u003e\n        \u003cline x1=\"-20.0\" y1=\"-18.0\" x2=\"-16.0\" y2=\"-18.0\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n        \u003ccircle cx=\"18.0\" cy=\"-18.0\" r=\"2.0\" fill=\"#555\" stroke=\"#333\" stroke-width=\"1\"/\u003e\n        \u003cline x1=\"16.0\" y1=\"-18.0\" x2=\"20.0\" y2=\"-18.0\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n    \u003crect x=\"-22.0\" y=\"-22.0\" width=\"44.0\" height=\"44.0\" rx=\"8.0\" fill=\"url(#robo-grad-p7a)\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n    \u003crect x=\"-20.0\" y=\"-20.0\" width=\"40.0\" height=\"40.0\" rx=\"6.0\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.0\" opacity=\"0.3\"/\u003e\n    \u003ccircle cx=\"-14.0\" cy=\"-8.0\" r=\"6.0\" fill=\"#fff\"/\u003e\n        \u003ccircle cx=\"-12.0\" cy=\"-10.0\" r=\"3.0\" fill=\"#ff1744\"/\u003e\n        \u003ccircle cx=\"16.0\" cy=\"-6.0\" r=\"5.0\" fill=\"#fff\"/\u003e\n        \u003ccircle cx=\"18.0\" cy=\"-8.0\" r=\"3.0\" fill=\"#ff1744\"/\u003e\n    \u003ccircle cx=\"-20.0\" cy=\"3.0\" r=\"5.0\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\u003ccircle cx=\"20.0\" cy=\"3.0\" r=\"5.0\" fill=\"#ff8a80\" opacity=\"0.5\"/\u003e\n    \u003cpath d=\"M-12.0 14.0 Q-2.0 26.0 6.0 12.0 Q8.0 18.0 14.0 14.0\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"2.5\" stroke-linecap=\"round\"/\u003e\n    \u003crect x=\"-8.0\" y=\"24.0\" width=\"16.0\" height=\"8.0\" rx=\"2.0\" fill=\"#555\"/\u003e\n    \u003ccircle cx=\"-5.0\" cy=\"28.0\" r=\"1.5\" fill=\"#ff1744\"/\u003e\n    \u003ccircle cx=\"0\" cy=\"28.0\" r=\"1.5\" fill=\"#00e5ff\"/\u003e\n    \u003ccircle cx=\"5.0\" cy=\"28.0\" r=\"1.5\" fill=\"#ffee58\"/\u003e\n\u003c/g\u003e\n\u003c/g\u003e\n\u003cg transform=\"translate(540,230)\"\u003e\n    \u003crect x=\"-22\" y=\"-25\" width=\"44\" height=\"50\" rx=\"8\" fill=\"#8b6914\" stroke=\"#5a8a4a\" stroke-width=\"1.5\"/\u003e\n    \u003crect x=\"-20\" y=\"-22\" width=\"40\" height=\"44\" rx=\"6\" fill=\"#5a8a4a\"/\u003e\n    \u003ccircle cx=\"-10\" cy=\"-8\" r=\"4\" fill=\"#fff\"/\u003e\u003ccircle cx=\"-10\" cy=\"-7\" r=\"2.5\" fill=\"#1a1a2e\"/\u003e\n    \u003ccircle cx=\"10\" cy=\"-8\" r=\"4\" fill=\"#fff\"/\u003e\u003ccircle cx=\"10\" cy=\"-7\" r=\"2.5\" fill=\"#1a1a2e\"/\u003e\n    \u003cpath d=\"M-6 5 Q0 10 6 5\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"2\" stroke-linecap=\"round\"/\u003e\n    \u003crect x=\"-4\" y=\"16\" width=\"8\" height=\"8\" rx=\"2\" fill=\"#8b6914\"/\u003e\n    \u003ccircle cx=\"0\" cy=\"-28\" r=\"3\" fill=\"#00e5ff\"/\u003e\n\u003c/g\u003e\n\u003ccircle cx=\"250\" cy=\"160\" r=\"6\" fill=\"#ff1744\" opacity=\"0.7\"\u003e\n    \u003canimate attributeName=\"r\" values=\"4;8;4\" dur=\"0.6s\" repeatCount=\"indefinite\"/\u003e\n    \u003canimate attributeName=\"opacity\" values=\"0.7;0.3;0.7\" dur=\"0.6s\" repeatCount=\"indefinite\"/\u003e\n\u003c/circle\u003e\n\u003ccircle cx=\"520\" cy=\"150\" r=\"5\" fill=\"#00e5ff\" opacity=\"0.6\"\u003e\n    \u003canimate attributeName=\"r\" values=\"3;7;3\" dur=\"0.8s\" repeatCount=\"indefinite\"/\u003e\n\u003c/circle\u003e\n\u003ccircle cx=\"350\" cy=\"140\" r=\"4\" fill=\"#ffee58\" opacity=\"0.6\"\u003e\n    \u003canimate attributeName=\"r\" values=\"3;6;3\" dur=\"0.7s\" repeatCount=\"indefinite\"/\u003e\n\u003c/circle\u003e\n\u003ccircle cx=\"460\" cy=\"160\" r=\"5\" fill=\"#8fbf6b\" opacity=\"0.6\"\u003e\n    \u003canimate attributeName=\"r\" values=\"4;7;4\" dur=\"0.9s\" repeatCount=\"indefinite\"/\u003e\n\u003c/circle\u003e\n\u003ccircle cx=\"300\" cy=\"180\" r=\"3\" fill=\"#ff9100\" opacity=\"0.5\"\u003e\n    \u003canimate attributeName=\"r\" values=\"2;5;2\" dur=\"1.1s\" repeatCount=\"indefinite\"/\u003e\n\u003c/circle\u003e\n\u003ccircle cx=\"500\" cy=\"180\" r=\"4\" fill=\"#ff1744\" opacity=\"0.5\"\u003e\n    \u003canimate attributeName=\"r\" values=\"3;6;3\" dur=\"0.7s\" repeatCount=\"indefinite\"/\u003e\n\u003c/circle\u003e\n\u003cline x1=\"280\" y1=\"120\" x2=\"280\" y2=\"140\" stroke=\"#00e5ff\" stroke-width=\"2\" opacity=\"0.5\"/\u003e\n\u003cline x1=\"460\" y1=\"110\" x2=\"460\" y2=\"135\" stroke=\"#ff1744\" stroke-width=\"2\" opacity=\"0.5\"/\u003e\n\u003c/svg\u003e","audio":""},{"texto":"Cansados, Zukinha e Robôtchudo sentaram perto da tomada. Com os olhinhos piscando devagar, deram a mão e foram carregar juntos.","dialogo":"Até amanhã... amigo... Zzzzt...","svg":"\u003csvg viewBox=\"0 0 800 600\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n\u003cdefs\u003e\n    \u003clinearGradient id=\"bg-08\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n        \u003cstop offset=\"0%\" stop-color=\"#1a1a5e\"/\u003e\n        \u003cstop offset=\"0.4\" stop-color=\"#2d1b69\"/\u003e\n        \u003cstop offset=\"100%\" stop-color=\"#311b92\"/\u003e\n    \u003c/linearGradient\u003e\n    \u003cradialGradient id=\"glow-08\" cx=\"50%\" cy=\"50%\" r=\"50%\"\u003e\n        \u003cstop offset=\"0%\" stop-color=\"#00e5ff\" stop-opacity=\"0.2\"/\u003e\n        \u003cstop offset=\"100%\" stop-color=\"#00e5ff\" stop-opacity=\"0\"/\u003e\n    \u003c/radialGradient\u003e\n\u003c/defs\u003e\n\u003crect width=\"800\" height=\"600\" fill=\"url(#bg-08)\"/\u003e\n\u003ccircle cx=\"650\" cy=\"100\" r=\"50\" fill=\"#00e5ff\" opacity=\"0.1\"/\u003e\n\u003ccircle cx=\"642\" cy=\"96\" r=\"45\" fill=\"#1a1a5e\" opacity=\"0.8\"/\u003e\n\u003cg fill=\"#fff\" opacity=\"0.3\"\u003e\n    \u003ccircle cx=\"100\" cy=\"55\" r=\"1.2\"/\u003e\u003ccircle cx=\"280\" cy=\"40\" r=\"1.5\"/\u003e\n    \u003ccircle cx=\"450\" cy=\"50\" r=\"1.3\"/\u003e\u003ccircle cx=\"580\" cy=\"35\" r=\"1.5\"/\u003e\n    \u003ccircle cx=\"720\" cy=\"70\" r=\"1\"/\u003e\n\u003c/g\u003e\n\u003cellipse cx=\"400\" cy=\"660\" rx=\"580\" ry=\"160\" fill=\"#1a1a5e\" opacity=\"0.5\"/\u003e\n\u003cellipse cx=\"200\" cy=\"690\" rx=\"300\" ry=\"130\" fill=\"#2d1b69\" opacity=\"0.3\"/\u003e\n\u003cg transform=\"translate(280,210)\"\u003e\n    \u003cg\u003e\n    \u003cdefs\u003e\n        \u003clinearGradient id=\"robo-grad-p8a\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"\u003e\n            \u003cstop offset=\"0%\" stop-color=\"#00e5ff\"/\u003e\n            \u003cstop offset=\"100%\" stop-color=\"#2196f3\"/\u003e\n        \u003c/linearGradient\u003e\n    \u003c/defs\u003e\n    \n        \u003cline x1=\"0\" y1=\"-25.0\" x2=\"0\" y2=\"-38.0\" stroke=\"#555\" stroke-width=\"2.0\"/\u003e\n        \u003ccircle cx=\"0\" cy=\"-42.0\" r=\"4.0\" fill=\"#2196f3\" opacity=\"0.9\"/\u003e\n        \u003ccircle cx=\"0\" cy=\"-42.0\" r=\"2.0\" fill=\"#fff\" opacity=\"0.6\"/\u003e\n    \n        \u003ccircle cx=\"-18.0\" cy=\"-18.0\" r=\"2.0\" fill=\"#555\" stroke=\"#333\" stroke-width=\"1\"/\u003e\n        \u003cline x1=\"-20.0\" y1=\"-18.0\" x2=\"-16.0\" y2=\"-18.0\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n        \u003ccircle cx=\"18.0\" cy=\"-18.0\" r=\"2.0\" fill=\"#555\" stroke=\"#333\" stroke-width=\"1\"/\u003e\n        \u003cline x1=\"16.0\" y1=\"-18.0\" x2=\"20.0\" y2=\"-18.0\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n    \u003crect x=\"-22.0\" y=\"-22.0\" width=\"44.0\" height=\"44.0\" rx=\"8.0\" fill=\"url(#robo-grad-p8a)\" stroke=\"#333\" stroke-width=\"1.5\"/\u003e\n    \u003crect x=\"-20.0\" y=\"-20.0\" width=\"40.0\" height=\"40.0\" rx=\"6.0\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.0\" opacity=\"0.3\"/\u003e\n    \u003cpath d=\"M-18.0 -5.0 Q-12.0 2.0 -6.0 -5.0\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"2.5\" stroke-linecap=\"round\"/\u003e\n        \u003cpath d=\"M6.0 -5.0 Q12.0 2.0 18.0 -5.0\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"2.5\" stroke-linecap=\"round\"/\u003e\n    \n    \u003cpath d=\"M-6.0 12.0 Q0 16.0 6.0 12.0\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"2.0\" stroke-linecap=\"round\"/\u003e\n    \u003crect x=\"-8.0\" y=\"24.0\" width=\"16.0\" height=\"8.0\" rx=\"2.0\" fill=\"#555\"/\u003e\n    \u003ccircle cx=\"-5.0\" cy=\"28.0\" r=\"1.5\" fill=\"#ff1744\"/\u003e\n    \u003ccircle cx=\"0\" cy=\"28.0\" r=\"1.5\" fill=\"#00e5ff\"/\u003e\n    \u003ccircle cx=\"5.0\" cy=\"28.0\" r=\"1.5\" fill=\"#ffee58\"/\u003e\n\u003c/g\u003e\n\u003c/g\u003e\n\u003cg transform=\"translate(540,220)\"\u003e\n    \u003crect x=\"-20\" y=\"-22\" width=\"40\" height=\"44\" rx=\"6\" fill=\"#8b6914\" stroke=\"#5a8a4a\" stroke-width=\"1\"/\u003e\n    \u003crect x=\"-18\" y=\"-20\" width=\"36\" height=\"40\" rx=\"4\" fill=\"#5a8a4a\"/\u003e\n    \u003cpath d=\"M-14 -10 Q-10 -4 -6 -10\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"2\" stroke-linecap=\"round\"/\u003e\n    \u003cpath d=\"M6 -10 Q10 -4 14 -10\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"2\" stroke-linecap=\"round\"/\u003e\n    \u003cpath d=\"M-5 5 Q0 9 5 5\" fill=\"none\" stroke=\"#1a1a2e\" stroke-width=\"1.5\" stroke-linecap=\"round\"/\u003e\n    \u003ccircle cx=\"0\" cy=\"-26\" r=\"2.5\" fill=\"#00e5ff\" opacity=\"0.5\"/\u003e\n\u003c/g\u003e\n\u003ctext x=\"380\" y=\"170\" font-family=\"'Quicksand',sans-serif\" font-size=\"28\" fill=\"#00e5ff\" opacity=\"0.25\" font-weight=\"600\"\u003ez\u003c/text\u003e\n\u003ctext x=\"420\" y=\"145\" font-family=\"'Quicksand',sans-serif\" font-size=\"20\" fill=\"#00e5ff\" opacity=\"0.18\" font-weight=\"600\"\u003ez\u003c/text\u003e\n\u003ctext x=\"450\" y=\"125\" font-family=\"'Quicksand',sans-serif\" font-size=\"14\" fill=\"#00e5ff\" opacity=\"0.12\" font-weight=\"600\"\u003ez\u003c/text\u003e\n\u003crect x=\"310\" y=\"360\" width=\"180\" height=\"15\" rx=\"5\" fill=\"#311b92\"/\u003e\n\u003crect x=\"320\" y=\"362\" width=\"50\" height=\"11\" rx=\"3\" fill=\"#00e5ff\" opacity=\"0.6\"\u003e\n    \u003canimate attributeName=\"width\" values=\"50;160;50\" dur=\"2s\" repeatCount=\"indefinite\"/\u003e\n\u003c/rect\u003e\n\u003ccircle cx=\"400\" cy=\"367\" r=\"8\" fill=\"#00e5ff\" opacity=\"0.3\"\u003e\n    \u003canimate attributeName=\"r\" values=\"6;12;6\" dur=\"2s\" repeatCount=\"indefinite\"/\u003e\n    \u003canimate attributeName=\"opacity\" values=\"0.3;0.1;0.3\" dur=\"2s\" repeatCount=\"indefinite\"/\u003e\n\u003c/circle\u003e\n\u003c/svg\u003e","audio":""}]};
+const WHATSAPP_NUM = "5582991856656";
+const T = {
+  listen:'🔊 Ouvir história', stop:'⏹ Parar', open:'Abrir livro 📖', again:'Ler de novo 🔄',
+  prev:'← Anterior', next:'Próxima →', auto:'▶ Auto-leitura', autoStop:'⏹ Parar auto-leitura',
+  theEnd:'— Fim —', endText:'Obrigado por ler! Boa noite!', ages:'Idade',
+  noTts:'Seu navegador não suporta narração. Tente Chrome ou Edge.',
+  whatsapp:'Compartilhar no WhatsApp',
+  pdf:'Salvar como PDF'
+};
+
+function escaparHTML(valor) {
+  return String(valor ?? '').replace(/[&<>"']/g, char => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  })[char]);
+}
+function textoHTML(valor) {
+  return escaparHTML(valor).replace(/\r?\n/g, '<br>');
+}
+function svgHTML(valor) {
+  return typeof valor === 'string' ? valor : '';
+}
+function el(html) {
+  const d = document.createElement('div');
+  d.innerHTML = html;
+  return d.firstElementChild;
+}
+
+/* ---------- Render ---------- */
+const pagesEl = document.getElementById('pages');
+const dotsEl = document.getElementById('dots');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const total = LIVRO.paginas.length + 2;
+let cur = 0;
+let auto = false;
+
+prevBtn.textContent = T.prev;
+nextBtn.textContent = T.next;
+prevBtn.setAttribute('aria-label', T.prev);
+nextBtn.setAttribute('aria-label', T.next);
+
+pagesEl.appendChild(el(`<div class="page cover active">
+  <div class="art">${svgHTML(LIVRO.capa_svg)}</div>
+  <div class="content">
+    <h1>${escaparHTML(LIVRO.titulo)}</h1>
+    <h2>${escaparHTML(LIVRO.subtitulo || '')}</h2>
+    <div class="badge">${escaparHTML(T.ages)} ${escaparHTML(LIVRO.faixa_etaria || '2 — 6 anos')}</div><br>
+    <button class="btn btn-big" type="button" onclick="go(1)">${escaparHTML(T.open)}</button>
+  </div>
+</div>`));
+
+LIVRO.paginas.forEach((p, i) => {
+  const dialogue = p.dialogo ? `<div class="dialogue">${textoHTML(p.dialogo)}</div>` : '';
+  pagesEl.appendChild(el(`<div class="page">
+    <div class="art">${svgHTML(p.svg)}</div>
+    <div class="content">
+      <p>${textoHTML(p.texto)}</p>
+      ${dialogue}
+      <button class="btn btn-play" type="button" data-idx="${i}" onclick="togglePlay(${i}, this)">${escaparHTML(T.listen)}</button>
+      <div class="pageno">${i + 1} / ${LIVRO.paginas.length}</div>
+    </div>
+  </div>`));
+});
+
+pagesEl.appendChild(el(`<div class="page">
+  <div class="content" style="padding:70px 34px;">
+    <div class="end-emoji" aria-hidden="true">🌙✨</div>
+    <h1 style="color:var(--coral);font-size:34px;margin-bottom:14px;font-family:'Playfair Display',serif;">${escaparHTML(T.theEnd)}</h1>
+    <p>${textoHTML(LIVRO.texto_final || T.endText)}</p>
+    <button class="btn btn-big" type="button" onclick="irInicio()">${escaparHTML(T.again)}</button>
+  </div>
+</div>`));
+
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('button');
+  d.type = 'button';
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.setAttribute('aria-label', `Ir para página ${i + 1}`);
+  d.onclick = () => show(i);
+  dotsEl.appendChild(d);
+}
+
+function show(i) {
+  pararSom();
+  cur = Math.max(0, Math.min(total - 1, i));
+  document.querySelectorAll('.page').forEach((p, k) => p.classList.toggle('active', k === cur));
+  document.querySelectorAll('.dot').forEach((d, k) => d.classList.toggle('on', k === cur));
+  prevBtn.disabled = cur === 0;
+  nextBtn.disabled = cur === total - 1;
+  if (auto) autoLer();
+}
+function go(delta) { show(cur + delta); }
+function irInicio() { auto = false; syncAutoBtn(); show(0); }
+document.addEventListener('keydown', event => {
+  if (event.key === 'ArrowRight') go(1);
+  if (event.key === 'ArrowLeft') go(-1);
+});
+
+/* ---------- Player: áudio embutido primeiro, fallback narração ---------- */
+let curAudio = null;
+let curBtn = null;
+let curUtter = null;
+let playToken = 0;
+
+function escolherVoz() {
+  const voices = speechSynthesis.getVoices();
+  const preferred = /Lucia|Google português|Natural|Microsoft/i;
+  return voices.find(v => v.lang.startsWith('pt') && preferred.test(v.name))
+      || voices.find(v => v.lang.startsWith('pt'))
+      || null;
+}
+if ('speechSynthesis' in window) speechSynthesis.getVoices();
+
+function pararSom() {
+  playToken += 1;
+  if (curAudio) {
+    curAudio.onended = null;
+    curAudio.onerror = null;
+    curAudio.pause();
+    curAudio = null;
+  }
+  if (curUtter) {
+    curUtter.onstart = null;
+    curUtter.onend = null;
+    curUtter.onerror = null;
+    curUtter = null;
+  }
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  if (curBtn) {
+    curBtn.classList.remove('playing');
+    curBtn.textContent = T.listen;
+    curBtn = null;
+  }
+}
+
+function tocarPagina(i, btn, onEnd) {
+  pararSom();
+  const token = playToken;
+  const pagina = LIVRO.paginas[i];
+  const textoCompleto = [pagina.texto, pagina.dialogo].filter(Boolean).join(' ');
+  const done = ok => {
+    if (token !== playToken) return;
+    if (btn) {
+      btn.classList.remove('playing');
+      btn.textContent = T.listen;
+    }
+    curBtn = null;
+    curAudio = null;
+    curUtter = null;
+    if (onEnd) onEnd(ok !== false);
+  };
+  if (btn) {
+    btn.classList.add('playing');
+    btn.textContent = T.stop;
+    curBtn = btn;
+  }
+  if (pagina.audio) {
+    curAudio = new Audio(pagina.audio);
+    curAudio.onended = () => done(true);
+    curAudio.onerror = () => {
+      curAudio = null;
+      falar(textoCompleto, done, token);
+    };
+    curAudio.play().catch(() => {
+      curAudio = null;
+      falar(textoCompleto, done, token);
+    });
+  } else {
+    falar(textoCompleto, done, token);
+  }
+}
+
+function falar(texto, done, token) {
+  if (!('speechSynthesis' in window)) {
+    alert(T.noTts);
+    done(false);
+    return;
+  }
+  const utterance = new SpeechSynthesisUtterance(String(texto || '').replace(/<[^>]+>/g, ''));
+  utterance.lang = 'pt-BR';
+  utterance.rate = 0.85;
+  utterance.pitch = 1.1;
+  const voz = escolherVoz();
+  if (voz) utterance.voice = voz;
+  let started = false;
+  const startedAt = Date.now();
+  utterance.onstart = () => { started = true; };
+  utterance.onend = () => done(started || Date.now() - startedAt > 500);
+  utterance.onerror = () => done(false);
+  curUtter = utterance;
+  speechSynthesis.speak(utterance);
+}
+
+function togglePlay(i, btn) {
+  if (curBtn === btn) {
+    auto = false;
+    syncAutoBtn();
+    pararSom();
+    return;
+  }
+  auto = false;
+  syncAutoBtn();
+  tocarPagina(i, btn, null);
+}
+
+/* ---------- Auto-leitura ---------- */
+function syncAutoBtn() {
+  const button = document.getElementById('autoBtn');
+  button.classList.toggle('on', auto);
+  button.textContent = auto ? T.autoStop : T.auto;
+  button.setAttribute('aria-label', button.textContent);
+}
+function toggleAuto() {
+  auto = !auto;
+  syncAutoBtn();
+  if (auto) {
+    if (cur === 0 || cur === total - 1) show(1);
+    else autoLer();
+  } else {
+    pararSom();
+  }
+}
+function autoLer() {
+  if (!auto) return;
+  if (cur === 0 || cur === total - 1) {
+    auto = false;
+    syncAutoBtn();
+    return;
+  }
+  const idx = cur - 1;
+  const pageAtStart = cur;
+  const btn = document.querySelector(`.btn-play[data-idx="${idx}"]`);
+  tocarPagina(idx, btn, ok => {
+    if (!ok) {
+      auto = false;
+      syncAutoBtn();
+      return;
+    }
+    if (auto && cur === pageAtStart) {
+      setTimeout(() => {
+        if (auto && cur === pageAtStart) go(1);
+      }, 700);
+    }
+  });
+}
+
+/* ---------- WhatsApp ---------- */
+function compartilharWhatsApp() {
+  const texto = encodeURIComponent(`📖 ${LIVRO.titulo}\n\n${LIVRO.subtitulo || ''}\n\nLeia no InfoEngine!`);
+  window.open(`https://wa.me/${WHATSAPP_NUM}?text=${texto}`, '_blank');
+}
+
+/* ---------- PDF ---------- */
+function exportarPDF() {
+  const element = document.getElementById('livro');
+  const opt = {
+    margin: 10,
+    filename: `${LIVRO.titulo.replace(/\s+/g, '_')}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+  html2pdf().set(opt).from(element).save();
+}
+
+syncAutoBtn();
+show(0);
+</script>
+</body>
+</html>

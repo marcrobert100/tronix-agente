@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tronix v1.4 - Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0d1117; color: #e6edf3; min-height: 100vh; }
+        .header { background: linear-gradient(135deg, #0d1117 0%, #161b22 100%); border-bottom: 1px solid #30363d; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+        .header h1 { font-size: 1.3rem; font-weight: 600; }
+        .header h1 span { color: #58a6ff; }
+        .header .status { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        .status-dot.online { background: #3fb950; box-shadow: 0 0 8px #3fb95088; }
+        .status-dot.offline { background: #f85149; box-shadow: 0 0 8px #f8514988; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .stat-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; transition: border-color .2s; }
+        .stat-card:hover { border-color: #58a6ff; }
+        .stat-card .label { font-size: 0.8rem; color: #8b949e; text-transform: uppercase; letter-spacing: .5px; }
+        .stat-card .value { font-size: 2rem; font-weight: 700; margin-top: 4px; }
+        .stat-card .value.green { color: #3fb950; }
+        .stat-card .value.yellow { color: #d29922; }
+        .stat-card .value.blue { color: #58a6ff; }
+        .stat-card .value.purple { color: #bc8cff; }
+        .panel { background: #161b22; border: 1px solid #30363d; border-radius: 8px; margin-bottom: 16px; }
+        .panel-header { padding: 14px 20px; border-bottom: 1px solid #30363d; font-weight: 600; font-size: 0.9rem; color: #8b949e; text-transform: uppercase; letter-spacing: .5px; display: flex; justify-content: space-between; align-items: center; }
+        .panel-body { padding: 16px 20px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        th { text-align: left; padding: 8px 12px; color: #8b949e; font-weight: 500; border-bottom: 1px solid #21262d; font-size: 0.8rem; text-transform: uppercase; letter-spacing: .3px; }
+        td { padding: 8px 12px; border-bottom: 1px solid #21262d; }
+        tr:hover td { background: #1c2128; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+        .badge.sucesso { background: #3fb95022; color: #3fb950; border: 1px solid #3fb95044; }
+        .badge.erro { background: #f8514922; color: #f85149; border: 1px solid #f8514944; }
+        .badge.pendente { background: #d2992222; color: #d29922; border: 1px solid #d2992244; }
+        .badge.running { background: #58a6ff22; color: #58a6ff; border: 1px solid #58a6ff44; }
+        .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .chart-box { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; }
+        @media (max-width: 768px) { .chart-row { grid-template-columns: 1fr; } }
+        .log-entry { padding: 6px 0; border-bottom: 1px solid #21262d; font-size: 0.8rem; display: flex; gap: 12px; }
+        .log-entry .time { color: #8b949e; white-space: nowrap; min-width: 80px; }
+        .log-entry .msg { flex: 1; }
+        .ws-badge { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; background: #21262d; }
+        .ws-badge.connected { background: #3fb95022; color: #3fb950; }
+        .ws-badge.disconnected { background: #f8514922; color: #f85149; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><span>Tronix</span> v1.4 · PC Soluções</h1>
+        <div class="status">
+            <span id="wsIndicator" class="ws-badge disconnected">Desconectado</span>
+            <span id="clock"></span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="grid" id="statsGrid">
+            <div class="stat-card"><div class="label">Total Conteudos</div><div class="value blue" id="totalCount">-</div></div>
+            <div class="stat-card"><div class="label">Pendentes</div><div class="value yellow" id="pendingCount">-</div></div>
+            <div class="stat-card"><div class="label">Postados</div><div class="value green" id="postedCount">-</div></div>
+            <div class="stat-card"><div class="label">Hoje</div><div class="value purple" id="todayCount">-</div></div>
+        </div>
+
+        <div class="chart-row">
+            <div class="chart-box">
+                <div style="font-size:0.8rem;color:#8b949e;text-transform:uppercase;margin-bottom:12px;">Conteudo por Tipo</div>
+                <canvas id="tipoChart" height="200"></canvas>
+            </div>
+            <div class="chart-box">
+                <div style="font-size:0.8rem;color:#8b949e;text-transform:uppercase;margin-bottom:12px;">Status Pipeline</div>
+                <canvas id="statusChart" height="200"></canvas>
+            </div>
+        </div>
+
+        <div class="panel" style="margin-top:16px;">
+            <div class="panel-header">Pipeline Log <span style="font-weight:400;color:#8b949e;text-transform:none;" id="logCount"></span></div>
+            <div class="panel-body" id="logContainer" style="max-height:400px;overflow-y:auto;"></div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">Conteudos Recentes <span style="font-weight:400;color:#8b949e;text-transform:none;" id="contentCount"></span></div>
+            <div class="panel-body">
+                <table>
+                    <thead><tr><th>ID</th><th>Titulo</th><th>Tipo</th><th>Status</th><th>Data</th></tr></thead>
+                    <tbody id="contentTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const GATEWAY = window.location.protocol === 'https:' ? `${window.location.origin}` : 'http://localhost:8081';
+        const WS_URL = GATEWAY.replace('http://', 'ws://').replace('https://', 'wss://') + '/ws';
+
+        let tipoChart, statusChart;
+
+        function updateClock() {
+            document.getElementById('clock').textContent = new Date().toLocaleString('pt-BR');
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function initCharts(data) {
+            const tipos = data?.stats?.por_tipo || [];
+            const tipoCtx = document.getElementById('tipoChart').getContext('2d');
+            if (tipoChart) tipoChart.destroy();
+            tipoChart = new Chart(tipoCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: tipos.map(t => t.tipo),
+                    datasets: [{ data: tipos.map(t => t.total), backgroundColor: ['#58a6ff','#3fb950','#d29922','#bc8cff'], borderWidth: 0 }]
+                },
+                options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#8b949e', padding: 12 } } } }
+            });
+
+            const statusCtx = document.getElementById('statusChart').getContext('2d');
+            const s = data?.stats || {};
+            if (statusChart) statusChart.destroy();
+            statusChart = new Chart(statusCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Total', 'Pendentes', 'Postados', 'Hoje'],
+                    datasets: [{
+                        data: [s.total||0, s.pendentes||0, s.postados||0, s.hoje||0],
+                        backgroundColor: ['#58a6ff', '#d29922', '#3fb950', '#bc8cff'],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, grid: { color: '#21262d' }, ticks: { color: '#8b949e' } }, x: { grid: { display: false }, ticks: { color: '#8b949e' } } }
+                }
+            });
+        }
+
+        function updateStats(data) {
+            const s = data?.stats || {};
+            document.getElementById('totalCount').textContent = s.total ?? '-';
+            document.getElementById('pendingCount').textContent = s.pendentes ?? '-';
+            document.getElementById('postedCount').textContent = s.postados ?? '-';
+            document.getElementById('todayCount').textContent = s.hoje ?? '-';
+            if (s.por_tipo) initCharts(data);
+        }
+
+        function updateLogs(logs) {
+            const container = document.getElementById('logContainer');
+            if (!logs || !logs.length) { container.innerHTML = '<div style="color:#8b949e;padding:12px;">Nenhum log</div>'; return; }
+            document.getElementById('logCount').textContent = `(${logs.length} recentes)`;
+            container.innerHTML = logs.map(l => `
+                <div class="log-entry">
+                    <span class="time">${l.data || '-'}</span>
+                    <span class="badge ${l.status}">${l.status}</span>
+                    <span class="msg"><strong>${l.acao || l.script || '-'}</strong> ${l.mensagem ? '- ' + l.mensagem.substring(0,80) : ''}</span>
+                </div>
+            `).join('');
+        }
+
+        function updateContents(conteudos) {
+            const tbody = document.getElementById('contentTable');
+            if (!conteudos || !conteudos.length) { tbody.innerHTML = '<tr><td colspan="5" style="color:#8b949e;text-align:center;padding:20px;">Nenhum conteudo</td></tr>'; return; }
+            document.getElementById('contentCount').textContent = `(${conteudos.length} recentes)`;
+            tbody.innerHTML = conteudos.map(c => `
+                <tr>
+                    <td>#${c.id}</td>
+                    <td>${c.titulo || '-'}</td>
+                    <td><span class="badge ${c.tipo === 'video' ? 'sucesso' : 'pendente'}">${c.tipo || '-'}</span></td>
+                    <td><span class="badge ${c.status_post}">${c.status_post || '-'}</span></td>
+                    <td style="color:#8b949e">${c.data_criacao || '-'}</td>
+                </tr>
+            `).join('');
+        }
+
+        async function fetchData() {
+            try {
+                const resp = await fetch(`${GATEWAY}/dashboard/stats`);
+                const data = await resp.json();
+                updateStats(data);
+                updateLogs(data.logs);
+                updateContents(data.conteudos);
+            } catch (e) {
+                console.error('Fetch error:', e);
+            }
+        }
+
+        function connectWebSocket() {
+            const indicator = document.getElementById('wsIndicator');
+            let ws;
+            try {
+                ws = new WebSocket(WS_URL);
+            } catch(e) {
+                indicator.textContent = 'WS Invalido';
+                indicator.className = 'ws-badge disconnected';
+                return;
+            }
+            ws.onopen = () => {
+                indicator.textContent = 'Tempo Real';
+                indicator.className = 'ws-badge connected';
+            };
+            ws.onclose = () => {
+                indicator.textContent = 'Desconectado';
+                indicator.className = 'ws-badge disconnected';
+                setTimeout(connectWebSocket, 3000);
+            };
+            ws.onerror = () => { ws.close(); };
+            ws.onmessage = (event) => {
+                try {
+                    const msg = JSON.parse(event.data);
+                    if (msg.type === 'task_complete' || msg.type === 'conteudo_novo') {
+                        fetchData();
+                    }
+                } catch(e) {}
+            };
+            window.ws = ws;
+        }
+
+        fetchData();
+        connectWebSocket();
+        setInterval(fetchData, 15000);
+    </script>
+</body>
+</html>

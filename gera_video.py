@@ -129,7 +129,9 @@ def aplicar_ken_burns(caminho_imagem, duracao, dimensao, zoom_inicial=1.0, zoom_
 
 
 def gerar_video(pasta_imagens, arquivo_saida, duracao=5, fps=30, dimensao=(1920, 1080),
-                texto=None, hashtag=None, animacao_texto="fade", posicao_texto="baixo-centro"):
+                texto=None, hashtag=None, animacao_texto="fade", posicao_texto="baixo-centro",
+                zoom_inicial_override=None, zoom_final_override=None,
+                pan_x_override=0.0, pan_y_override=0.0):
     """Gera video com Ken Burns e texto animado."""
 
     pasta = Path(pasta_imagens)
@@ -156,13 +158,17 @@ def gerar_video(pasta_imagens, arquivo_saida, duracao=5, fps=30, dimensao=(1920,
     for i, img_path in enumerate(imagens):
         print(f"  Processando: {img_path.name} ({i+1}/{len(imagens)})")
 
-        # Ken Burns alternado
-        if i % 2 == 0:
-            zoom_inicial, zoom_final = 1.0, 1.25
-            pan_start = (-0.05, -0.03)
+        # Director override ou Ken Burns alternado padrao
+        if zoom_inicial_override is not None and zoom_final_override is not None:
+            zoom_inicial, zoom_final = zoom_inicial_override, zoom_final_override
+            pan_start = (pan_x_override, pan_y_override)
         else:
-            zoom_inicial, zoom_final = 1.25, 1.0
-            pan_start = (0.05, 0.03)
+            if i % 2 == 0:
+                zoom_inicial, zoom_final = 1.0, 1.25
+                pan_start = (-0.05, -0.03)
+            else:
+                zoom_inicial, zoom_final = 1.25, 1.0
+                pan_start = (0.05, 0.03)
 
         clip_img = aplicar_ken_burns(
             str(img_path),
@@ -242,6 +248,10 @@ def main():
     parser.add_argument("--posicao", default="baixo-centro",
                         choices=["centro", "topo", "baixo", "baixo-centro"],
                         help="Posicao do texto")
+    parser.add_argument("--zoom-inicial", type=float, default=None, help="Zoom inicial (Director override)")
+    parser.add_argument("--zoom-final", type=float, default=None, help="Zoom final (Director override)")
+    parser.add_argument("--pan-x", type=float, default=0.0, help="Pan X (Director override)")
+    parser.add_argument("--pan-y", type=float, default=0.0, help="Pan Y (Director override)")
 
     args = parser.parse_args()
 
@@ -259,6 +269,10 @@ def main():
         hashtag=args.hashtag,
         animacao_texto=args.animacao,
         posicao_texto=args.posicao,
+        zoom_inicial_override=args.zoom_inicial,
+        zoom_final_override=args.zoom_final,
+        pan_x_override=args.pan_x,
+        pan_y_override=args.pan_y,
     )
 
 

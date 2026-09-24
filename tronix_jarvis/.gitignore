@@ -1,0 +1,24 @@
+# Segredos / config
+config/api_keys.json
+config/certs/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Playwright / browser data
+ms-playwright/
+
+# Memória do assistente (dados pessoais)
+memory/long_term.json
+
+# Runtime / logs
+logs/
+*.log
+
+# Caches
+.DS_Store
+Thumbs.db

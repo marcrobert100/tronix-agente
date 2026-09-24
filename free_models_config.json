@@ -1,0 +1,120 @@
+{
+  "free_models": {
+    "provider": "openrouter",
+    "api_base": "https://openrouter.ai/api/v1",
+    "models": {
+      "chat": "google/gemma-4-31b-it:free",
+      "reasoning": "nvidia/nemotron-3-super-120b-a12b:free",
+      "coding": "qwen/qwen3-coder:free",
+      "fast": "nvidia/nemotron-3-nano-30b-a3b:free",
+      "vision": "nvidia/nemotron-nano-12b-v2-vl:free"
+    }
+  },
+  "providers": {
+    "openrouter": {
+      "name": "OpenRouter",
+      "url": "https://openrouter.ai",
+      "signup": "https://openrouter.ai/auth/signup",
+      "free_models": [
+        "google/gemma-4-31b-it:free",
+        "nvidia/nemotron-3-super-120b-a12b:free",
+        "openai/gpt-oss-120b:free",
+        "qwen/qwen3-coder:free",
+        "meta-llama/llama-3.3-70b-instruct:free",
+        "nvidia/nemotron-3-nano-30b-a3b:free",
+        "nvidia/nemotron-nano-12b-v2-vl:free"
+      ],
+      "rate_limit": "20 req/min gratis",
+      "api_format": "openai"
+    },
+    "google": {
+      "name": "Google Gemini",
+      "url": "https://aistudio.google.com",
+      "signup": "https://aistudio.google.com/apikey",
+      "free_models": [
+        "gemini-2.0-flash",
+        "gemini-2.5-flash",
+        "gemini-1.5-flash"
+      ],
+      "rate_limit": "60 req/min gratis",
+      "api_format": "gemini"
+    },
+    "groq": {
+      "name": "Groq",
+      "url": "https://console.groq.com",
+      "signup": "https://console.groq.com/keys",
+      "free_models": [
+        "llama-3.3-70b-versatile",
+        "gemma2-9b-it",
+        "mixtral-8x7b-32768"
+      ],
+      "rate_limit": "14400 req/dia gratis",
+      "api_format": "openai"
+    },
+    "nvidia_nim": {
+      "name": "NVIDIA NIM",
+      "url": "https://build.nvidia.com",
+      "signup": "https://build.nvidia.com/nim/signup",
+      "free_models": [
+        "nvidia/nemotron-3-ultra-550b-a55b",
+        "nvidia/llama-3.1-nemotron-70b-instruct",
+        "meta/llama-3.1-8b-instruct"
+      ],
+      "rate_limit": "1000 req/dia gratis",
+      "api_format": "openai"
+    },
+    "deepseek": {
+      "name": "DeepSeek",
+      "url": "https://platform.deepseek.com",
+      "signup": "https://platform.deepseek.com/api_keys",
+      "free_models": [
+        "deepseek-chat",
+        "deepseek-reasoner"
+      ],
+      "rate_limit": "Promocional: gratis agora",
+      "api_format": "openai"
+    },
+    "huggingface": {
+      "name": "HuggingFace",
+      "url": "https://huggingface.co",
+      "signup": "https://huggingface.co/settings/tokens",
+      "free_models": [
+        "meta-llama/Llama-3.3-70B-Instruct",
+        "Qwen/Qwen3-Coder",
+        "mistralai/Mistral-7B-Instruct-v0.3"
+      ],
+      "rate_limit": "Rate limited gratis",
+      "api_format": "huggingface"
+    }
+  },
+  "routing": {
+    "tronix_crewai": {
+      "description": "Para CrewAI multi-agente (melhor reasoning)",
+      "primary": "nvidia_nim",
+      "model": "nvidia/nemotron-3-ultra-550b-a55b",
+      "fallback": "openrouter",
+      "fallback_model": "nvidia/nemotron-3-super-120b-a12b:free"
+    },
+    "tronix_fast": {
+      "description": "Para respostas rápidas (pipeline, scripts)",
+      "primary": "groq",
+      "model": "llama-3.3-70b-versatile",
+      "fallback": "google",
+      "fallback_model": "gemini-2.0-flash"
+    },
+    "openhuman_chat": {
+      "description": "Para chat no OpenHuman",
+      "primary": "openrouter",
+      "model": "google/gemma-4-31b-it:free",
+      "fallback": "groq",
+      "fallback_model": "llama-3.3-70b-versatile"
+    },
+    "openhuman_reasoning": {
+      "description": "Para tarefas complexas no OpenHuman",
+      "primary": "nvidia_nim",
+      "model": "nvidia/nemotron-3-ultra-550b-a55b",
+      "fallback": "deepseek",
+      "fallback_model": "deepseek-reasoner"
+    }
+  }
+}

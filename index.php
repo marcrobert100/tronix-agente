@@ -349,7 +349,8 @@ rsort($videos);
     </div>
     <footer style="display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;">
         <span>PCsolucoes — Vicosa, AL</span>
-        <span>Tronix v1.1.0</span>
+        <span>Tronix v1.2.0</span>
+        <a href="santinho_generator/" style="color:#ff3366;text-decoration:none;font-weight:700;">Santinhos</a>
         <a href="dashboard.php" style="color:#f4a261;text-decoration:none;">Dashboard</a>
         <a href="http://localhost:5678" target="_blank" style="color:#e63946;text-decoration:none;">n8n</a>
     </footer>

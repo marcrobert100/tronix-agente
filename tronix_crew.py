@@ -2,6 +2,7 @@ import os, sys, json, sqlite3, subprocess, urllib.request, urllib.error
 from datetime import datetime
 from crewai import Agent, Task, Crew, Process
 from crewai.tools import BaseTool
+from crewai.llm import LLM
 from pydantic import BaseModel, Field
 from typing import Optional, Type
 
@@ -13,16 +14,42 @@ GATEWAY_URL = os.environ.get("TRONIX_GATEWAY", "http://localhost:8081")
 env_path = os.path.join(os.path.dirname(__file__), '.env')
 if os.path.exists(env_path):
     with open(env_path, encoding='utf-8') as f:
-        env_data = json.load(f).get('env', {})
-        for k, v in env_data.items():
-            if v and k not in os.environ:
-                os.environ[k] = str(v)
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith('#') and '=' in line:
+                k, v = line.split('=', 1)
+                k, v = k.strip(), v.strip()
+                if v and k not in os.environ:
+                    os.environ[k] = v
 
-OR_KEY = (os.environ.get("OPENROUTER_API_KEY") or os.environ.get("NVIDIA_API_KEY") or os.environ.get("ANTHROPIC_API_KEY") or "")
-if OR_KEY and not os.environ.get("OPENROUTER_API_KEY"):
-    os.environ["OPENROUTER_API_KEY"] = OR_KEY
+NVIDIA_KEY = os.environ.get("OPENROUTER_API_KEY") or os.environ.get("NVIDIA_API_KEY") or ""
+OPENROUTER_BASE = "https://openrouter.ai/api/v1"
+if NVIDIA_KEY:
+    os.environ["OPENROUTER_API_KEY"] = NVIDIA_KEY
+    os.environ["OPENAI_API_BASE"] = OPENROUTER_BASE
 
-LLM_MODEL = os.environ.get("TRONIX_LLM", "openrouter/nvidia/llama-3.1-nemotron-ultra-253b-v1")
+# Modelos OpenRouter (gratuitos)
+OPENROUTER_FREE_CHAT = "google/gemma-4-31b-it:free"
+OPENROUTER_FREE_REASONING = "nvidia/nemotron-3-super-120b-a12b:free"
+OPENROUTER_FREE_CODING = "qwen/qwen3-coder:free"
+LLM_MODEL = os.environ.get("TRONIX_LLM", OPENROUTER_FREE_CHAT)
+LLM_FALLBACK = OPENROUTER_FREE_REASONING
+
+OLLAMA_BASE = "http://localhost:11434/v1"
+OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "gemma3:1b")
+
+def _make_llm(model=None):
+    """Cria LLM CrewAI. Modo offline: TRONIX_LLM_MODE=ollama (sem internet)."""
+    if os.environ.get("TRONIX_LLM_MODE", "").lower() == "ollama":
+        return LLM(
+            model=model or OLLAMA_MODEL,
+            base_url=OLLAMA_BASE,
+        )
+    return LLM(
+        model=model or LLM_MODEL,
+        api_key=NVIDIA_KEY,
+        base_url=OPENROUTER_BASE,
+    )
 
 def carregar_memoria():
     with open(MEMORIA_PATH, "r", encoding="utf-8") as f:
@@ -121,6 +148,8 @@ def criar_agentes():
     TOOLS_COMUNS = [MemoriaTool(), GatewayTool()]
     TOOLS_EXEC = TOOLS_COMUNS + [ExecutarScriptTool()]
 
+    _llm = _make_llm()
+
     return {
         "DEV": Agent(
             role="Tronix-DEV",
@@ -129,7 +158,7 @@ def criar_agentes():
             allow_delegation=False,
             verbose=True,
             tools=TOOLS_EXEC + [N8nTool()],
-            llm=LLM_MODEL
+            llm=_llm
         ),
         "MEDIA": Agent(
             role="Tronix-MEDIA",
@@ -138,7 +167,7 @@ def criar_agentes():
             allow_delegation=True,
             verbose=True,
             tools=TOOLS_EXEC + [N8nTool()],
-            llm=LLM_MODEL
+            llm=_llm
         ),
         "SUPER": Agent(
             role="Tronix-SUPER",
@@ -147,7 +176,7 @@ def criar_agentes():
             allow_delegation=False,
             verbose=True,
             tools=TOOLS_EXEC,
-            llm=LLM_MODEL
+            llm=_llm
         ),
         "ROTEIRISTA": Agent(
             role="Tronix-ROTEIRISTA",
@@ -156,7 +185,7 @@ def criar_agentes():
             allow_delegation=False,
             verbose=True,
             tools=TOOLS_COMUNS,
-            llm=LLM_MODEL
+            llm=_llm
         ),
         "DIRETOR": Agent(
             role="Tronix-DIRETOR",
@@ -165,7 +194,7 @@ def criar_agentes():
             allow_delegation=True,
             verbose=True,
             tools=TOOLS_EXEC + [N8nTool()],
-            llm=LLM_MODEL
+            llm=_llm
         ),
         "IG": Agent(
             role="Tronix-IG",
@@ -174,7 +203,7 @@ def criar_agentes():
             allow_delegation=False,
             verbose=True,
             tools=TOOLS_COMUNS,
-            llm=LLM_MODEL
+            llm=_llm
         ),
         "YT": Agent(
             role="Tronix-YT",
@@ -183,7 +212,7 @@ def criar_agentes():
             allow_delegation=False,
             verbose=True,
             tools=TOOLS_COMUNS,
-            llm=LLM_MODEL
+            llm=_llm
         ),
         "DB": Agent(
             role="Tronix-DB",
@@ -192,7 +221,7 @@ def criar_agentes():
             allow_delegation=False,
             verbose=True,
             tools=TOOLS_COMUNS,
-            llm=LLM_MODEL
+            llm=_llm
         ),
         "INFRA": Agent(
             role="Tronix-INFRA",
@@ -201,7 +230,7 @@ def criar_agentes():
             allow_delegation=False,
             verbose=True,
             tools=TOOLS_COMUNS,
-            llm=LLM_MODEL
+            llm=_llm
         ),
         "RESEARCH": Agent(
             role="Tronix-RESEARCH",
@@ -210,7 +239,7 @@ def criar_agentes():
             allow_delegation=False,
             verbose=True,
             tools=TOOLS_COMUNS,
-            llm=LLM_MODEL
+            llm=_llm
         ),
         "SYNC": Agent(
             role="Tronix-SYNC",
@@ -219,7 +248,16 @@ def criar_agentes():
             allow_delegation=False,
             verbose=True,
             tools=TOOLS_COMUNS,
-            llm=LLM_MODEL
+            llm=_llm
+        ),
+        "OPENHUMAN": Agent(
+            role="Tronix-OPENHUMAN",
+            goal="Bridge entre OpenHuman e Tronix. Processar voice commands, sincronizar memória, gerenciar integrações Composio e coordenar automações via API Gateway.",
+            backstory=f"Integrador do OpenHuman ao ecossistema Tronix em {cidade}. Conecta voice commands do OpenHuman aos agentes e scripts do Tronix via API Gateway.",
+            allow_delegation=True,
+            verbose=True,
+            tools=TOOLS_EXEC + [N8nTool()],
+            llm=_llm
         ),
     }
 
@@ -260,7 +298,7 @@ def criar_crew():
         agents=list(agentes.values()),
         tasks=tarefas,
         process=Process.hierarchical,
-        manager_llm=LLM_MODEL,
+        manager_llm=_make_llm(),
         verbose=True,
         memory=True
     )

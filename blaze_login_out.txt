@@ -1,0 +1,6 @@
+============================================================
+ LOGIN MANUAL - logue no Blaze na janela que abriu
+ entre com sua conta e deixe o DOUBLE aberto
+ SO FECHE A JANELA QUANDO ESTIVER LOGADO NO JOGO
+============================================================
+^C

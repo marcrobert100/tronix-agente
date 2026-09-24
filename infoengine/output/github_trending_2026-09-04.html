@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Trending — 04 Set 2026 | Tronix</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0a0f;
+    color: #e0e0e0;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  header .badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff6b35, #ffd700);
+    color: #0a0a0f;
+    font-weight: 700;
+    font-size: 0.75rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  header h1 {
+    font-size: 2.2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #fff 0%, #a0a0a0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+
+  header .subtitle {
+    color: #888;
+    font-size: 0.95rem;
+  }
+
+  header .date {
+    color: #ff6b35;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    margin-top: 6px;
+  }
+
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat .num {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #ffd700;
+  }
+
+  .stat .label {
+    font-size: 0.75rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .repo-card {
+    background: linear-gradient(135deg, #12121a 0%, #1a1a25 100%);
+    border: 1px solid #2a2a3a;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .repo-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ff6b35, #ffd700, #00d4ff);
+  }
+
+  .repo-card:hover {
+    border-color: #ff6b35;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 107, 53, 0.15);
+  }
+
+  .repo-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .rank {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: #ff6b35;
+    min-width: 36px;
+  }
+
+  .rank.gold { color: #ffd700; }
+  .rank.silver { color: #c0c0c0; }
+  .rank.bronze { color: #cd7f32; }
+
+  .repo-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .repo-name a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .repo-name a:hover {
+    color: #ff6b35;
+  }
+
+  .repo-desc {
+    color: #999;
+    font-size: 0.9rem;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+
+  .repo-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.8rem;
+    color: #777;
+  }
+
+  .meta-item .icon {
+    font-size: 1rem;
+  }
+
+  .stars-today {
+    background: linear-gradient(135deg, #ff6b3520, #ffd70020);
+    border: 1px solid #ff6b3540;
+    color: #ffd700;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+  }
+
+  .lang-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .lang-rust { background: #dea584; }
+  .lang-shell { background: #89e051; }
+  .lang-js { background: #f1e05a; }
+  .lang-go { background: #00add8; }
+  .lang-ts { background: #3178c6; }
+  .lang-python { background: #3572a5; }
+  .lang-kotlin { background: #a97bff; }
+  .lang-html { background: #e34c26; }
+
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #1a1a2a;
+    color: #555;
+    font-size: 0.8rem;
+  }
+
+  footer .tronix {
+    color: #ff6b35;
+    font-weight: 700;
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.5rem; }
+    .repo-card { padding: 16px; }
+    .stats-bar { gap: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="badge">Tronix Intelligence</div>
+    <h1>GitHub Trending</h1>
+    <div class="subtitle">Os repositórios mais quentes da comunidade dev</div>
+    <div class="date">04 SET 2026 — Atualizado em tempo real</div>
+  </header>
+
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="num">25</div>
+      <div class="label">Repos Hoje</div>
+    </div>
+    <div class="stat">
+      <div class="num">12</div>
+      <div class="label">AI/Agent Tools</div>
+    </div>
+    <div class="stat">
+      <div class="num">232K</div>
+      <div class="label">Top Stars</div>
+    </div>
+  </div>
+
+  <!-- TOP 1 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div class="rank gold">#1</div>
+      <div class="repo-name"><a href="https://github.com/mattpocock/skills" target="_blank">mattpocock / skills</a></div>
+    </div>
+    <div class="repo-desc">Skills for Real Engineers. Straight from my .agents directory.</div>
+    <div class="repo-meta">
+      <div class="meta-item"><span class="lang-dot lang-shell"></span> Shell</div>
+      <div class="meta-item">⭐ 232,540</div>
+      <div class="meta-item">🔀 19,841</div>
+      <div class="stars-today">+2,683 hoje</div>
+    </div>
+  </div>
+
+  <!-- TOP 2 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div class="rank silver">#2</div>
+      <div class="repo-name"><a href="https://github.com/obra/superpowers" target="_blank">obra / superpowers</a></div>
+    </div>
+    <div class="repo-desc">An agentic skills framework & software development methodology that works.</div>
+    <div class="repo-meta">
+      <div class="meta-item"><span class="lang-dot lang-shell"></span> Shell</div>
+      <div class="meta-item">⭐ 276,303</div>
+      <div class="meta-item">🔀 24,715</div>
+      <div class="stars-today">+592 hoje</div>
+    </div>
+  </div>
+
+  <!-- TOP 3 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div class="rank bronze">#3</div>
+      <div class="repo-name"><a href="https://github.com/affaan-m/ECC" target="_blank">affaan-m / ECC</a></div>
+    </div>
+    <div class="repo-desc">The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development.</div>
+    <div class="repo-meta">
+      <div class="meta-item"><span class="lang-dot lang-js"></span> JavaScript</div>
+      <div class="meta-item">⭐ 242,251</div>
+      <div class="meta-item">🔀 36,708</div>
+      <div class="stars-today">+411 hoje</div>
+    </div>
+  </div>
+
+  <!-- TOP 4 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div class="rank">#4</div>
+      <div class="repo-name"><a href="https://github.com/openai/codex" target="_blank">openai / codex</a></div>
+    </div>
+    <div class="repo-desc">Lightweight coding agent that runs in your terminal.</div>
+    <div class="repo-meta">
+      <div class="meta-item"><span class="lang-dot lang-rust"></span> Rust</div>
+      <div class="meta-item">⭐ 113,977</div>
+      <div class="meta-item">🔀 17,426</div>
+      <div class="stars-today">+1,544 hoje</div>
+    </div>
+  </div>
+
+  <!-- TOP 5 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div class="rank">#5</div>
+      <div class="repo-name"><a href="https://github.com/Wei-Shaw/sub2api" target="_blank">Wei-Shaw / sub2api</a></div>
+    </div>
+    <div class="repo-desc">Sub2API — 一站式开源中转服务，Claude/OpenAI/Gemini/Grok 统一接入，支持拼车共享。</div>
+    <div class="repo-meta">
+      <div class="meta-item"><span class="lang-dot lang-go"></span> Go</div>
+      <div class="meta-item">⭐ 38,863</div>
+      <div class="meta-item">🔀 8,046</div>
+      <div class="stars-today">+278 hoje</div>
+    </div>
+  </div>
+
+  <!-- TOP 6 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div class="rank">#6</div>
+      <div class="repo-name"><a href="https://github.com/makeplane/plane" target="_blank">makeplane / plane</a></div>
+    </div>
+    <div class="repo-desc">Open-source Jira, Linear, Monday, and ClickUp alternative. Modern project management.</div>
+    <div class="repo-meta">
+      <div class="meta-item"><span class="lang-dot lang-ts"></span> TypeScript</div>
+      <div class="meta-item">⭐ 57,309</div>
+      <div class="meta-item">🔀 5,448</div>
+      <div class="stars-today">+263 hoje</div>
+    </div>
+  </div>
+
+  <!-- TOP 7 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div class="rank">#7</div>
+      <div class="repo-name"><a href="https://github.com/n8n-io/n8n" target="_blank">n8n-io / n8n</a></div>
+    </div>
+    <div class="repo-desc">Fair-code workflow automation platform with native AI capabilities. 400+ integrações.</div>
+    <div class="repo-meta">
+      <div class="meta-item"><span class="lang-dot lang-ts"></span> TypeScript</div>
+      <div class="meta-item">⭐ 201,919</div>
+      <div class="meta-item">🔀 60,311</div>
+      <div class="stars-today">+149 hoje</div>
+    </div>
+  </div>
+
+  <!-- TOP 8 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div class="rank">#8</div>
+      <div class="repo-name"><a href="https://github.com/anthropics/claude-code" target="_blank">anthropics / claude-code</a></div>
+    </div>
+    <div class="repo-desc">Claude Code — agentic coding tool no terminal. Entende seu codebase, executa tarefas rotineiras.</div>
+    <div class="repo-meta">
+      <div class="meta-item"><span class="lang-dot lang-python"></span> Python</div>
+      <div class="meta-item">⭐ 142,621</div>
+      <div class="meta-item">🔀 22,843</div>
+      <div class="stars-today">+127 hoje</div>
+    </div>
+  </div>
+
+  <!-- TOP 9 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div class="rank">#9</div>
+      <div class="repo-name"><a href="https://github.com/AprilNEA/OpenLogi" target="_blank">AprilNEA / OpenLogi</a></div>
+    </div>
+    <div class="repo-desc">A native, local-first alternative to Logitech Options+ written in Rust. Remap buttons, DPI, SmartShift.</div>
+    <div class="repo-meta">
+      <div class="meta-item"><span class="lang-dot lang-rust"></span> Rust</div>
+      <div class="meta-item">⭐ 14,114</div>
+      <div class="meta-item">🔀 375</div>
+      <div class="stars-today">+959 hoje</div>
+    </div>
+  </div>
+
+  <!-- TOP 10 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div class="rank">#10</div>
+      <div class="repo-name"><a href="https://github.com/mahlernim/google-timeline-visualizer" target="_blank">mahlernim / google-timeline-visualizer</a></div>
+    </div>
+    <div class="repo-desc">Visualize your year in travel using your Google Location History (Timeline) data.</div>
+    <div class="repo-meta">
+      <div class="meta-item"><span class="lang-dot lang-kotlin"></span> Kotlin</div>
+      <div class="meta-item">⭐ 2,603</div>
+      <div class="meta-item">🔀 308</div>
+      <div class="stars-today">+441 hoje</div>
+    </div>
+  </div>
+
+  <footer>
+    Gerado por <span class="tronix">TRONIX v1.6.0</span> — Pipeline: WebSearch → HTML → InfoEngine<br>
+    Viçosa-AL • PCsoluções • 04/09/2026
+  </footer>
+</div>
+</body>
+</html>

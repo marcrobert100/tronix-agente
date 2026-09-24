@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tronix Chat Local — Gemma (Ollama)</title>
+<style>
+:root {
+  --bg: #0f0c2e;
+  --panel: #1a1a5e;
+  --accent: #ff7a30;
+  --gold: #ffd700;
+  --cyan: #22d3ee;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --user: #2d2d7a;
+  --assistant: #1c1c54;
+  --green: #22c55e;
+  --red: #ef4444;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'Segoe UI', system-ui, sans-serif; height:100vh; display:flex; flex-direction:column; overflow:hidden; }
+header { padding:14px 20px; background:var(--panel); border-bottom:1px solid #ffffff1a; display:flex; align-items:center; gap:14px; }
+header h1 { font-size:1.15rem; font-weight:600; }
+header .badge { background:#ffffff1a; color:var(--cyan); padding:3px 10px; border-radius:20px; font-size:.72rem; }
+header .status { margin-left:auto; display:flex; align-items:center; gap:8px; font-size:.8rem; color:var(--muted); }
+.dot { width:10px; height:10px; border-radius:50%; background:var(--muted); }
+.dot.online { background:var(--green); box-shadow:0 0 8px var(--green); }
+.dot.offline { background:var(--red); }
+#modelo { font-size:.75rem; color:var(--gold); }
+#chat { flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:14px; }
+.msg { max-width:78%; padding:12px 16px; border-radius:14px; line-height:1.55; font-size:.95rem; white-space:pre-wrap; word-wrap:break-word; }
+.msg.user { background:var(--user); align-self:flex-end; border-bottom-right-radius:4px; }
+.msg.assistant { background:var(--assistant); align-self:flex-start; border-bottom-left-radius:4px; }
+.msg.system { background:#ffffff14; color:var(--muted); align-self:center; font-size:.8rem; }
+.msg .meta { display:block; font-size:.68rem; color:var(--muted); margin-top:6px; }
+.msg.error { border:1px solid var(--red); }
+.cursor::after { content:'▋'; color:var(--accent); animation:blink 1s infinite; }
+@keyframes blink { 50% { opacity:0; } }
+.inputbar { background:var(--panel); border-top:1px solid #ffffff1a; padding:14px 20px; display:flex; gap:10px; align-items:flex-end; }
+textarea { flex:1; background:var(--bg); color:var(--text); border:1px solid #ffffff26; border-radius:12px; padding:12px 14px; font-family:inherit; font-size:.95rem; resize:none; max-height:140px; outline:none; }
+textarea:focus { border-color:var(--accent); }
+button { background:var(--accent); color:#fff; border:none; border-radius:12px; padding:12px 20px; font-weight:600; cursor:pointer; font-size:.95rem; }
+button:hover { filter:brightness(1.1); }
+button:disabled { opacity:.5; cursor:not-allowed; }
+.controls { padding:8px 20px; background:var(--panel); display:flex; gap:14px; align-items:center; font-size:.78rem; color:var(--muted); }
+.controls label { display:flex; align-items:center; gap:6px; cursor:pointer; }
+.controls select { background:var(--bg); color:var(--text); border:1px solid #ffffff26; border-radius:8px; padding:4px 8px; font-size:.78rem; }
+::-webkit-scrollbar { width:8px; }
+::-webkit-scrollbar-thumb { background:#ffffff2e; border-radius:4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🤖 Tronix Chat Local</h1>
+  <span class="badge">offline · grátis</span>
+  <div class="status"><span class="dot" id="dot"></span><span id="statusText">conectando…</span></div>
+  <div id="modelo"></div>
+</header>
+
+<div class="controls">
+  <select id="modeloSelect" title="Modelo">
+    <option value="openai/gpt-oss-20b:free">☁️ Nuvem gpt-oss-20b (agente forte)</option>
+    <option value="qwen2.5:1.5b">qwen2.5:1.5b (offline, com ferramentas)</option>
+    <option value="gemma3:1b">gemma3:1b (offline, rápido, sem ferramentas)</option>
+    <option value="gemma3:4b">gemma3:4b (offline, melhor, mais lento)</option>
+  </select>
+  <label><input type="checkbox" id="tempToggle"> criativo</label>
+  <label><input type="checkbox" id="ptToggle" checked> só português</label>
+</div>
+
+<div id="chat"></div>
+
+<div class="inputbar">
+  <textarea id="input" rows="1" placeholder="Pergunte algo (sem internet, sem custo)…"></textarea>
+  <button id="send">Enviar</button>
+</div>
+
+<script>
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('input');
+const sendBtn = document.getElementById('send');
+const dotEl = document.getElementById('dot');
+const statusText = document.getElementById('statusText');
+const modeloEl = document.getElementById('modelo');
+const modeloSelect = document.getElementById('modeloSelect');
+const tempToggle = document.getElementById('tempToggle');
+const ptToggle = document.getElementById('ptToggle');
+
+const SYS_PT = 'You are Tronix, the personal super agent of Marcos (PCsolucoes, Vicosa-AL, Brasil). You have tools and MUST use them when relevant: kie_balance (Kie AI credit balance), listar_scripts (available scripts), memoria (Tronix status/version/last actions), status (services ON/OFF), executar (run an allowed script, pass script name and optional args). Use tools FIRST, then answer based on real results. If a tool errors, say so — never invent data. You are capable and helpful: answer questions, create plans, write code, solve problems for Marcos. ALWAYS reply in Portuguese (pt-BR), directly and objectively, without emojis. The Kie balance is in CREDITOS (credits), not money — report as "X creditos".';
+let history = [];
+let busy = false;
+let ollamaOK = false;
+
+const OLLAMA = 'http://localhost:11434';
+const AGENT = 'http://localhost:8000';
+
+const TOOLS = [
+  { type: 'function', function: { name: 'kie_balance', description: 'Consulta o saldo de creditos da conta Kie AI do Tronix.', parameters: { type: 'object', properties: {} } } },
+  { type: 'function', function: { name: 'listar_scripts', description: 'Lista os scripts Python/bat disponiveis no Tronix.', parameters: { type: 'object', properties: {} } } },
+  { type: 'function', function: { name: 'memoria', description: 'Mostra o status, versao e ultimas acoes do Tronix (memoria_tronix.json).', parameters: { type: 'object', properties: {} } } },
+  { type: 'function', function: { name: 'status', description: 'Verifica quais servicos do Tronix estao no ar (Gateway, Ollama, Apache).', parameters: { type: 'object', properties: {} } } },
+  { type: 'function', function: { name: 'executar', description: 'Executa um script Python permitido do Tronix. Use apenas para scripts da lista permitida.', parameters: { type: 'object', properties: { script: { type: 'string', description: 'Nome do script (ex: tronix_kie.py)' }, args: { type: 'string', description: 'Argumentos de linha de comando (opcional)' } }, required: ['script'] } } },
+];
+
+function addMsg(role, content, cls='') {
+  const d = document.createElement('div');
+  d.className = 'msg ' + role + (cls ? ' ' + cls : '');
+  d.textContent = content;
+  if (role === 'assistant') {
+    const meta = document.createElement('span');
+    meta.className = 'meta';
+    meta.textContent = new Date().toLocaleTimeString('pt-BR');
+    d.appendChild(meta);
+  }
+  chatEl.appendChild(d);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  return d;
+}
+
+async function runTool(name, args) {
+  const url = AGENT + '/tools/' + name + (name === 'executar' ? '' : '');
+  try {
+    if (name === 'executar') {
+      const res = await fetch(url, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(args || {})
+      });
+      return JSON.stringify(await res.json());
+    }
+    const res = await fetch(url, { signal: AbortSignal.timeout(30000) });
+    return JSON.stringify(await res.json());
+  } catch (e) {
+    return JSON.stringify({ ok: false, erro: 'Ferramenta offline: ' + e.message + '. Rode: python tronix_agent_server.py' });
+  }
+}
+
+async function send() {
+  if (busy) return;
+  const text = inputEl.value.trim();
+  if (!text) return;
+
+  inputEl.value = '';
+  inputEl.style.height = 'auto';
+  addMsg('user', text);
+  history.push({ role: 'user', content: text });
+
+  const placeholder = addMsg('assistant', '');
+  placeholder.classList.add('cursor');
+  busy = true; sendBtn.disabled = true;
+
+  const messages = ptToggle.checked
+    ? [{ role: 'system', content: SYS_PT }, ...history]
+    : history;
+  const model = modeloSelect.value;
+  const isCloud = !model.endsWith(':1b') && !model.includes('gemma3:') && model !== 'llama3.2:1b' && !model.startsWith('qwen2.5');
+
+  try {
+    let msg = {};
+    if (isCloud) {
+      const res = await fetch(AGENT + '/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model, messages, tools: TOOLS })
+      });
+      const body = await res.json();
+      if (!body.ok) throw new Error(body.erro || 'proxy error');
+      msg = body.message || {};
+    } else {
+      if (!ollamaOK) { placeholder.classList.remove('cursor'); placeholder.textContent = '⚠️ Ollama offline. Use o modo Nuvem ou rode `ollama serve`.'; placeholder.classList.add('error'); busy = false; sendBtn.disabled = false; return; }
+      const res = await fetch(OLLAMA + '/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model, messages, tools: TOOLS, stream: false, options: { temperature: tempToggle.checked ? 0.9 : 0.3 } })
+      });
+      const body = await res.json();
+      msg = body.message || {};
+    }
+
+    let iters = 0;
+    while (msg.tool_calls && msg.tool_calls.length && iters < 5) {
+      iters++;
+      history.push({ role: 'assistant', content: msg.content || '' });
+      placeholder.textContent = (msg.content || '') + ' 🔧 chamando ferramenta…';
+      for (const tc of msg.tool_calls) {
+        const fn = tc.function;
+        let args = {};
+        try { args = JSON.parse(fn.arguments || '{}'); } catch (e) { args = {}; }
+        const result = await runTool(fn.name, args);
+        history.push({ role: 'tool', content: result, tool_call_id: tc.id || null });
+      }
+      let body2;
+      if (isCloud) {
+        const res2 = await fetch(AGENT + '/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ model, messages, tools: TOOLS })
+        });
+        body2 = await res2.json();
+        if (!body2.ok) throw new Error(body2.erro || 'proxy error');
+      } else {
+        const res2 = await fetch(OLLAMA + '/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ model, messages, tools: TOOLS, stream: false, options: { temperature: tempToggle.checked ? 0.9 : 0.3 } })
+        });
+        body2 = await res2.json();
+      }
+      msg = body2.message || {};
+      if (!(msg.tool_calls && msg.tool_calls.length)) break;
+    }
+
+    placeholder.classList.remove('cursor');
+    const finalText = msg.content || '';
+    if (finalText) {
+      placeholder.textContent = finalText;
+      history.push({ role: 'assistant', content: finalText });
+    } else {
+      placeholder.remove(); addMsg('assistant', '(sem resposta do modelo)', 'error');
+    }
+  } catch (e) {
+    placeholder.classList.remove('cursor');
+    placeholder.textContent = '❌ Erro: ' + e.message;
+    placeholder.classList.add('error');
+  }
+  busy = false; sendBtn.disabled = false;
+}
+
+async function checkHealth() {
+  try {
+    const r = await fetch(OLLAMA + '/api/tags', { signal: AbortSignal.timeout(3000) });
+    const j = await r.json();
+    if (j && j.models && j.models.length) {
+      const installed = j.models.map(m => m.name);
+      fillModels(installed);
+      ollamaOK = true;
+      dotEl.className = 'dot online';
+      statusText.textContent = 'Ollama online · ' + installed.length + ' modelo(s)';
+      return true;
+    }
+  } catch (e) { /* offline */ }
+  ollamaOK = false;
+  dotEl.className = 'dot offline';
+  statusText.textContent = 'Ollama offline — rode: ollama serve';
+  return false;
+}
+
+function fillModels(installed) {
+  const opts = modeloSelect.options;
+  let keep = false;
+  for (const o of opts) {
+    if (installed.includes(o.value)) { keep = true; break; }
+  }
+  if (!keep && installed.length) {
+    modeloSelect.innerHTML = '';
+    for (const m of installed) {
+      const opt = document.createElement('option');
+      opt.value = m; opt.textContent = m;
+      modeloSelect.appendChild(opt);
+    }
+  }
+  const cur = installed.find(m => m.startsWith('gemma3:1b')) || installed[0];
+  modeloEl.textContent = 'modelo: ' + cur;
+}
+
+function autoResize() {
+  inputEl.style.height = 'auto';
+  inputEl.style.height = Math.min(inputEl.scrollHeight, 140) + 'px';
+}
+
+sendBtn.addEventListener('click', send);
+inputEl.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } });
+inputEl.addEventListener('input', autoResize);
+
+window.addEventListener('load', async () => {
+  const ok = await checkHealth();
+  if (ok) {
+    addMsg('system', 'Conectado ao Ollama local. Sem internet, sem custo. Pronto, Marcos! 🚀');
+  } else {
+    addMsg('system', 'Ollama offline. Inicie com o atalho do Desktop ou `ollama serve`.');
+  }
+  setInterval(checkHealth, 15000);
+  inputEl.focus();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "tronix": {
+      "command": "python",
+      "args": [
+        "${workspaceFolder}/tronix_mcp_server.py"
+      ],
+      "env": {
+        "TRONIX_GATEWAY": "http://localhost:8081"
+      },
+      "description": "Tronix Multi-Agent System - 11 ferramentas para geracao de midia com IA"
+    }
+  }
+}

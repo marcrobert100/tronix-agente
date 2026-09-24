@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colapso da Função de Onda 3D — Experimento Quântico</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#01020a;--c1:#00f5ff;--c2:#7b2fff;--c3:#ff6b35;--c4:#00ff88;--c5:#ffd700;
+  --font:'Exo 2',sans-serif;
+}
+body{background:var(--bg);font-family:var(--font);color:#e0f0ff;overflow:hidden;width:100vw;height:100vh;}
+#cv{position:fixed;inset:0;}
+
+/* TITLE */
+.title{position:fixed;top:.8rem;left:.8rem;z-index:100;}
+.title h1{font-family:'Orbitron',monospace;font-size:clamp(.8rem,1.6vw,1.1rem);font-weight:900;
+  background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;}
+.title p{font-size:.62rem;color:rgba(0,245,255,.35);letter-spacing:2px;margin-top:.15rem;}
+
+/* TOOLBAR */
+.toolbar{position:fixed;top:.8rem;right:.8rem;z-index:100;display:flex;gap:.35rem;flex-wrap:wrap;justify-content:flex-end;}
+.toolbar button{background:rgba(0,245,255,.07);backdrop-filter:blur(12px);
+  border:1px solid rgba(0,245,255,.18);color:var(--c1);padding:.4rem .85rem;
+  border-radius:2rem;font-family:var(--font);font-weight:600;font-size:.68rem;
+  cursor:pointer;transition:all .25s;letter-spacing:.5px;}
+.toolbar button:hover{background:rgba(0,245,255,.2);transform:translateY(-2px);}
+.toolbar button.on{background:rgba(0,245,255,.22);border-color:var(--c1);box-shadow:0 0 12px rgba(0,245,255,.3);}
+.toolbar button.danger{border-color:rgba(255,107,53,.4);color:var(--c3);}
+.toolbar button.danger:hover{background:rgba(255,107,53,.15);}
+.toolbar button.go{border-color:rgba(0,255,136,.4);color:var(--c4);}
+.toolbar button.go:hover{background:rgba(0,255,136,.15);}
+
+/* PAINEL ESQUERDO — estado */
+.state-panel{position:fixed;bottom:1rem;left:1rem;z-index:100;
+  background:rgba(1,2,10,.9);backdrop-filter:blur(14px);
+  border:1px solid rgba(0,245,255,.12);border-radius:16px;
+  padding:1rem 1.2rem;width:220px;}
+.state-panel h4{font-family:'Orbitron',monospace;font-size:.58rem;
+  color:rgba(0,245,255,.45);letter-spacing:2px;margin-bottom:.7rem;}
+.state-row{display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:.45rem;font-size:.74rem;}
+.state-row .lbl{color:rgba(224,240,255,.5);}
+.state-row .val{font-family:'Orbitron',monospace;font-size:.72rem;font-weight:700;}
+.bar-wrap{height:4px;background:rgba(255,255,255,.06);border-radius:2px;margin-bottom:.6rem;overflow:hidden;}
+.bar-fill{height:100%;border-radius:2px;transition:width .4s ease;}
+
+/* PAINEL DIREITO — explicação */
+.explain{position:fixed;bottom:1rem;right:1rem;z-index:100;
+  background:rgba(1,2,10,.9);backdrop-filter:blur(14px);
+  border:1px solid rgba(0,245,255,.1);border-radius:16px;
+  padding:.9rem 1.1rem;max-width:230px;}
+.explain h4{font-family:'Orbitron',monospace;font-size:.58rem;
+  color:rgba(0,245,255,.45);letter-spacing:2px;margin-bottom:.55rem;}
+.explain p{font-size:.75rem;color:rgba(224,240,255,.6);line-height:1.65;font-weight:300;}
+.explain strong{color:var(--c1);}
+
+/* MODAL resultado colapso */
+.collapse-msg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  z-index:200;background:rgba(1,2,10,.95);backdrop-filter:blur(20px);
+  border:2px solid;border-radius:20px;padding:1.5rem 2rem;text-align:center;
+  min-width:280px;display:none;animation:popIn .4s ease;}
+@keyframes popIn{from{transform:translate(-50%,-50%) scale(.8);opacity:0;}to{transform:translate(-50%,-50%) scale(1);opacity:1;}}
+.collapse-msg h2{font-family:'Orbitron',monospace;font-size:1rem;margin-bottom:.5rem;}
+.collapse-msg p{font-size:.82rem;line-height:1.65;color:rgba(224,240,255,.7);margin-bottom:.8rem;}
+.collapse-msg button{background:rgba(0,245,255,.12);border:1px solid var(--c1);
+  color:var(--c1);padding:.4rem 1.2rem;border-radius:2rem;font-family:var(--font);
+  font-weight:600;font-size:.75rem;cursor:pointer;}
+
+/* HINT */
+.hint{position:fixed;bottom:50%;left:50%;transform:translate(-50%,50%);
+  z-index:100;font-size:.65rem;color:rgba(0,245,255,.3);letter-spacing:2px;
+  pointer-events:none;animation:fh 5s ease forwards;}
+@keyframes fh{0%{opacity:.7}80%{opacity:.7}100%{opacity:0}}
+
+/* STEPS legend */
+.steps{position:fixed;top:3.8rem;left:.8rem;z-index:100;display:flex;flex-direction:column;gap:.3rem;}
+.step{display:flex;align-items:center;gap:.5rem;font-size:.68rem;color:rgba(224,240,255,.35);transition:color .3s;}
+.step.active{color:rgba(0,245,255,.9);}
+.step .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.15);transition:all .3s;flex-shrink:0;}
+.step.active .dot{background:var(--c1);box-shadow:0 0 8px var(--c1);}
+.step.done .dot{background:var(--c4);box-shadow:0 0 6px var(--c4);}
+.step.done{color:rgba(0,255,136,.5);}
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+
+<div class="title">
+  <h1>COLAPSO DA FUNÇÃO DE ONDA</h1>
+  <p>DUPLA FENDA · MEDIÇÃO · MECÂNICA QUÂNTICA</p>
+</div>
+
+<div class="toolbar">
+  <button onclick="setExp('dupla')"    id="e-dupla"    class="on">⊞ Dupla Fenda</button>
+  <button onclick="setExp('particula')" id="e-particula"          >⚛ Partícula Livre</button>
+  <button onclick="setExp('gato')"    id="e-gato"                 >🐱 Gato de Schrödinger</button>
+  <button onclick="medir()"           id="btn-medir" class="danger">👁 MEDIR (colapsar)</button>
+  <button onclick="resetExp()"        class="go"                  >↺ Reiniciar</button>
+  <button onclick="togglePause()"     id="btn-pause"              >⏸ Pausar</button>
+</div>
+
+<div class="steps">
+  <div class="step active" id="step0"><div class="dot"></div>1. Superposição quântica</div>
+  <div class="step"        id="step1"><div class="dot"></div>2. Interferência</div>
+  <div class="step"        id="step2"><div class="dot"></div>3. Medição</div>
+  <div class="step"        id="step3"><div class="dot"></div>4. Colapso → realidade</div>
+</div>
+
+<div class="state-panel">
+  <h4>ESTADO QUÂNTICO</h4>
+  <div class="state-row">
+    <span class="lbl">|ψ|² total</span>
+    <span class="val" id="sv-prob" style="color:#00f5ff">1.000</span>
+  </div>
+  <div class="bar-wrap"><div class="bar-fill" id="bar-prob" style="width:100%;background:linear-gradient(90deg,#00f5ff,#7b2fff)"></div></div>
+  <div class="state-row">
+    <span class="lbl">Coerência</span>
+    <span class="val" id="sv-coh" style="color:#00ff88">MAX</span>
+  </div>
+  <div class="bar-wrap"><div class="bar-fill" id="bar-coh" style="width:100%;background:#00ff88"></div></div>
+  <div class="state-row">
+    <span class="lbl">Posição definida</span>
+    <span class="val" id="sv-pos" style="color:#ffd700">NÃO</span>
+  </div>
+  <div class="state-row">
+    <span class="lbl">Experimento</span>
+    <span class="val" id="sv-exp" style="color:#7b2fff">DUPLA FENDA</span>
+  </div>
+</div>
+
+<div class="explain">
+  <h4>O QUE ESTÁ ACONTECENDO</h4>
+  <p id="explain-txt">
+    A partícula existe em <strong>superposição</strong> — passa pelas duas fendas ao mesmo tempo como onda.<br><br>
+    |ψ|² = probabilidade de encontrá-la em cada ponto.<br><br>
+    Clique <strong>MEDIR</strong> para colapsar.
+  </p>
+</div>
+
+<div class="collapse-msg" id="collapse-msg">
+  <h2 id="cm-title">COLAPSO!</h2>
+  <p id="cm-text">A função de onda colapsou.</p>
+  <button onclick="fecharModal()">OK</button>
+</div>
+
+<div class="hint">🖱 Arraste · Scroll zoom · MEDIR para colapsar a onda</div>
+
+<script>
+const cv=document.getElementById('cv');
+const ctx=cv.getContext('2d');
+
+// ── câmera ──────────────────────────────────────────
+let rotX=0.38,rotY=0.5,tRX=0.38,tRY=0.5;
+let camZ=13,tCZ=13;
+let drag=false,lmx=0,lmy=0;
+let paused=false,T=0;
+
+// ── estado quântico ──────────────────────────────────
+let exp='dupla';
+let collapsed=false;
+let collapseT=0;           // tempo desde o colapso
+let collapseX=0,collapseY=0; // posição do colapso
+let coherence=1;           // 1=máxima, 0=colapsada
+let step=0;
+let particles=[];          // rastros de partículas
+let hits=[];               // pontos de impacto no detector
+let autoHits=true;
+
+// ── resize ───────────────────────────────────────────
+function resize(){
+  cv.width=innerWidth*devicePixelRatio; cv.height=innerHeight*devicePixelRatio;
+  cv.style.width=innerWidth+'px'; cv.style.height=innerHeight+'px';
+  ctx.scale(devicePixelRatio,devicePixelRatio);
+}
+addEventListener('resize',resize);resize();
+
+// ── 3D math ──────────────────────────────────────────
+const ry=(p,a)=>({x:p.x*Math.cos(a)+p.z*Math.sin(a),y:p.y,z:-p.x*Math.sin(a)+p.z*Math.cos(a)});
+const rx=(p,a)=>({x:p.x,y:p.y*Math.cos(a)-p.z*Math.sin(a),z:p.y*Math.sin(a)+p.z*Math.cos(a)});
+function proj(p){
+  const fov=520,zd=p.z+camZ;
+  if(zd<.1)return null;
+  const s=fov/zd;
+  return{x:innerWidth/2+p.x*s,y:innerHeight/2-p.y*s,s};
+}
+function tr(x,y,z){let p={x,y,z};p=ry(p,rotY);p=rx(p,rotX);return p;}
+
+// ── probabilidade |ψ|² por experimento ───────────────
+function psi2(x,y){
+  switch(exp){
+    case 'dupla':{
+      // duas fendas em y=±1 — padrão de interferência
+      const k=3.5,d=1.2;
+      const r1=Math.sqrt((x-3)*(x-3)+(y-d)*(y-d))+.001;
+      const r2=Math.sqrt((x-3)*(x-3)+(y+d)*(y+d))+.001;
+      const phi=k*(r1-r2);
+      const env=Math.exp(-((x-3)*(x-3))/8);
+      return Math.pow(Math.cos(phi/2),2)*env*Math.max(0,1-(y*y)/16);
+    }
+    case 'particula':{
+      // pacote gaussiano livre se expandindo
+      const sig=1.5+T*.08;
+      return Math.exp(-(x*x+y*y)/(2*sig*sig))/(2*Math.PI*sig*sig);
+    }
+    case 'gato':{
+      // superposição de dois pacotes separados
+      const s=.8;
+      const p1=Math.exp(-((x-2)*(x-2)+(y)*(y))/(2*s*s));
+      const p2=Math.exp(-((x+2)*(x+2)+(y)*(y))/(2*s*s));
+      return (p1+p2)*.5;
+    }
+  }
+  return 0;
+}
+
+// ── amostragem por rejeição → posição colapsada ──────
+function samplePosition(){
+  // Monte Carlo: amostra |ψ|² como distribuição de probabilidade
+  for(let i=0;i<10000;i++){
+    const x=(Math.random()*12)-6;
+    const y=(Math.random()*10)-5;
+    const p=psi2(x,y);
+    if(Math.random()<p*6){return{x,y};}
+  }
+  return{x:0,y:0};
+}
+
+// ── MEDIR → COLAPSAR ─────────────────────────────────
+function medir(){
+  if(collapsed)return;
+  collapsed=true; collapseT=0; coherence=0;
+  const pos=samplePosition();
+  collapseX=pos.x; collapseY=pos.y;
+  hits.push({x:pos.x,y:pos.y,t:T,age:0});
+  setStep(3);
+  // efeito partículas explosão
+  for(let i=0;i<80;i++){
+    const a=Math.random()*Math.PI*2;
+    const v=.05+Math.random()*.15;
+    particles.push({x:pos.x,y:pos.y,z:0,vx:Math.cos(a)*v,vy:Math.sin(a)*v,vz:(Math.random()-.5)*.1,life:1,col:Math.random()<.5?'0,245,255':'123,47,255'});
+  }
+  // modal
+  const msg=document.getElementById('collapse-msg');
+  const title=document.getElementById('cm-title');
+  const text=document.getElementById('cm-text');
+  if(exp==='dupla'){
+    title.textContent='⚡ COLAPSO!'; title.style.color='#00f5ff';
+    msg.style.borderColor='#00f5ff';
+    text.innerHTML=`A partícula foi detectada em<br><strong style="color:#00f5ff">x = ${pos.x.toFixed(2)}, y = ${pos.y.toFixed(2)}</strong><br><br>O padrão de interferência desapareceu.<br>Ao medir, destruímos a superposição.`;
+  } else if(exp==='gato'){
+    const vivo=pos.x>0;
+    title.textContent=vivo?'😸 VIVO!':'💀 MORTO!';
+    title.style.color=vivo?'#00ff88':'#ff6b35';
+    msg.style.borderColor=vivo?'#00ff88':'#ff6b35';
+    text.innerHTML=`O gato colapsou para o estado:<br><strong style="color:${vivo?'#00ff88':'#ff6b35'}">${vivo?'VIVO':'MORTO'}</strong><br><br>Antes da medição ele estava nos <strong>dois estados simultaneamente</strong>.`;
+  } else {
+    title.textContent='📍 LOCALIZADA!'; title.style.color='#ffd700';
+    msg.style.borderColor='#ffd700';
+    text.innerHTML=`Posição definida em<br><strong style="color:#ffd700">(${pos.x.toFixed(2)}, ${pos.y.toFixed(2)})</strong><br><br>O pacote gaussiano colapsou.<br>Agora a incerteza em posição é mínima — mas o momento ficou totalmente indefinido (Heisenberg).`;
+  }
+  msg.style.display='block';
+  updateUI();
+}
+
+function fecharModal(){document.getElementById('collapse-msg').style.display='none';}
+
+// ── steps UI ─────────────────────────────────────────
+function setStep(s){
+  step=s;
+  for(let i=0;i<4;i++){
+    const el=document.getElementById('step'+i);
+    el.className='step'+(i<s?' done':i===s?' active':'');
+  }
+}
+
+// ── update painel esquerdo ───────────────────────────
+function updateUI(){
+  const pv=collapsed?0:1;
+  document.getElementById('sv-prob').textContent=pv.toFixed(3);
+  document.getElementById('bar-prob').style.width=(pv*100)+'%';
+  document.getElementById('sv-coh').textContent=collapsed?'NULA':'MÁX';
+  document.getElementById('sv-coh').style.color=collapsed?'#ff6b35':'#00ff88';
+  document.getElementById('bar-coh').style.width=(pv*100)+'%';
+  document.getElementById('bar-coh').style.background=collapsed?'#ff6b35':'#00ff88';
+  document.getElementById('sv-pos').textContent=collapsed?'SIM':'NÃO';
+  document.getElementById('sv-pos').style.color=collapsed?'#00ff88':'#ffd700';
+}
+
+// ── reset ────────────────────────────────────────────
+function resetExp(){
+  collapsed=false;coherence=1;collapseT=0;T=0;step=0;
+  particles=[];hits=[];
+  document.getElementById('collapse-msg').style.display='none';
+  setStep(0); updateUI();
+  const exps={dupla:'DUPLA FENDA',particula:'PARTÍCULA LIVRE',gato:'GATO DE SCHRÖDINGER'};
+  document.getElementById('sv-exp').textContent=exps[exp];
+}
+
+function setExp(e){
+  exp=e;
+  document.querySelectorAll('.toolbar button').forEach(b=>b.classList.remove('on'));
+  document.getElementById('e-'+e).classList.add('on');
+  const exps={dupla:'DUPLA FENDA',particula:'PARTÍCULA LIVRE',gato:'GATO DE SCHRÖDINGER'};
+  document.getElementById('sv-exp').textContent=exps[e];
+  const explains={
+    dupla:`A partícula existe em <strong>superposição</strong> — passa pelas duas fendas ao mesmo tempo como onda.<br><br>|ψ|² = probabilidade de encontrá-la. Clique <strong>MEDIR</strong> para colapsar.`,
+    particula:`Pacote gaussiano livre se espalhando pelo espaço.<br><br>Incerteza de posição cresce com o tempo (princípio de Heisenberg).<br><br>Clique <strong>MEDIR</strong> para localizar.`,
+    gato:`O gato está <strong>vivo E morto</strong> simultaneamente até ser observado.<br><br>Superposição macroscópica — paradoxo de Schrödinger.<br><br>Clique <strong>MEDIR</strong> para decidir o destino do gato.`
+  };
+  document.getElementById('explain-txt').innerHTML=explains[e];
+  resetExp();
+}
+
+function togglePause(){paused=!paused;document.getElementById('btn-pause').textContent=paused?'▶ Continuar':'⏸ Pausar';}
+
+// ── DRAW SURFACE |ψ|² ───────────────────────────────
+function drawPsi2Surface(){
+  const NX=70,NY=50,xR=6,yR=5;
+  const grid=[];
+  for(let iy=0;iy<=NY;iy++){
+    const row=[];
+    for(let ix=0;ix<=NX;ix++){
+      const x=-xR+(2*xR)*(ix/NX);
+      const y=-yR+(2*yR)*(iy/NY);
+      let h;
+      if(collapsed){
+        // colapso: gaussiana estreita em torno do ponto medido, pulsando
+        const dx=x-collapseX,dy=y-collapseY;
+        const sig=Math.max(.08,.8-collapseT*.6);
+        const pulse=1+.3*Math.sin(collapseT*15)*Math.exp(-collapseT*.5);
+        h=2.5*Math.exp(-(dx*dx+dy*dy)/(2*sig*sig))*pulse;
+      } else {
+        h=psi2(x,y)*3.5;
+        // onda de superposição — oscila no tempo
+        const phase=Math.sin(T*1.2+x*.8)*Math.cos(T*.9+y*.5)*.12;
+        h=h*(1+phase*coherence);
+      }
+      row.push({x,y,h});
+    }
+    grid.push(row);
+  }
+
+  // ordena quads por profundidade (painter)
+  const quads=[];
+  for(let iy=0;iy<NY;iy++){
+    for(let ix=0;ix<NX;ix++){
+      const p00=grid[iy][ix],p10=grid[iy][ix+1];
+      const p01=grid[iy+1][ix],p11=grid[iy+1][ix+1];
+      const avgH=(p00.h+p10.h+p01.h+p11.h)/4;
+      const cx=(p00.x+p10.x+p01.x+p11.x)/4;
+      const cy=(p00.y+p10.y+p01.y+p11.y)/4;
+      const tp=tr(cx,avgH*.5,cy);
+      quads.push({p00,p10,p01,p11,avgH,depth:tp.z});
+    }
+  }
+  quads.sort((a,b)=>b.depth-a.depth);
+
+  quads.forEach(q=>{
+    const {p00,p10,p01,p11,avgH}=q;
+    const a=proj(tr(p00.x,p00.h,p00.y));
+    const b=proj(tr(p10.x,p10.h,p10.y));
+    const c=proj(tr(p11.x,p11.h,p11.y));
+    const d=proj(tr(p01.x,p01.h,p01.y));
+    if(!a||!b||!c||!d)return;
+
+    // cor: gradiente por altura — ciano→roxo→laranja nos picos
+    let col,alpha;
+    if(collapsed){
+      const norm=Math.min(1,avgH/2.5);
+      if(norm>.7){col=`255,107,53`;alpha=.6+norm*.3;}
+      else if(norm>.3){col=`0,245,255`;alpha=.3+norm*.4;}
+      else{col=`123,47,255`;alpha=.08+norm*.2;}
+    } else {
+      const norm=Math.min(1,avgH/1.4);
+      if(norm>.6){col=`0,245,255`;alpha=.25+norm*.35;}
+      else if(norm>.2){col=`123,47,255`;alpha=.12+norm*.25;}
+      else{col=`0,255,136`;alpha=.04+norm*.1;}
+    }
+
+    ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.lineTo(c.x,c.y);ctx.lineTo(d.x,d.y);ctx.closePath();
+    ctx.fillStyle=`rgba(${col},${alpha})`;ctx.fill();
+
+    if(avgH>.2){
+      ctx.strokeStyle=`rgba(${col},${Math.min(.6,alpha+.15)})`;
+      ctx.lineWidth=.4; ctx.stroke();
+    }
+  });
+
+  // contorno de cristas com glow
+  for(let iy=1;iy<NY-1;iy++){
+    for(let ix=1;ix<NX-1;ix++){
+      const p=grid[iy][ix];
+      if(p.h<(collapsed?1.5:.8))continue;
+      const pp=proj(tr(p.x,p.h,p.y));
+      if(!pp)continue;
+      const col=collapsed?'255,107,53':'0,245,255';
+      ctx.beginPath();ctx.arc(pp.x,pp.y,Math.max(1,pp.s*.05),0,Math.PI*2);
+      ctx.fillStyle=`rgba(${col},.9)`;
+      ctx.shadowColor=collapsed?'#ff6b35':'#00f5ff';ctx.shadowBlur=8;
+      ctx.fill();ctx.shadowBlur=0;
+    }
+  }
+}
+
+// ── DRAW AXES + PLANO BASE ───────────────────────────
+function drawBase(){
+  // grade base
+  ctx.strokeStyle='rgba(0,245,255,.04)';ctx.lineWidth=.8;
+  for(let x=-6;x<=6;x++){
+    const a=proj(tr(x,0,-5)),b=proj(tr(x,0,5));
+    if(a&&b){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
+  }
+  for(let z=-5;z<=5;z++){
+    const a=proj(tr(-6,0,z)),b=proj(tr(6,0,z));
+    if(a&&b){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
+  }
+
+  // eixos
+  [[[-6,0,0],[6,0,0],'rgba(0,245,255,.3)','x'],
+   [[0,0,-5],[0,0,5],'rgba(123,47,255,.3)','y'],
+   [[0,-0.2,0],[0,3,0],'rgba(0,255,136,.3)','|ψ|²']].forEach(([f,t,c,l])=>{
+    const a=proj(tr(...f)),b=proj(tr(...t));
+    if(!a||!b)return;
+    ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+    ctx.strokeStyle=c;ctx.lineWidth=1;ctx.stroke();
+    ctx.font=`700 ${Math.max(9,b.s*.45)}px 'Orbitron',monospace`;
+    ctx.fillStyle=c.replace('.3','.8');ctx.textAlign='center';ctx.fillText(l,b.x+8,b.y-8);
+  });
+
+  // plano das fendas (dupla fenda)
+  if(exp==='dupla'&&!collapsed){
+    const x0=-3;
+    for(let y=-4;y<=4;y+=.25){
+      if(Math.abs(y-1.2)<.3||Math.abs(y+1.2)<.3)continue;// fendas abertas
+      const a=proj(tr(x0,0,y)),b=proj(tr(x0,.5,y));
+      if(!a||!b)continue;
+      ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+      ctx.strokeStyle='rgba(255,215,0,.5)';ctx.lineWidth=2;ctx.stroke();
+    }
+    // label
+    const lp=proj(tr(x0,1.5,0));
+    if(lp){
+      ctx.font="600 9px 'Orbitron',monospace";ctx.fillStyle='rgba(255,215,0,.6)';
+      ctx.textAlign='center';ctx.fillText('BARREIRA',lp.x,lp.y-10);
+      ctx.fillText('2 FENDAS',lp.x,lp.y+2);
+    }
+  }
+}
+
+// ── DRAW PARTÍCULAS ──────────────────────────────────
+function drawParticles(){
+  for(let i=particles.length-1;i>=0;i--){
+    const p=particles[i];
+    p.x+=p.vx;p.y+=p.vy;p.z+=p.vz;p.life-=.018;
+    if(p.life<=0){particles.splice(i,1);continue;}
+    const pp=proj(tr(p.x,p.y,p.z));
+    if(!pp)continue;
+    ctx.beginPath();ctx.arc(pp.x,pp.y,Math.max(1.5,pp.s*.07*p.life),0,Math.PI*2);
+    ctx.fillStyle=`rgba(${p.col},${p.life*.9})`;
+    ctx.shadowColor=p.col.includes('255,107')?'#ff6b35':'#00f5ff';ctx.shadowBlur=6;
+    ctx.fill();ctx.shadowBlur=0;
+  }
+}
+
+// ── DRAW HITS (detector) ────────────────────────────
+function drawHits(){
+  hits.forEach(h=>{
+    h.age+=.008;
+    const pp=proj(tr(h.x,0,h.y));
+    if(!pp)return;
+    const a=Math.max(0,.8-h.age*.2);
+    ctx.beginPath();ctx.arc(pp.x,pp.y,Math.max(2,pp.s*.1),0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,107,53,${a})`;
+    ctx.shadowColor='#ff6b35';ctx.shadowBlur=12;ctx.fill();ctx.shadowBlur=0;
+    // anel pulsante
+    const r=Math.max(4,pp.s*.2*(1+h.age));
+    ctx.beginPath();ctx.arc(pp.x,pp.y,r,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(255,107,53,${Math.max(0,.4-h.age*.1)})`;ctx.lineWidth=1;ctx.stroke();
+  });
+}
+
+// ── DRAW GATO ────────────────────────────────────────
+function drawGato(){
+  if(exp!=='gato')return;
+  [[-2,0,0],[2,0,0]].forEach((pos,i)=>{
+    const pp=proj(tr(pos[0],pos[1]+.5,pos[2]));
+    if(!pp)return;
+    const s=pp.s*.12;
+    if(collapsed){
+      // só um dos estados
+      const vivo=collapseX>0;
+      if((i===0&&vivo)||(i===1&&!vivo)){
+        // estado não escolhido — apaga
+        ctx.globalAlpha=Math.max(0,.3-collapseT*.3);
+      }
+    } else {
+      ctx.globalAlpha=.7+.3*Math.sin(T*2+i*Math.PI);
+    }
+    // cabeça gato SVG-like em canvas
+    const x=pp.x,y=pp.y;
+    ctx.beginPath();ctx.arc(x,y,s*3,0,Math.PI*2);
+    const col=i===0?'0,255,136':'255,107,53';
+    ctx.fillStyle=`rgba(${col},.15)`;ctx.fill();
+    ctx.strokeStyle=`rgba(${col},.6)`;ctx.lineWidth=1.5;ctx.stroke();
+    // orelhas
+    ctx.beginPath();ctx.moveTo(x-s*2,y-s*2);ctx.lineTo(x-s*3,y-s*4);ctx.lineTo(x-s*.5,y-s*2.5);ctx.closePath();
+    ctx.fillStyle=`rgba(${col},.5)`;ctx.fill();
+    ctx.beginPath();ctx.moveTo(x+s*2,y-s*2);ctx.lineTo(x+s*3,y-s*4);ctx.lineTo(x+s*.5,y-s*2.5);ctx.closePath();
+    ctx.fill();
+    // label
+    ctx.globalAlpha=.9;
+    ctx.font=`700 ${Math.max(8,s*.9)}px 'Orbitron',monospace`;
+    ctx.textAlign='center';ctx.fillStyle=`rgba(${col},1)`;
+    ctx.fillText(i===0?'VIVO':'MORTO',x,y+s*5);
+    ctx.globalAlpha=1;
+  });
+}
+
+// ── MAIN LOOP ────────────────────────────────────────
+function render(){
+  requestAnimationFrame(render);
+  const W=innerWidth,H=innerHeight;
+  ctx.clearRect(0,0,W,H);
+
+  // suaviza câmera
+  rotX+=(tRX-rotX)*.07;rotY+=(tRY-rotY)*.07;camZ+=(tCZ-camZ)*.07;
+  if(!paused){
+    T+=.016;
+    if(collapsed) collapseT+=.016;
+  }
+
+  // step automático
+  if(!collapsed){
+    if(T>2&&step<1)setStep(1);
+    if(T>4&&step<2)setStep(2);
+  }
+
+  // background
+  ctx.strokeStyle='rgba(0,245,255,.02)';ctx.lineWidth=.7;
+  const gs=65;
+  for(let x=0;x<W;x+=gs){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=gs){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+  // halo central
+  const rg=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.min(W,H)*.45);
+  const hcol=collapsed?'rgba(255,107,53,.04)':'rgba(0,245,255,.04)';
+  rg.addColorStop(0,hcol);rg.addColorStop(1,'transparent');
+  ctx.fillStyle=rg;ctx.fillRect(0,0,W,H);
+
+  drawBase();
+  drawPsi2Surface();
+  drawGato();
+  drawParticles();
+  drawHits();
+
+  // texto t= e status
+  ctx.font="600 9px 'Orbitron',monospace";
+  ctx.fillStyle='rgba(0,245,255,.3)';ctx.textAlign='left';
+  ctx.fillText(`t = ${T.toFixed(2)}s  |  ${collapsed?'COLAPSADO':'SUPERPOSIÇÃO'}`,10,H-10);
+
+  // anel de colapso expandindo
+  if(collapsed&&collapseT<2){
+    const pp=proj(tr(collapseX,.1,collapseY));
+    if(pp){
+      const r=collapseT*pp.s*2;
+      ctx.beginPath();ctx.arc(pp.x,pp.y,r,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(255,107,53,${Math.max(0,.6-collapseT*.35)})`;
+      ctx.lineWidth=2;ctx.shadowColor='#ff6b35';ctx.shadowBlur=15;ctx.stroke();ctx.shadowBlur=0;
+      // segundo anel menor
+      ctx.beginPath();ctx.arc(pp.x,pp.y,r*.5,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(0,245,255,${Math.max(0,.4-collapseT*.25)})`;
+      ctx.lineWidth=1;ctx.stroke();
+    }
+  }
+
+  // auto-spawn partícula volante (antes do colapso)
+  if(!collapsed&&Math.random()<.04){
+    const pos=samplePosition();
+    const pp=proj(tr(pos.x,0,pos.y));
+    if(pp){
+      for(let i=0;i<3;i++){
+        const a=Math.random()*Math.PI*2;
+        particles.push({x:pos.x,y:.05,z:pos.y,vx:Math.cos(a)*.02,vy:.02+Math.random()*.03,vz:Math.sin(a)*.02,life:.6+Math.random()*.4,col:'0,245,255'});
+      }
+    }
+  }
+
+  updateUI();
+}
+render();
+
+// ── MOUSE ────────────────────────────────────────────
+cv.addEventListener('mousedown',e=>{drag=true;lmx=e.clientX;lmy=e.clientY;});
+addEventListener('mouseup',()=>drag=false);
+addEventListener('mousemove',e=>{
+  if(drag){
+    tRY+=(e.clientX-lmx)*.008;tRX+=(e.clientY-lmy)*.005;
+    tRX=Math.max(-1.4,Math.min(1.4,tRX));
+    lmx=e.clientX;lmy=e.clientY;
+  }
+});
+cv.addEventListener('wheel',e=>{e.preventDefault();tCZ=Math.max(5,Math.min(22,tCZ+e.deltaY*.02));},{passive:false});
+
+// TOUCH
+let ltd=0;
+cv.addEventListener('touchstart',e=>{
+  if(e.touches.length===1){drag=true;lmx=e.touches[0].clientX;lmy=e.touches[0].clientY;}
+  if(e.touches.length===2){const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;ltd=Math.sqrt(dx*dx+dy*dy);}
+},{passive:true});
+cv.addEventListener('touchend',()=>drag=false,{passive:true});
+cv.addEventListener('touchmove',e=>{
+  if(e.touches.length===1&&drag){
+    tRY+=(e.touches[0].clientX-lmx)*.008;tRX+=(e.touches[0].clientY-lmy)*.005;
+    tRX=Math.max(-1.4,Math.min(1.4,tRX));lmx=e.touches[0].clientX;lmy=e.touches[0].clientY;
+  }
+  if(e.touches.length===2){
+    const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;
+    const d=Math.sqrt(dx*dx+dy*dy);tCZ=Math.max(5,Math.min(22,tCZ+(ltd-d)*.05));ltd=d;
+  }
+},{passive:true});
+</script>
+</body>
+</html>

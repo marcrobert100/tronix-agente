@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "gpt-image-2": {
+      "source": "ConardLi/garden-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gpt-image-2/SKILL.md",
+      "computedHash": "bb9e62cd55dfa8d318ca4d9f600567eedb45c238b000ed09311fc9f4ca2e383d"
+    }
+  }
+}

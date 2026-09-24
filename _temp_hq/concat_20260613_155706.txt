@@ -1,0 +1,4 @@
+file 'C:\xampp\htdocs\agente\_temp_hq\clip_20260613_155706_00.mp4'
+file 'C:\xampp\htdocs\agente\_temp_hq\clip_20260613_155706_01.mp4'
+file 'C:\xampp\htdocs\agente\_temp_hq\clip_20260613_155706_02.mp4'
+file 'C:\xampp\htdocs\agente\_temp_hq\clip_20260613_155706_03.mp4'

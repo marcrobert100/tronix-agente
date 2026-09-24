@@ -1,0 +1,2037 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERVAS — Indicações e Usos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ouro:#b8860b; --ouro2:#d4af37; --verde:#1e4d33; --verde-c:#3f7a56;
+  --papel:#f7f1e1; --papel2:#efe6d0; --tinta:#2c2518; --tinta2:#6b5f45;
+  --fundo:#0e1a13; --barra:#0d150f;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:
+    radial-gradient(1200px 500px at 50% -100px, #16321f 0%, transparent 60%),
+    var(--fundo);
+  color:var(--tinta);
+  font-family:'Cormorant Garamond',Georgia,serif;
+  display:flex;flex-direction:column;height:100vh;overflow:hidden;
+}
+
+/* ---------- TOPBAR ---------- */
+.topbar{
+  display:flex;align-items:center;gap:10px;padding:10px 14px;
+  background:var(--barra);border-bottom:1px solid #22372a;z-index:50;
+}
+.tb-titulo{font-family:'Playfair Display',serif;color:var(--ouro2);font-size:1.02rem;letter-spacing:.04em;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-btn{
+  background:#182218;color:#d9e6d5;border:1px solid #2c4a36;border-radius:8px;
+  padding:7px 12px;font-family:'Poppins',sans-serif;font-size:.72rem;font-weight:500;cursor:pointer;transition:all .15s;
+}
+.tb-btn:hover{border-color:var(--ouro);color:var(--ouro2)}
+.tb-btn.destaque{background:var(--ouro);color:#141000;border-color:var(--ouro)}
+
+/* ---------- MENU ---------- */
+.menu{
+  position:fixed;top:54px;right:12px;width:290px;max-height:70vh;overflow-y:auto;z-index:60;
+  background:#101a12;border:1px solid #2c4a36;border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,.6);
+  display:none;padding:8px;
+}
+.menu.aberto{display:block}
+.menu .m-tit{font-family:'Poppins',sans-serif;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ouro2);padding:8px 10px 6px}
+.menu button{
+  display:block;width:100%;text-align:left;background:none;border:none;color:#cfe0c8;cursor:pointer;
+  padding:8px 10px;border-radius:8px;font-family:'Poppins',sans-serif;font-size:.8rem;
+}
+.menu button:hover{background:#1c2a1f}
+.menu button small{display:block;color:#7d937a;font-size:.68rem}
+
+/* ---------- LIVRO ---------- */
+.livro{flex:1;overflow:hidden;position:relative}
+.rolagem{
+  height:100%;overflow-y:auto;scroll-snap-type:y proximity;
+  scroll-behavior:smooth;
+}
+.page{
+  min-height:100%;display:flex;align-items:center;justify-content:center;
+  padding:34px 16px 70px;scroll-snap-align:start;
+  width:100%;
+}
+.page>div{width:100%;max-width:680px;margin:0 auto}
+
+/* ---------- PÁGINAS GENÉRICAS ---------- */
+.pg-kicker{
+  font-family:'Poppins',sans-serif;font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--ouro);text-align:center;margin-bottom:10px;font-weight:600;
+}
+.pg-titulo{
+  font-family:'Playfair Display',serif;font-size:clamp(1.7rem,4vw,2.6rem);font-weight:800;
+  text-align:center;line-height:1.1;color:#23311f;
+}
+.pg-parte{font-size:.6em;color:var(--ouro);font-family:'Poppins',sans-serif;font-weight:500;letter-spacing:.06em}
+.pg-faixa{
+  width:120px;height:3px;background:linear-gradient(90deg,transparent,var(--ouro),transparent);
+  margin:16px auto 22px;border-radius:3px;
+}
+.pg-corpo p{
+  font-size:1.14rem;line-height:1.65;margin-bottom:14px;color:#3a3222;text-align:justify;
+}
+.pg-corpo p:last-child{margin-bottom:0}
+
+/* papel */
+.page>div{
+  background:linear-gradient(180deg,var(--papel) 0%,var(--papel2) 100%);
+  border-radius:6px;box-shadow:0 24px 60px rgba(0,0,0,.55), inset 0 0 0 1px rgba(0,0,0,.08);
+  padding:44px 44px 40px;position:relative;min-height:calc(100vh - 200px);
+}
+.page>div::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:34px;
+  background:linear-gradient(90deg,#e5dbc0,rgba(231,219,190,0));
+}
+
+/* ---------- CAPA ---------- */
+.cover-inner{
+  background:radial-gradient(140% 100% at 50% -10%, #245338 0%, #123523 55%, #0a2417 100%) !important;
+  color:#efe6cf;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  border-radius:6px;position:relative;overflow:hidden;
+}
+.cover-inner::before{display:none}
+.c-topo{margin-bottom:22px}
+.c-badge{
+  font-family:'Poppins',sans-serif;font-size:.62rem;letter-spacing:.34em;text-transform:uppercase;
+  border:1px solid var(--ouro2);color:var(--ouro2);padding:7px 18px;border-radius:30px;display:inline-block;
+}
+.c-coroa{margin-bottom:16px}
+.c-coroa .estrela{width:44px;height:44px;filter:drop-shadow(0 0 12px rgba(212,175,55,.7))}
+.c-titulo{
+  font-family:'Playfair Display',serif;font-size:clamp(4rem,14vw,7rem);font-weight:800;line-height:1;
+  color:#f6ecd2;letter-spacing:.04em;text-shadow:0 4px 30px rgba(0,0,0,.4);
+}
+.c-sub{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.5rem,4.5vw,2.2rem);
+  color:var(--ouro2);margin-top:10px;
+}
+.c-linha{width:140px;height:2px;background:linear-gradient(90deg,transparent,var(--ouro2),transparent);margin:24px auto}
+.c-desc{font-size:1.02rem;color:#c8d8c2;line-height:1.6;max-width:420px;margin-bottom:26px;font-style:italic}
+.c-ramo{position:relative;width:100%;max-width:150px;margin-bottom:8px}
+.c-ramo .ramo{width:100%;height:auto}
+.c-autor{
+  font-family:'Poppins',sans-serif;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:#b7c9ae;
+}
+.c-marca{
+  font-family:'Playfair Display',serif;font-style:italic;color:var(--ouro2);font-size:1.05rem;margin-top:8px;
+}
+.c-local{
+  font-family:'Poppins',sans-serif;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:#9db395;margin-top:8px;
+}
+.sobre-contato{
+  margin:16px 0;padding:16px 18px;background:#fdf8ec;border:1px solid #e0d3b0;border-radius:12px;
+  font-size:1.02rem;
+}
+.sobre-contato a{color:var(--verde);font-weight:600}
+.sobre-contato p{margin-bottom:6px}
+.sobre-contato p:last-child{margin-bottom:0}
+.sobre-assinatura{
+  font-style:italic;color:var(--ouro);text-align:center;font-size:1.08rem;
+}
+.c-marca-fim{font-family:'Playfair Display',serif;font-style:italic;color:var(--ouro2);font-size:1.15rem;margin-top:8px}
+.c-local-fim{font-family:'Poppins',sans-serif;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:#b7c9ae;margin-top:6px}
+.c-contato{margin-top:18px;font-family:'Poppins',sans-serif;font-size:.72rem;color:#c8d8c2;line-height:1.7}
+.c-contato p{margin:0}
+
+/* ---------- ÍNDICE ---------- */
+.toc-inner .toc{list-style:none;margin-top:8px}
+.toc li{margin-bottom:4px}
+.toc a{
+  display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--tinta);
+  padding:9px 12px;border-radius:10px;border:1px solid transparent;transition:all .15s;
+}
+.toc a:hover{background:#e9dfc6;border-color:#d6c7a4}
+.toc-num{font-family:'Playfair Display',serif;font-weight:800;color:var(--ouro);font-size:1rem;width:30px}
+.toc-txt{flex:1;font-size:1.08rem;font-weight:600;color:#2c2518}
+.toc-arrow{color:var(--ouro);font-size:1.2rem}
+.toc-note{margin-top:18px;font-size:.82rem;color:var(--tinta2);text-align:center;font-style:italic}
+
+/* ---------- LISTAS ---------- */
+.lcards,.bcards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lcard{
+  background:#fdf8ec;border:1px solid #e0d3b0;border-radius:12px;padding:14px 16px;
+}
+.lcard h3{font-family:'Playfair Display',serif;font-size:1.12rem;color:#23311f;margin-bottom:10px;line-height:1.2}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{
+  font-family:'Poppins',sans-serif;font-size:.62rem;font-weight:500;color:var(--verde);
+  background:#e7efdd;border:1px solid #cfe0bd;border-radius:30px;padding:3px 9px;
+}
+.bcard{
+  background:#fdf8ec;border:1px solid #e0d3b0;border-radius:12px;padding:18px;text-align:center;
+}
+.b-icone{font-size:1.6rem;display:block;margin-bottom:6px}
+.bcard h3{font-family:'Playfair Display',serif;font-size:1.18rem;color:#23311f;margin-bottom:8px}
+.b-mix{font-family:'Poppins',sans-serif;font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ouro);margin-bottom:6px}
+.b-ing{font-size:1.04rem;line-height:1.5;color:#3a3222}
+.b-dica{margin-top:16px;font-size:.86rem;color:var(--tinta2);text-align:center;font-style:italic}
+
+/* ---------- ENERGIA ---------- */
+.ecards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ecard{
+  background:#fdf8ec;border:1px solid #e0d3b0;border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;
+}
+.e-icone{flex-shrink:0}
+.e-icone .estrela{width:18px;height:18px}
+.ecard h3{font-family:'Playfair Display',serif;font-size:1.05rem;color:#23311f;line-height:1.1}
+.ecard p{font-size:.96rem;color:#4a4130;margin-top:4px;line-height:1.45}
+
+/* ---------- DIVISOR ---------- */
+.divisor-inner{
+  background:
+    radial-gradient(140% 100% at 50% -10%, #245338 0%, #123523 55%, #0a2417 100%) !important;
+  color:#efe6cf;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+}
+.divisor-inner::before{display:none}
+.d-ramo{width:110px;margin-bottom:14px}
+.d-ramo .ramo{width:100%;height:auto;opacity:.8}
+.d-num{font-family:'Playfair Display',serif;font-size:1rem;letter-spacing:.2em;color:var(--ouro2)}
+.d-titulo{font-family:'Playfair Display',serif;font-size:clamp(2rem,5.5vw,3rem);font-weight:800;color:#f6ecd2;margin-top:10px;line-height:1.1}
+.d-sub{font-style:italic;font-size:1.1rem;color:#c8d8c2;margin-top:12px}
+.d-estrelas{display:flex;gap:12px;margin-top:26px}
+.d-estrelas .estrela{width:20px;height:20px;opacity:.85}
+
+/* ---------- ERVA ---------- */
+.erva-inner{position:relative}
+.erva-inner .ramo{position:absolute;width:86px;height:auto;opacity:.5;top:-14px}
+.erva-inner .ramo.esq{left:-30px;transform:rotate(6deg)}
+.erva-inner .ramo.dir{right:-30px;transform:rotate(-6deg)}
+.erva-inner .medalha{position:absolute;top:-20px;right:8px;width:74px;height:74px}
+.erva-nome{
+  font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,2.9rem);font-weight:800;
+  text-align:center;color:#23311f;line-height:1.05;margin-top:14px;
+}
+.erva-latin{
+  font-style:italic;text-align:center;color:var(--verde);font-size:1.15rem;margin-top:6px;letter-spacing:.02em;
+}
+.erva-texto{
+  font-size:1.13rem;line-height:1.7;color:#3a3222;text-align:justify;
+}
+
+/* ---------- INDICAÇÕES ---------- */
+.ind-tab{width:100%;border-collapse:collapse;font-size:.98rem}
+.ind-tab td{padding:8px 12px;border-bottom:1px solid #e0d3b0;vertical-align:top}
+.ind-tab tr:nth-child(even) td{background:#f3ead5}
+.i-nome{font-family:'Playfair Display',serif;font-weight:800;color:var(--verde);white-space:nowrap;width:38%}
+
+/* ---------- SIGNOS ---------- */
+.scards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.scard{
+  background:#fdf8ec;border:1px solid #e0d3b0;border-radius:12px;padding:12px;text-align:center;
+}
+.s-simbolo{font-size:1.5rem;color:var(--ouro);display:block;margin-bottom:4px}
+.scard h3{font-family:'Playfair Display',serif;font-size:1.05rem;color:#23311f}
+.scard p{font-size:.9rem;color:#4a4130;margin-top:6px;line-height:1.4}
+
+/* ---------- FINAL / CONTRACAPA ---------- */
+.f-estrelas{display:flex;gap:12px;justify-content:center;margin-bottom:18px}
+.f-estrelas .estrela{width:20px;height:20px}
+.contra-inner{
+  background:radial-gradient(140% 100% at 50% -10%, #245338 0%, #123523 55%, #0a2417 100%) !important;
+  color:#efe6cf;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+}
+.contra-inner::before{display:none}
+.contra-inner .c-ramo{width:120px;margin-bottom:16px}
+.c-fim{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:800;color:#f6ecd2}
+.c-fim-sub{font-style:italic;font-size:1.2rem;color:var(--ouro2);margin-top:6px}
+.c-aviso{margin-top:22px;font-size:.86rem;line-height:1.6;color:#c8d8c2;max-width:380px}
+.c-copy{margin-top:22px;font-family:'Poppins',sans-serif;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:#9db395}
+
+/* ---------- BARRA INFERIOR ---------- */
+.bottom{
+  display:flex;align-items:center;gap:14px;padding:10px 16px;background:var(--barra);border-top:1px solid #22372a;z-index:50;
+}
+.prog-wrap{flex:1;height:4px;background:#1c2a1f;border-radius:4px;overflow:hidden}
+.prog{height:100%;width:0;background:linear-gradient(90deg,var(--ouro),var(--ouro2));transition:width .2s}
+.pos{font-family:'Poppins',sans-serif;font-size:.7rem;color:#9db395;min-width:64px;text-align:center}
+.nav-btn{
+  background:#182218;color:#d9e6d5;border:1px solid #2c4a36;border-radius:8px;
+  width:38px;height:38px;font-size:1rem;cursor:pointer;transition:all .15s;font-family:'Poppins',sans-serif;
+}
+.nav-btn:hover:not(:disabled){border-color:var(--ouro);color:var(--ouro2)}
+.nav-btn:disabled{opacity:.35;cursor:default}
+
+/* ---------- RESPONSIVO ---------- */
+@media (max-width:760px){
+  .lcards,.bcards{grid-template-columns:1fr}
+  .scards{grid-template-columns:1fr 1fr}
+  .page>div{padding:34px 22px 30px}
+  .erva-inner .ramo.dir{right:-14px}
+  .erva-inner .ramo.esq{left:-14px}
+}
+@media (max-width:480px){
+  .tb-btn span{display:none}
+  .tb-btn{padding:7px 9px}
+}
+
+/* ---------- IMPRESSÃO / PDF ---------- */
+@media print{
+  body{background:#fff;height:auto;overflow:visible;display:block}
+  .topbar,.bottom,.menu{display:none!important}
+  .livro{overflow:visible}
+  .rolagem{height:auto;overflow:visible;scroll-snap-type:none}
+  .page{min-height:0;padding:0;page-break-after:always;display:block}
+  .page>div{min-height:0;box-shadow:none;border:1px solid #ddd;border-radius:0}
+  @page{size:A4;margin:0}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="tb-titulo">🌿 ERVAS — Indicações e Usos</span>
+  <button class="tb-btn" onclick="abrirMenu()">☰ <span>Capítulos</span></button>
+  <button class="tb-btn destaque" onclick="window.print()">⬇ <span>PDF</span></button>
+  <button class="tb-btn" onclick="whats()">📱 <span>WhatsApp</span></button>
+</div>
+
+<div class="menu" id="menu"><button data-ir="0">Capa<small>ERVAS — Indicações e Usos</small></button>
+<button data-ir="1">Índice<small>Navegue pelo guia</small></button>
+<button data-ir="2">Ervas Para…<small>Parte I</small></button>
+<button data-ir="3">Ervas Para…<small>Parte II</small></button>
+<button data-ir="4">Banhos de Ervas<small>Rituais</small></button>
+<button data-ir="5">Função Energética<small>Parte I</small></button>
+<button data-ir="6">Função Energética<small>Parte II</small></button>
+<button data-ir="7">O Uso das Ervas e Vegetais<small>Divisão</small></button>
+<button data-ir="8">Abacate<small>Persea gratissima</small></button>
+<button data-ir="9">Abacaxi<small>Ananás sativus</small></button>
+<button data-ir="10">Abóbora<small>Cucúrbita pepo</small></button>
+<button data-ir="11">Acelga<small>Beta vulgaris</small></button>
+<button data-ir="12">Agrião<small>Nasturtium officinale</small></button>
+<button data-ir="13">Aipo<small>Apium graveolens</small></button>
+<button data-ir="14">Alface<small>Lactuca sativa</small></button>
+<button data-ir="15">Alho<small>Allium sativum</small></button>
+<button data-ir="16">Almeirão<small>Chicorium intybus</small></button>
+<button data-ir="17">Ameixa<small>Prunus domestica</small></button>
+<button data-ir="18">Aspargo<small>Asparagus officinalis</small></button>
+<button data-ir="19">Aveia<small>Avena sativa</small></button>
+<button data-ir="20">Azeitona<small>Olea europaea</small></button>
+<button data-ir="21">Banana<small>Musa paradisiaca</small></button>
+<button data-ir="22">Batata<small>Solanum tuberosum</small></button>
+<button data-ir="23">Brócolos<small>Brassica oleracea</small></button>
+<button data-ir="24">Café<small>Coffea arabica</small></button>
+<button data-ir="25">Camomila<small>Matricaria chamomilla</small></button>
+<button data-ir="26">Canela<small>Cinnamomum zeylanicum</small></button>
+<button data-ir="27">Cebola<small>Allium cepa</small></button>
+<button data-ir="28">Cenoura<small>Daucus carota</small></button>
+<button data-ir="29">Cereja<small>Prunus cerasus</small></button>
+<button data-ir="30">Cevada<small>Hordeum vulgare</small></button>
+<button data-ir="31">Chicória<small>Chicorium intybus</small></button>
+<button data-ir="32">Chuchu<small>Sechium edule</small></button>
+<button data-ir="33">Coco<small>Cocos nucifera</small></button>
+<button data-ir="34">Coentro<small>Coriandrum sativum</small></button>
+<button data-ir="35">Couve<small>Brassica oleracea</small></button>
+<button data-ir="36">Erva-doce<small>Foeniculum vulgare</small></button>
+<button data-ir="37">Espinafre<small>Spinacia oleracea</small></button>
+<button data-ir="38">Figo<small>Ficus carica</small></button>
+<button data-ir="39">Gengibre<small>Zingiber officinalis</small></button>
+<button data-ir="40">Goiaba<small>Psidium guajava</small></button>
+<button data-ir="41">Hortelã<small>Mentha piperita</small></button>
+<button data-ir="42">Inhame<small>Colocasia antiquorum</small></button>
+<button data-ir="43">Laranja<small>Citrus aurantium</small></button>
+<button data-ir="44">Lentilha<small>Ervum lens</small></button>
+<button data-ir="45">Limão<small>Citrus limonum</small></button>
+<button data-ir="46">Losna<small>Artemísia absinthium</small></button>
+<button data-ir="47">Maçã<small>Pyrus malus</small></button>
+<button data-ir="48">Melancia<small>Cucúrbita citrullus</small></button>
+<button data-ir="49">Morango<small>Fragaria vesca</small></button>
+<button data-ir="50">Nabo<small>Brassica napius</small></button>
+<button data-ir="51">Pepino<small>Cucumis sativus</small></button>
+<button data-ir="52">Pêra<small>Pyrus communis</small></button>
+<button data-ir="53">Pimentão<small>Capsicum annuum</small></button>
+<button data-ir="54">Quiabo<small>Hibiscus esculentus</small></button>
+<button data-ir="55">Rabanete<small>Raphanus sativus</small></button>
+<button data-ir="56">Repolho<small>Brassica oleracea capitata</small></button>
+<button data-ir="57">Sabugueiro<small>Sambucus nigra</small></button>
+<button data-ir="58">Salsa<small>Petroselinum sativum</small></button>
+<button data-ir="59">Uva<small>Vitis vinifera</small></button>
+<button data-ir="60">Indicações das Ervas<small>Divisão</small></button>
+<button data-ir="61">Indicações das Ervas<small>páginas 1–30</small></button>
+<button data-ir="62">Indicações das Ervas<small>páginas 31–60</small></button>
+<button data-ir="63">Indicações das Ervas<small>páginas 61–88</small></button>
+<button data-ir="64">Ervas dos Signos<small>Correspondência celeste</small></button>
+<button data-ir="65">Sobre o Autor<small>Pesquisador das Matas</small></button>
+<button data-ir="66">Para Finalizar<small>Encerramento</small></button>
+<button data-ir="67">Contracapa<small>Créditos e aviso</small></button></div>
+
+<div class="livro"><div class="rolagem" id="rolagem"><section class="page" data-title="Capa">
+<div class="cover-inner">
+  <div class="c-topo"><span class="c-badge">GUIA ESOTÉRICO · NATURAL · COMPLETO</span></div>
+  <div class="c-coroa"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></div>
+  <h1 class="c-titulo">ERVAS</h1>
+  <p class="c-sub">Indicações e Usos</p>
+  <div class="c-linha"></div>
+  <p class="c-desc">As ervas e suas propriedades energéticas, místicas e medicinais —<br>do cultivo ao uso no dia a dia.</p>
+  <div class="c-ramo"><svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg></div>
+  <p class="c-autor">Marcos Roberto</p>
+  <p class="c-marca">Pesquisador das Matas</p>
+  <p class="c-local">Viçosa — Alagoas · Brasil</p>
+</div></section>
+<section class="page" data-title="Índice">
+<div class="toc-inner">
+  <h2 class="pg-super">ÍNDICE</h2>
+  <div class="toc-faixa"></div>
+  <ol class="toc"><li><a href="#" data-ir="0"><span class="toc-num">00</span><span class="toc-txt">Capa</span><span class="toc-arrow">›</span></a></li>
+<li><a href="#" data-ir="2"><span class="toc-num">02</span><span class="toc-txt">Ervas Para…</span><span class="toc-arrow">›</span></a></li>
+<li><a href="#" data-ir="4"><span class="toc-num">04</span><span class="toc-txt">Banhos de Ervas</span><span class="toc-arrow">›</span></a></li>
+<li><a href="#" data-ir="5"><span class="toc-num">05</span><span class="toc-txt">Função Energética</span><span class="toc-arrow">›</span></a></li>
+<li><a href="#" data-ir="7"><span class="toc-num">07</span><span class="toc-txt">O Uso das Ervas e Vegetais</span><span class="toc-arrow">›</span></a></li>
+<li><a href="#" data-ir="60"><span class="toc-num">60</span><span class="toc-txt">Indicações das Ervas</span><span class="toc-arrow">›</span></a></li>
+<li><a href="#" data-ir="64"><span class="toc-num">64</span><span class="toc-txt">Ervas dos Signos</span><span class="toc-arrow">›</span></a></li>
+<li><a href="#" data-ir="65"><span class="toc-num">65</span><span class="toc-txt">Sobre o Autor</span><span class="toc-arrow">›</span></a></li>
+<li><a href="#" data-ir="66"><span class="toc-num">66</span><span class="toc-txt">Para Finalizar</span><span class="toc-arrow">›</span></a></li>
+<li><a href="#" data-ir="67"><span class="toc-num">67</span><span class="toc-txt">Contracapa</span><span class="toc-arrow">›</span></a></li></ol>
+  <p class="toc-note">Use o menu no topo ou as setas para navegar. Toque em um item para ir direto à seção.</p>
+</div></section>
+<section class="page" data-title="Ervas Para… Parte I">
+<div class="lista-inner">
+  <p class="pg-kicker">ERVAS PARA…</p>
+  <h2 class="pg-titulo">Ervas Para… <span class="pg-parte">— Parte I</span></h2>
+  <div class="pg-faixa"></div>
+  <div class="lcards"><div class="lcard"><h3>Meditação</h3><div class="chips"><span class="chip">ânula</span><span class="chip">zimbro</span><span class="chip">bálsamo-de-tolu</span><span class="chip">ciperácea</span><span class="chip">sálvia esclaréia</span><span class="chip">giesta</span><span class="chip">glicínia</span><span class="chip">sândalo</span><span class="chip">câlamo-aromático</span><span class="chip">magnólia</span><span class="chip">mirra</span></div></div><div class="lcard"><h3>A Sorte</h3><div class="chips"><span class="chip">canela</span><span class="chip">jasmim</span><span class="chip">lótus</span><span class="chip">jacinto</span><span class="chip">baunilha</span><span class="chip">cumaru</span><span class="chip">gerânio</span><span class="chip">noz-moscada</span><span class="chip">bergamota</span><span class="chip">cipreste</span></div></div><div class="lcard"><h3>Atrair Sucesso e Promoções</h3><div class="chips"><span class="chip">azálea</span><span class="chip">cravo-de-defunto</span><span class="chip">olíbano</span><span class="chip">hortelã-pimenta</span><span class="chip">erva-cidreira</span><span class="chip">hissopo</span></div></div><div class="lcard"><h3>O Amor</h3><div class="chips"><span class="chip">ervilha-de-cheiro</span><span class="chip">lótus</span><span class="chip">jacinto</span><span class="chip">baunilha</span><span class="chip">bétula</span><span class="chip">camélia</span><span class="chip">coentro</span><span class="chip">lírio-florentino</span><span class="chip">rosa</span><span class="chip">cumarina</span><span class="chip">laranja-azeda</span></div></div><div class="lcard"><h3>Clarividência e Estímulo da Mente</h3><div class="chips"><span class="chip">açafrão</span><span class="chip">capim-limão</span><span class="chip">louro</span><span class="chip">anis-estrelado</span><span class="chip">babosa</span><span class="chip">aipo</span><span class="chip">cânfora</span><span class="chip">ânula</span><span class="chip">zimbro</span><span class="chip">estoraque</span><span class="chip">funcho</span><span class="chip">madressilva</span><span class="chip">cacto</span><span class="chip">câlamo-aromático</span><span class="chip">gengibre</span></div></div></div>
+</div></section>
+<section class="page" data-title="Ervas Para… Parte II">
+<div class="lista-inner">
+  <p class="pg-kicker">ERVAS PARA…</p>
+  <h2 class="pg-titulo">Ervas Para… <span class="pg-parte">— Parte II</span></h2>
+  <div class="pg-faixa"></div>
+  <div class="lcards"><div class="lcard"><h3>Sonhos Proféticos</h3><div class="chips"><span class="chip">peônia</span><span class="chip">mimosa</span><span class="chip">amarílis</span><span class="chip">giesta</span></div></div><div class="lcard"><h3>Afastar Energias Negativas</h3><div class="chips"><span class="chip">cânfora</span><span class="chip">comigo-ninguém-pode</span><span class="chip">guiné</span><span class="chip">arruda</span><span class="chip">alecrim</span><span class="chip">espada-de-são-jorge</span></div></div><div class="lcard"><h3>Melhorar as Finanças</h3><div class="chips"><span class="chip">camomila</span><span class="chip">olíbano</span><span class="chip">alfazema</span><span class="chip">erva-cidreira</span><span class="chip">cedro</span><span class="chip">hissopo</span><span class="chip">cipreste</span><span class="chip">abóbora</span></div></div><div class="lcard"><h3>Amizades</h3><div class="chips"><span class="chip">ervilha-de-cheiro</span><span class="chip">urze</span><span class="chip">citronela</span><span class="chip">erva-cidreira</span></div></div><div class="lcard"><h3>Contra Magia Negra</h3><div class="chips"><span class="chip">alecrim</span><span class="chip">louro</span><span class="chip">jasmim</span><span class="chip">cenoura</span><span class="chip">violeta</span><span class="chip">hortelã-pimenta</span><span class="chip">verbena</span><span class="chip">assa-fétida</span><span class="chip">gerânio</span><span class="chip">manjericão</span><span class="chip">patchouli</span><span class="chip">hissopo</span><span class="chip">noz-moscada</span><span class="chip">bergamota</span></div></div></div>
+</div></section>
+<section class="page" data-title="Banhos de Ervas">
+<div class="lista-inner">
+  <p class="pg-kicker">RITUAIS</p>
+  <h2 class="pg-titulo">Banhos de Ervas Para…</h2>
+  <div class="pg-faixa"></div>
+  <div class="bcards"><div class="bcard">
+  <span class="b-icone">🛁</span>
+  <h3>Felicidade</h3>
+  <p class="b-mix">Misture:</p>
+  <p class="b-ing">manjerona, cravo, alecrim, canela, 1/2 xícara de álcool de cereais</p>
+</div><div class="bcard">
+  <span class="b-icone">🛁</span>
+  <h3>Proteção Contra Perigos</h3>
+  <p class="b-mix">Misture:</p>
+  <p class="b-ing">espada-de-são-jorge, guiné, arruda e hortelã</p>
+</div><div class="bcard">
+  <span class="b-icone">🛁</span>
+  <h3>Proteger Seu Amor</h3>
+  <p class="b-mix">Misture:</p>
+  <p class="b-ing">rosa branca, erva-cidreira, palma branca</p>
+</div></div>
+  <p class="b-dica">Ervas frescas ou secas, maceradas em água morna. Colha com intenção e agradeça a natureza.</p>
+</div></section>
+<section class="page" data-title="Função Energética Parte I">
+<div class="lista-inner">
+  <p class="pg-kicker">ENERGIA DAS PLANTAS</p>
+  <h2 class="pg-titulo">Nome da Planta e Sua Função Energética <span class="pg-parte">— Parte I</span></h2>
+  <div class="pg-faixa"></div>
+  <div class="ecards"><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Alecrim</h3><p>Ajuda a perdoar mágoas</p></div><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Alfazema</h3><p>Aumenta a autoconfiança</p></div><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Anis-estrelado</h3><p>Ajuda com os sentimentos e na liberação de emoções</p></div><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Arnica</h3><p>Promove a concentração de pensamentos</p></div><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Artemísia</h3><p>Estimula a ação e a manifestação das ideias</p></div><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Arruda</h3><p>Limpa a aura das sujeiras astrais</p></div><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Babosa</h3><p>Ajuda no desligamento mental</p></div><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Camomila</h3><p>Ajuda a cultivar a paciência e a confiança</p></div><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Cânfora</h3><p>Promove o desprendimento material</p></div><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Capuchinha</h3><p>Promove o sentimento de integridade e equilíbrio</p></div></div>
+</div></section>
+<section class="page" data-title="Função Energética Parte II">
+<div class="lista-inner">
+  <p class="pg-kicker">ENERGIA DAS PLANTAS</p>
+  <h2 class="pg-titulo">Nome da Planta e Sua Função Energética <span class="pg-parte">— Parte II</span></h2>
+  <div class="pg-faixa"></div>
+  <div class="ecards"><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Carqueja</h3><p>Limpa o corpo das velhas emoções</p></div><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Confrei</h3><p>Estimula o sentimento de segurança pessoal</p></div><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Dente-de-leão</h3><p>Traz coragem para enfrentar os obstáculos</p></div><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Erva-cidreira</h3><p>Ajuda na tomada de decisões importantes da vida</p></div><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Guiné</h3><p>Limpa o corpo de energias negativas</p></div><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Mil-folhas</h3><p>Purifica o corpo de traumas e sentimentos negativos</p></div><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Sabugueiro</h3><p>Ajuda na tomada de rápidas decisões</p></div><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Sálvia</h3><p>Dá ânimo para colocar em movimento todas as energias do corpo</p></div><div class="ecard"><span class="e-icone"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></span><h3>Tanchagem</h3><p>Estimula a iniciativa</p></div></div>
+</div></section>
+<section class="page" data-title="O Uso das Ervas e Vegetais">
+<div class="divisor-inner">
+  <div class="d-ramo"><svg class="ramo dir" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M8 212C10 150 30 90 90 10" opacity=".55"/>
+<path d="M20 190c22-6 40-18 52-38-22 2-42 12-52 38Z" opacity=".5"/>
+<path d="M42 140c24-12 40-30 46-52-24 6-44 22-46 52Z" opacity=".6"/>
+<path d="M66 92c18-14 26-30 24-52-18 8-28 24-24 52Z" opacity=".7"/>
+</svg></div>
+  <span class="d-num">03</span>
+  <h2 class="d-titulo">O Uso das Ervas e Vegetais</h2>
+  <p class="d-sub">Saúde e medicina natural, planta por planta</p>
+  <div class="d-estrelas"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></div>
+</div></section>
+<section class="page" data-title="Abacate">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg1" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg1)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">1</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Abacate</h2>
+  <p class="erva-latin">Persea gratissima</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">O abacate pode substituir a carne, porque contém gordura e o mesmo valor nutritivo. O abacateiro serve especialmente aos diabéticos, tanto através da fruta como das folhas. Às pessoas atacadas por esse mal é aconselhável um tratamento à base do abacateiro, durante quinze dias: comer em jejum metade de um abacate amassado; após as refeições tomar um chá de folhas SECAS do abacateiro, sem açúcar. Outra indicação das folhas do abacateiro é para a limpeza do fígado: se o fígado não vai bem por estar saturado de gordura e tóxicos, fazer um chá das folhas SECAS do abacateiro e tomá-lo em goles, de hora em hora, durante todo o dia, repetindo por 15 dias. O caroço serve como tônico capilar. Em dores de cabeça, aplicar folhas quentes do abacateiro sobre a cabeça, em compressa. Usar sempre folhas secas, pois as verdes provocam palpitações cardíacas.</p>
+</div></section>
+<section class="page" data-title="Abacaxi">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg2" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg2)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">2</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Abacaxi</h2>
+  <p class="erva-latin">Ananás sativus</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">O abacaxi, além de ótimo purificador do sangue, é diurético e ajuda a digestão. Sua indicação notável é no tratamento das feridas, inflamações e infecções. Em infecções agudas, consumido em fatias, é um ótimo parceiro dos antibióticos. Contra tosse catarral, usa-se duas colheres de suco de abacaxi diluídas em uma xícara de água quente e uma colher de mel. Beber bastante quente antes de deitar-se.</p>
+</div></section>
+<section class="page" data-title="Abóbora">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg3" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg3)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">3</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Abóbora</h2>
+  <p class="erva-latin">Cucúrbita pepo</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Rica em potássio, ferro, fósforo e magnésio, é eficaz como diurético e para combater a prisão de ventre. Faz-se um suco fresco com pedaços grossos de abóbora madura, colocando-os em um guardanapo e torcendo para extrair o suco. Adoçar com pouco açúcar e tomar uma manhã sim e uma não, em jejum, por um mês.</p>
+</div></section>
+<section class="page" data-title="Acelga">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg4" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg4)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">4</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Acelga</h2>
+  <p class="erva-latin">Beta vulgaris</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Hortaliça indicada para oxigenar o sangue e normalizar a digestão, além de acalmar os nervos e robustecer o cérebro. É muito útil para ser ingerida por pessoas nervosas.</p>
+</div></section>
+<section class="page" data-title="Agrião">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg5" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg5)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">5</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Agrião</h2>
+  <p class="erva-latin">Nasturtium officinale</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">O agrião é tão eficaz que não se deve usá-lo diariamente, a não ser para tratamento dos brônquios, durante períodos limitados. A quantidade de ferro, iodo e vitaminas que contém faz passar para a água em que é deixado de molho uma boa parte de sua força; por isso, uma receita para a carência de ferro e para a depuração do sangue é chamada de Água de Agrião: em um copo de água na temperatura ambiente, mergulhar folhas de agrião. Cobrir o copo e deixá-lo no quarto de dormir. De manhã, coar e bebê-la sem açúcar. As propriedades terapêuticas do agrião combatem o raquitismo, o ácido úrico e as doenças do pulmão, agindo na purificação do fígado e do estômago. Os fumantes devem fazer uso do agrião, uma vez por semana, para a desintoxicação do organismo. O seu suco, adoçado com mel, é um excelente xarope para combater bronquite, tosse, tuberculose pulmonar e toda sorte de enfermidades catarrais. Usa-se em saladas para combater a diabetes, e no consumo diário para os que sofrem de ácido úrico.</p>
+</div></section>
+<section class="page" data-title="Aipo">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg6" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg6)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">6</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Aipo</h2>
+  <p class="erva-latin">Apium graveolens</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Essa verdura combate a depressão. Por ser rico em cloreto de sódio, é ideal para casos de insônia e perturbações nervosas, podendo entrar no preparo de saladas, ser bebido como suco ou mesmo mastigando seus talos. Como alimento é recomendado àqueles que sofrem de artrite, reumatismo e ácido úrico. É também indicado seu uso externo em frieiras; para tanto, colocar 100g de aipo em um litro de água e ferver lentamente por 20 minutos. Dar um banho bem quente nos pés ou mãos, uma vez por dia.</p>
+</div></section>
+<section class="page" data-title="Alface">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg7" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg7)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">7</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Alface</h2>
+  <p class="erva-latin">Lactuca sativa</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Contém várias vitaminas e é uma fonte de ferro e minerais. Seu poder de limpeza dos intestinos é fantástico. Fortalece o sistema nervoso e a musculatura, além de ajudar a digestão. É um grande calmante para os nervos e combate a insônia mais recalcitrante. Um chá para dormir é feito fervendo-se rapidamente duas folhas de alface fresca em uma xícara de chá de água. Tomar morno na hora de deitar-se. É ainda recomendada contra as doenças do coração e dos rins, seja em forma de chá ou saladas, estas com pouco azeite, vinagre e sal. Para contusões e inchaços, fazer uma cataplasma fervendo algumas folhas de alface em pouca água por cinco minutos. Deixar amornar, untar as folhas com azeite de oliva, estender sobre uma gaze e aplicar na região atingida. Este mesmo método pode ser usado para irritações e rubores da pele.</p>
+</div></section>
+<section class="page" data-title="Alho">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg8" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg8)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">8</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Alho</h2>
+  <p class="erva-latin">Allium sativum</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">O alho purifica o sangue, atua sobre as mucosas do nariz, da garganta e dos pulmões, desinfeta todo o organismo e funciona como antibiótico para combater infecções. Para o enfraquecimento do organismo, principalmente nos idosos, consumir durante as refeições um dente de alho bem amassado com uma cenoura; isso previne contra doenças mais graves. Atua na circulação — e para esses problemas, consumir pão de centeio temperado com alho socado, salsa e gotas de azeite, sendo este o primeiro alimento do dia, repetido por uma semana; descansar 15 dias e fazer novamente, assim sucessivamente. O alho cozido tem grande perda de sua eficácia; cru em grande quantidade irrita os rins.</p>
+</div></section>
+<section class="page" data-title="Almeirão">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg9" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg9)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">9</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Almeirão</h2>
+  <p class="erva-latin">Chicorium intybus</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Rico em vitamina A e C. Indicado para falta de apetite, usado cru em saladas ou ligeiramente refogado.</p>
+</div></section>
+<section class="page" data-title="Ameixa">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg10" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg10)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">10</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Ameixa</h2>
+  <p class="erva-latin">Prunus domestica</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Poderoso laxante. Indicada contra prisão de ventre, sendo, neste caso, consumida seca. É rica em potássio, fósforo, cálcio e minerais. Para problemas do estômago faz-se um licor digestivo de ameixa: cozinhar em dois litros e meio de vinho branco, 20 ameixas frescas sem casca e sem caroço. Depois de quinze minutos, apagar o fogo, adicionando no máximo 3 gramas de casca de canela, e deixar macerar. Após três dias, filtrar o líquido, adicionar meio quilo de açúcar e colocar no fogo, deixando ferver por alguns minutos. Esperar esfriar totalmente e adicionar meio litro de álcool a 90 graus, colocando em uma ou duas garrafas. Tomar um cálice após as refeições.</p>
+</div></section>
+<section class="page" data-title="Aspargo">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg11" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg11)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">11</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Aspargo</h2>
+  <p class="erva-latin">Asparagus officinalis</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">O aspargo deve ser ingerido ao natural, já que quando cozido pode irritar os rins, tornando contrário o seu efeito de limpá-los. É indicado nas doenças do fígado, do baço e do estômago. Nos problemas do coração combate a hipertrofia e acalma as palpitações. Para o coração se faz uma decocção fervendo 50g de raízes de aspargo em um litro de água, deixando em repouso até esfriar. Tomar três cálices por dia, entre as refeições principais, sem adoçar. Ainda pode ser usado em regimes de emagrecimento fervendo em três quartos de litro de água 40g de raízes de aspargo. Bebe-se pela manhã em jejum e durante todo o dia. Esta mesma decocção pode ser administrada a pessoas nervosas e excitáveis.</p>
+</div></section>
+<section class="page" data-title="Aveia">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg12" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg12)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">12</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Aveia</h2>
+  <p class="erva-latin">Avena sativa</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Fonte natural de vitaminas, proteínas e sais minerais, contendo muitas calorias. Usada em flocos ou farinha, adapta-se aos organismos delicados, garantindo um bom funcionamento dos intestinos preguiçosos. É também anti-hemorróidas; sua ingestão tem a virtude de reduzir o teor de gorduras e de açúcar do sangue, auxiliando nas arterioscleroses e no diabetes. Contra ácido úrico, ferver um punhado de palha de aveia triturada em um litro de água, coar e beber durante o dia.</p>
+</div></section>
+<section class="page" data-title="Azeitona">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg13" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg13)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">13</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Azeitona</h2>
+  <p class="erva-latin">Olea europaea</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Uma curiosidade sobre a oliveira: conta-se que Atenas, a deusa grega da sabedoria, fez nascer de uma lança a oliveira. Os frutos dessa árvore, além de alimentarem o homem, produziriam um óleo para temperar sua comida, fortalecer seu corpo, curar as suas feridas e iluminar sua noite. A azeitona tem grande teor de gordura e sais minerais, devendo ser consumida com cautela.</p>
+</div></section>
+<section class="page" data-title="Banana">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg14" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg14)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">14</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Banana</h2>
+  <p class="erva-latin">Musa paradisiaca</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Bastante nutritiva e regulariza as funções do intestino. O suco da banana São Tomé é particularmente indicado contra a diarréia. Emprega-se o suco das flores nas afecções do peito. Do tronco se extrai a seiva que é indicada para a laringite, as aftas, como tônico capilar e soro antiofídico.</p>
+</div></section>
+<section class="page" data-title="Batata">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg15" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg15)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">15</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Batata</h2>
+  <p class="erva-latin">Solanum tuberosum</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Rica em carboidratos e vitaminas. Usada crua, tem aplicação para combater dores de cabeça (colocadas em rodelas sobre a testa) e contra irritações da pele. A batata-baroa é bastante indicada para quem sofre de doenças renais. Para eritemas ou queimaduras solares, faz-se uma compressa com batata ralada, trocada três vezes ao dia. O suco feito com batata é excelente remédio para úlceras do estômago e do duodeno, desde que tomado em pequenas doses, pois o seu uso exagerado pode provocar sintomas de intoxicação. A água do cozimento da batata serve para prevenir e combater a gota.</p>
+</div></section>
+<section class="page" data-title="Brócolos">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg16" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg16)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">16</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Brócolos</h2>
+  <p class="erva-latin">Brassica oleracea</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Rico em vitamina C, fósforo, potássio e enxofre. É melhor consumi-lo em saladas cruas para aproveitar todo o seu valor nutritivo. É um ótimo alimento para dietas de emagrecimento, já que produz uma limpeza geral do organismo e elimina gorduras.</p>
+</div></section>
+<section class="page" data-title="Café">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg17" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg17)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">17</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Café</h2>
+  <p class="erva-latin">Coffea arabica</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">É contraindicado para pessoas nervosas e insones. Adoçado com mel, serve de remédio para a angina do peito. É um excitante do sistema nervoso, dos músculos, cérebro, rins e coração. É usado para lavar ulcerações das pernas. Facilita a digestão.</p>
+</div></section>
+<section class="page" data-title="Camomila">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg18" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg18)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">18</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Camomila</h2>
+  <p class="erva-latin">Matricaria chamomilla</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Indicada para cólicas de crianças, feito chá. É também calmante, antiespasmódico e sonífero, devendo ser feito o chá na hora de tomar. Indicada para dores reumáticas: neste caso usam-se as flores secas, cozidas em banho-maria no óleo; após duas horas de cozimento, côa-se e, depois de frio, massageia-se com esse óleo as regiões doloridas. Usa-se o chá também para combater dores abdominais, cólicas intestinais com gases, cistite, inflamações bucais e conjuntivites.</p>
+</div></section>
+<section class="page" data-title="Canela">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg19" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg19)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">19</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Canela</h2>
+  <p class="erva-latin">Cinnamomum zeylanicum</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Em doces, não se discute, é um ótimo tempero. Suas propriedades medicinais estão no combate à anemia; para isso, tomar um chá da casca de canela quatro vezes ao dia. Recomendada também para catarro nos brônquios. É indicada na atonia gástrica (fraqueza do estômago), como tintura: colocar 50g de casca de canela em um quarto de litro de álcool a 60 graus. Depois de 24 horas, filtrar o líquido e coá-lo em uma garrafa, consumindo-o em colheres antes das refeições.</p>
+</div></section>
+<section class="page" data-title="Cebola">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg20" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg20)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">20</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Cebola</h2>
+  <p class="erva-latin">Allium cepa</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Deve ser sempre ingerida crua, já que cozida perde suas propriedades. Combate vermes intestinais, infecções e resfriados. O consumo diário de cebola previne doenças cardíacas, como também impede o desenvolvimento das já existentes.</p>
+</div></section>
+<section class="page" data-title="Cenoura">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg21" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg21)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">21</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Cenoura</h2>
+  <p class="erva-latin">Daucus carota</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Indicada para as vistas, já que é rica em vitamina A. Atua também como purificadora do fígado e fortifica o organismo. Para casos de digestão difícil, usa-se ferver uma pitada de sementes de cenoura em um cálice de água e beber após as refeições (neste caso, as sementes precisam ser retiradas do pé, visto que as destinadas a plantio possuem agrotóxicos prejudiciais). Para rouquidão, cozinhar 100g de cenoura, esmagando e misturando com a água do cozimento, adoçar com mel e beber bem quente.</p>
+</div></section>
+<section class="page" data-title="Cereja">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg22" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg22)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">22</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Cereja</h2>
+  <p class="erva-latin">Prunus cerasus</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Outro purificador do organismo, que atua principalmente nos rins e no fígado. Como possui açúcares e minerais, é usada para a confecção de xaropes para a tosse. Usada em casos de artrite e gota: para tal, ferve-se 30g de pedúnculos secos em um litro de água, filtrar e adoçar levemente, bebendo um cálice durante o dia. Como reconstituinte do organismo, cozinha-se cerejas frescas ou secas (não em conserva) em tanto vinho quanto necessário para cobri-las. Bebe-se bem adoçado.</p>
+</div></section>
+<section class="page" data-title="Cevada">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg23" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg23)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">23</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Cevada</h2>
+  <p class="erva-latin">Hordeum vulgare</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Diurética, tônica e digestiva. Usada em pó, é um ótimo substituto para o café, principalmente para pessoas nervosas e insones. Para infecções na garganta, ferver 70g de cevada em um litro de água por 20 minutos. Quando morno, filtrar o líquido, adoçar com uma colherinha de mel, misturando bem, e fazer gargarejos durante o dia. Para inflamações do intestino e colite, ferver em um litro e meio de água por dez minutos três punhados de cevada lavada. Filtrar o líquido quando frio, adoçar com mel e beber em xícaras.</p>
+</div></section>
+<section class="page" data-title="Chicória">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg24" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg24)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">24</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Chicória</h2>
+  <p class="erva-latin">Chicorium intybus</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Deve-se usá-la somente em sucos e saladas. Como a cenoura, é indicada para problemas oculares. Atua também na circulação: a ingestão de três copos de suco de chicória durante o dia evita muitos males da circulação. Um ótimo alimento para normalizar a circulação é uma salada de chicória com pão de centeio. Como diurético, pode ser usada em infusão: em uma xícara de água fervente, colocar 5g de raiz de chicória. Coar e beber durante o dia.</p>
+</div></section>
+<section class="page" data-title="Chuchu">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg25" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg25)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">25</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Chuchu</h2>
+  <p class="erva-latin">Sechium edule</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Indicado para combate à hipertensão. Ingerir o chuchu como parte importante da refeição e tomar o chá diariamente regulariza a pressão alta.</p>
+</div></section>
+<section class="page" data-title="Coco">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg26" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg26)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">26</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Coco</h2>
+  <p class="erva-latin">Cocos nucifera</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">A água de coco é reguladora do coração. Contém vitaminas, sais minerais e potássio. Seus efeitos são notados na pele, e a ingestão diária elimina cálculos renais e normaliza o funcionamento dos rins. Combate ainda a icterícia, irritações gastrintestinais, doenças do peito, inflamações dos olhos e vômitos na gravidez, e atua na eliminação de vermes intestinais.</p>
+</div></section>
+<section class="page" data-title="Coentro">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg27" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg27)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">27</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Coentro</h2>
+  <p class="erva-latin">Coriandrum sativum</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Indicado como calmante. O chá de coentro deve ser feito com toda a planta — folhas, talos e raiz — depois de bem lavados. Como estimulante do estômago e fígado, verter uma xícara de água fervente em 5g de frutos de coentro secos, filtrar, adoçar e tomar após as refeições.</p>
+</div></section>
+<section class="page" data-title="Couve">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg28" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg28)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">28</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Couve</h2>
+  <p class="erva-latin">Brassica oleracea</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Hortaliça que contém enxofre e que se acredita curar até as doenças ocultas. Além do enxofre, contém iodo, arsênico, magnésio, potássio, cálcio e vitaminas. Na Roma Antiga, aconselhava-se que, para possuir uma saúde invejável, a simples ingestão de muita couve era suficiente. O suco de couve, adoçado com mel, bebido diariamente durante três meses antes do almoço, é eficaz para combater a gota (ácido úrico), a bronquite e a má circulação. O mesmo suco, sem adoçar, em aplicações tópicas cura ulcerações; misturado com água morna, é recomendado contra cólicas de crianças. O consumo da couve ainda depura o sangue, atua contra a hipertensão e é uma defesa para o organismo contra o câncer. Em casos de úlceras varicosas, fazer uma compressa: depois de eliminar a nervura mais grossa de uma folha de couve, lavá-la muito bem em água corrente e colocá-la em uma solução de ácido bórico (encontrado em farmácias), deixando macerar por três horas. Aplicar a folha, estendida numa gaze, sobre a ferida limpa, e enfaixar. Renovar à noite e pela manhã. Úlceras internas no estômago ou duodeno podem ser controladas e até curadas com a ingestão do suco de couve feito com 200g dos bordos e talos da couve espremidos. O líquido deverá ser ingerido em jejum, todos os dias, em pequenos goles.</p>
+</div></section>
+<section class="page" data-title="Erva-doce">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg29" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg29)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">29</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Erva-doce</h2>
+  <p class="erva-latin">Foeniculum vulgare</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Contém potássio, sódio e ferro. O chá das sementes é um regulador intestinal e calmante para o estômago. Desobstrui os brônquios, oxigenando melhor os pulmões. Acredita-se que mulheres que amamentam devem tomar chá de erva-doce para que os efeitos calmantes passem através do leite para a criança. Para os idosos, esse mesmo chá normaliza a circulação do sangue e combate a depressão. Atua ainda como estimulante da digestão e do aparelho urinário. No uso geral, o chá de erva-doce é feito em um litro de água fervente com 10g de sementes. Coar, adoçar pouco e tomar de quatro a cinco xícaras por dia.</p>
+</div></section>
+<section class="page" data-title="Espinafre">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg30" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg30)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">30</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Espinafre</h2>
+  <p class="erva-latin">Spinacia oleracea</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Riquíssimo em vitaminas A, B, C e H, contendo ainda potássio, sódio, cálcio, magnésio e ferro. É indicado para pessoas com tendência a hemorragias, diabéticos, nervosos, portadores de vermes intestinais e doenças da vista; o espinafre deve ser comido cru, em saladas, ou bebido em forma de suco.</p>
+</div></section>
+<section class="page" data-title="Figo">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg31" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg31)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">31</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Figo</h2>
+  <p class="erva-latin">Ficus carica</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">É um laxativo natural, combate a prisão de ventre e substitui muito bem os purgativos destinados às crianças. Tem efeitos benéficos em casos de bronquite, gripe, resfriado e tosse: para esses casos, cortar em pedaços 20g de figos secos, fervendo em 250g de leite por uns quinze minutos. Depois de adoçar com uma colherada de mel, filtrar o leite e bebê-lo bem quente. Contra afecções na boca e garganta, ferver em uma xícara de leite dois figos frescos cortados em pedaços e uma colherinha de mel por quinze minutos. Depois de filtrado e morno, usar o leite para gargarejos e bochechos.</p>
+</div></section>
+<section class="page" data-title="Gengibre">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg32" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg32)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">32</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Gengibre</h2>
+  <p class="erva-latin">Zingiber officinalis</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Uma raiz com altos poderes medicinais. Combate as náuseas, provocando o aumento de salivação; pode ser mastigado para prevenir enjôos em viagens marítimas. Age muito bem na garganta, sendo seu chá indicado a todas as pessoas que utilizam bastante a voz, como oradores, cantores, etc. Combate a flatulência, bastando para isso apenas usá-lo como tempero nas refeições. Tem também aplicação em casos de reumatismo, problemas pulmonares e de circulação sanguínea, usando-se o chá.</p>
+</div></section>
+<section class="page" data-title="Goiaba">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg33" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg33)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">33</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Goiaba</h2>
+  <p class="erva-latin">Psidium guajava</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Famosa contra diarréias: a fruta em casos amenos e as folhas em casos mais extremos. Usa-se o chá das folhas até cessar o distúrbio. Os frutos são benéficos em casos de doenças das vias respiratórias, como tosse e bronquite.</p>
+</div></section>
+<section class="page" data-title="Hortelã">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg34" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg34)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">34</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Hortelã</h2>
+  <p class="erva-latin">Mentha piperita</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">A hortelã-miúda é empregada como tempero e age como calmante quando usada em chá. A hortelã-pimenta estimula a pele e os terminais nervosos sensíveis ao frio. Para aquecer ambientes muito frios, coloca-se uma bacia com água e folhas de hortelã. Como digestivo, faz-se uma infusão com 100g de água quente já adoçada, colocam-se 5g de folhas frescas ou secas de hortelã, filtra-se e bebe-se em seguida, bem devagar. Para excitação nervosa e insônia, colocar uma pitada de folhas frescas de hortelã em uma xícara de água quente, filtrar e beber o líquido (em casos de insônia, tomar antes de deitar).</p>
+</div></section>
+<section class="page" data-title="Inhame">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg35" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg35)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">35</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Inhame</h2>
+  <p class="erva-latin">Colocasia antiquorum</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">O inhame cru é um poderoso antianêmico e, mesmo cozido, conserva muito de seu poder curativo. É um grande depurador do sangue; deve ser ingerido pelas pessoas que sofrem processos inflamatórios de qualquer espécie e por todas aquelas que precisam beneficiar o sangue.</p>
+</div></section>
+<section class="page" data-title="Laranja">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg36" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg36)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">36</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Laranja</h2>
+  <p class="erva-latin">Citrus aurantium</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Esta fruta combate a tendência às hemorragias, a gripe, a febre e as inflamações nas veias. Para combater excitação nervosa, verter uma xícara de água fervente em 2g de folhas de laranjeira, filtrar, adoçar com mel e beber. Contra febre, colocar uma laranja madura, cortada, com a casca e em pedaços, em 30g de água fervente adoçada com duas colheradas de açúcar. Depois de totalmente frio, coar o líquido e beber.</p>
+</div></section>
+<section class="page" data-title="Lentilha">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg37" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg37)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">37</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Lentilha</h2>
+  <p class="erva-latin">Ervum lens</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Rica em proteínas. Além de ser considerada um alimento que atrai a prosperidade, é indicada para as mães no período de amamentação. É também aconselhado seu consumo para pessoas anêmicas.</p>
+</div></section>
+<section class="page" data-title="Limão">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg38" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg38)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">38</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Limão</h2>
+  <p class="erva-latin">Citrus limonum</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Fruta medicinal por excelência. Atende as necessidades de vitamina C e atua sobre o ácido úrico, doenças da vesícula biliar, da boca, da garganta, do estômago, da vista, dos nervos, dos brônquios e do pulmão. Combate ainda a esterilidade, o alcoolismo, a inapetência e o mau hálito. Os usos mais freqüentes são como chá da fruta. Uma limonada pela manhã, diariamente, previne doenças. O suco misturado com água morna pode ser ingerido nos dias mais frios para evitar problemas com a temperatura. O suco misturado à água quente usa-se para gargarejos benéficos para afecções na boca e garganta. Contra o ácido úrico e gota, beber em jejum pela manhã o suco de três limões diluído em meio cálice de água, pelo menos por dez dias; interromper o tratamento por sete dias e depois repeti-lo por mais dez dias, e assim por diante. Esse mesmo tratamento serve também para os casos de arteriosclerose e hipertensão. Com o suco de um limão se confecciona um amálgama simples contra os resfriados: basta misturar o suco com uma clara de ovo e bater com um garfo por dez minutos, tomando uma colher da mistura de meia em meia hora.</p>
+</div></section>
+<section class="page" data-title="Losna">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg39" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg39)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">39</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Losna</h2>
+  <p class="erva-latin">Artemísia absinthium</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">É aconselhado o chá nos problemas de fígado e intestinos, assim como nos casos de urina solta. Em diarréias pode-se fervê-la em vinho e beber o chá ou usá-lo em compressas sobre o ventre. Esse mesmo chá é um excelente colírio.</p>
+</div></section>
+<section class="page" data-title="Maçã">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg40" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg40)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">40</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Maçã</h2>
+  <p class="erva-latin">Pyrus malus</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Digestiva e exerce um controle sobre a flora intestinal. Recomendada contra febres e inflamações e em dietas curtas nos casos de diarréias. Contra febres, má digestão e prisão de ventre, pode-se confeccionar a Água de Maçãs: misturar uma maçã grande, descascada, mondada (livre de partes inúteis, sementes e cabo, muito bem lavada) e cortada em fatias bem finas, com 10g de folhas de erva-cidreira (melissa, a de folhas, não a de capim), suco de meio limão e um pedaço de canela. Acrescentar duas colheres de mel e meio litro de água fervente, deixando repousar por dez minutos. Passar o preparado por uma peneira, bebendo o líquido no final das refeições. No caso de febres e inflamações intestinais, consumir a água no decorrer do dia. Pode-se ainda confeccionar o Vinho de Maçãs, indicado para distúrbios digestivos e prisão de ventre: colocar uma colher de açúcar e um pedaço de casca de limão em um cálice e meio de vinho, cozinhando nele uma maçã mondada e descascada. Passar tudo pela peneira e beber esse vinho logo após as refeições.</p>
+</div></section>
+<section class="page" data-title="Melancia">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg41" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg41)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">41</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Melancia</h2>
+  <p class="erva-latin">Cucúrbita citrullus</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Diurética e nutritiva. Indicada para doenças nos rins, purifica o fígado, combate resfriados e bronquites. Seu consumo é altamente indicado em casos de obstrução renal, pois seu suco promove a rápida eliminação do ácido úrico. Em estado natural, auxilia no tratamento de artrite, reumatismo, acidez gástrica, dispepsia e afecções dos rins e da bexiga.</p>
+</div></section>
+<section class="page" data-title="Morango">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg42" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg42)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">42</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Morango</h2>
+  <p class="erva-latin">Fragaria vesca</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Mais rico em vitamina C do que a laranja ou o limão, portanto bastante indicado para prevenção de gripes e resfriados. Cozido não tem nenhum valor; cru, atua na purificação do organismo e combate reumatismos. O consumo de morangos facilita a digestão, estimula as funções hepáticas e o apetite; combate a gota e o reumatismo articular. Uma dieta à base de morangos traz inúmeros benefícios a quem sofre de hemorróidas, perturbações circulatórias e afecções renais.</p>
+</div></section>
+<section class="page" data-title="Nabo">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg43" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg43)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">43</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Nabo</h2>
+  <p class="erva-latin">Brassica napius</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">O nabo é indicado para combater a gripe e doenças dos brônquios. O chá de suas folhas e até da raiz fortalece os ossos, agindo também como diurético.</p>
+</div></section>
+<section class="page" data-title="Pepino">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg44" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg44)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">44</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Pepino</h2>
+  <p class="erva-latin">Cucumis sativus</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">O pepino, para não se tornar indigesto, não deve ser descascado — a casca é que facilita a digestão. A ingestão diária fortifica as unhas e o cabelo, atuando como adstringente para a pele. Neutraliza a acidez estomacal e tonifica o fígado e os rins.</p>
+</div></section>
+<section class="page" data-title="Pêra">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg45" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg45)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">45</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Pêra</h2>
+  <p class="erva-latin">Pyrus communis</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Um fruto leve, pode ser ingerido sem restrições. Sua atuação é marcante nos rins, por ser um diurético excelente. Seu consumo é indicado para pessoas portadoras dos inchaços edematosos característicos dos doentes do aparelho circulatório e dos rins, e elimina esses inchaços. Cruas ou cozidas, e algumas vezes combinadas com pão integral e iogurte, são indicadas nos regimes contra a obesidade.</p>
+</div></section>
+<section class="page" data-title="Pimentão">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg46" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg46)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">46</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Pimentão</h2>
+  <p class="erva-latin">Capsicum annuum</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Um alimento que não produz calorias. O consumo é indicado para o fortalecimento da pele, das unhas e do cabelo. Sua ingestão também é benéfica para a desinfecção da mucosa bucal e gástrica, destruindo os germes intestinais sem prejudicar a flora bacteriana normal.</p>
+</div></section>
+<section class="page" data-title="Quiabo">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg47" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg47)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">47</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Quiabo</h2>
+  <p class="erva-latin">Hibiscus esculentus</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Favorece os órgãos digestivos, intestinais, renais e urinários. Usado como auxiliar no tratamento da bronquite e fortalece os ossos pelo seu conteúdo de cálcio.</p>
+</div></section>
+<section class="page" data-title="Rabanete">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg48" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg48)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">48</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Rabanete</h2>
+  <p class="erva-latin">Raphanus sativus</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Estimula a digestão, purifica o sangue e tonifica os nervos, atuando principalmente sobre o aparelho renal.</p>
+</div></section>
+<section class="page" data-title="Repolho">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg49" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg49)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">49</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Repolho</h2>
+  <p class="erva-latin">Brassica oleracea capitata</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Indicado para pessoas enfraquecidas, anêmicas, portadoras de câncer ou tuberculose. O seu teor de ferro reconstitui o sangue e, sendo um ótimo queimador de gorduras, é aconselhado para dietas de emagrecimento.</p>
+</div></section>
+<section class="page" data-title="Sabugueiro">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg50" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg50)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">50</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Sabugueiro</h2>
+  <p class="erva-latin">Sambucus nigra</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">O chá, bebido como água, é eficaz nos casos de sarampo. Para o diabetes é indicado um tratamento de no mínimo três meses, tomando-se diariamente o chá das folhas. Como depurativo e contra intoxicações do fígado, ferver sete gramas de folhas frescas de sabugueiro trituradas em meio litro de água durante dez minutos; beber meia xícara do líquido filtrado e adoçado com mel, pela manhã em jejum.</p>
+</div></section>
+<section class="page" data-title="Salsa">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg51" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg51)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">51</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Salsa</h2>
+  <p class="erva-latin">Petroselinum sativum</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">Combate gases intestinais, estimula o apetite, facilita a digestão e limpa os brônquios. Um chá de folhas de salsa é um poderoso diurético, aconselhado em casos de gota. A salsa atua também como auxiliar na cura de afecções hepáticas e hipertensão. A infusão da salsa é feita deixando por dez minutos 30g de sementes de salsa (novamente, não usar as destinadas a plantio, e sim as retiradas da planta) em 200g de água fervente; filtrar o líquido, bebendo metade em seguida e o restante três horas depois.</p>
+</div></section>
+<section class="page" data-title="Uva">
+<div class="erva-inner">
+  <svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg>
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg52" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg52)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">52</text>
+</svg>
+  <p class="pg-kicker">O USO DAS ERVAS E VEGETAIS</p>
+  <h2 class="erva-nome">Uva</h2>
+  <p class="erva-latin">Vitis vinifera</p>
+  <div class="pg-faixa"></div>
+  <p class="erva-texto">As folhas da parreira são indicadas para se fazer chás que refrescam os intestinos, relaxam os nervos e tonificam o coração.</p>
+</div></section>
+<section class="page" data-title="Indicações das Ervas">
+<div class="divisor-inner">
+  <div class="d-ramo"><svg class="ramo dir" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M8 212C10 150 30 90 90 10" opacity=".55"/>
+<path d="M20 190c22-6 40-18 52-38-22 2-42 12-52 38Z" opacity=".5"/>
+<path d="M42 140c24-12 40-30 46-52-24 6-44 22-46 52Z" opacity=".6"/>
+<path d="M66 92c18-14 26-30 24-52-18 8-28 24-24 52Z" opacity=".7"/>
+</svg></div>
+  <span class="d-num">04</span>
+  <h2 class="d-titulo">Indicações das Ervas</h2>
+  <p class="d-sub">Dicionário energético de A a Z</p>
+  <div class="d-estrelas"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></div>
+</div></section>
+<section class="page" data-title="Indicações das Ervas">
+<div class="ind-inner">
+  <p class="pg-kicker">DICIONÁRIO MÁGICO</p>
+  <h2 class="pg-titulo">Indicações das Ervas</h2>
+  <div class="pg-faixa"></div>
+  <table class="ind-tab"><tbody><tr><td class="i-nome">ABACATE</td><td>amor</td></tr><tr><td class="i-nome">AÇAFRÃO</td><td>purificação, saúde, felicidade</td></tr><tr><td class="i-nome">ACÁCIA</td><td>proteção, contra pesadelos e proteção do sono</td></tr><tr><td class="i-nome">AGRIMÔNIA</td><td>dissolução de influências negativas e proteção</td></tr><tr><td class="i-nome">AIPO</td><td>poderes mentais e psíquicos</td></tr><tr><td class="i-nome">ALECRIM</td><td>limpeza e concentração, calmante, adivinhação, estudos, cura, proteção, purificação</td></tr><tr><td class="i-nome">ALFAFA</td><td>prosperidade, dinheiro, felicidade</td></tr><tr><td class="i-nome">ALFAZEMA</td><td>calmante, estudos, purificação</td></tr><tr><td class="i-nome">ALHO</td><td>saúde, proteção</td></tr><tr><td class="i-nome">ALMÍSCAR</td><td>afrodisíaco, amor — Planeta: Vênus</td></tr><tr><td class="i-nome">AMÊNDOAS</td><td>dinheiro, prosperidade, sabedoria</td></tr><tr><td class="i-nome">AMORA</td><td>saúde, dinheiro, proteção</td></tr><tr><td class="i-nome">ANETO</td><td>sorte</td></tr><tr><td class="i-nome">ANGÉLICA</td><td>proteção, purificação, saúde, clarividência</td></tr><tr><td class="i-nome">ANIS ESTRELADO</td><td>adivinhação, purificação, sorte</td></tr><tr><td class="i-nome">ARNICA</td><td>clarividência</td></tr><tr><td class="i-nome">ARROZ</td><td>fertilidade</td></tr><tr><td class="i-nome">ARRUDA</td><td>proteção, limpeza, cura, purificação</td></tr><tr><td class="i-nome">ARTEMÍSIA</td><td>adivinhação, alteração da consciência</td></tr><tr><td class="i-nome">ASSA-FÉTIDA</td><td>exorcismo, proteção</td></tr><tr><td class="i-nome">BABOSA</td><td>proteção, sorte e amor</td></tr><tr><td class="i-nome">BAMBU</td><td>realização de desejos</td></tr><tr><td class="i-nome">BARBATIMÃO</td><td>espiritualidade, purificação</td></tr><tr><td class="i-nome">BARDANA</td><td>saúde, proteção</td></tr><tr><td class="i-nome">BAUNILHA</td><td>amor, sedução</td></tr><tr><td class="i-nome">BETERRABA</td><td>amor</td></tr><tr><td class="i-nome">BENJOIM</td><td>negócios, exorcismo — Planeta: Vênus</td></tr><tr><td class="i-nome">BOCA DE LEÃO</td><td>proteção</td></tr><tr><td class="i-nome">BRIONIA</td><td>dinheiro</td></tr><tr><td class="i-nome">CALÊNDULA</td><td>proteção, solução de problemas</td></tr></tbody></table>
+</div></section>
+<section class="page" data-title="Indicações das Ervas">
+<div class="ind-inner">
+  <p class="pg-kicker">DICIONÁRIO MÁGICO</p>
+  <h2 class="pg-titulo">Indicações das Ervas</h2>
+  <div class="pg-faixa"></div>
+  <table class="ind-tab"><tbody><tr><td class="i-nome">CAMÉLIA</td><td>prosperidade, riqueza</td></tr><tr><td class="i-nome">CAMOMILA</td><td>dinheiro, amor, purificação</td></tr><tr><td class="i-nome">CANELA</td><td>negócios, bens materiais, amor, limpeza, energizar, sucesso, proteção</td></tr><tr><td class="i-nome">CÂNFORA</td><td>desenvolvimento psíquico, clarividência, saúde</td></tr><tr><td class="i-nome">CARDAMOMO</td><td>sedução, amor</td></tr><tr><td class="i-nome">CARDO SANTO</td><td>cura</td></tr><tr><td class="i-nome">CARVALHO</td><td>fertilidade</td></tr><tr><td class="i-nome">CÁSCARA SAGRADA</td><td>problemas com a justiça, dinheiro e proteção</td></tr><tr><td class="i-nome">CAVALINHA</td><td>fertilidade</td></tr><tr><td class="i-nome">CEBOLA</td><td>proteção, saúde, dinheiro</td></tr><tr><td class="i-nome">CIPRESTE</td><td>longevidade, saúde</td></tr><tr><td class="i-nome">CRAVO</td><td>negócios, forças, energizar, amor, limpeza</td></tr><tr><td class="i-nome">DAMASCO</td><td>feitiços de amor</td></tr><tr><td class="i-nome">ERVA CIDREIRA</td><td>sucesso, amor</td></tr><tr><td class="i-nome">ERVA DOCE</td><td>proteção</td></tr><tr><td class="i-nome">EUCALIPTO</td><td>limpeza, atrair encantos, energizar, cura, saúde, proteção</td></tr><tr><td class="i-nome">FIGUEIRA</td><td>clarividência, fertilidade</td></tr><tr><td class="i-nome">FLOR DE MAÇÃ</td><td>calmante</td></tr><tr><td class="i-nome">FREIXO</td><td>adivinhação, cura, proteção, prosperidade</td></tr><tr><td class="i-nome">GENGIBRE</td><td>dinheiro e sucesso</td></tr><tr><td class="i-nome">GERGELIM</td><td>dinheiro</td></tr><tr><td class="i-nome">GINSENG</td><td>amor, realização de desejos, beleza, saúde, proteção e poder</td></tr><tr><td class="i-nome">GIRASSOL</td><td>fertilidade</td></tr><tr><td class="i-nome">HERA</td><td>proteção, amor, saúde (planta não eficaz para os homens)</td></tr><tr><td class="i-nome">HORTELÃ</td><td>cura</td></tr><tr><td class="i-nome">JASMIM</td><td>melhorar o humor, amor, calmante, cura</td></tr><tr><td class="i-nome">LARANJA</td><td>amor, dinheiro</td></tr><tr><td class="i-nome">LAVANDA</td><td>cura, amor</td></tr><tr><td class="i-nome">LIMÃO</td><td>amor</td></tr><tr><td class="i-nome">LÓTUS</td><td>amor</td></tr></tbody></table>
+</div></section>
+<section class="page" data-title="Indicações das Ervas">
+<div class="ind-inner">
+  <p class="pg-kicker">DICIONÁRIO MÁGICO</p>
+  <h2 class="pg-titulo">Indicações das Ervas</h2>
+  <div class="pg-faixa"></div>
+  <table class="ind-tab"><tbody><tr><td class="i-nome">LOURO</td><td>negócios, adivinhação, proteção, força, saúde</td></tr><tr><td class="i-nome">MAÇÃ</td><td>amor, atrair encantos, cura, imortalidade</td></tr><tr><td class="i-nome">MANJERICÃO</td><td>amor, purificação espiritual, proteção</td></tr><tr><td class="i-nome">MANDRÁGORA</td><td>fertilidade</td></tr><tr><td class="i-nome">MADRESSILVA</td><td>dinheiro</td></tr><tr><td class="i-nome">MARACUJÁ</td><td>paz, amizade</td></tr><tr><td class="i-nome">MIL FOLHAS</td><td>exorcismo, amor</td></tr><tr><td class="i-nome">MIRRA</td><td>boa sorte, espiritualidade, meditação, cura, proteção</td></tr><tr><td class="i-nome">MORANGO</td><td>amor, sorte</td></tr><tr><td class="i-nome">NARCISO</td><td>cura, sorte, fertilidade</td></tr><tr><td class="i-nome">NOZ MOSCADA</td><td>adivinhação, fertilidade</td></tr><tr><td class="i-nome">OLÍBANO</td><td>cura, purificação (resina chave)</td></tr><tr><td class="i-nome">OLIVEIRA</td><td>paz, fertilidade, proteção</td></tr><tr><td class="i-nome">PATCHULI</td><td>clarividência — Planeta: Vênus</td></tr><tr><td class="i-nome">PINHO</td><td>atrair encantos, fertilidade</td></tr><tr><td class="i-nome">ROMÃ</td><td>fertilidade</td></tr><tr><td class="i-nome">ROSA</td><td>amor, espiritualidade, adivinhação, fertilidade</td></tr><tr><td class="i-nome">SABUGUEIRO</td><td>purificação</td></tr><tr><td class="i-nome">SÁLVIA</td><td>cura, feitiços, longevidade, sabedoria, realização de desejos</td></tr><tr><td class="i-nome">SÂNDALO</td><td>amor, adivinhação, purificação</td></tr><tr><td class="i-nome">SANGUE DE DRAGÃO</td><td>purificação</td></tr><tr><td class="i-nome">TRIGO</td><td>fartura, dinheiro, fertilidade</td></tr><tr><td class="i-nome">URTIGA</td><td>exorcismo, proteção, saúde</td></tr><tr><td class="i-nome">UVA</td><td>fertilidade, dinheiro, fartura</td></tr><tr><td class="i-nome">VETIVER</td><td>comando — Planeta: Vênus</td></tr><tr><td class="i-nome">VERBENA</td><td>meditação, amor</td></tr><tr><td class="i-nome">VISGO</td><td>proteção</td></tr><tr><td class="i-nome">VIOLETA</td><td>afrodisíaco, meditação, espiritualidade</td></tr></tbody></table>
+</div></section>
+<section class="page" data-title="Ervas dos Signos">
+<div class="lista-inner">
+  <p class="pg-kicker">CORRESPONDÊNCIA CELESTE</p>
+  <h2 class="pg-titulo">Ervas dos Signos</h2>
+  <div class="pg-faixa"></div>
+  <div class="scards"><div class="scard"><span class="s-simbolo">♈</span><h3>Áries</h3><p>Almíscar, Sândalo, Ópio</p></div><div class="scard"><span class="s-simbolo">♉</span><h3>Touro</h3><p>Pinho, Eucalipto, Cravo, Canela</p></div><div class="scard"><span class="s-simbolo">♊</span><h3>Gêmeos</h3><p>Rosa, Alecrim, Jasmim</p></div><div class="scard"><span class="s-simbolo">♋</span><h3>Câncer</h3><p>Maçã, Alfazema, Violeta</p></div><div class="scard"><span class="s-simbolo">♌</span><h3>Leão</h3><p>Patchouli, Almíscar, Sândalo, Ópio</p></div><div class="scard"><span class="s-simbolo">♍</span><h3>Virgem</h3><p>Rosa, Alfazema, Benjoim</p></div><div class="scard"><span class="s-simbolo">♎</span><h3>Libra</h3><p>Maçã, Rosa, Cedro</p></div><div class="scard"><span class="s-simbolo">♏</span><h3>Escorpião</h3><p>Almíscar, Ópio, Eucalipto</p></div><div class="scard"><span class="s-simbolo">♐</span><h3>Sagitário</h3><p>Cravo, Canela, Rosa</p></div><div class="scard"><span class="s-simbolo">♑</span><h3>Capricórnio</h3><p>Lótus, Alecrim</p></div><div class="scard"><span class="s-simbolo">♒</span><h3>Aquário</h3><p>Violeta, Rosas, Flores do Campo</p></div><div class="scard"><span class="s-simbolo">♓</span><h3>Peixes</h3><p>Violeta, Alecrim, Alfazema</p></div></div>
+</div></section>
+<section class="page" data-title="Sobre o Autor">
+<div class="texto-inner">
+  <svg class="medalha" viewBox="0 0 120 120">
+<defs>
+  <radialGradient id="medg2" cx="50%" cy="40%" r="65%">
+    <stop offset="0%" stop-color="#3f7a56"/>
+    <stop offset="100%" stop-color="#1e4d33"/>
+  </radialGradient>
+</defs>
+<circle cx="60" cy="60" r="54" fill="url(#medg2)"/>
+<circle cx="60" cy="60" r="48" fill="none" stroke="#b8860b" stroke-width="1.6" opacity=".9"/>
+<circle cx="60" cy="60" r="42" fill="none" stroke="#b8860b" stroke-width=".7" stroke-dasharray="3 4" opacity=".7"/>
+<text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="44" fill="#b8860b">2</text>
+</svg>
+  <p class="pg-kicker">SOBRE O AUTOR</p>
+  <h2 class="pg-titulo">Pesquisador das Matas</h2>
+  <div class="pg-faixa"></div>
+  <div class="pg-corpo">
+    <p>Olá! Eu sou Marcos Roberto, o <strong>Pesquisador das Matas</strong> de Viçosa. Apaixonado pela natureza e pelos saberes populares, percorro as matas do agreste alagoano coletando, estudando e preservando o conhecimento tradicional sobre plantas, ervas e seus usos.</p>
+    <p>Meu trabalho une ciência, cultura e espiritualidade — sempre com respeito à floresta e às pessoas que guardam esses segredos. Este guia é fruto dessa caminhada.</p>
+    <div class="sobre-contato">
+      <p>📺 <strong>YouTube:</strong> <a href="https://www.youtube.com/results?search_query=pesquisador+das+matas+vicosa" target="_blank">Pesquisador das Matas Viçosa Alagoas</a></p>
+      <p>✉️ <strong>E-mail:</strong> <a href="mailto:silvamrs100@gmail.com">silvamrs100@gmail.com</a></p>
+    </div>
+    <p class="sobre-assinatura">"Cada erva tem uma história. Cada mata, um segredo."</p>
+  </div>
+</div></section>
+<section class="page" data-title="Para Finalizar">
+<div class="texto-inner">
+  <div class="f-estrelas"><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg><svg class="estrela" viewBox="0 0 64 64" fill="#b8860b">
+<path d="M32 4l7.5 16.5L57 22.5l-13 12.5 3.5 18L32 44 16.5 53l3.5-18-13-12.5 17.5-2Z"/>
+</svg></div>
+  <h2 class="pg-titulo">Para Finalizar</h2>
+  <div class="pg-faixa"></div>
+  <div class="pg-corpo"><p>Este é um pequeno apanhado dos alimentos que podemos fazer uso diário, que não só nos nutrem, mas, bem combinados, nos trazem saúde.</p>
+<p>A arte de cozinhar é uma alquimia com a qual podemos transformar doenças em saúde. Aproveitando ao máximo os poderes da Natureza que a Deusa criou, mesmo porque ao cozinhar estamos atuando com os quatro elementos — água, terra, fogo e ar — e sabemos que esses poderes transformam qualquer coisa.</p>
+<p>Que estas ervas, plantas e saberes cheguem até você como um presente da natureza, para o corpo, para a alma e para o seu caminho.</p></div>
+</div></section>
+<section class="page" data-title="Contracapa">
+<div class="contra-inner">
+  <div class="c-ramo"><svg class="ramo esq" viewBox="0 0 160 220" fill="none" stroke="#3f7a56" stroke-width="3" stroke-linecap="round">
+<path d="M152 212C150 150 130 90 70 10" opacity=".55"/>
+<path d="M140 190c-22-6-40-18-52-38 22 2 42 12 52 38Z" opacity=".5"/>
+<path d="M118 140c-24-12-40-30-46-52 24 6 44 22 46 52Z" opacity=".6"/>
+<path d="M94 92c-18-14-26-30-24-52 18 8 28 24 24 52Z" opacity=".7"/>
+</svg></div>
+  <h2 class="c-fim">ERVAS</h2>
+  <p class="c-fim-sub">Indicações e Usos</p>
+  <div class="c-linha"></div>
+  <p class="c-marca-fim">Marcos Roberto · Pesquisador das Matas</p>
+  <p class="c-local-fim">Viçosa — Alagoas · Brasil</p>
+  <div class="c-contato">
+    <p>📺 Pesquisador das Matas Viçosa Alagoas</p>
+    <p>✉️ silvamrs100@gmail.com</p>
+  </div>
+  <p class="c-aviso">Aviso: este guia tem caráter informativo e cultural. As receitas e indicações não substituem orientação médica. Em caso de doença, procure um profissional de saúde.</p>
+  <p class="c-copy">© Marcos Roberto — Pesquisador das Matas</p>
+</div></section></div></div>
+
+<div class="bottom">
+  <button class="nav-btn" id="btPrev" onclick="ir(-1)">‹</button>
+  <div class="prog-wrap"><div class="prog" id="prog"></div></div>
+  <span class="pos" id="pos"></span>
+  <button class="nav-btn" id="btNext" onclick="ir(1)">›</button>
+</div>
+
+<script>
+(function(){
+  var rolagem=document.getElementById('rolagem');
+  var paginas=Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var total=paginas.length;
+  var pos=document.getElementById('pos');
+  var prog=document.getElementById('prog');
+
+  function atual(){
+    var atual=0;
+    for(var i=0;i<total;i++){ if(paginas[i].getBoundingClientRect().top>40){ atual=i-1; break; } atual=i; }
+    if(atual<0)atual=0;
+    var frac=rolagem.scrollTop/(rolagem.scrollHeight-rolagem.clientHeight||1);
+    prog.style.width=(Math.round(frac*1000)/10)+'%';
+    pos.textContent=(atual+1)+' / '+total;
+    document.getElementById('btPrev').disabled=(atual===0);
+    document.getElementById('btNext').disabled=(atual===total-1);
+    return atual;
+  }
+  window.ir=function(d){
+    var atual=0;
+    var margem=rolagem.getBoundingClientRect().top;
+    for(var i=0;i<total;i++){ var t=paginas[i].getBoundingClientRect().top-margem; if(t>-60) break; atual=i; }
+    var alvo=atual+d;
+    if(alvo<0)alvo=0; if(alvo>=total)alvo=total-1;
+    paginas[alvo].scrollIntoView({behavior:'smooth'});
+  };
+  rolagem.addEventListener('scroll',atual,{passive:true});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'){ir(1);}
+    if(e.key==='ArrowLeft'||e.key==='PageUp'){ir(-1);}
+  });
+  var inicioX=null;
+  rolagem.addEventListener('touchstart',function(e){inicioX=e.touches[0].clientX},{passive:true});
+  rolagem.addEventListener('touchend',function(e){
+    if(inicioX===null)return;
+    var dx=e.changedTouches[0].clientX-inicioX;
+    if(Math.abs(dx)>50){ ir(dx<0?1:-1); }
+    inicioX=null;
+  });
+  document.querySelectorAll('.toc a, .menu button').forEach(function(a){
+    a.addEventListener('click',function(ev){
+      ev.preventDefault();
+      var idx=+(a.getAttribute('data-ir')||0);
+      paginas[idx].scrollIntoView({behavior:'smooth'});
+      var m=document.getElementById('menu'); m.classList.remove('aberto');
+    });
+  });
+  atual();
+})();
+function abrirMenu(){document.getElementById('menu').classList.toggle('aberto')}
+function whats(){
+  window.open('https://wa.me/5582991856656?text='+encodeURIComponent('Olá! Estou vendendo o ebook ERVAS — Indicações e Usos. 🌿'),'_blank');
+}
+</script>
+</body>
+</html>

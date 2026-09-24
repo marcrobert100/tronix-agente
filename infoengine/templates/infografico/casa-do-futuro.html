@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Casa do Futuro — InfoEngine</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --c1:#00f5ff; --c2:#7b2fff; --c3:#ff6b35; --c4:#00ff88;
+  --bg:#03060f; --bg2:#060d1a; --bg3:#0a1628;
+  --card:#0d1f35; --card2:#091526;
+  --font-d:'Orbitron',monospace;
+  --font-b:'Exo 2',sans-serif;
+}
+body{font-family:var(--font-b);background:var(--bg);color:#e0f0ff;min-height:100vh;overflow-x:hidden;}
+
+/* TOOLBAR */
+.toolbar{position:fixed;top:.6rem;right:.6rem;z-index:200;display:flex;gap:.4rem;flex-wrap:wrap;justify-content:flex-end;}
+.toolbar button{background:rgba(0,245,255,.08);backdrop-filter:blur(10px);border:1px solid rgba(0,245,255,.2);color:var(--c1);padding:.45rem 1rem;border-radius:2rem;font-family:var(--font-b);font-weight:600;font-size:.72rem;cursor:pointer;transition:all .3s;letter-spacing:.5px;}
+.toolbar button:hover{background:rgba(0,245,255,.18);transform:translateY(-2px);box-shadow:0 0 15px rgba(0,245,255,.2);}
+
+/* GRID LAYOUT */
+.page{width:100%;max-width:1100px;margin:0 auto;padding:1rem 1rem 3rem;}
+
+/* ======= HERO ======= */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:2rem 1rem;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 60%,#0a1f3a 0%,#03060f 70%);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,245,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,.04) 1px,transparent 1px);background-size:40px 40px;}
+.hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(0,245,255,.06) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);}
+.hero h1{font-family:var(--font-d);font-size:clamp(2.2rem,6vw,5rem);font-weight:900;background:linear-gradient(135deg,var(--c1),var(--c2),var(--c1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;z-index:2;line-height:1.1;letter-spacing:2px;}
+.hero .sub{font-size:clamp(1rem,2.5vw,1.4rem);color:rgba(224,240,255,.5);margin-top:.8rem;font-weight:300;letter-spacing:3px;text-transform:uppercase;position:relative;z-index:2;}
+.hero .year-badge{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.5rem;padding:.5rem 1.8rem;border:1px solid rgba(0,245,255,.25);border-radius:3rem;font-family:var(--font-d);font-size:.85rem;color:var(--c1);background:rgba(0,245,255,.05);position:relative;z-index:2;letter-spacing:2px;}
+.hero .year-badge::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--c1);box-shadow:0 0 8px var(--c1);animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:.4;transform:scale(.8);}50%{opacity:1;transform:scale(1.2);}}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.4rem;color:rgba(0,245,255,.4);font-size:.75rem;letter-spacing:2px;z-index:2;}
+.scroll-arrow{width:20px;height:20px;border-right:2px solid rgba(0,245,255,.4);border-bottom:2px solid rgba(0,245,255,.4);transform:rotate(45deg);animation:bounce .8s ease-in-out infinite alternate;}
+@keyframes bounce{from{transform:rotate(45deg) translateY(-4px);}to{transform:rotate(45deg) translateY(4px);}}
+
+/* ======= SECTION TITLES ======= */
+.section{padding:3rem 0 1rem;}
+.sec-label{font-family:var(--font-d);font-size:.7rem;letter-spacing:4px;color:var(--c1);text-transform:uppercase;opacity:.7;margin-bottom:.4rem;}
+.sec-title{font-family:var(--font-d);font-size:clamp(1.4rem,3vw,2.2rem);font-weight:700;color:#fff;margin-bottom:.5rem;}
+.sec-title span{color:var(--c1);}
+.sec-divider{width:60px;height:2px;background:linear-gradient(90deg,var(--c1),var(--c2));border-radius:2px;margin-bottom:1.5rem;}
+
+/* ======= CASA SVG PRINCIPAL ======= */
+.house-wrap{display:flex;justify-content:center;padding:1rem 0 2rem;}
+.house-wrap svg{width:100%;max-width:900px;height:auto;filter:drop-shadow(0 0 30px rgba(0,245,255,.08));}
+
+/* ======= FEATURE CARDS ======= */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem;margin-top:1rem;}
+.fcard{background:var(--card);border:1px solid rgba(0,245,255,.1);border-radius:16px;padding:1.5rem;position:relative;overflow:hidden;transition:all .3s;cursor:default;}
+.fcard:hover{border-color:rgba(0,245,255,.3);transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,245,255,.08);}
+.fcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent,var(--c1)),transparent);}
+.fcard .icon{font-size:2.2rem;margin-bottom:.8rem;display:block;}
+.fcard h3{font-family:var(--font-d);font-size:.85rem;color:var(--accent,var(--c1));letter-spacing:1px;margin-bottom:.5rem;}
+.fcard p{font-size:.95rem;line-height:1.7;color:rgba(224,240,255,.7);font-weight:300;}
+.fcard .tag{display:inline-block;margin-top:.8rem;padding:.2rem .8rem;border-radius:2rem;font-size:.7rem;letter-spacing:1px;border:1px solid;font-weight:600;}
+
+/* ======= STATS ROW ======= */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin:1.5rem 0;}
+.stat-box{background:var(--card2);border:1px solid rgba(0,245,255,.08);border-radius:12px;padding:1.2rem 1rem;text-align:center;}
+.stat-num{font-family:var(--font-d);font-size:2rem;font-weight:900;background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+.stat-label{font-size:.8rem;color:rgba(224,240,255,.5);margin-top:.4rem;letter-spacing:1px;}
+
+/* ======= TIMELINE ======= */
+.timeline{position:relative;padding-left:2rem;margin-top:1rem;}
+.timeline::before{content:'';position:absolute;left:.5rem;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--c1),var(--c2),var(--c4));}
+.tl-item{position:relative;padding:.8rem 0 .8rem 1.5rem;margin-bottom:.5rem;}
+.tl-dot{position:absolute;left:-1.55rem;top:1.1rem;width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--c1);box-shadow:0 0 10px var(--c1);}
+.tl-year{font-family:var(--font-d);font-size:.7rem;color:var(--c1);letter-spacing:2px;margin-bottom:.2rem;}
+.tl-text{font-size:.95rem;color:rgba(224,240,255,.75);font-weight:300;line-height:1.6;}
+
+/* ======= ROOM GRID ======= */
+.room-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1rem;}
+.room-card{background:var(--card);border:1px solid rgba(123,47,255,.15);border-radius:14px;padding:1.2rem;transition:all .3s;}
+.room-card:hover{border-color:rgba(123,47,255,.4);box-shadow:0 0 20px rgba(123,47,255,.08);}
+.room-card h4{font-family:var(--font-d);font-size:.78rem;color:var(--c2);margin:.5rem 0 .4rem;letter-spacing:1px;}
+.room-card ul{list-style:none;padding:0;}
+.room-card ul li{font-size:.88rem;color:rgba(224,240,255,.65);padding:.2rem 0;font-weight:300;}
+.room-card ul li::before{content:'→ ';color:var(--c2);font-weight:700;}
+
+/* ======= FOOTER ======= */
+.footer{text-align:center;padding:3rem 1rem 2rem;border-top:1px solid rgba(0,245,255,.06);}
+.footer .brand{font-family:var(--font-d);font-size:.8rem;color:rgba(0,245,255,.3);letter-spacing:3px;}
+
+/* ======= RESPONSIVE ======= */
+@media(max-width:600px){
+  .cards-grid{grid-template-columns:1fr;}
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+}
+@media print{
+  body{background:#fff;color:#000;}
+  .toolbar{display:none;}
+  .hero-grid,.hero-glow{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button onclick="gerarPDF()">⬇️ Baixar PDF</button>
+  <button onclick="window.print()">🖨️ Imprimir</button>
+  <button onclick="compartilharWhatsApp()">📱 WhatsApp</button>
+</div>
+
+<!-- ======= HERO ======= -->
+<div class="hero" id="main">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <!-- CASA SVG HERO GRANDE -->
+  <svg style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:min(820px,95vw);opacity:.18;pointer-events:none;" viewBox="0 0 820 420" fill="none">
+    <!-- base -->
+    <rect x="100" y="200" width="620" height="220" rx="8" fill="#00f5ff"/>
+    <!-- telhado -->
+    <polygon points="60,200 410,40 760,200" fill="#7b2fff"/>
+    <!-- janelas -->
+    <rect x="160" y="240" width="100" height="80" rx="6" fill="#03060f"/>
+    <rect x="162" y="242" width="96" height="76" rx="4" fill="#00f5ff" opacity=".15"/>
+    <line x1="210" y1="242" x2="210" y2="318" stroke="#00f5ff" stroke-width="1" opacity=".3"/>
+    <line x1="162" y1="280" x2="258" y2="280" stroke="#00f5ff" stroke-width="1" opacity=".3"/>
+    <rect x="360" y="240" width="100" height="80" rx="6" fill="#03060f"/>
+    <rect x="362" y="242" width="96" height="76" rx="4" fill="#00f5ff" opacity=".15"/>
+    <line x1="410" y1="242" x2="410" y2="318" stroke="#00f5ff" stroke-width="1" opacity=".3"/>
+    <line x1="362" y1="280" x2="458" y2="280" stroke="#00f5ff" stroke-width="1" opacity=".3"/>
+    <rect x="560" y="240" width="100" height="80" rx="6" fill="#03060f"/>
+    <rect x="562" y="242" width="96" height="76" rx="4" fill="#00f5ff" opacity=".15"/>
+    <line x1="610" y1="242" x2="610" y2="318" stroke="#00f5ff" stroke-width="1" opacity=".3"/>
+    <line x1="562" y1="280" x2="658" y2="280" stroke="#00f5ff" stroke-width="1" opacity=".3"/>
+    <!-- porta -->
+    <rect x="360" y="330" width="100" height="90" rx="6" fill="#7b2fff" opacity=".4"/>
+    <!-- painéis solares no telhado -->
+    <rect x="300" y="80" width="50" height="30" rx="3" fill="#00f5ff" opacity=".3" transform="rotate(-24,325,95)"/>
+    <rect x="360" y="62" width="50" height="30" rx="3" fill="#00f5ff" opacity=".3" transform="rotate(-24,385,77)"/>
+    <rect x="420" y="70" width="50" height="30" rx="3" fill="#00f5ff" opacity=".3" transform="rotate(24,445,85)"/>
+    <rect x="480" y="88" width="50" height="30" rx="3" fill="#00f5ff" opacity=".3" transform="rotate(24,505,103)"/>
+    <!-- antena / sensor -->
+    <line x1="410" y1="40" x2="410" y2="10" stroke="#00f5ff" stroke-width="2" opacity=".5"/>
+    <circle cx="410" cy="8" r="5" fill="#00f5ff" opacity=".6"/>
+  </svg>
+
+  <div style="position:relative;z-index:2;margin-bottom:14rem;">
+    <p class="sub">InfoEngine · Conceito Tecnológico</p>
+    <h1>A Casa<br>do Futuro</h1>
+    <p class="sub" style="margin-top:.5rem;">Inteligência · Sustentabilidade · Conforto</p>
+    <div class="year-badge">▶ 2040 — 2060</div>
+  </div>
+  <div class="scroll-hint">
+    <span>EXPLORAR</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</div>
+
+<!-- ======= CONTEÚDO PRINCIPAL ======= -->
+<div class="page" id="content">
+
+  <!-- STATS -->
+  <div class="section">
+    <p class="sec-label">Números do Futuro</p>
+    <h2 class="sec-title">O que vai <span>mudar</span></h2>
+    <div class="sec-divider"></div>
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-num">90%</div><div class="stat-label">Energia Renovável</div></div>
+      <div class="stat-box"><div class="stat-num">70%</div><div class="stat-label">Menos desperdício de água</div></div>
+      <div class="stat-box"><div class="stat-num">500+</div><div class="stat-label">Sensores integrados</div></div>
+      <div class="stat-box"><div class="stat-num">0 €</div><div class="stat-label">Conta de luz (net zero)</div></div>
+      <div class="stat-box"><div class="stat-num">IA</div><div class="stat-label">Controle por voz e gestos</div></div>
+      <div class="stat-box"><div class="stat-num">24/7</div><div class="stat-label">Monitoramento autônomo</div></div>
+    </div>
+  </div>
+
+  <!-- CASA DETALHADA SVG -->
+  <div class="section">
+    <p class="sec-label">Visualização</p>
+    <h2 class="sec-title">Anatomia da <span>Casa Inteligente</span></h2>
+    <div class="sec-divider"></div>
+  </div>
+  <div class="house-wrap">
+    <svg viewBox="0 0 900 560" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#03060f"/>
+          <stop offset="100%" stop-color="#060d1a"/>
+        </linearGradient>
+        <linearGradient id="wallGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0d1f35"/>
+          <stop offset="100%" stop-color="#091526"/>
+        </linearGradient>
+        <linearGradient id="roofGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#1a0a3a"/>
+          <stop offset="100%" stop-color="#0d0620"/>
+        </linearGradient>
+        <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="glow2"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+
+      <!-- SKY BG -->
+      <rect width="900" height="560" fill="url(#skyGrad)"/>
+      <!-- grid chão -->
+      <line x1="0" y1="430" x2="900" y2="430" stroke="#00f5ff" stroke-width=".5" opacity=".15"/>
+      <!-- estrelas -->
+      <circle cx="50"  cy="30"  r="1.5" fill="#fff" opacity=".4"><animate attributeName="opacity" values=".2;.8;.2" dur="2s"   repeatCount="indefinite"/></circle>
+      <circle cx="150" cy="15"  r="1"   fill="#fff" opacity=".3"><animate attributeName="opacity" values=".1;.7;.1" dur="2.8s" repeatCount="indefinite"/></circle>
+      <circle cx="800" cy="25"  r="1.5" fill="#00f5ff" opacity=".4"><animate attributeName="opacity" values=".2;.9;.2" dur="1.8s" repeatCount="indefinite"/></circle>
+      <circle cx="850" cy="60"  r="1"   fill="#7b2fff" opacity=".5"><animate attributeName="opacity" values=".3;1;.3"   dur="2.2s" repeatCount="indefinite"/></circle>
+      <circle cx="750" cy="20"  r="1.2" fill="#fff"    opacity=".3"><animate attributeName="opacity" values=".1;.6;.1" dur="3s"   repeatCount="indefinite"/></circle>
+      <circle cx="200" cy="40"  r="1"   fill="#00ff88" opacity=".4"><animate attributeName="opacity" values=".2;.8;.2" dur="2.5s" repeatCount="indefinite"/></circle>
+
+      <!-- PAINEL SOLAR esquerdo telhado -->
+      <rect x="180" y="132" width="65" height="38" rx="3" fill="#0a1628" stroke="#00f5ff" stroke-width="1" opacity=".7" transform="rotate(-28,212,151)"/>
+      <line x1="180" y1="145" x2="245" y2="125" stroke="#00f5ff" stroke-width=".5" opacity=".4"/>
+      <line x1="180" y1="153" x2="245" y2="133" stroke="#00f5ff" stroke-width=".5" opacity=".4"/>
+      <line x1="200" y1="132" x2="195" y2="170" stroke="#00f5ff" stroke-width=".5" opacity=".4" transform="rotate(-28,212,151)"/>
+      <line x1="225" y1="132" x2="220" y2="170" stroke="#00f5ff" stroke-width=".5" opacity=".4" transform="rotate(-28,212,151)"/>
+
+      <!-- PAINEL SOLAR direito telhado -->
+      <rect x="655" y="132" width="65" height="38" rx="3" fill="#0a1628" stroke="#00f5ff" stroke-width="1" opacity=".7" transform="rotate(28,688,151)"/>
+      <line x1="655" y1="125" x2="720" y2="145" stroke="#00f5ff" stroke-width=".5" opacity=".4"/>
+      <line x1="655" y1="133" x2="720" y2="153" stroke="#00f5ff" stroke-width=".5" opacity=".4"/>
+      <line x1="675" y1="132" x2="670" y2="170" stroke="#00f5ff" stroke-width=".5" opacity=".4" transform="rotate(28,688,151)"/>
+      <line x1="700" y1="132" x2="695" y2="170" stroke="#00f5ff" stroke-width=".5" opacity=".4" transform="rotate(28,688,151)"/>
+
+      <!-- TELHADO -->
+      <polygon points="80,240 450,75 820,240" fill="url(#roofGrad)" stroke="#7b2fff" stroke-width="1.5"/>
+      <polygon points="80,240 450,75 820,240" fill="none" stroke="rgba(123,47,255,.4)" stroke-width=".5"/>
+      <!-- borda neon telhado -->
+      <polyline points="80,240 450,75 820,240" fill="none" stroke="#7b2fff" stroke-width="2" filter="url(#glow)" opacity=".5"/>
+
+      <!-- ANTENA / HUB no topo -->
+      <line x1="450" y1="75" x2="450" y2="38" stroke="#00f5ff" stroke-width="2" opacity=".7"/>
+      <circle cx="450" cy="35" r="7" fill="#00f5ff" opacity=".9" filter="url(#glow)"><animate attributeName="opacity" values=".5;1;.5" dur="1.5s" repeatCount="indefinite"/></circle>
+      <circle cx="450" cy="35" r="14" fill="none" stroke="#00f5ff" stroke-width="1" opacity=".3"><animate attributeName="r" values="10;18;10" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".4;0;.4" dur="2s" repeatCount="indefinite"/></circle>
+      <!-- label antena -->
+      <rect x="464" y="22" width="110" height="22" rx="4" fill="#0d1f35" stroke="rgba(0,245,255,.3)" stroke-width="1"/>
+      <text x="470" y="37" font-family="Orbitron,monospace" font-size="9" fill="#00f5ff" letter-spacing="1">🛰 HUB CENTRAL IA</text>
+
+      <!-- PAREDES -->
+      <rect x="80" y="240" width="740" height="190" fill="url(#wallGrad)" stroke="#00f5ff" stroke-width="1" opacity=".5"/>
+      <!-- neon borda paredes -->
+      <rect x="80" y="240" width="740" height="190" fill="none" stroke="#00f5ff" stroke-width="1.5" filter="url(#glow)" opacity=".2"/>
+
+      <!-- CHÃO / BASE -->
+      <rect x="60" y="430" width="780" height="18" rx="4" fill="#0a1628" stroke="#00f5ff" stroke-width="1" opacity=".4"/>
+
+      <!-- JANELA ESQUERDA grande -->
+      <rect x="120" y="268" width="140" height="110" rx="8" fill="#060d1a" stroke="#00f5ff" stroke-width="1.5"/>
+      <rect x="122" y="270" width="136" height="106" rx="6" fill="rgba(0,245,255,.04)"/>
+      <line x1="190" y1="270" x2="190" y2="376" stroke="#00f5ff" stroke-width=".8" opacity=".3"/>
+      <line x1="122" y1="323" x2="258" y2="323" stroke="#00f5ff" stroke-width=".8" opacity=".3"/>
+      <!-- brilho janela esquerda -->
+      <rect x="122" y="270" width="136" height="106" rx="6" fill="none" stroke="#00f5ff" stroke-width="1" filter="url(#glow)" opacity=".3"/>
+      <!-- silhueta interior janela -->
+      <ellipse cx="160" cy="360" rx="18" ry="14" fill="#00f5ff" opacity=".08"/>
+      <rect x="148" y="316" width="24" height="44" rx="4" fill="#00f5ff" opacity=".06"/>
+      <!-- label janela esquerda -->
+      <line x1="120" y1="268" x2="85" y2="230" stroke="#00f5ff" stroke-width=".8" stroke-dasharray="3,3" opacity=".5"/>
+      <rect x="4" y="212" width="80" height="20" rx="4" fill="#0d1f35" stroke="rgba(0,245,255,.3)" stroke-width="1"/>
+      <text x="9"  y="226" font-family="Orbitron,monospace" font-size="7.5" fill="#00f5ff" letter-spacing=".5">🪟 SMART GLASS</text>
+
+      <!-- JANELA CENTRAL menor -->
+      <rect x="340" y="278" width="100" height="80" rx="6" fill="#060d1a" stroke="#00f5ff" stroke-width="1.5"/>
+      <rect x="342" y="280" width="96" height="76" rx="4" fill="rgba(0,245,255,.04)"/>
+      <line x1="390" y1="280" x2="390" y2="356" stroke="#00f5ff" stroke-width=".8" opacity=".3"/>
+      <line x1="342" y1="318" x2="438" y2="318" stroke="#00f5ff" stroke-width=".8" opacity=".3"/>
+
+      <!-- JANELA DIREITA grande -->
+      <rect x="640" y="268" width="140" height="110" rx="8" fill="#060d1a" stroke="#00f5ff" stroke-width="1.5"/>
+      <rect x="642" y="270" width="136" height="106" rx="6" fill="rgba(0,245,255,.04)"/>
+      <line x1="710" y1="270" x2="710" y2="376" stroke="#00f5ff" stroke-width=".8" opacity=".3"/>
+      <line x1="642" y1="323" x2="778" y2="323" stroke="#00f5ff" stroke-width=".8" opacity=".3"/>
+      <rect x="642" y="270" width="136" height="106" rx="6" fill="none" stroke="#00f5ff" stroke-width="1" filter="url(#glow)" opacity=".3"/>
+      <!-- label janela direita -->
+      <line x1="780" y1="268" x2="818" y2="230" stroke="#00f5ff" stroke-width=".8" stroke-dasharray="3,3" opacity=".5"/>
+      <rect x="818" y="212" width="78" height="20" rx="4" fill="#0d1f35" stroke="rgba(0,245,255,.3)" stroke-width="1"/>
+      <text x="823" y="226" font-family="Orbitron,monospace" font-size="7.5" fill="#00f5ff" letter-spacing=".5">📡 SENSOR AR</text>
+
+      <!-- PORTA inteligente -->
+      <rect x="378" y="338" width="94" height="92" rx="6" fill="#060d1a" stroke="#7b2fff" stroke-width="1.5"/>
+      <rect x="380" y="340" width="90" height="88" rx="4" fill="rgba(123,47,255,.06)"/>
+      <!-- leitor biométrico porta -->
+      <rect x="455" y="375" width="14" height="18" rx="3" fill="#7b2fff" opacity=".6"/>
+      <rect x="458" y="378" width="8" height="12" rx="2" fill="#00f5ff" opacity=".4"><animate attributeName="opacity" values=".2;.7;.2" dur="1.2s" repeatCount="indefinite"/></rect>
+      <!-- label porta -->
+      <line x1="378" y1="430" x2="320" y2="460" stroke="#7b2fff" stroke-width=".8" stroke-dasharray="3,3" opacity=".5"/>
+      <rect x="230" y="452" width="90" height="20" rx="4" fill="#0d1f35" stroke="rgba(123,47,255,.3)" stroke-width="1"/>
+      <text x="236" y="466" font-family="Orbitron,monospace" font-size="7.5" fill="#7b2fff" letter-spacing=".5">🔐 BIOMETRIA</text>
+
+      <!-- GARAGEM esquerda -->
+      <rect x="84" y="354" width="100" height="76" rx="4" fill="#060d1a" stroke="#00ff88" stroke-width="1.2"/>
+      <!-- linhas garagem -->
+      <line x1="84"  y1="375" x2="184" y2="375" stroke="#00ff88" stroke-width=".7" opacity=".4"/>
+      <line x1="84"  y1="396" x2="184" y2="396" stroke="#00ff88" stroke-width=".7" opacity=".4"/>
+      <line x1="84"  y1="417" x2="184" y2="417" stroke="#00ff88" stroke-width=".7" opacity=".4"/>
+      <!-- carro elétrico silhueta -->
+      <ellipse cx="134" cy="415" rx="38" ry="12" fill="#00ff88" opacity=".12"/>
+      <rect x="106" y="396" width="56" height="19" rx="6" fill="#00ff88" opacity=".1"/>
+      <rect x="112" y="386" width="44" height="12" rx="4" fill="#00ff88" opacity=".08"/>
+      <circle cx="114" cy="418" r="5" fill="#00ff88" opacity=".2"/>
+      <circle cx="154" cy="418" r="5" fill="#00ff88" opacity=".2"/>
+      <!-- label garagem -->
+      <line x1="84" y1="354" x2="50" y2="320" stroke="#00ff88" stroke-width=".8" stroke-dasharray="3,3" opacity=".5"/>
+      <rect x="2" y="310" width="50" height="12" rx="3" fill="#0d1f35" stroke="rgba(0,255,136,.3)" stroke-width="1"/>
+      <text x="6" y="320" font-family="Orbitron,monospace" font-size="7" fill="#00ff88" letter-spacing=".5">⚡ EV</text>
+
+      <!-- JARDIM VERTICAL direita parede -->
+      <rect x="720" y="255" width="95" height="170" rx="4" fill="none" stroke="#00ff88" stroke-width="1" opacity=".3"/>
+      <!-- plantas -->
+      <rect x="726" y="260" width="22" height="22" rx="3" fill="#2d6a4f" opacity=".5"/>
+      <rect x="752" y="260" width="22" height="22" rx="3" fill="#40916c" opacity=".4"/>
+      <rect x="778" y="260" width="22" height="22" rx="3" fill="#2d6a4f" opacity=".45"/>
+      <rect x="726" y="287" width="22" height="22" rx="3" fill="#40916c" opacity=".4"/>
+      <rect x="752" y="287" width="22" height="22" rx="3" fill="#2d6a4f" opacity=".5"/>
+      <rect x="778" y="287" width="22" height="22" rx="3" fill="#40916c" opacity=".4"/>
+      <rect x="726" y="314" width="22" height="22" rx="3" fill="#2d6a4f" opacity=".35"/>
+      <rect x="752" y="314" width="22" height="22" rx="3" fill="#40916c" opacity=".4"/>
+      <rect x="778" y="314" width="22" height="22" rx="3" fill="#2d6a4f" opacity=".45"/>
+      <!-- label jardim vertical -->
+      <line x1="815" y1="310" x2="855" y2="290" stroke="#00ff88" stroke-width=".8" stroke-dasharray="3,3" opacity=".5"/>
+      <rect x="855" y="280" width="42" height="12" rx="3" fill="#0d1f35" stroke="rgba(0,255,136,.3)" stroke-width="1"/>
+      <text x="859" y="290" font-family="Orbitron,monospace" font-size="7" fill="#00ff88" letter-spacing=".5">🌿 BIO</text>
+
+      <!-- PAINEL SOLAR label -->
+      <line x1="212" y1="115" x2="180" y2="80" stroke="#ffd700" stroke-width=".8" stroke-dasharray="3,3" opacity=".6"/>
+      <rect x="90" y="70" width="88" height="20" rx="4" fill="#0d1f35" stroke="rgba(255,215,0,.3)" stroke-width="1"/>
+      <text x="96" y="84" font-family="Orbitron,monospace" font-size="8" fill="#ffd700" letter-spacing=".5">☀️ SOLAR 8kW</text>
+
+      <!-- DRONES / delivery -->
+      <rect x="570" y="100" width="40" height="18" rx="4" fill="#060d1a" stroke="#ff6b35" stroke-width="1.2"/>
+      <line x1="565" y1="109" x2="556" y2="105" stroke="#ff6b35" stroke-width="1" opacity=".7"/>
+      <circle cx="554" cy="104" r="4" fill="none" stroke="#ff6b35" stroke-width="1" opacity=".6"/>
+      <line x1="615" y1="109" x2="624" y2="105" stroke="#ff6b35" stroke-width="1" opacity=".7"/>
+      <circle cx="626" cy="104" r="4" fill="none" stroke="#ff6b35" stroke-width="1" opacity=".6"/>
+      <text x="574" y="113" font-family="Orbitron,monospace" font-size="8" fill="#ff6b35">📦</text>
+      <line x1="590" y1="118" x2="590" y2="160" stroke="#ff6b35" stroke-width=".7" stroke-dasharray="2,3" opacity=".4"/>
+      <!-- label drone -->
+      <rect x="620" y="88" width="80" height="14" rx="3" fill="#0d1f35" stroke="rgba(255,107,53,.3)" stroke-width="1"/>
+      <text x="625" y="99" font-family="Orbitron,monospace" font-size="7" fill="#ff6b35" letter-spacing=".5">🚁 DRONE LOG</text>
+
+      <!-- NUVEM / CLOUD IoT -->
+      <ellipse cx="150" cy="50" rx="55" ry="25" fill="#0d1f35" opacity=".7"/>
+      <ellipse cx="120" cy="55" rx="35" ry="20" fill="#0d1f35" opacity=".7"/>
+      <ellipse cx="185" cy="55" rx="30" ry="18" fill="#0d1f35" opacity=".7"/>
+      <text x="118" y="57" font-family="Orbitron,monospace" font-size="8" fill="#00f5ff" letter-spacing=".5">☁ IoT CLOUD</text>
+      <!-- linha cloud → antena -->
+      <line x1="185" y1="52" x2="445" y2="36" stroke="#00f5ff" stroke-width=".8" stroke-dasharray="4,4" opacity=".3"/>
+
+      <!-- BATERIA DOMÉSTICA -->
+      <rect x="530" y="356" width="50" height="74" rx="6" fill="#060d1a" stroke="#ff6b35" stroke-width="1.5"/>
+      <rect x="548" y="350" width="14" height="8" rx="2" fill="#ff6b35" opacity=".5"/>
+      <!-- nível bateria -->
+      <rect x="534" y="420" width="42" height="6" rx="2" fill="#ff6b35" opacity=".2"/>
+      <rect x="534" y="414" width="42" height="6" rx="2" fill="#ff6b35" opacity=".25"/>
+      <rect x="534" y="408" width="42" height="6" rx="2" fill="#ff6b35" opacity=".35"/>
+      <rect x="534" y="402" width="42" height="6" rx="2" fill="#ff6b35" opacity=".45"/>
+      <rect x="534" y="396" width="42" height="6" rx="2" fill="#ff6b35" opacity=".6"/>
+      <rect x="534" y="390" width="42" height="6" rx="2" fill="#ff6b35" opacity=".75"><animate attributeName="opacity" values=".5;.9;.5" dur="2s" repeatCount="indefinite"/></rect>
+      <rect x="534" y="384" width="42" height="6" rx="2" fill="#ff6b35" opacity=".3"/>
+      <!-- label bateria -->
+      <line x1="580" y1="390" x2="620" y2="380" stroke="#ff6b35" stroke-width=".8" stroke-dasharray="3,3" opacity=".5"/>
+      <rect x="620" y="372" width="78" height="20" rx="4" fill="#0d1f35" stroke="rgba(255,107,53,.3)" stroke-width="1"/>
+      <text x="625" y="386" font-family="Orbitron,monospace" font-size="7.5" fill="#ff6b35" letter-spacing=".5">🔋 POWERWALL</text>
+
+      <!-- MEDIDOR ENERGIA label -->
+      <line x1="450" y1="278" x2="450" y2="240" stroke="#7b2fff" stroke-width=".8" stroke-dasharray="3,3" opacity=".4"/>
+      <rect x="400" y="228" width="100" height="14" rx="3" fill="#0d1f35" stroke="rgba(123,47,255,.3)" stroke-width="1"/>
+      <text x="406" y="239" font-family="Orbitron,monospace" font-size="7.5" fill="#7b2fff" letter-spacing=".5">📊 PAINEL CTRL</text>
+    </svg>
+  </div>
+
+  <!-- FEATURE CARDS -->
+  <div class="section">
+    <p class="sec-label">Tecnologias</p>
+    <h2 class="sec-title">Sistemas <span>Integrados</span></h2>
+    <div class="sec-divider"></div>
+    <div class="cards-grid">
+
+      <div class="fcard" style="--accent:#00f5ff;">
+        <span class="icon">🧠</span>
+        <h3>Inteligência Artificial</h3>
+        <p>A casa aprende os hábitos dos moradores e ajusta automaticamente temperatura, iluminação e segurança em tempo real.</p>
+        <span class="tag" style="color:#00f5ff;border-color:rgba(0,245,255,.3);">MACHINE LEARNING</span>
+      </div>
+
+      <div class="fcard" style="--accent:#ffd700;">
+        <span class="icon">☀️</span>
+        <h3>Energia Solar + Bateria</h3>
+        <p>Painéis fotovoltaicos de próxima geração + bateria doméstica de longa duração. Net zero é o padrão, não o objetivo.</p>
+        <span class="tag" style="color:#ffd700;border-color:rgba(255,215,0,.3);">ENERGIA LIMPA</span>
+      </div>
+
+      <div class="fcard" style="--accent:#00ff88;">
+        <span class="icon">💧</span>
+        <h3>Gestão de Água</h3>
+        <p>Captação de água da chuva, reuso das águas cinzas e sensores de vazamento que cortam o fluxo automaticamente.</p>
+        <span class="tag" style="color:#00ff88;border-color:rgba(0,255,136,.3);">ECO SMART</span>
+      </div>
+
+      <div class="fcard" style="--accent:#7b2fff;">
+        <span class="icon">🔐</span>
+        <h3>Segurança Biométrica</h3>
+        <p>Reconhecimento facial, impressão digital e análise comportamental. Sem chaves — você é a senha.</p>
+        <span class="tag" style="color:#7b2fff;border-color:rgba(123,47,255,.3);">BIOMETRIA 3D</span>
+      </div>
+
+      <div class="fcard" style="--accent:#ff6b35;">
+        <span class="icon">🌡️</span>
+        <h3>Climatização Adaptativa</h3>
+        <p>Sistema HVAC com IA que considera a temperatura externa, número de pessoas no ambiente e preferências individuais.</p>
+        <span class="tag" style="color:#ff6b35;border-color:rgba(255,107,53,.3);">HVAC INTELIGENTE</span>
+      </div>
+
+      <div class="fcard" style="--accent:#00f5ff;">
+        <span class="icon">🪟</span>
+        <h3>Smart Glass</h3>
+        <p>Vidros eletrocrômicos que escurecem ou clareiam sob comando ou automaticamente com base na luminosidade e privacidade.</p>
+        <span class="tag" style="color:#00f5ff;border-color:rgba(0,245,255,.3);">ELECTROCHROMIC</span>
+      </div>
+
+      <div class="fcard" style="--accent:#00ff88;">
+        <span class="icon">🌿</span>
+        <h3>Jardim Vertical + Horta</h3>
+        <p>Paredes vivas com irrigação automatizada e horta vertical com sensores de nutrientes. Comida fresca sem sair de casa.</p>
+        <span class="tag" style="color:#00ff88;border-color:rgba(0,255,136,.3);">BIOFILIA</span>
+      </div>
+
+      <div class="fcard" style="--accent:#7b2fff;">
+        <span class="icon">📡</span>
+        <h3>5G + Wi-Fi 7</h3>
+        <p>Conectividade ultrarápida em todos os ambientes. Mais de 500 dispositivos conectados sem queda de desempenho.</p>
+        <span class="tag" style="color:#7b2fff;border-color:rgba(123,47,255,.3);">HIPERCONEXÃO</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CÔMODOS -->
+  <div class="section">
+    <p class="sec-label">Ambientes</p>
+    <h2 class="sec-title">Cada <span>Cômodo</span> é Inteligente</h2>
+    <div class="sec-divider"></div>
+    <div class="room-grid">
+
+      <div class="room-card">
+        <span style="font-size:1.8rem;">🛋️</span>
+        <h4>SALA DE ESTAR</h4>
+        <ul>
+          <li>Tela holográfica 8K</li>
+          <li>Iluminação circadiana</li>
+          <li>Assistente IA por voz</li>
+          <li>Sofá com sensores posturais</li>
+        </ul>
+      </div>
+
+      <div class="room-card">
+        <span style="font-size:1.8rem;">🍳</span>
+        <h4>COZINHA</h4>
+        <ul>
+          <li>Geladeira que faz compras</li>
+          <li>Fogão indução inteligente</li>
+          <li>Controle de validade via RFID</li>
+          <li>Robô auxiliar culinário</li>
+        </ul>
+      </div>
+
+      <div class="room-card">
+        <span style="font-size:1.8rem;">🛏️</span>
+        <h4>QUARTO</h4>
+        <ul>
+          <li>Cama com monitor do sono</li>
+          <li>Despertar por luz solar</li>
+          <li>Temperatura personalizada</li>
+          <li>Cortinas automáticas</li>
+        </ul>
+      </div>
+
+      <div class="room-card">
+        <span style="font-size:1.8rem;">🚿</span>
+        <h4>BANHEIRO</h4>
+        <ul>
+          <li>Espelho com HUD de saúde</li>
+          <li>Ducha com pressão adaptável</li>
+          <li>Análise de biomarcadores</li>
+          <li>Reuso de água</li>
+        </ul>
+      </div>
+
+      <div class="room-card">
+        <span style="font-size:1.8rem;">🏠</span>
+        <h4>HOME OFFICE</h4>
+        <ul>
+          <li>Mesa com altura automática</li>
+          <li>Realidade aumentada</li>
+          <li>Iluminação anti-fadiga</li>
+          <li>Cancelamento de ruído ativo</li>
+        </ul>
+      </div>
+
+      <div class="room-card">
+        <span style="font-size:1.8rem;">⚡</span>
+        <h4>GARAGEM</h4>
+        <ul>
+          <li>Carregador EV integrado</li>
+          <li>Diagnóstico remoto do veículo</li>
+          <li>V2H (carro → casa)</li>
+          <li>Acesso por biometria</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="section">
+    <p class="sec-label">Evolução</p>
+    <h2 class="sec-title">Do <span>Presente</span> ao Futuro</h2>
+    <div class="sec-divider"></div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color:#00f5ff;box-shadow:0 0 8px #00f5ff;"></div>
+        <div class="tl-year">2025 — HOJE</div>
+        <div class="tl-text">Assistentes de voz, câmeras inteligentes e fechaduras digitais. A automação começa a entrar nas casas brasileiras.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color:#7b2fff;box-shadow:0 0 8px #7b2fff;"></div>
+        <div class="tl-year">2030 — TRANSIÇÃO</div>
+        <div class="tl-text">Painéis solares acessíveis, carros elétricos populares e primeiros sistemas de IA doméstica integrada chegam ao mercado em massa.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color:#ffd700;box-shadow:0 0 8px #ffd700;"></div>
+        <div class="tl-year">2035 — CONSOLIDAÇÃO</div>
+        <div class="tl-text">Smart glass, biometria multifatorial e gestão autônoma de energia tornam-se padrão em novas construções no Brasil e no mundo.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color:#00ff88;box-shadow:0 0 8px #00ff88;"></div>
+        <div class="tl-year">2040 — FUTURO PRÓXIMO</div>
+        <div class="tl-text">Casas net-zero, jardins verticais comestíveis, robôs domésticos e realidade aumentada integrada em todos os cômodos.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color:#ff6b35;box-shadow:0 0 8px #ff6b35;"></div>
+        <div class="tl-year">2060 — VISÃO</div>
+        <div class="tl-text">Casas biointegradas que "respiram" com o ambiente, geram mais energia do que consomem e se autorreparam com nanomateriais.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- fim .page -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <p class="brand">INFOENGINE · PCSOLUÇÕES · MARCOS ROBERTO</p>
+  <p style="color:rgba(224,240,255,.2);font-size:.75rem;margin-top:.4rem;letter-spacing:1px;">Viçosa-AL · 2025 · Todos os direitos reservados</p>
+</div>
+
+<script>
+function gerarPDF() {
+  const btn = event.target;
+  btn.textContent = '⏳ Gerando...'; btn.disabled = true;
+  const el = document.getElementById('main');
+  html2pdf().set({
+    margin:[0,0,0,0],
+    filename:'casa-do-futuro.pdf',
+    image:{type:'jpeg',quality:0.92},
+    html2canvas:{scale:1.5,useCORS:true,logging:false,backgroundColor:'#03060f'},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
+  }).from(document.body).save().then(()=>{
+    btn.textContent='⬇️ Baixar PDF'; btn.disabled=false;
+  });
+}
+function compartilharWhatsApp(){
+  const msg='🏠 Confira o infográfico "A Casa do Futuro" criado com InfoEngine!\n'+window.location.href;
+  window.open('https://wa.me/5582991856656?text='+encodeURIComponent(msg),'_blank');
+}
+</script>
+</body>
+</html>

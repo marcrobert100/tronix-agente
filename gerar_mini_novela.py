@@ -13,6 +13,13 @@ try:
 except ImportError:
     db = None
 
+try:
+    from tronix_director import Director
+    director = Director()
+except ImportError:
+    director = None
+    print("[AVISO] tronix_director.py nao encontrado. Rodando sem Director.")
+
 BASE = Path(__file__).parent
 UPLOADS = BASE / "uploads"
 VIDEOS_DIR = BASE / "videos_saida"
@@ -22,26 +29,33 @@ VIDEOS_DIR.mkdir(exist_ok=True)
 CENAS = [
     {
         "titulo": "A Chegada",
+        "plano": "extreme_wide",
+        "movimento": "tilt_up",
         "prompt": "Cinematic shot of a massive alien spaceship hovering over a small Brazilian city at night, glowing blue lights, people looking up in awe, hyper-realistic, epic atmosphere",
         "legenda": "Eles chegaram... Algo grande esta vindo.",
     },
     {
         "titulo": "O Plano",
+        "plano": "close_up",
+        "movimento": "zoom_in",
         "prompt": "Close-up of a tall alien creature with big black eyes inside a high-tech spacecraft, holographic map of Earth projected in front, dramatic lighting, sci-fi cinematic",
         "legenda": "O plano de invasao esta em andamento.",
     },
     {
         "titulo": "A Invasao",
+        "plano": "low_angle",
+        "movimento": "dolly_forward",
         "prompt": "Aliens walking down a main street in a Brazilian town, beams of light from spaceships, dramatic sunrise sky, people running, epic sci-fi movie scene, highly detailed",
         "legenda": "A invasao comecou! A humanidade precisa de herois.",
     },
 ]
 
-def gerar_imagem(prompt, output_path):
+def gerar_imagem(prompt, output_path, usar_director=True):
     import requests
     url = f"https://api.cloudflare.com/client/v4/accounts/038280d984d9c936772700b7dbbc479e/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0"
     headers = {"Authorization": "Bearer cfut_nI8gZqUUHil8sG6xjjE1W26wbVHgDyU8PRQTdUV2e61edb64", "Content-Type": "application/json"}
     print(f"  Gerando imagem via Cloudflare...")
+    print(f"  Prompt final: {prompt[:100]}...")
     r = requests.post(url, headers=headers, json={"prompt": prompt}, timeout=180)
     if r.status_code != 200:
         print(f"  ERRO API: {r.status_code}")
@@ -118,27 +132,40 @@ def main():
     print("="*60)
     
     videos_finais = []
-    
+
+    if director:
+        print(f"\n[DIRECTOR] Roteiro de direcao:")
+        print(director.roteiro_direcao(CENAS))
+        print()
+
     for i, cena in enumerate(CENAS):
         cena_id = i + 1
         print(f"\n--- CENA {cena_id}: {cena['titulo']} ---")
-        
+
+        if director and "plano" in cena:
+            params = director.para_cena(cena["plano"], cena.get("movimento", "static"))
+            print(f"  [DIRECTOR] {params['plano_nome']} + {params['movimento_nome']}")
+            print(f"  [DIRECTOR] Zoom {params['zoom_inicial']}->{params['zoom_final']}, Pan ({params['pan_x']}, {params['pan_y']})")
+            prompt_final = f"{params['prompt_prefixo']} {cena['prompt']}"
+        else:
+            prompt_final = cena["prompt"]
+
         img_path = UPLOADS / f"alien_cena{cena_id}.png"
-        if not gerar_imagem(cena["prompt"], img_path):
+        if not gerar_imagem(prompt_final, img_path):
             print(f"  Pulando...")
             continue
-        
+
         video_raw = criar_video_kenburns(img_path, cena_id, cena["legenda"])
         if not video_raw:
             print(f"  ERRO: falha ao criar video cena {cena_id}")
             continue
         print(f"  Video criado: {os.path.basename(video_raw)}")
-        
+
         video_final = aplicar_voz(video_raw, cena["legenda"], cena_id)
         if video_final and os.path.exists(video_final):
             print(f"  CENA {cena_id} PRONTA: {os.path.basename(video_final)}")
             videos_finais.append(video_final)
-        
+
         time.sleep(2)
     
     pasta_temp = BASE / "_temp_cenas"

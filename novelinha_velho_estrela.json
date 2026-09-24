@@ -1,0 +1,82 @@
+{
+  "titulo": "O VELHO E A ESTRELA",
+  "tema": "Um pescador encontra uma estrela cadente viva na praia de Viçosa",
+  "cenas": [
+    {
+      "id": 1,
+      "titulo": "Madrugada na Praia",
+      "plano": "extreme_wide",
+      "movimento": "tilt_up",
+      "emocao": "nostalgia",
+      "prompt": "An old Brazilian fisherman sitting alone on a wooden boat at dawn, misty river, soft golden light, peaceful rural landscape, hyper-realistic, contemplative mood",
+      "legenda": "O velho Joaquim pescava sozinho desde que a mulher partiu. A noite, ele conversava com as estrelas.",
+      "voz_pausa": 1.5
+    },
+    {
+      "id": 2,
+      "titulo": "A Queda",
+      "plano": "wide",
+      "movimento": "zoom_in",
+      "emocao": "magia",
+      "prompt": "A glowing meteor falling from the night sky over a Brazilian rural town, light trail crossing stars, reflected on calm water surface, dramatic cinematic moment, sci-fi realism",
+      "legenda": "Naquela madrugada, uma estrela riscou o ceu e caiu no rio. Diferente de todas as outras.",
+      "voz_pausa": 1.5
+    },
+    {
+      "id": 3,
+      "titulo": "O Encontro",
+      "plano": "close_up",
+      "movimento": "dolly_forward",
+      "emocao": "magia",
+      "prompt": "Old weathered hands cupping a small glowing orb of soft blue light, water dripping, intimate close-up, magical realism, soft bokeh background of dawn light",
+      "legenda": "Quando Joaquim a pegou do rio, a estrela estava quente. E piscou para ele.",
+      "voz_pausa": 1.0
+    },
+    {
+      "id": 4,
+      "titulo": "O Pedido",
+      "plano": "over_shoulder",
+      "movimento": "pan_left",
+      "emocao": "tristeza",
+      "prompt": "Old man looking at a starry night sky, holding a small glowing star in his hand, asking softly, soft moonlight on face, emotional, spiritual, painterly composition",
+      "legenda": "Ele nao pediu a vida. Nao pediu dinheiro. Pediu so uma coisa: 'Devolve ela pra mim'.",
+      "voz_pausa": 2.0
+    },
+    {
+      "id": 5,
+      "titulo": "O Reencontro",
+      "plano": "medium",
+      "movimento": "zoom_in",
+      "emocao": "romance",
+      "prompt": "An elderly woman appearing as a soft glowing silhouette in the dawn mist, reaching out her hand to the old fisherman on the river bank, emotional reunion, ethereal light, magical realism, deeply moving",
+      "legenda": "Na manha seguinte, uma mulher estava na margem. Joaquim reconheceu o riso antes dos olhos.",
+      "voz_pausa": 1.5
+    },
+    {
+      "id": 6,
+      "titulo": "A Partida Juntos",
+      "plano": "wide",
+      "movimento": "dolly_back",
+      "emocao": "alegria",
+      "prompt": "Old couple walking together into a golden sunrise along a Brazilian river, holding hands, small wooden boat behind them, hopeful peaceful ending, warm cinematic light, lens flare",
+      "legenda": "Daquele dia em diante, Joaquim nunca mais pescou sozinho. E as estrelas piscavam para os dois.",
+      "voz_pausa": 2.5
+    }
+  ],
+  "roteiro_direcao": [
+    {"titulo": "Madrugada na Praia", "plano": "extreme_wide", "movimento": "tilt_up"},
+    {"titulo": "A Queda", "plano": "wide", "movimento": "zoom_in"},
+    {"titulo": "O Encontro", "plano": "close_up", "movimento": "dolly_forward"},
+    {"titulo": "O Pedido", "plano": "over_shoulder", "movimento": "pan_left"},
+    {"titulo": "O Reencontro", "plano": "medium", "movimento": "zoom_in"},
+    {"titulo": "A Partida Juntos", "plano": "wide", "movimento": "dolly_back"}
+  ],
+  "meta": {
+    "duracao_total_estimada": "60 segundos",
+    "cenas_total": 6,
+    "voz_recomendada": "pt-BR-AntonioNeural (grave, calma)",
+    "musica_recomendada": "Violao nylon suave + piano ambient",
+    "publico": "Adulto, emocional, nostalgico",
+    "plataformas": ["Instagram Reels", "YouTube Shorts", "TikTok"]
+  }
+}

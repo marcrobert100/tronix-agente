@@ -1,13 +1,16 @@
-import sys
-import os
-import json
-import subprocess
-import time
+import sys, os, json, subprocess, time
 from pathlib import Path
 
-# --- CONFIGURAÇÕES ---
-TOKEN = "cfut_nI8gZqUUHil8sG6xjjE1W26wbVHgDyU8PRQTdUV2e61edb64"
-ACCOUNT_ID = "038280d984d9c936772700b7dbbc479e"
+_env_file = os.path.join(os.path.dirname(__file__), '.env')
+if os.path.exists(_env_file):
+    with open(_env_file, encoding='utf-8') as _f:
+        for _line in _f:
+            _line = _line.strip()
+            if _line and '=' in _line and not _line.startswith('#'):
+                _k, _v = _line.split('=', 1)
+                os.environ.setdefault(_k.strip(), _v.strip().strip('"\''))
+TOKEN = os.getenv("CF_API_TOKEN", "cfut_nI8gZqUUHil8sG6xjjE1W26wbVHgDyU8PRQTdUV2e61edb64")
+ACCOUNT_ID = os.getenv("CF_ACCOUNT_ID", "038280d984d9c936772700b7dbbc479e")
 UPLOADS_DIR = Path(__file__).parent / "uploads"
 UPLOADS_DIR.mkdir(exist_ok=True)
 

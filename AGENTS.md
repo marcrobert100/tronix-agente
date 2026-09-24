@@ -1,3 +1,17 @@
+# PROTOCOLO DE INÍCIO DE SESSÃO (OBRIGATÓRIO)
+**Antes de qualquer ação, SEMPRE ler:**
+1. `C:\xampp\htdocs\agente\memoria_tronix.json` — estado do projeto Tronix
+2. `C:\xampp\htdocs\agente\AGENTS.md` — este arquivo (contexto InfoEngine + PCsoluções)
+3. `C:\xampp\htdocs\agente\opencode.json` — definições de agentes
+4. `mysql -u root tronix_system -e "SELECT * FROM logs_evolucao ORDER BY id DESC LIMIT 10"` — últimas ações
+5. `sqlite3 C:\xampp\htdocs\agente\tronix.db ".tables"` — banco local de conteúdo
+
+**Ao terminar a sessão, SEMPRE gravar:**
+- `INSERT INTO tronix_system.logs_evolucao (agente, acao) VALUES (...)` com timestamp
+- Atualizar `memoria_tronix.json` com `last_actions` se mudanças relevantes
+
+---
+
 # InfoEngine — Sistema de Infográficos e Livros Infantis
 
 ## Repositório
@@ -31,12 +45,19 @@
 │       ├── certificado.html          # Certificado digital editável (paisagem)
 │       └── cartao-visita.html        # Cartão visita frente/verso editável
 ├── tools/
-│   ├── criar_historia.py             # Gera JSON de histórias infantis
+│   ├── criar_historia.py             # Gera JSON de histórias infantis com SVGs
+│   ├── build_livro.py                # Build HTML auto-contido a partir de book.json
 │   ├── gerar_pdf.py                  # Converte HTML em PDF via Playwright
 │   ├── gerar_infografico.py          # Gera JSON de infográficos
 │   ├── enviar_whatsapp.py            # Envia via WhatsApp (link wa.me ou pywhatkit)
 │   ├── gerar-apk.js                  # Constrói APK Android via Capacitor/PWABuilder
 │   └── gerar-icones.html            # Gera ícones PNG para PWA/APK
+├── references/
+│   └── svg_guide.md                  # Guia de ilustração SVG para livros infantis
+├── examples/
+│   └── book.json                     # Exemplo de livro gerado
+├── output/
+│   └── livro.html                    # Livro HTML gerado (auto-contido)
 └── assets/
     ├── icons/                        # Ícones SVG para PWA
     └── screenshots/                  # Screenshots para loja
@@ -78,6 +99,25 @@
 - Modos: `--link` (wa.me, padrão), `--auto` (pywhatkit automático)
 - Componente JS: `design-system/_whatsapp.js`
 
+## Sistema de Build de Livros (Novo)
+- **Baseado em:** picture-book-skill (GitHub)
+- **Fluxo:** `criar_historia.py` → `book.json` → `build_livro.py` → `livro.html`
+- **Comandos:**
+  ```bash
+  python tools/criar_historia.py                    # Gera book.json de exemplo
+  python tools/build_livro.py book.json output/livro.html  # Monta HTML
+  ```
+- **Features do HTML gerado:**
+  - SVG inline (sem imagens externas)
+  - Narração por página (Web Speech API pt-BR)
+  - Auto-leitura sequencial
+  - Navegação por setas e dots
+  - Botão WhatsApp integrado
+  - Exportação PDF via html2pdf.js
+  - Design system InfoEngine (cores, tipografia)
+- **Guia SVG:** `references/svg_guide.md` — regras para ilustrações infantis
+- **Template:** `templates/_livro_template.html` — base HTML com player/navegação
+
 ## Git Log Resumido
 ```
 ead2ec3 📝 Adiciona AGENTS.md - memoria persistente do projeto InfoEngine
@@ -95,6 +135,13 @@ e61820a ✨ InfoEngine — Sistema de Infográficos e Livros Infantis
 - O livro "O Dragão que Aprendeu a Abraçar" também fica salvo no Desktop
 - Fluxograma 3D Tronix no Desktop: `tronix-3d-flowchart.html`
 - Análise de potencial no Desktop: `potencial.md`
+
+## Identidade do Agente CLI
+- **Nome:** TRONIX
+- **Operador:** opencode CLI
+- **Persona canônica:** agente DEV/MEDIA/SUPER do projeto Marcos Roberto
+- **Domínio:** PCsoluções, InfoEngine, geração de conteúdo, automação
+- **Localização base:** Viçosa-AL
 
 ## Dashboard PHP
 - URL: `http://localhost/agente/infoengine/dashboard/index.php` (requer Apache/XAMPP ligado)

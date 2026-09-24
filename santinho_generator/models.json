@@ -1,0 +1,208 @@
+{
+  "versao": "1.0.0",
+  "autor": "Tronix-MEDIA + Tronix-DEV",
+  "descricao": "Catalogo de modelos de santinho politico - Tronix Santinho Generator",
+  "tamanho_mm": { "largura": 70, "altura": 100 },
+  "modelos": [
+    {
+      "id": "classico",
+      "nome": "Classico",
+      "categoria": "tradicional",
+      "descricao": "Layout tradicional. Foto centralizada, nome em destaque, numero grande embaixo.",
+      "preview_cor": "#c8102e",
+      "tags": ["tradicional", "seguro", "qualquer partido"]
+    },
+    {
+      "id": "moderno_minimalista",
+      "nome": "Moderno Minimalista",
+      "categoria": "moderno",
+      "descricao": "Tipografia forte, foto lateral, paleta neutra com cor de destaque.",
+      "preview_cor": "#0f0c2e",
+      "tags": ["moderno", "limpo", "urbano"]
+    },
+    {
+      "id": "premium_executivo",
+      "nome": "Premium Executivo",
+      "categoria": "premium",
+      "descricao": "Visual sobrio, fundo escuro, letra dourada, ideal para perfil gestor.",
+      "preview_cor": "#1a1a1a",
+      "tags": ["premium", "executivo", "sobrio"]
+    },
+    {
+      "id": "colorido_partidario",
+      "nome": "Colorido Partidario",
+      "categoria": "colorido",
+      "descricao": "Cores fortes e vibrantes, ideal para bandeiras de partido.",
+      "preview_cor": "#ff6b00",
+      "tags": ["colorido", "partido", "energia"]
+    },
+    {
+      "id": "jovem_dinamico",
+      "nome": "Jovem Dinamico",
+      "categoria": "jovem",
+      "descricao": "Gradientes vibrantes, fonte bold, apelo para o publico jovem.",
+      "preview_cor": "#7b2cbf",
+      "tags": ["jovem", "gradiente", "impacto"]
+    },
+    {
+      "id": "tradicao_brasileiro",
+      "nome": "Tradicao Brasileiro",
+      "categoria": "tradicional",
+      "descricao": "Cores da bandeira, brasão estilizado, visual patriotico.",
+      "preview_cor": "#009c3b",
+      "tags": ["brasil", "tradicional", "familia"]
+    },
+    {
+      "id": "agro_forte",
+      "nome": "Agro Forte",
+      "categoria": "regional",
+      "descricao": "Tons terrosos e verde, ideal para candidatos do agronegocio e interior.",
+      "preview_cor": "#2d5016",
+      "tags": ["agro", "interior", "campo"]
+    },
+    {
+      "id": "sindical_trabalhador",
+      "nome": "Sindical Trabalhador",
+      "categoria": "popular",
+      "descricao": "Visual popular e acessivel, vermelho e branco, bandeirada do povo.",
+      "preview_cor": "#d62828",
+      "tags": ["popular", "trabalhador", "sindical"]
+    },
+    {
+      "id": "empresarial_pro",
+      "nome": "Empresarial Pro",
+      "categoria": "premium",
+      "descricao": "Azul marinho e cinza, visual corporativo para perfil empresarial.",
+      "preview_cor": "#1d3557",
+      "tags": ["empresarial", "corporativo", "pro"]
+    },
+    {
+      "id": "fotografico_impacto",
+      "nome": "Fotografico Impacto",
+      "categoria": "moderno",
+      "descricao": "Foto em destaque ocupando toda a area, nome em faixa sobreposta.",
+      "preview_cor": "#222222",
+      "tags": ["foto grande", "impacto", "pessoal"]
+    },
+    {
+      "id": "minimalista_horizontal",
+      "nome": "Minimalista Horizontal",
+      "categoria": "moderno",
+      "descricao": "Linhas horizontais, foco no nome e numero, sem distracao.",
+      "preview_cor": "#000000",
+      "tags": ["minimalista", "clean", "elegante"]
+    },
+    {
+      "id": "cristao_familia",
+      "nome": "Cristao Familia",
+      "categoria": "regional",
+      "descricao": "Tom acolhedor, espaço para valores e lema, visual familia.",
+      "preview_cor": "#b08968",
+      "tags": ["familia", "cristao", "acolhedor"]
+    },
+    {
+      "id": "tecnologico_inovador",
+      "nome": "Tecnologico Inovador",
+      "categoria": "moderno",
+      "descricao": "Visual tech, linhas geometricas, azul neon, para candidatos inovadores.",
+      "preview_cor": "#00b4d8",
+      "tags": ["tech", "inovacao", "futuro"]
+    },
+    {
+      "id": "esporte_juventude",
+      "nome": "Esporte Juventude",
+      "categoria": "jovem",
+      "descricao": "Visual esportivo, dinamico, com espaço para bandeirada e chamada de acao.",
+      "preview_cor": "#fb8500",
+      "tags": ["esporte", "juventude", "acao"]
+    },
+    {
+      "id": "diagonal_dinamico",
+      "nome": "Diagonal Dinamico",
+      "categoria": "moderno",
+      "descricao": "Linhas diagonais, visual de movimento, ideal para campanhas agressivas.",
+      "preview_cor": "#1d4ed8",
+      "tags": ["diagonal", "movimento", "agressivo"]
+    },
+    {
+      "id": "retro_vintage",
+      "nome": "Retro Vintage",
+      "categoria": "vintage",
+      "descricao": "Visual anos 60/70, paleta dessaturada, tipografia classica.",
+      "preview_cor": "#92400e",
+      "tags": ["retro", "vintage", "nostalgico"]
+    },
+    {
+      "id": "gradient_suave",
+      "nome": "Gradient Suave",
+      "categoria": "moderno",
+      "descricao": "Gradiente suave em todo o santinho, visual elegante e moderno.",
+      "preview_cor": "#667eea",
+      "tags": ["gradient", "suave", "elegante"]
+    },
+    {
+      "id": "black_gold_luxo",
+      "nome": "Black Gold Luxo",
+      "categoria": "premium",
+      "descricao": "Preto profundo com detalhes em dourado, maximo requinte.",
+      "preview_cor": "#1a1a1a",
+      "tags": ["premium", "luxo", "dourado"]
+    },
+    {
+      "id": "tropical_verao",
+      "nome": "Tropical Verao",
+      "categoria": "colorido",
+      "descricao": "Cores tropicais vibrantes, perfeito para clima do nordeste.",
+      "preview_cor": "#06b6d4",
+      "tags": ["tropical", "verao", "nordeste"]
+    },
+    {
+      "id": "civico_municipal",
+      "nome": "Civico Municipal",
+      "categoria": "institucional",
+      "descricao": "Visual institucional, brasão estilizado, tom serio e civico.",
+      "preview_cor": "#1e40af",
+      "tags": ["institucional", "civico", "municipal"]
+    }
+  ],
+  "acessorios": {
+    "simbolos": [
+      { "id": "nenhum", "nome": "Nenhum", "icone": "" },
+      { "id": "cruz", "nome": "Cruz", "icone": "✝" },
+      { "id": "estrela", "nome": "Estrela", "icone": "★" },
+      { "id": "coracao", "nome": "Coracao", "icone": "♥" },
+      { "id": "bandeira", "nome": "Bandeira", "icone": "⚑" },
+      { "id": "raio", "nome": "Raio", "icone": "⚡" },
+      { "id": "mao", "nome": "Mao", "icone": "✋" },
+      { "id": "familia", "nome": "Familia", "icone": "👨‍👩‍👧" },
+      { "id": "pomba", "nome": "Pomba (Paz)", "icone": "🕊" }
+    ],
+    "molduras_foto": [
+      { "id": "quadrada", "nome": "Quadrada" },
+      { "id": "redonda", "nome": "Redonda" },
+      { "id": "losango", "nome": "Losango" },
+      { "id": "hexagonal", "nome": "Hexagonal" },
+      { "id": "escudo", "nome": "Escudo" }
+    ],
+    "badges": [
+      { "id": "nenhum", "nome": "Nenhum" },
+      { "id": "mulher", "nome": "♀ Mulher" },
+      { "id": "jovem", "nome": "★ Juventude" },
+      { "id": "renovacao", "nome": "↻ Renovacao" },
+      { "id": "experiencia", "nome": "✓ Experiencia" },
+      { "id": "educacao", "nome": "📚 Educacao" },
+      { "id": "saude", "nome": "✚ Saude" },
+      { "id": "seguranca", "nome": "🛡 Seguranca" },
+      { "id": "agro", "nome": "🌱 Agro" },
+      { "id": "religioso", "nome": "✝ Cristao" },
+      { "id": "trabalhador", "nome": "⚒ Trabalhador" },
+      { "id": "novo", "nome": "★ NOVO" }
+    ],
+    "estilos_foto": [
+      { "id": "normal", "nome": "Normal" },
+      { "id": "pb", "nome": "Preto e Branco" },
+      { "id": "sepia", "nome": "Sepia" },
+      { "id": "duotone", "nome": "Duotone" }
+    ]
+  }
+}

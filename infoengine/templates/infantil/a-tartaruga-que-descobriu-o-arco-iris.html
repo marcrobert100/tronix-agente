@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Tartaruga que Descobriu o Arco-Íris - Livro Infantil</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --teal:#00b4a0; --sky:#4fc3f7; --gold:#ffd700; --orange:#ff7a30;
+  --night:#0a1628; --night2:#0d2a3a; --green:#2d6a4f; --green2:#40916c;
+  --bg:#fdf8f0; --text:#1a1a2e; --soft:#4a3f4a;
+  --font-d:'Playfair Display',Georgia,serif;
+  --font-b:'Quicksand',sans-serif;
+}
+body { font-family:var(--font-b); background:linear-gradient(135deg,#0a1628,#0d2a3a,#0a1628); min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:1rem; }
+.toolbar { position:fixed; top:0.5rem; right:0.5rem; z-index:100; display:flex; gap:0.4rem; flex-wrap:wrap; justify-content:flex-end; }
+.toolbar button { background:rgba(255,255,255,0.08); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.12); color:#fff; padding:0.5rem 1rem; border-radius:2rem; font-family:var(--font-b); font-weight:600; font-size:0.75rem; cursor:pointer; transition:all 0.3s; }
+.toolbar button:hover { background:rgba(255,255,255,0.18); transform:translateY(-2px); }
+.book { width:820px; max-width:100%; background:var(--bg); border-radius:20px; box-shadow:0 40px 100px rgba(0,0,0,0.6); overflow:hidden; margin:2rem 0; }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <button onclick="lerHistoria()">🔊 Ouvir História</button>
+  <button onclick="window.print()">🖨️ Imprimir PDF</button>
+  <button onclick="gerarPDF()">⬇️ Baixar PDF</button>
+  <button onclick="compartilharWhatsApp()">📱 WhatsApp</button>
+</div>
+<div class="book" id="book">
+
+<!-- ===== CAPA ===== -->
+<style>
+.cover-page { position:relative; width:100%; min-height:650px; background:linear-gradient(160deg,#0a1628,#0d3b2e,#1a5c40,#0d3b2e); overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; page-break-after:always; }
+.cover-page h1 { font-family:var(--font-d); font-weight:900; font-size:3.6rem; color:var(--gold); text-shadow:0 2px 30px rgba(255,215,0,0.2); line-height:1.1; position:relative; z-index:2; }
+.cover-page .tagline { font-family:var(--font-d); font-style:italic; font-size:1.5rem; color:rgba(255,255,255,0.45); margin-top:0.4rem; position:relative; z-index:2; }
+.cover-page .divider { width:100px; height:2px; background:linear-gradient(90deg,transparent,var(--gold),transparent); margin:1rem auto; position:relative; z-index:2; }
+.cover-page .author { font-size:1rem; color:rgba(255,255,255,0.3); letter-spacing:3px; text-transform:uppercase; position:relative; z-index:2; }
+.cover-page .age { display:inline-block; margin-top:1.2rem; padding:0.4rem 1.5rem; border:1px solid rgba(255,215,0,0.25); border-radius:2rem; font-size:0.9rem; color:var(--gold); letter-spacing:2px; background:rgba(255,215,0,0.06); position:relative; z-index:2; }
+.ipage { position:relative; width:100%; min-height:620px; page-break-after:always; overflow:hidden; display:flex; flex-direction:column; justify-content:flex-end; }
+.ipage .art { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; }
+.ipage .txt { position:relative; z-index:3; padding:1.8rem 2.5rem 1.5rem; background:linear-gradient(transparent,rgba(0,0,0,0.5) 20%,rgba(0,0,0,0.82)); color:#fff; }
+.ipage .txt.light { background:rgba(255,255,255,0.88); color:var(--text); border-top:1px solid rgba(0,0,0,0.06); }
+.ipage h2 { font-family:var(--font-d); font-weight:700; font-size:2rem; margin-bottom:0.6rem; }
+.ipage p { font-size:1.2rem; line-height:1.75; font-weight:500; max-width:700px; }
+.ipage .fala { font-family:var(--font-d); font-style:italic; font-size:1.25rem; color:var(--gold); display:block; margin:0.5rem 0; line-height:1.8; }
+.ipage .fala.light { color:#1a6040; }
+.pgn { position:absolute; bottom:0.8rem; right:1.5rem; font-size:0.85rem; color:rgba(255,255,255,0.22); font-weight:600; z-index:5; }
+.pgn.dk { color:rgba(0,0,0,0.15); }
+.pg1  { background:linear-gradient(180deg,#0a2a1a,#0d3b2e,#1a5c40,#0d3b2e); }
+.pg2  { background:linear-gradient(180deg,#0a1628,#0d2a3a,#103050,#0d2a3a); }
+.pg3  { background:linear-gradient(180deg,#1a2a10,#2a3a18,#3a5020,#2a3a18); }
+.pg4  { background:linear-gradient(180deg,#0d1a28,#152a40,#1a3850,#152a40); }
+.pg5  { background:linear-gradient(180deg,#281808,#3a2010,#502810,#3a2010); }
+.pg6  { background:linear-gradient(180deg,#0a2830,#0d3840,#104858,#0d3840); }
+.pg7  { background:linear-gradient(180deg,#1a280a,#283810,#386018,#283810); }
+.pg8  { background:linear-gradient(180deg,#0a1020,#10203a,#18305a,#10203a); }
+.pg-last { background:linear-gradient(160deg,#0a2a1a,#0d3b2e,#1a5c40); min-height:500px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:2rem; }
+.pg-last h2 { font-family:var(--font-d); font-size:2.8rem; color:var(--gold); margin-bottom:0.8rem; }
+.pg-last p { color:rgba(255,255,255,0.78); font-size:1.2rem; max-width:520px; margin:0 auto; line-height:2; font-weight:500; }
+.sdance { display:flex; justify-content:center; gap:0.5rem; margin-top:1.2rem; }
+.sd { width:12px; height:12px; border-radius:50%; animation:sd 1.5s ease-in-out infinite; }
+.sd:nth-child(1){background:#ff7a30;animation-delay:0s;}
+.sd:nth-child(2){background:#ffd700;animation-delay:.15s;width:16px;height:16px;}
+.sd:nth-child(3){background:#00b4a0;animation-delay:.3s;}
+.sd:nth-child(4){background:#4fc3f7;animation-delay:.45s;width:18px;height:18px;}
+.sd:nth-child(5){background:#40916c;animation-delay:.6s;}
+.sd:nth-child(6){background:#ffd700;animation-delay:.75s;width:14px;height:14px;}
+.sd:nth-child(7){background:#ff7a30;animation-delay:.9s;}
+@keyframes sd { 0%,100%{transform:translateY(0) scale(1);opacity:.5;} 50%{transform:translateY(-12px) scale(1.2);opacity:1;} }
+@media(max-width:850px){
+  .cover-page{min-height:420px;} .cover-page h1{font-size:2.4rem;}
+  .ipage{min-height:460px;} .ipage .txt{padding:1.2rem 1.4rem;}
+  .ipage h2{font-size:1.5rem;} .ipage p{font-size:1rem;}
+}
+@media print {
+  body{background:#fff;padding:0;} .toolbar{display:none;}
+  .book{box-shadow:none;border-radius:0;margin:0;width:100%;}
+  .cover-page,.ipage,.pg-last{page-break-after:always;}
+}
+</style>
+
+<div class="cover-page">
+  <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.18;" viewBox="0 0 820 650" fill="none">
+    <ellipse cx="410" cy="0" rx="600" ry="200" fill="#40916c"/>
+    <circle cx="700" cy="580" r="180" fill="#00b4a0" opacity=".4"/>
+    <circle cx="120" cy="500" r="130" fill="#2d6a4f" opacity=".4"/>
+  </svg>
+
+  <svg style="width:320px;height:260px;margin-bottom:1rem;position:relative;z-index:2;" viewBox="0 0 320 260" fill="none">
+    <!-- corpo tartaruga -->
+    <ellipse cx="160" cy="165" rx="80" ry="55" fill="#40916c" opacity=".95"/>
+    <ellipse cx="160" cy="162" rx="68" ry="45" fill="#2d6a4f"/>
+    <!-- carapaça padrão -->
+    <ellipse cx="160" cy="145" rx="62" ry="42" fill="#1b4332"/>
+    <circle cx="160" cy="140" r="18" fill="#40916c" opacity=".7"/>
+    <circle cx="135" cy="155" r="12" fill="#40916c" opacity=".6"/>
+    <circle cx="185" cy="155" r="12" fill="#40916c" opacity=".6"/>
+    <circle cx="148" cy="128" r="10" fill="#40916c" opacity=".5"/>
+    <circle cx="172" cy="128" r="10" fill="#40916c" opacity=".5"/>
+    <!-- patas -->
+    <ellipse cx="95" cy="175" rx="18" ry="10" fill="#40916c" transform="rotate(-20,95,175)"/>
+    <ellipse cx="225" cy="175" rx="18" ry="10" fill="#40916c" transform="rotate(20,225,175)"/>
+    <ellipse cx="105" cy="210" rx="16" ry="9" fill="#40916c" transform="rotate(10,105,210)"/>
+    <ellipse cx="215" cy="210" rx="16" ry="9" fill="#40916c" transform="rotate(-10,215,210)"/>
+    <!-- cabeça -->
+    <ellipse cx="160" cy="100" rx="28" ry="22" fill="#52b788"/>
+    <circle cx="152" cy="95" r="5" fill="#1b4332"/>
+    <circle cx="168" cy="95" r="5" fill="#1b4332"/>
+    <circle cx="152" cy="95" r="2.5" fill="#fff" opacity=".6"/>
+    <circle cx="168" cy="95" r="2.5" fill="#fff" opacity=".6"/>
+    <path d="M153,106 Q160,112 167,106" stroke="#1b4332" stroke-width="1.5" fill="none"/>
+    <!-- pescoço -->
+    <rect x="150" y="115" width="20" height="20" rx="10" fill="#52b788"/>
+    <!-- arco-íris acima -->
+    <path d="M60,80 Q160,10 260,80" stroke="#ff7a30" stroke-width="5" fill="none" opacity=".85"><animate attributeName="opacity" values=".6;1;.6" dur="3s" repeatCount="indefinite"/></path>
+    <path d="M68,85 Q160,20 252,85" stroke="#ffd700" stroke-width="5" fill="none" opacity=".8"><animate attributeName="opacity" values=".5;.9;.5" dur="3.2s" repeatCount="indefinite"/></path>
+    <path d="M76,90 Q160,30 244,90" stroke="#74c69d" stroke-width="5" fill="none" opacity=".75"><animate attributeName="opacity" values=".4;.85;.4" dur="2.8s" repeatCount="indefinite"/></path>
+    <path d="M84,95 Q160,40 236,95" stroke="#4fc3f7" stroke-width="5" fill="none" opacity=".7"><animate attributeName="opacity" values=".35;.8;.35" dur="3.5s" repeatCount="indefinite"/></path>
+    <!-- estrelas -->
+    <circle cx="50" cy="40" r="2.5" fill="#ffd700"><animate attributeName="opacity" values=".2;1;.2" dur="2s" repeatCount="indefinite"/></circle>
+    <circle cx="270" cy="35" r="2" fill="#fff"><animate attributeName="opacity" values=".3;.9;.3" dur="2.5s" repeatCount="indefinite"/></circle>
+    <circle cx="30" cy="110" r="1.8" fill="#ffd700"><animate attributeName="opacity" values=".1;.7;.1" dur="3s" repeatCount="indefinite"/></circle>
+    <circle cx="290" cy="100" r="2" fill="#fff"><animate attributeName="opacity" values=".2;.8;.2" dur="1.8s" repeatCount="indefinite"/></circle>
+  </svg>
+
+  <h1>A Tartaruga que<br>Descobriu o Arco-Íris</h1>
+  <p class="tagline">Uma história sobre coragem e beleza</p>
+  <div class="divider"></div>
+  <p class="author">Marcos Roberto</p>
+  <span class="age">✦ 3 — 7 anos ✦</span>
+</div>
+
+<!-- ===== PÁGINA 1 ===== -->
+<div class="ipage pg1">
+  <div class="art">
+    <svg viewBox="0 0 400 380" style="width:80%;max-width:500px;height:auto;" fill="none">
+      <circle cx="200" cy="180" r="140" fill="#40916c" opacity=".06"/>
+      <!-- tartaruga dormindo -->
+      <ellipse cx="200" cy="220" rx="75" ry="50" fill="#40916c" opacity=".9"/>
+      <ellipse cx="200" cy="215" rx="63" ry="40" fill="#2d6a4f"/>
+      <ellipse cx="200" cy="200" rx="56" ry="36" fill="#1b4332"/>
+      <circle cx="200" cy="196" r="16" fill="#40916c" opacity=".65"/>
+      <circle cx="178" cy="208" r="11" fill="#40916c" opacity=".55"/>
+      <circle cx="222" cy="208" r="11" fill="#40916c" opacity=".55"/>
+      <!-- cabeça dormindo -->
+      <ellipse cx="200" cy="165" rx="24" ry="20" fill="#52b788"/>
+      <path d="M190,160 Q200,158 210,160" stroke="#1b4332" stroke-width="1.5" fill="none" opacity=".4"/>
+      <line x1="193" y1="162" x2="190" y2="164" stroke="#1b4332" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="207" y1="162" x2="210" y2="164" stroke="#1b4332" stroke-width="1.5" stroke-linecap="round"/>
+      <text x="188" y="148" font-family="Quicksand" font-size="10" fill="#ffd700" opacity=".4">z</text>
+      <text x="192" y="136" font-family="Quicksand" font-size="13" fill="#ffd700" opacity=".35">z</text>
+      <text x="198" y="122" font-family="Quicksand" font-size="16" fill="#ffd700" opacity=".25">Z</text>
+      <!-- árvores fundo -->
+      <rect x="60" y="150" width="12" height="60" rx="4" fill="#1b4332" opacity=".4"/>
+      <ellipse cx="66" cy="145" rx="22" ry="18" fill="#2d6a4f" opacity=".4"/>
+      <rect x="320" y="160" width="10" height="50" rx="4" fill="#1b4332" opacity=".35"/>
+      <ellipse cx="325" cy="155" rx="18" ry="15" fill="#2d6a4f" opacity=".35"/>
+      <!-- lua -->
+      <circle cx="310" cy="70" r="35" fill="#fffde7" opacity=".25"/>
+      <circle cx="325" cy="62" r="28" fill="#0a2a1a"/>
+      <!-- estrelas -->
+      <circle cx="100" cy="60" r="2.5" fill="#ffd700"><animate attributeName="opacity" values=".2;.9;.2" dur="2s" repeatCount="indefinite"/></circle>
+      <circle cx="270" cy="50" r="2" fill="#fff"><animate attributeName="opacity" values=".1;.7;.1" dur="2.8s" repeatCount="indefinite"/></circle>
+      <circle cx="140" cy="90" r="1.8" fill="#ffd700"><animate attributeName="opacity" values=".3;.8;.3" dur="2.2s" repeatCount="indefinite"/></circle>
+    </svg>
+  </div>
+  <div class="txt">
+    <h2>Tartaruga Lola</h2>
+    <p>No fundo da floresta úmida, perto de um riacho que cantava, vivia uma tartaruga chamada <strong>Lola</strong>. Ela era pequena, tímida e adorava ficar escondida dentro da própria carapaça.</p>
+    <p>Lola nunca tinha saído do bosque onde nasceu. E tinha um medo: o medo do desconhecido.</p>
+    <em class="fala">— E se lá fora for assustador? — ela pensava toda noite.</em>
+  </div>
+  <span class="pgn">1</span>
+</div>
+
+<!-- ===== PÁGINA 2 ===== -->
+<div class="ipage pg2">
+  <div class="art">
+    <svg viewBox="0 0 400 380" style="width:78%;max-width:490px;height:auto;" fill="none">
+      <!-- chuva -->
+      <line x1="80" y1="20" x2="70" y2="80" stroke="#4fc3f7" stroke-width="1.5" opacity=".4"/>
+      <line x1="130" y1="10" x2="120" y2="70" stroke="#4fc3f7" stroke-width="1.5" opacity=".35"/>
+      <line x1="180" y1="15" x2="170" y2="75" stroke="#4fc3f7" stroke-width="1.5" opacity=".4"/>
+      <line x1="230" y1="8" x2="220" y2="68" stroke="#4fc3f7" stroke-width="1.5" opacity=".3"/>
+      <line x1="280" y1="20" x2="270" y2="80" stroke="#4fc3f7" stroke-width="1.5" opacity=".4"/>
+      <line x1="330" y1="12" x2="320" y2="72" stroke="#4fc3f7" stroke-width="1.5" opacity=".35"/>
+      <line x1="105" y1="70" x2="95" y2="130" stroke="#4fc3f7" stroke-width="1.5" opacity=".3"/>
+      <line x1="255" y1="65" x2="245" y2="125" stroke="#4fc3f7" stroke-width="1.5" opacity=".35"/>
+      <!-- nuvem -->
+      <ellipse cx="200" cy="70" rx="90" ry="35" fill="#37474f" opacity=".6"/>
+      <ellipse cx="155" cy="72" rx="55" ry="28" fill="#455a64" opacity=".5"/>
+      <ellipse cx="245" cy="70" rx="50" ry="25" fill="#455a64" opacity=".5"/>
+      <!-- tartaruga na chuva -->
+      <ellipse cx="200" cy="260" rx="70" ry="48" fill="#40916c" opacity=".9"/>
+      <ellipse cx="200" cy="255" rx="58" ry="38" fill="#2d6a4f"/>
+      <ellipse cx="200" cy="242" rx="52" ry="32" fill="#1b4332"/>
+      <circle cx="200" cy="238" r="14" fill="#40916c" opacity=".6"/>
+      <!-- cabeça surpresa -->
+      <ellipse cx="200" cy="208" rx="22" ry="18" fill="#52b788"/>
+      <circle cx="193" cy="204" r="4.5" fill="#1b4332"/>
+      <circle cx="207" cy="204" r="4.5" fill="#1b4332"/>
+      <circle cx="193" cy="204" r="2" fill="#fff" opacity=".6"/>
+      <circle cx="207" cy="204" r="2" fill="#fff" opacity=".6"/>
+      <circle cx="200" cy="215" r="3" fill="#1b4332" opacity=".4"/>
+      <!-- gotas acertando -->
+      <circle cx="185" cy="185" r="3" fill="#4fc3f7" opacity=".7"><animate attributeName="opacity" values="0;.8;0" dur="1s" repeatCount="indefinite"/></circle>
+      <circle cx="215" cy="178" r="2.5" fill="#4fc3f7" opacity=".6"><animate attributeName="opacity" values="0;.7;0" dur="1.2s" repeatCount="indefinite" begin=".3s"/></circle>
+    </svg>
+  </div>
+  <div class="txt">
+    <h2>A chuva chegou</h2>
+    <p>Uma tarde, uma chuva forte caiu de repente. Lola ficou parada debaixo de uma folha enorme, esperando a tempestade passar.</p>
+    <p>Quando os trovões roncaram, ela entrou na carapaça com o coração batendo forte.</p>
+    <em class="fala">— Nunca vou sair daqui de dentro! — murmurou ela, tremendo.</em>
+  </div>
+  <span class="pgn">2</span>
+</div>
+
+<!-- ===== PÁGINA 3 ===== -->
+<div class="ipage pg3">
+  <div class="art">
+    <svg viewBox="0 0 400 380" style="width:80%;max-width:500px;height:auto;" fill="none">
+      <!-- sol aparecendo -->
+      <circle cx="200" cy="80" r="45" fill="#ffd700" opacity=".85"/>
+      <circle cx="200" cy="80" r="38" fill="#ffecb3"/>
+      <line x1="200" y1="18" x2="200" y2="30" stroke="#ffd700" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+      <line x1="240" y1="30" x2="232" y2="40" stroke="#ffd700" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+      <line x1="258" y1="68" x2="246" y2="72" stroke="#ffd700" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+      <line x1="160" y1="30" x2="168" y2="40" stroke="#ffd700" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+      <line x1="142" y1="68" x2="154" y2="72" stroke="#ffd700" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+      <!-- arco-íris -->
+      <path d="M50,200 Q200,80 350,200" stroke="#ff7a30" stroke-width="6" fill="none" opacity=".8"/>
+      <path d="M62,205 Q200,92 338,205" stroke="#ffd700" stroke-width="6" fill="none" opacity=".75"/>
+      <path d="M74,210 Q200,104 326,210" stroke="#74c69d" stroke-width="6" fill="none" opacity=".7"/>
+      <path d="M86,215 Q200,116 314,215" stroke="#4fc3f7" stroke-width="6" fill="none" opacity=".65"/>
+      <!-- tartaruga olhando boquiaberta -->
+      <ellipse cx="200" cy="310" rx="68" ry="46" fill="#40916c" opacity=".9"/>
+      <ellipse cx="200" cy="305" rx="57" ry="37" fill="#2d6a4f"/>
+      <ellipse cx="200" cy="293" rx="50" ry="30" fill="#1b4332"/>
+      <ellipse cx="200" cy="285" rx="22" ry="18" fill="#52b788"/>
+      <!-- cabeça maravilhada -->
+      <ellipse cx="200" cy="258" rx="24" ry="20" fill="#52b788"/>
+      <circle cx="192" cy="254" r="5" fill="#1b4332"/>
+      <circle cx="208" cy="254" r="5" fill="#1b4332"/>
+      <circle cx="192" cy="254" r="2.5" fill="#fff" opacity=".7"/>
+      <circle cx="208" cy="254" r="2.5" fill="#fff" opacity=".7"/>
+      <path d="M193,266 Q200,272 207,266" stroke="#1b4332" stroke-width="1.5" fill="none"/>
+      <rect x="149" y="295" width="20" height="8" rx="4" fill="#52b788"/>
+      <!-- brilho nos olhos -->
+      <circle cx="194" cy="252" r="1.5" fill="#ffd700"><animate attributeName="opacity" values=".5;1;.5" dur="1.5s" repeatCount="indefinite"/></circle>
+      <circle cx="210" cy="252" r="1.5" fill="#ffd700"><animate attributeName="opacity" values=".5;1;.5" dur="1.5s" repeatCount="indefinite" begin=".3s"/></circle>
+    </svg>
+  </div>
+  <div class="txt light">
+    <h2>Que coisa linda!</h2>
+    <p>Quando a chuva parou, Lola espreitou com cuidado pela borda da carapaça. E então — viu. Uma coisa que nunca tinha visto antes.</p>
+    <p>Um arco enorme, colorido, brilhante, pintado no céu.</p>
+    <em class="fala light">— O que é isso?! — ela exclamou, os olhos arregalados de espanto.</em>
+  </div>
+  <span class="pgn dk">3</span>
+</div>
+
+<!-- ===== PÁGINA 4 ===== -->
+<div class="ipage pg4">
+  <div class="art">
+    <svg viewBox="0 0 400 380" style="width:78%;max-width:490px;height:auto;" fill="none">
+      <!-- passarinho -->
+      <ellipse cx="260" cy="130" rx="28" ry="20" fill="#ff7a30" opacity=".9"/>
+      <ellipse cx="252" cy="125" rx="14" ry="10" fill="#e65100"/>
+      <circle cx="248" cy="122" r="4" fill="#1a1a2e"/>
+      <circle cx="248" cy="122" r="2" fill="#fff" opacity=".6"/>
+      <path d="M282,125 Q300,110 295,130" fill="#ff7a30" opacity=".7"/>
+      <path d="M282,135 Q302,140 295,150" fill="#ff7a30" opacity=".5"/>
+      <path d="M256,112 Q260,100 268,108" stroke="#ffd700" stroke-width="2" fill="none"/>
+      <path d="M250,135 Q245,145 250,150" stroke="#ff7a30" stroke-width="2" fill="none"/>
+      <!-- tartaruga olhando passarinho -->
+      <ellipse cx="160" cy="290" rx="65" ry="44" fill="#40916c" opacity=".9"/>
+      <ellipse cx="160" cy="285" rx="54" ry="35" fill="#2d6a4f"/>
+      <ellipse cx="160" cy="273" rx="48" ry="29" fill="#1b4332"/>
+      <ellipse cx="160" cy="248" rx="22" ry="19" fill="#52b788"/>
+      <circle cx="152" cy="244" r="4.5" fill="#1b4332"/>
+      <circle cx="168" cy="244" r="4.5" fill="#1b4332"/>
+      <circle cx="152" cy="244" r="2" fill="#fff" opacity=".6"/>
+      <circle cx="168" cy="244" r="2" fill="#fff" opacity=".6"/>
+      <path d="M153,256 Q160,261 167,256" stroke="#1b4332" stroke-width="1.5" fill="none"/>
+      <!-- linha visual -->
+      <path d="M168,244 Q210,180 252,128" stroke="#ffd700" stroke-width="1" opacity=".25" stroke-dasharray="4,4"/>
+      <!-- estrelas -->
+      <circle cx="80" cy="60" r="2" fill="#ffd700"><animate attributeName="opacity" values=".2;.8;.2" dur="2s" repeatCount="indefinite"/></circle>
+      <circle cx="350" cy="80" r="2.5" fill="#fff"><animate attributeName="opacity" values=".1;.7;.1" dur="2.5s" repeatCount="indefinite"/></circle>
+    </svg>
+  </div>
+  <div class="txt">
+    <h2>O passarinho Bico</h2>
+    <p>Um passarinho laranja pousou perto dela. Ele se chamava <strong>Bico</strong> e conhecia tudo da floresta.</p>
+    <em class="fala">— Isso é um arco-íris! — disse Bico, balançando o rabo. — Só aparece depois da chuva. É o céu dizendo que está tudo bem.</em>
+    <p>Lola nunca tinha ouvido isso. O coração dela bateu diferente.</p>
+  </div>
+  <span class="pgn">4</span>
+</div>
+
+<!-- ===== PÁGINA 5 ===== -->
+<div class="ipage pg5">
+  <div class="art">
+    <svg viewBox="0 0 400 380" style="width:80%;max-width:500px;height:auto;" fill="none">
+      <!-- fundo floresta quente -->
+      <rect x="50" y="180" width="14" height="120" rx="5" fill="#3a2010" opacity=".5"/>
+      <ellipse cx="57" cy="175" rx="30" ry="24" fill="#4a2a18" opacity=".5"/>
+      <rect x="320" y="200" width="12" height="100" rx="5" fill="#3a2010" opacity=".4"/>
+      <ellipse cx="326" cy="196" rx="24" ry="20" fill="#4a2a18" opacity=".4"/>
+      <!-- tartaruga dando passos corajosos -->
+      <ellipse cx="200" cy="280" rx="70" ry="48" fill="#40916c" opacity=".95"/>
+      <ellipse cx="200" cy="274" rx="59" ry="39" fill="#2d6a4f"/>
+      <ellipse cx="200" cy="261" rx="53" ry="32" fill="#1b4332"/>
+      <circle cx="200" cy="255" r="15" fill="#40916c" opacity=".65"/>
+      <circle cx="178" cy="268" r="11" fill="#40916c" opacity=".55"/>
+      <circle cx="222" cy="268" r="11" fill="#40916c" opacity=".55"/>
+      <!-- patas em movimento -->
+      <ellipse cx="138" cy="290" rx="18" ry="9" fill="#52b788" transform="rotate(-30,138,290)"/>
+      <ellipse cx="262" cy="278" rx="18" ry="9" fill="#52b788" transform="rotate(25,262,278)"/>
+      <ellipse cx="148" cy="318" rx="16" ry="8" fill="#52b788" transform="rotate(10,148,318)"/>
+      <ellipse cx="254" cy="316" rx="16" ry="8" fill="#52b788" transform="rotate(-10,254,316)"/>
+      <!-- cabeça determinada -->
+      <ellipse cx="200" cy="228" rx="24" ry="20" fill="#52b788"/>
+      <circle cx="192" cy="224" r="5" fill="#1b4332"/>
+      <circle cx="208" cy="224" r="5" fill="#1b4332"/>
+      <circle cx="192" cy="224" r="2.5" fill="#fff" opacity=".7"/>
+      <circle cx="208" cy="224" r="2.5" fill="#fff" opacity=".7"/>
+      <path d="M194,236 Q200,240 206,236" stroke="#1b4332" stroke-width="1.5" fill="none"/>
+      <!-- marcas de trilha -->
+      <ellipse cx="130" cy="345" rx="8" ry="5" fill="#52b788" opacity=".3" transform="rotate(-10,130,345)"/>
+      <ellipse cx="160" cy="355" rx="7" ry="4" fill="#52b788" opacity=".25" transform="rotate(5,160,355)"/>
+      <ellipse cx="100" cy="355" rx="7" ry="4" fill="#52b788" opacity=".2" transform="rotate(-5,100,355)"/>
+    </svg>
+  </div>
+  <div class="txt">
+    <h2>A decisão corajosa</h2>
+    <em class="fala">— Eu quero chegar perto do arco-íris! — disse Lola, antes de pensar.</em>
+    <p>Bico abriu os olhos. Lola nunca tinha pedido para ir a lugar nenhum.</p>
+    <p>Mas dessa vez, ela deu um passo. Depois outro. As patinhas tremiam, mas ela continuou.</p>
+    <em class="fala">— Vai, Lola! Você consegue! — Bico voou ao lado dela, cantando.</em>
+  </div>
+  <span class="pgn">5</span>
+</div>
+
+<!-- ===== PÁGINA 6 ===== -->
+<div class="ipage pg6">
+  <div class="art">
+    <svg viewBox="0 0 400 380" style="width:78%;max-width:490px;height:auto;" fill="none">
+      <!-- lago / riacho -->
+      <ellipse cx="200" cy="300" rx="150" ry="40" fill="#0d3b4a" opacity=".7"/>
+      <ellipse cx="200" cy="300" rx="130" ry="30" fill="#104858" opacity=".5"/>
+      <!-- reflexo arco-íris na água -->
+      <path d="M80,295 Q200,320 320,295" stroke="#ff7a30" stroke-width="3" fill="none" opacity=".35"/>
+      <path d="M90,300 Q200,330 310,300" stroke="#ffd700" stroke-width="3" fill="none" opacity=".3"/>
+      <path d="M100,305 Q200,338 300,305" stroke="#4fc3f7" stroke-width="3" fill="none" opacity=".28"/>
+      <!-- pedrinhas -->
+      <ellipse cx="130" cy="280" rx="12" ry="6" fill="#1a3040" opacity=".6"/>
+      <ellipse cx="270" cy="285" rx="10" ry="5" fill="#1a3040" opacity=".5"/>
+      <!-- tartaruga na beira -->
+      <ellipse cx="200" cy="258" rx="65" ry="44" fill="#40916c" opacity=".9"/>
+      <ellipse cx="200" cy="253" rx="54" ry="36" fill="#2d6a4f"/>
+      <ellipse cx="200" cy="241" rx="48" ry="28" fill="#1b4332"/>
+      <ellipse cx="200" cy="218" rx="22" ry="18" fill="#52b788"/>
+      <circle cx="192" cy="214" r="4.5" fill="#1b4332"/>
+      <circle cx="208" cy="214" r="4.5" fill="#1b4332"/>
+      <circle cx="192" cy="214" r="2" fill="#fff" opacity=".6"/>
+      <circle cx="208" cy="214" r="2" fill="#fff" opacity=".6"/>
+      <!-- peixe na água -->
+      <ellipse cx="155" cy="305" rx="15" ry="8" fill="#4fc3f7" opacity=".7"/>
+      <path d="M168,305 Q178,300 178,310 Z" fill="#4fc3f7" opacity=".7"/>
+      <circle cx="148" cy="303" r="2" fill="#0a2a40"/>
+    </svg>
+  </div>
+  <div class="txt">
+    <h2>O riacho no caminho</h2>
+    <p>No meio da floresta, apareceu um riacho. A água brilhava e refletia as cores do arco-íris.</p>
+    <p>Lola olhou para o riacho com medo. Ela nunca tinha atravessado água antes.</p>
+    <em class="fala">— Tartarugas nadam, Lola! — disse um peixe azul, piscando o olho.</em>
+    <p>Ela respirou fundo. E entrou na água pela primeira vez na vida.</p>
+  </div>
+  <span class="pgn">6</span>
+</div>
+
+<!-- ===== PÁGINA 7 ===== -->
+<div class="ipage pg7">
+  <div class="art">
+    <svg viewBox="0 0 400 380" style="width:80%;max-width:500px;height:auto;" fill="none">
+      <!-- colina verde -->
+      <ellipse cx="200" cy="340" rx="220" ry="80" fill="#2d6a4f" opacity=".5"/>
+      <ellipse cx="200" cy="330" rx="180" ry="60" fill="#40916c" opacity=".35"/>
+      <!-- arco-íris próximo e grande -->
+      <path d="M20,220 Q200,50 380,220" stroke="#ff7a30" stroke-width="8" fill="none" opacity=".8"/>
+      <path d="M34,228 Q200,66 366,228" stroke="#ffd700" stroke-width="8" fill="none" opacity=".75"/>
+      <path d="M48,236 Q200,82 352,236" stroke="#74c69d" stroke-width="8" fill="none" opacity=".7"/>
+      <path d="M62,244 Q200,98 338,244" stroke="#4fc3f7" stroke-width="8" fill="none" opacity=".65"/>
+      <!-- tartaruga no topo da colina, emocionada -->
+      <ellipse cx="200" cy="290" rx="62" ry="42" fill="#40916c" opacity=".95"/>
+      <ellipse cx="200" cy="285" rx="52" ry="34" fill="#2d6a4f"/>
+      <ellipse cx="200" cy="273" rx="46" ry="27" fill="#1b4332"/>
+      <ellipse cx="200" cy="252" rx="22" ry="18" fill="#52b788"/>
+      <circle cx="191" cy="247" r="5" fill="#1b4332"/>
+      <circle cx="209" cy="247" r="5" fill="#1b4332"/>
+      <circle cx="191" cy="247" r="2.5" fill="#ffd700" opacity=".8"><animate attributeName="opacity" values=".5;1;.5" dur="1.5s" repeatCount="indefinite"/></circle>
+      <circle cx="209" cy="247" r="2.5" fill="#ffd700" opacity=".8"><animate attributeName="opacity" values=".5;1;.5" dur="1.5s" repeatCount="indefinite" begin=".3s"/></circle>
+      <path d="M193,260 Q200,266 207,260" stroke="#1b4332" stroke-width="2" fill="none"/>
+      <!-- passarinho pairando -->
+      <ellipse cx="300" cy="200" rx="18" ry="13" fill="#ff7a30" opacity=".85"/>
+      <path d="M316,197 Q330,187 325,202" fill="#ff7a30" opacity=".7"/>
+      <circle cx="292" cy="196" r="3" fill="#1a1a2e"/>
+      <circle cx="292" cy="196" r="1.5" fill="#fff" opacity=".6"/>
+      <!-- flores -->
+      <circle cx="140" cy="320" r="6" fill="#ffd700" opacity=".7"/>
+      <circle cx="260" cy="315" r="5" fill="#ff7a30" opacity=".7"/>
+      <circle cx="175" cy="335" r="4" fill="#4fc3f7" opacity=".6"/>
+    </svg>
+  </div>
+  <div class="txt light">
+    <h2>Chegou lá!</h2>
+    <p>Depois de muita caminhada, Lola chegou ao topo da colina verde. E lá estava o arco-íris — enorme, colorido, perfeito — bem na frente dela.</p>
+    <p>As cores brilhavam tanto que esquentavam o coração.</p>
+    <em class="fala light">— Eu… eu cheguei! — ela sussurrou, com os olhos cheios de luz.</em>
+  </div>
+  <span class="pgn dk">7</span>
+</div>
+
+<!-- ===== PÁGINA 8 ===== -->
+<div class="ipage pg8">
+  <div class="art">
+    <svg viewBox="0 0 400 380" style="width:80%;max-width:500px;height:auto;" fill="none">
+      <!-- fundo noturno com cores do arco-íris -->
+      <circle cx="200" cy="160" r="160" fill="url(#rg1)" opacity=".08"/>
+      <defs>
+        <radialGradient id="rg1" cx="50%" cy="50%">
+          <stop offset="0%" stop-color="#ffd700"/>
+          <stop offset="50%" stop-color="#4fc3f7"/>
+          <stop offset="100%" stop-color="#40916c"/>
+        </radialGradient>
+      </defs>
+      <!-- brilhos coloridos -->
+      <circle cx="140" cy="100" r="20" fill="#ff7a30" opacity=".2"><animate attributeName="r" values="18;24;18" dur="3s" repeatCount="indefinite"/></circle>
+      <circle cx="200" cy="80" r="18" fill="#ffd700" opacity=".2"><animate attributeName="r" values="16;22;16" dur="2.5s" repeatCount="indefinite" begin=".5s"/></circle>
+      <circle cx="260" cy="100" r="20" fill="#4fc3f7" opacity=".2"><animate attributeName="r" values="18;24;18" dur="3.2s" repeatCount="indefinite" begin="1s"/></circle>
+      <!-- tartaruga abraçando passarinho -->
+      <ellipse cx="185" cy="280" rx="62" ry="42" fill="#40916c" opacity=".95"/>
+      <ellipse cx="185" cy="275" rx="52" ry="34" fill="#2d6a4f"/>
+      <ellipse cx="185" cy="263" rx="46" ry="27" fill="#1b4332"/>
+      <ellipse cx="185" cy="242" rx="22" ry="18" fill="#52b788"/>
+      <!-- pata estendida -->
+      <ellipse cx="240" cy="255" rx="20" ry="10" fill="#52b788" transform="rotate(-20,240,255)"/>
+      <!-- passarinho no abraço -->
+      <ellipse cx="268" cy="238" rx="20" ry="14" fill="#ff7a30" opacity=".9"/>
+      <ellipse cx="262" cy="233" rx="11" ry="8" fill="#e65100"/>
+      <circle cx="258" cy="231" r="3.5" fill="#1a1a2e"/>
+      <circle cx="258" cy="231" r="1.5" fill="#fff" opacity=".7"/>
+      <path d="M280,234 Q294,224 290,240" fill="#ff7a30" opacity=".6"/>
+      <!-- cabeça de Lola sorrindo -->
+      <circle cx="185" cy="222" r="5" fill="#1b4332"/>
+      <circle cx="201" cy="222" r="5" fill="#1b4332"/>
+      <circle cx="185" cy="222" r="2.5" fill="#fff" opacity=".7"/>
+      <circle cx="201" cy="222" r="2.5" fill="#fff" opacity=".7"/>
+      <path d="M186,234 Q193,240 200,234" stroke="#1b4332" stroke-width="2" fill="none"/>
+      <!-- coraçõezinhos -->
+      <text x="230" y="210" font-size="14" fill="#ffd700" opacity=".7">♥</text>
+      <text x="155" y="200" font-size="10" fill="#ff7a30" opacity=".5">♥</text>
+    </svg>
+  </div>
+  <div class="txt">
+    <h2>A amizade vale mais</h2>
+    <p>Lola percebeu que o arco-íris era bonito, mas o melhor presente daquele dia tinha sido outro.</p>
+    <em class="fala">— Bico, eu não teria chegado aqui sem você. Obrigada por acreditar em mim.</em>
+    <p>Bico abriu as asinhas laranja e pousou na cabeça de Lola.</p>
+    <em class="fala">— Você sempre teve coragem, Lola. Só precisava de um motivo pra usar.</em>
+  </div>
+  <span class="pgn">8</span>
+</div>
+
+<!-- ===== PÁGINA FINAL ===== -->
+<div class="pg-last">
+  <svg style="width:120px;height:100px;margin-bottom:0.8rem;" viewBox="0 0 120 100" fill="none">
+    <!-- mini arco-íris -->
+    <path d="M10,70 Q60,20 110,70" stroke="#ff7a30" stroke-width="5" fill="none" opacity=".8"/>
+    <path d="M17,75 Q60,28 103,75" stroke="#ffd700" stroke-width="5" fill="none" opacity=".75"/>
+    <path d="M24,80 Q60,36 96,80" stroke="#74c69d" stroke-width="5" fill="none" opacity=".7"/>
+    <path d="M31,85 Q60,44 89,85" stroke="#4fc3f7" stroke-width="5" fill="none" opacity=".65"/>
+    <!-- tartaruga mini -->
+    <ellipse cx="60" cy="90" rx="20" ry="14" fill="#40916c" opacity=".9"/>
+    <ellipse cx="60" cy="88" rx="17" ry="11" fill="#2d6a4f"/>
+    <ellipse cx="60" cy="84" rx="15" ry="8" fill="#1b4332"/>
+    <ellipse cx="60" cy="76" rx="7" ry="6" fill="#52b788"/>
+    <circle cx="57" cy="74" r="1.5" fill="#1b4332"/>
+    <circle cx="63" cy="74" r="1.5" fill="#1b4332"/>
+  </svg>
+  <h2>Bons sonhos, Lola!</h2>
+  <div style="width:90px;height:2px;background:linear-gradient(90deg,transparent,#ffd700,transparent);margin:0.8rem auto;border-radius:2px;"></div>
+  <p>
+    Coragem não é não ter medo.<br>
+    Coragem é dar um passo<br>
+    mesmo com o coraçãozinho tremendo.<br><br>
+    E depois da chuva,<br>
+    sempre vem o arco-íris.<br><br>
+    <strong style="color:var(--gold);font-size:1.3rem;">Boa noite. Bons sonhos.</strong>
+  </p>
+  <div class="sdance">
+    <div class="sd"></div><div class="sd"></div><div class="sd"></div>
+    <div class="sd"></div><div class="sd"></div><div class="sd"></div><div class="sd"></div>
+  </div>
+</div>
+
+</div><!-- fim .book -->
+
+<script>
+function lerHistoria() {
+  if (!window.speechSynthesis) { alert('Seu navegador não suporta narração de voz.'); return; }
+  const textos = [
+    "A Tartaruga que Descobriu o Arco-Íris. Uma história sobre coragem e beleza.",
+    "No fundo da floresta úmida, perto de um riacho que cantava, vivia uma tartaruga chamada Lola. Ela era pequena, tímida e adorava ficar escondida dentro da própria carapaça. E se lá fora for assustador? — ela pensava toda noite.",
+    "Uma tarde, uma chuva forte caiu de repente. Quando os trovões roncaram, Lola entrou na carapaça tremendo. Nunca vou sair daqui de dentro! — murmurou ela.",
+    "Quando a chuva parou, Lola espreitou pela borda da carapaça. E então viu uma coisa que nunca tinha visto antes: um arco enorme, colorido, brilhante, pintado no céu. O que é isso?! — ela exclamou.",
+    "Um passarinho laranja pousou perto dela. Ele se chamava Bico. Isso é um arco-íris! Só aparece depois da chuva. É o céu dizendo que está tudo bem.",
+    "Eu quero chegar perto do arco-íris! — disse Lola, antes de pensar. Ela deu um passo. Depois outro. As patinhas tremiam, mas ela continuou.",
+    "No meio da floresta, apareceu um riacho. Lola nunca tinha atravessado água antes. Tartarugas nadam, Lola! — disse um peixe azul, piscando o olho. Ela respirou fundo e entrou na água pela primeira vez.",
+    "Depois de muita caminhada, Lola chegou ao topo da colina verde. E lá estava o arco-íris, enorme, colorido, perfeito. Eu… eu cheguei! — ela sussurrou, com os olhos cheios de luz.",
+    "Bico, eu não teria chegado aqui sem você. Obrigada por acreditar em mim. Você sempre teve coragem, Lola. Só precisava de um motivo para usar.",
+    "Coragem não é não ter medo. Coragem é dar um passo mesmo com o coraçãozinho tremendo. E depois da chuva, sempre vem o arco-íris. Boa noite. Bons sonhos."
+  ];
+  const voz = window.speechSynthesis;
+  voz.cancel();
+  function falar(i) {
+    if (i >= textos.length) return;
+    const msg = new SpeechSynthesisUtterance(textos[i]);
+    msg.lang = 'pt-BR'; msg.rate = 0.85; msg.pitch = 1.15;
+    msg.onend = () => falar(i + 1);
+    voz.speak(msg);
+  }
+  falar(0);
+}
+
+function compartilharWhatsApp() {
+  const msg = 'Olá! 🌈 Acabei de criar o livro "A Tartaruga que Descobriu o Arco-Íris" no InfoEngine. Confira: ' + window.location.href;
+  window.open('https://wa.me/5582991856656?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function gerarPDF() {
+  const btn = event.target;
+  btn.textContent = '⏳ Gerando...'; btn.disabled = true;
+  html2pdf().set({
+    margin: [0,0,0,0],
+    filename: 'a-tartaruga-que-descobriu-o-arco-iris.pdf',
+    image: { type:'jpeg', quality:0.95 },
+    html2canvas: { scale:2, useCORS:true, logging:false },
+    jsPDF: { unit:'mm', format:'a4', orientation:'portrait' }
+  }).from(document.getElementById('book')).save().then(() => {
+    btn.textContent = '⬇️ Baixar PDF'; btn.disabled = false;
+  });
+}
+</script>
+</body>
+</html>

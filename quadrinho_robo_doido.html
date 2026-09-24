@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Robô Doido — Quadrinho Interativo</title>
+<style>
+  :root{
+    --night-900:#0f0c2e;
+    --night-700:#1a1a5e;
+    --coral-400:#ff7a30;
+    --gold-400:#ffd700;
+    --gold-500:#ffb347;
+    --coral-500:#ff5252;
+    --panel:#15123a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Quicksand',-apple-system,sans-serif;
+    background:radial-gradient(circle at 30% 20%, #1a1a5e 0%, var(--night-900) 70%);
+    color:#fff;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:1.5rem;
+  }
+  h1{
+    font-family:'Playfair Display',serif;
+    color:var(--gold-400);
+    text-shadow:0 0 18px rgba(255,215,0,.4);
+    margin-bottom:.3rem;
+    text-align:center;
+  }
+  .sub{color:var(--coral-400);margin-bottom:1.2rem;font-size:1.1rem;}
+
+  .quadrinho{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    width:min(820px,96vw);
+  }
+  .quadro{
+    background:var(--panel);
+    border:3px solid var(--coral-400);
+    border-radius:16px;
+    padding:1rem;
+    position:relative;
+    min-height:200px;
+    box-shadow:0 8px 30px rgba(0,0,0,.4);
+    transition:transform .15s ease, box-shadow .15s ease;
+    cursor:pointer;
+  }
+  .quadro:hover{transform:translateY(-4px) scale(1.01);}
+  .quadro .balao{
+    background:#fff;
+    color:#1a1a2e;
+    border-radius:12px;
+    padding:.6rem .8rem;
+    font-weight:600;
+    position:relative;
+    margin-bottom:.8rem;
+    font-size:1.02rem;
+    line-height:1.4;
+  }
+  .quadro .balao::after{
+    content:"";
+    position:absolute;
+    bottom:-10px;left:30px;
+    border-width:10px 10px 0 0;
+    border-style:solid;
+    border-color:#fff transparent transparent transparent;
+  }
+  .robo{
+    font-size:4.2rem;
+    text-align:center;
+    filter:drop-shadow(0 0 12px rgba(255,215,0,.5));
+    transition:transform .25s ease;
+    user-select:none;
+  }
+  .robo.girando{animation:spin .6s linear infinite;}
+  .robo.pulando{animation:bounce .5s ease infinite;}
+  .robo.tremendo{animation:shake .3s ease infinite;}
+  .robo.foguete{animation:zoom 1s ease infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-18px);}}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}}
+  @keyframes zoom{0%,100%{transform:scale(1);}50%{transform:scale(1.3) rotate(10deg);}}
+  .legenda{font-size:.8rem;color:var(--gold-500);margin-top:.4rem;text-align:center;}
+
+  .controles{
+    margin-top:1.4rem;
+    display:flex;
+    gap:.6rem;
+    flex-wrap:wrap;
+    justify-content:center;
+    width:min(820px,96vw);
+  }
+  button{
+    background:var(--coral-400);
+    color:#fff;
+    border:none;
+    padding:.7rem 1.1rem;
+    border-radius:9999px;
+    font-weight:700;
+    font-size:.95rem;
+    cursor:pointer;
+    transition:filter .15s ease, transform .1s ease;
+  }
+  button:hover{filter:brightness(1.1);}
+  button:active{transform:scale(.96);}
+  button.alt{background:var(--gold-400);color:#1a1a2e;}
+  button.ghost{background:transparent;border:2px solid var(--gold-400);color:var(--gold-400);}
+
+  .palco{
+    margin-top:1.2rem;
+    width:min(820px,96vw);
+    background:var(--panel);
+    border:2px dashed var(--gold-500);
+    border-radius:16px;
+    padding:1rem;
+    text-align:center;
+    min-height:120px;
+  }
+  .palco .robo{font-size:6rem;}
+  .palco p{margin-top:.6rem;color:var(--gold-500);font-size:1.05rem;}
+  .falas{font-family:'Playfair Display',serif;color:var(--gold-400);font-size:1.3rem;margin-top:.4rem;min-height:1.6rem;}
+
+  .contador{color:var(--coral-400);font-size:.9rem;margin-top:.6rem;}
+  footer{margin-top:1.5rem;color:#888;font-size:.8rem;text-align:center;}
+</style>
+</head>
+<body>
+  <h1>🤖 O Robô Doido</h1>
+  <div class="sub">Um quadrinho que você controla — clique nos quadros!</div>
+
+  <div class="quadrinho">
+    <div class="quadro" data-msg="Acordei de ponta-cabeça hoje!">
+      <div class="balao">Sistema inicializado... de cabeça pra baixo?!</div>
+      <div class="robo" id="r1">🤖</div>
+      <div class="legenda">Quadro 1 — Ligando</div>
+    </div>
+
+    <div class="quadro" data-msg="Meus parafusos ficaram com fome!">
+      <div class="balao">Tuuudo treme quando eu penso em café.</div>
+      <div class="robo" id="r2">🦾</div>
+      <div class="legenda">Quadro 2 — Tremedeira</div>
+    </div>
+
+    <div class="quadro" data-msg="Vrum! Decoli sem querer!">
+      <div class="balao">Programei 'voar' mas era 'fritar' ovo.</div>
+      <div class="robo" id="r3">🚀</div>
+      <div class="legenda">Quadro 3 — Decolagem</div>
+    </div>
+
+    <div class="quadro" data-msg="Girei tanto que virei fruta!">
+      <div class="balao">Tela girando, mundo girando, EU girando.</div>
+      <div class="robo" id="r4">🌀</div>
+      <div class="legenda">Quadro 4 — Tontura</div>
+    </div>
+  </div>
+
+  <div class="controles">
+    <button id="btnGirar" class="alt">🌪 Girar Tudo</button>
+    <button id="btnPular">🦘 Pular Tudo</button>
+    <button id="btnTremer">💥 Tremer Tudo</button>
+    <button id="btnFoguete" class="alt">🚀 Foguete</button>
+    <button id="btnFalar" class="ghost">🔊 Robô Fala</button>
+    <button id="btnParar" class="ghost">⏹ Parar</button>
+  </div>
+
+  <div class="palco">
+    <div class="robo" id="palcoRobo">🤖</div>
+    <div class="falas" id="falas">Clique num quadro ou me faz falar!</div>
+    <p id="estadoPalco">Estado: parado</p>
+    <div class="contador" id="contador">Interações: 0</div>
+  </div>
+
+  <footer>Feito com 💛 pela Tronix — InfoEngine. Clique, gire, faça o robô surtar!</footer>
+
+<script>
+  const robos = document.querySelectorAll('.quadro .robo');
+  const palcoRobo = document.getElementById('palcoRobo');
+  const falas = document.getElementById('falas');
+  const estadoPalco = document.getElementById('estadoPalco');
+  const contadorEl = document.getElementById('contador');
+  let interacoes = 0;
+  let falasRobo = [
+    "Beep boop! Café é combustível de robô!",
+    "Erro 404: seriedade não encontrada.",
+    "Estou processando... pizza!",
+    "Meus circuitos sonham com fios coloridos.",
+    "Alerta! Fofura em nível crítico!",
+    "Vou dar um rolê pelo sistema solar rapidinho."
+  ];
+
+  function contar(){
+    interacoes++;
+    contadorEl.textContent = "Interações: " + interacoes;
+  }
+
+  function limparAnimacoes(el){
+    el.classList.remove('girando','pulando','tremendo','foguete');
+  }
+
+  // Clicar nos quadros
+  document.querySelectorAll('.quadro').forEach(q=>{
+    q.addEventListener('click',()=>{
+      const msg = q.getAttribute('data-msg');
+      const r = q.querySelector('.robo');
+      limparAnimacoes(r);
+      void r.offsetWidth; // reflow p/ reiniciar animacao
+      const anims = ['girando','pulando','tremendo','foguete'];
+      const a = anims[Math.floor(Math.random()*anims.length)];
+      r.classList.add(a);
+      falas.textContent = msg;
+      estadoPalco.textContent = "Estado: " + a;
+      contar();
+      // efeito no palco tb
+      limparAnimacoes(palcoRobo);
+      void palcoRobo.offsetWidth;
+      palcoRobo.classList.add(a);
+    });
+  });
+
+  // Botões globais
+  document.getElementById('btnGirar').onclick = ()=> aplicarEmTodos('girando','Girando como ventoinha!');
+  document.getElementById('btnPular').onclick = ()=> aplicarEmTodos('pulando','Pulando de alegria!');
+  document.getElementById('btnTremer').onclick = ()=> aplicarEmTodos('tremendo','Tremendo que nem gelatina!');
+  document.getElementById('btnFoguete').onclick = ()=> aplicarEmTodos('foguete','Decolando pro espaço!');
+  document.getElementById('btnParar').onclick = ()=>{
+    robos.forEach(limparAnimacoes);
+    limparAnimacoes(palcoRobo);
+    estadoPalco.textContent = "Estado: parado";
+    falas.textContent = "Pronto pra surtar de novo quando quiser!";
+    contar();
+  };
+  document.getElementById('btnFalar').onclick = ()=>{
+    const txt = falasRobo[Math.floor(Math.random()*falasRobo.length)];
+    falas.textContent = txt;
+    contar();
+    if('speechSynthesis' in window){
+      const u = new SpeechSynthesisUtterance(txt);
+      u.lang = 'pt-BR';
+      u.pitch = 1.4;
+      u.rate = 1.1;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(u);
+    }
+  };
+
+  function aplicarEmTodos(anim, msg){
+    robos.forEach(r=>{ limparAnimacoes(r); void r.offsetWidth; r.classList.add(anim); });
+    limparAnimacoes(palcoRobo); void palcoRobo.offsetWidth; palcoRobo.classList.add(anim);
+    estadoPalco.textContent = "Estado: " + anim;
+    falas.textContent = msg;
+    contar();
+  }
+</script>
+</body>
+</html>

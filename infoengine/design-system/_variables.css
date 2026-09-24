@@ -1,35 +1,35 @@
 /* ============================================
    DESIGN TOKENS — InfoEngine
+   Paleta quente (proibido roxo) conforme AGENTS.md
    ============================================ */
 
 :root {
-  /* === COLORS === */
-  --night-900: #0b081a;
+  /* === COLORS (paleta quente) === */
+  --night-900: #0f0c2e;   /* azul noturno base */
   --night-800: #15123a;
-  --night-700: #1f1b4e;
+  --night-700: #1a1a5e;   /* azul noturno secundário */
   --night-600: #2a235a;
 
-  --gold-400: #ffd700;
+  --gold-400: #ffd700;    /* dourado principal */
   --gold-300: #fff8dc;
-  --gold-500: #f5a623;
+  --gold-500: #ffb347;    /* dourado/laranja */
 
-  --coral-400: #ff7a5a;
-  --coral-300: #ff8a80;
+  --coral-400: #ff7a30;   /* laranja principal (AGENTS.md) */
+  --coral-300: #ff9a5a;
   --coral-500: #ff5252;
 
-  --pastel-pink: #fce4ec;
-  --pastel-blue: #e3f2fd;
-  --pastel-lavender: #f3e5f5;
+  --pastel-yellow: #fff3e0;
+  --pastel-blue:  #e3f2fd;
   --pastel-peach: #fff3e0;
   --pastel-cream: #fdf8f0;
 
-  --text-dark: #1a1a2e;
-  --text-soft: #4a3f4a;
-  --text-muted: #888;
+  --text-dark:  #1a1a2e;
+  --text-soft:  #4a3f4a;
+  --text-muted: #888888;
 
   /* === TYPOGRAPHY === */
   --font-display: 'Playfair Display', Georgia, serif;
-  --font-body: 'Quicksand', -apple-system, sans-serif;
+  --font-body: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
@@ -43,6 +43,9 @@
   --line-height-normal: 1.5;
   --line-height-relaxed: 1.75;
   --line-height-loose: 2;
+
+  /* Tamanho mínimo para leitura infantil (AGENTS.md: >= 1.15rem) */
+  --font-size-min-infantil: 1.15rem;
 
   /* === SPACING === */
   --space-1: 0.25rem;
@@ -68,8 +71,17 @@
   --shadow-xl: 0 30px 80px rgba(0,0,0,0.15);
   --shadow-glow: 0 0 30px rgba(255,215,0,0.15);
 
-  /* === BREAKPOINTS (for reference) === */
+  /* === LAYOUT (tokens faltantes) === */
+  --container-max: 1200px;
+  --sidebar-width: 280px;
+
+  /* === TRANSITIONS === */
+  --transition-fast: 120ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 320ms ease;
+
+  /* === BREAKPOINTS (referência) === */
   /* mobile: < 640px */
-  /* tablet: 640-850px */
+  /* tablet: 640–850px */
   /* desktop: > 850px */
 }

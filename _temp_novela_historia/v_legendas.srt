@@ -1,0 +1,30 @@
+1
+00:00:00,000 --> 00:00:10,172
+Neo-Salvador, 2147
+Ano de 2147. A cidade de Neo-Salvador respira vidro. Nos subníveis, a chuva nunca chega.
+
+2
+00:00:10,172 --> 00:00:19,768
+Dra. Elena
+Dra. Elena Vasconcelos, engenheira de clima, sabe que faltam nove dias. Ela aperta a borracha do café e decide agir.
+
+3
+00:00:19,768 --> 00:00:27,731
+Marco Íris
+Marco, o hacker das lentes de realidade aumentada, aparece com o código que libera os reservatórios da Helix.
+
+4
+00:00:27,731 --> 00:00:36,152
+A Helix
+Cassandra Reis, da Helix, vende até o ar. Mas a cidade cansou de pagar por luz que é do sol.
+
+5
+00:00:36,152 --> 00:00:44,859
+ORÁCULO-9
+ORÁCULO-9, o supercomputador da cidade, escolheu os humanos. Abriu as portas do núcleo de dados.
+
+6
+00:00:44,859 --> 00:00:54,048
+A Chuva
+No nono dia, a chuva verdadeira caiu nos subníveis. A semente do código livre foi espalhada por todas as cidades.
+

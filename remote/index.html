@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tronix Remote - Controle Total</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+    background: #0a0a0a; 
+    color: #fff; 
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+.header {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+    border-bottom: 1px solid #21262d;
+}
+.header h1 {
+    font-size: 1.8rem;
+    background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.header .subtitle { color: #888; font-size: 0.9rem; margin-top: 5px; }
+.status-bar {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px;
+    background: #0d1117;
+    border-bottom: 1px solid #21262d;
+    font-size: 0.85rem;
+}
+.status-item { display: flex; align-items: center; gap: 6px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; }
+.dot.on { background: #00ff88; animation: pulse 2s infinite; }
+.dot.off { background: #ff4444; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+.main { display: flex; flex-wrap: wrap; gap: 15px; padding: 15px; justify-content: center; }
+
+.panel {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 12px;
+    padding: 15px;
+    min-width: 280px;
+    flex: 1;
+    max-width: 350px;
+}
+.panel-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #58a6ff;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.panel-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #21262d;
+}
+
+.btn-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+.btn-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+.btn-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.btn {
+    padding: 12px 8px;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    background: #0d1117;
+    color: #c9d1d9;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+.btn:hover {
+    border-color: #58a6ff;
+    background: #1c2333;
+    transform: translateY(-2px);
+}
+.btn:active { transform: translateY(0); }
+.btn .icon { font-size: 1.5rem; display: block; margin-bottom: 4px; }
+.btn.danger { border-color: #f85149; }
+.btn.danger:hover { background: #3d1214; border-color: #ff6a65; }
+.btn.success { border-color: #3fb950; }
+.btn.success:hover { background: #12261e; border-color: #56d364; }
+
+/* Nav D-Pad */
+.dpad {
+    display: grid;
+    grid-template-areas:
+        ". up ."
+        "left center right"
+        ". down .";
+    gap: 5px;
+    max-width: 160px;
+    margin: 0 auto;
+}
+.dpad-btn {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    background: #0d1117;
+    color: #c9d1d9;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+.dpad-btn:hover { background: #1c2333; border-color: #58a6ff; }
+.dpad-up { grid-area: up; }
+.dpad-down { grid-area: down; }
+.dpad-left { grid-area: left; }
+.dpad-right { grid-area: right; }
+.dpad-center { 
+    grid-area: center; 
+    border-radius: 50%;
+    background: #21262d;
+}
+
+/* Slider */
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0;
+}
+.slider-container label { font-size: 1.2rem; min-width: 30px; text-align: center; }
+.slider {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 6px;
+    border-radius: 3px;
+    background: #21262d;
+    outline: none;
+}
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #58a6ff;
+    cursor: pointer;
+}
+
+/* Media */
+.media-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 5px 0;
+}
+.media-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 1px solid #30363d;
+    background: #0d1117;
+    color: #c9d1d9;
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+.media-btn:hover { background: #1c2333; border-color: #58a6ff; }
+.media-btn.play { width: 55px; height: 55px; font-size: 1.5rem; }
+
+/* Quick Apps */
+.app-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+.app-btn {
+    padding: 10px 5px;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    background: #0d1117;
+    color: #c9d1d9;
+    font-size: 0.7rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+}
+.app-btn:hover { background: #1c2333; border-color: #58a6ff; }
+.app-btn .icon { font-size: 1.4rem; display: block; margin-bottom: 3px; }
+
+/* Toast */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #21262d;
+    color: #c9d1d9;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    font-size: 0.85rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 1000;
+}
+.toast.show { opacity: 1; }
+
+.footer {
+    text-align: center;
+    padding: 15px;
+    color: #484f58;
+    font-size: 0.75rem;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>⚡ Tronix Remote</h1>
+    <p class="subtitle">Controle Total — Moto G34 5G</p>
+</div>
+
+<div class="status-bar">
+    <div class="status-item">
+        <span class="dot off" id="dot"></span>
+        <span id="status-text">Verificando...</span>
+    </div>
+    <div class="status-item" id="battery-info">🔋 --</div>
+    <div class="status-item" id="wifi-info">📶 --</div>
+</div>
+
+<div class="main">
+
+    <!-- NAV D-PAD -->
+    <div class="panel">
+        <div class="panel-title">🎮 Navegação</div>
+        <div class="dpad">
+            <button class="dpad-btn dpad-up" onclick="exec('nav up')">▲</button>
+            <button class="dpad-btn dpad-left" onclick="exec('nav left')">◄</button>
+            <button class="dpad-btn dpad-center" onclick="exec('nav home')">⊙</button>
+            <button class="dpad-btn dpad-right" onclick="exec('nav right')">►</button>
+            <button class="dpad-btn dpad-down" onclick="exec('nav down')">▼</button>
+        </div>
+        <div class="btn-grid-2" style="margin-top: 10px;">
+            <button class="btn" onclick="exec('nav back')"><span class="icon">↩</span>Voltar</button>
+            <button class="btn" onclick="exec('nav recent')"><span class="icon">☐</span>Tarefas</button>
+        </div>
+    </div>
+
+    <!-- VOLUME & BRIGHTNESS -->
+    <div class="panel">
+        <div class="panel-title">🔊 Volume & Brilho</div>
+        <div class="slider-container">
+            <label>🔈</label>
+            <input type="range" class="slider" id="vol-slider" min="0" max="15" value="10" 
+                   oninput="setVolume(this.value)">
+            <label>🔊</label>
+        </div>
+        <div class="btn-grid-4">
+            <button class="btn" onclick="exec('vol mute')">🔇</button>
+            <button class="btn" onclick="exec('vol down')">➖</button>
+            <button class="btn" onclick="exec('vol up')">➕</button>
+            <button class="btn" onclick="exec('vol max')">🔊</button>
+        </div>
+        <div class="slider-container" style="margin-top: 12px;">
+            <label>🔅</label>
+            <input type="range" class="slider" id="bright-slider" min="0" max="255" value="128"
+                   oninput="setBrightness(this.value)">
+            <label>🔆</label>
+        </div>
+    </div>
+
+    <!-- MEDIA -->
+    <div class="panel">
+        <div class="panel-title">🎵 Mídia</div>
+        <div class="media-row">
+            <button class="media-btn" onclick="exec('media prev')">⏮</button>
+            <button class="media-btn play" onclick="exec('media play')">▶</button>
+            <button class="media-btn" onclick="exec('media next')">⏭</button>
+        </div>
+        <div class="media-row">
+            <button class="media-btn" onclick="exec('media stop')">⏹</button>
+            <button class="media-btn" onclick="exec('media mute')">🔇</button>
+        </div>
+        <div class="btn-grid" style="margin-top: 10px;">
+            <button class="btn" onclick="exec('media ff')">⏩ 10s</button>
+            <button class="btn" onclick="exec('media rw')">⏪ 10s</button>
+            <button class="btn" onclick="exec('screenshot')"><span class="icon">📸</span>Print</button>
+        </div>
+    </div>
+
+    <!-- SCREEN -->
+    <div class="panel">
+        <div class="panel-title">🖥️ Tela</div>
+        <div class="btn-grid">
+            <button class="btn success" onclick="exec('scrcpy')"><span class="icon">📱</span>Espelhar</button>
+            <button class="btn success" onclick="exec('scrcpy-full')"><span class="icon">📺</span>Tela Cheia</button>
+            <button class="btn" onclick="exec('scrcpy-720')"><span class="icon">⚡</span>720p</button>
+            <button class="btn" onclick="exec('scrcpy-h265')"><span class="icon">🎬</span>H265</button>
+            <button class="btn" onclick="exec('screen-on')"><span class="icon">💡</span>Ligar Tela</button>
+            <button class="btn danger" onclick="exec('screen-off')"><span class="icon">⬛</span>Apagar Tela</button>
+        </div>
+    </div>
+
+    <!-- POWER -->
+    <div class="panel">
+        <div class="panel-title">⚡ Energia</div>
+        <div class="btn-grid-2">
+            <button class="btn" onclick="exec('power menu')"><span class="icon">⚡</span>Menu Liga/Desl</button>
+            <button class="btn" onclick="exec('power sleep')"><span class="icon">💤</span>Tela Dormir</button>
+            <button class="btn danger" onclick="exec('power reboot')"><span class="icon">🔄</span>Reiniciar</button>
+            <button class="btn danger" onclick="exec('power off')"><span class="icon">⏻</span>Desligar</button>
+        </div>
+        <div class="btn-grid" style="margin-top: 8px;">
+            <button class="btn" onclick="exec('expand notifications')"><span class="icon">📋</span>Notificações</button>
+            <button class="btn" onclick="exec('expand settings')"><span class="icon">⚙️</span>Configurações</button>
+            <button class="btn" onclick="exec('lock')"><span class="icon">🔒</span>Travar</button>
+        </div>
+    </div>
+
+    <!-- CLIPBOARD -->
+    <div class="panel">
+        <div class="panel-title">📋 Área de Transferência</div>
+        <div style="display: flex; gap: 8px;">
+            <input type="text" id="clip-input" placeholder="Cole um texto aqui..." 
+                   style="flex:1; padding: 10px; border-radius: 8px; border: 1px solid #30363d; background: #0d1117; color: #c9d1d9; font-size: 0.9rem;">
+            <button class="btn success" onclick="pushClip()">Enviar</button>
+        </div>
+        <div class="btn-grid" style="margin-top: 8px;">
+            <button class="btn" onclick="exec('clip pull')"><span class="icon">📥</span>Puxar Texto</button>
+            <button class="btn" onclick="exec('clip set 5582991856656')"><span class="icon">📞</span>WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- QUICK APPS -->
+    <div class="panel">
+        <div class="panel-title">📱 Apps Rápidos</div>
+        <div class="app-grid">
+            <button class="app-btn" onclick="exec('open camera')"><span class="icon">📷</span>Câmera</button>
+            <button class="app-btn" onclick="exec('open chrome')"><span class="icon">🌐</span>Chrome</button>
+            <button class="app-btn" onclick="exec('open youtube')"><span class="icon">▶️</span>YouTube</button>
+            <button class="app-btn" onclick="exec('open whatsapp')"><span class="icon">💬</span>WhatsApp</button>
+            <button class="app-btn" onclick="exec('open settings')"><span class="icon">⚙️</span>Config</button>
+            <button class="app-btn" onclick="exec('open files')"><span class="icon">📁</span>Arquivos</button>
+            <button class="app-btn" onclick="exec('open play store')"><span class="icon">🛒</span>Play Store</button>
+            <button class="app-btn" onclick="exec('open gallery')"><span class="icon">🖼️</span>Galeria</button>
+            <button class="app-btn" onclick="exec('open clock')"><span class="icon">⏰</span>Relógio</button>
+            <button class="app-btn" onclick="exec('open calculator')"><span class="icon">🔢</span>Calc</button>
+            <button class="app-btn" onclick="exec('open maps')"><span class="icon">🗺️</span>Maps</button>
+            <button class="app-btn" onclick="exec('open spotify')"><span class="icon">🎵</span>Spotify</button>
+        </div>
+    </div>
+
+    <!-- FILE TRANSFER -->
+    <div class="panel">
+        <div class="panel-title">📁 Transferência de Arquivos</div>
+        <div class="btn-grid-2">
+            <button class="btn" onclick="exec('file-manager')"><span class="icon">📂</span>Gerenciador</button>
+            <button class="btn" onclick="exec('terminal')"><span class="icon">💻</span>Terminal ADB</button>
+        </div>
+        <div class="btn-grid" style="margin-top: 8px;">
+            <button class="btn" onclick="exec('wifi adb')"><span class="icon">📶</span>WiFi ADB</button>
+            <button class="btn" onclick="exec('restart adb')"><span class="icon">🔄</span>Reiniciar ADB</button>
+            <button class="btn" onclick="exec('app list')"><span class="icon">📦</span>Apps Instalados</button>
+        </div>
+    </div>
+
+    <!-- KEYBOARD -->
+    <div class="panel">
+        <div class="panel-title">⌨️ Teclado Virtual</div>
+        <div style="display: flex; gap: 8px;">
+            <input type="text" id="kbd-input" placeholder="Digite texto..." 
+                   style="flex:1; padding: 10px; border-radius: 8px; border: 1px solid #30363d; background: #0d1117; color: #c9d1d9; font-size: 0.9rem;"
+                   onkeypress="if(event.key==='Enter')sendKeys()">
+            <button class="btn success" onclick="sendKeys()">Enviar</button>
+        </div>
+        <div class="btn-grid" style="margin-top: 8px;">
+            <button class="btn" onclick="exec('keycode 66')">⏎ Enter</button>
+            <button class="btn" onclick="exec('keycode 67')">⌫ Backspace</button>
+            <button class="btn" onclick="exec('keycode 111')">Esc</button>
+            <button class="btn" onclick="exec('keycode 220')">🏠 Home</button>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer">Tronix Remote v2.0 • PCsoluções • Viçosa-AL</div>
+<div class="toast" id="toast"></div>
+
+<script>
+function exec(action) {
+    fetch(`/api/exec?cmd=${encodeURIComponent(action)}`)
+        .then(r => r.json())
+        .then(d => {
+            if (d.msg) showToast(d.msg);
+            if (d.output) showToast(d.output.substring(0, 100));
+        })
+        .catch(e => showToast('Erro: ' + e));
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function setVolume(val) {
+    exec(`vol set ${val}`);
+}
+
+function setBrightness(val) {
+    exec(`bright set ${val}`);
+}
+
+function pushClip() {
+    const text = document.getElementById('clip-input').value;
+    if (text) exec(`clip set ${text}`);
+}
+
+function sendKeys() {
+    const text = document.getElementById('kbd-input').value;
+    if (text) {
+        exec(`input text "${text.replace(/"/g, '\\"')}"`);
+        document.getElementById('kbd-input').value = '';
+    }
+}
+
+function checkStatus() {
+    fetch('/api/status').then(r => r.json()).then(d => {
+        document.getElementById('dot').className = 'dot ' + (d.connected ? 'on' : 'off');
+        document.getElementById('status-text').textContent = d.connected ? 
+            `Moto G34 5G (${d.ip})` : 'Desconectado';
+        if (d.battery) document.getElementById('battery-info').textContent = '🔋 ' + d.battery + '%';
+        if (d.wifi) document.getElementById('wifi-info').textContent = '📶 ' + d.wifi;
+    }).catch(() => {
+        document.getElementById('dot').className = 'dot off';
+        document.getElementById('status-text').textContent = 'Servidor offline';
+    });
+}
+setInterval(checkStatus, 5000);
+checkStatus();
+</script>
+</body>
+</html>

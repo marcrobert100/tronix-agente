@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fluxograma 3D Interativo — InfoEngine</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --c1:#00f5ff;--c2:#7b2fff;--c3:#ff6b35;--c4:#00ff88;--c5:#ffd700;
+  --bg:#03060f;--font:'Exo 2',sans-serif;
+}
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700&family=Orbitron:wght@700;900&display=swap');
+body{background:var(--bg);font-family:var(--font);color:#e0f0ff;overflow:hidden;height:100vh;width:100vw;}
+
+/* CANVAS */
+#canvas3d{position:fixed;inset:0;width:100%;height:100%;}
+
+/* TOOLBAR */
+.toolbar{position:fixed;top:.7rem;right:.7rem;z-index:100;display:flex;gap:.4rem;flex-wrap:wrap;justify-content:flex-end;}
+.toolbar button{background:rgba(0,245,255,.08);backdrop-filter:blur(12px);border:1px solid rgba(0,245,255,.2);color:var(--c1);padding:.45rem 1rem;border-radius:2rem;font-family:var(--font);font-weight:600;font-size:.72rem;cursor:pointer;transition:all .3s;letter-spacing:.5px;}
+.toolbar button:hover{background:rgba(0,245,255,.2);transform:translateY(-2px);box-shadow:0 0 15px rgba(0,245,255,.25);}
+.toolbar button.active{background:rgba(0,245,255,.2);border-color:var(--c1);}
+
+/* TÍTULO */
+.title-bar{position:fixed;top:.7rem;left:.7rem;z-index:100;}
+.title-bar h1{font-family:'Orbitron',monospace;font-size:clamp(.9rem,2vw,1.3rem);font-weight:900;background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;}
+.title-bar p{font-size:.7rem;color:rgba(0,245,255,.4);letter-spacing:2px;margin-top:.2rem;}
+
+/* LEGENDA */
+.legend{position:fixed;bottom:1rem;left:1rem;z-index:100;background:rgba(3,6,15,.85);backdrop-filter:blur(12px);border:1px solid rgba(0,245,255,.12);border-radius:14px;padding:.9rem 1.2rem;min-width:180px;}
+.legend h4{font-family:'Orbitron',monospace;font-size:.65rem;color:rgba(0,245,255,.5);letter-spacing:2px;margin-bottom:.7rem;}
+.leg-item{display:flex;align-items:center;gap:.6rem;margin-bottom:.45rem;font-size:.78rem;color:rgba(224,240,255,.65);}
+.leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+
+/* TOOLTIP */
+#tooltip{position:fixed;z-index:200;background:rgba(3,6,15,.92);backdrop-filter:blur(16px);border:1px solid rgba(0,245,255,.25);border-radius:12px;padding:.8rem 1.1rem;max-width:230px;pointer-events:none;opacity:0;transition:opacity .2s;transform:translateY(-8px);}
+#tooltip h3{font-family:'Orbitron',monospace;font-size:.72rem;color:var(--c1);letter-spacing:1px;margin-bottom:.35rem;}
+#tooltip p{font-size:.78rem;color:rgba(224,240,255,.7);line-height:1.5;font-weight:300;}
+#tooltip .badge{display:inline-block;margin-top:.4rem;padding:.15rem .6rem;border-radius:2rem;font-size:.65rem;letter-spacing:1px;font-weight:600;}
+
+/* CONTROLES */
+.controls{position:fixed;bottom:1rem;right:1rem;z-index:100;display:flex;flex-direction:column;gap:.4rem;}
+.ctrl-btn{background:rgba(0,245,255,.06);backdrop-filter:blur(12px);border:1px solid rgba(0,245,255,.15);color:var(--c1);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;transition:all .2s;}
+.ctrl-btn:hover{background:rgba(0,245,255,.18);border-color:var(--c1);}
+
+/* HINT */
+.hint{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);z-index:100;font-size:.7rem;color:rgba(0,245,255,.3);letter-spacing:2px;pointer-events:none;animation:fadeHint 4s ease forwards;}
+@keyframes fadeHint{0%{opacity:.6;}80%{opacity:.6;}100%{opacity:0;}}
+</style>
+</head>
+<body>
+
+<canvas id="canvas3d"></canvas>
+
+<div class="title-bar">
+  <h1>FLUXOGRAMA 3D</h1>
+  <p>INFOENGINE · INTERATIVO · PCSOLUÇÕES</p>
+</div>
+
+<div class="toolbar">
+  <button onclick="setFlow('tronix')" id="btn-tronix" class="active">🤖 Tronix</button>
+  <button onclick="setFlow('produto')" id="btn-produto">📦 Produto</button>
+  <button onclick="setFlow('atendimento')" id="btn-atendimento">📞 Atendimento</button>
+  <button onclick="toggleAuto()" id="btn-auto">⏸ Parar</button>
+  <button onclick="resetCamera()">🔄 Reset</button>
+</div>
+
+<div id="tooltip">
+  <h3 id="tt-title">Nó</h3>
+  <p id="tt-desc">Descrição</p>
+  <span class="badge" id="tt-badge">TIPO</span>
+</div>
+
+<div class="legend">
+  <h4>LEGENDA</h4>
+  <div class="leg-item"><div class="leg-dot" style="background:#00f5ff;box-shadow:0 0 6px #00f5ff;"></div> Início / Fim</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#7b2fff;box-shadow:0 0 6px #7b2fff;"></div> Processo</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#ffd700;box-shadow:0 0 6px #ffd700;"></div> Decisão</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#00ff88;box-shadow:0 0 6px #00ff88;"></div> Saída / Resultado</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#ff6b35;box-shadow:0 0 6px #ff6b35;"></div> Integração</div>
+</div>
+
+<div class="controls">
+  <div class="ctrl-btn" onclick="zoom(1.2)" title="Zoom +">＋</div>
+  <div class="ctrl-btn" onclick="zoom(0.8)" title="Zoom −">－</div>
+  <div class="ctrl-btn" onclick="resetCamera()" title="Reset">⌂</div>
+</div>
+
+<div class="hint" id="hint">🖱 Arraste para girar · Scroll para zoom · Hover nos nós</div>
+
+<script>
+// ============================================================
+// FLUXOGRAMA 3D — Canvas puro (sem dependências externas)
+// ============================================================
+
+const canvas = document.getElementById('canvas3d');
+const ctx    = canvas.getContext('2d');
+const tooltip = document.getElementById('tooltip');
+
+// --- DADOS DOS FLUXOGRAMAS ---
+const flows = {
+
+  tronix: {
+    title: 'Agente Tronix',
+    nodes: [
+      { id:0,  label:'INÍCIO',          desc:'Sistema Tronix inicializado',                  type:'start',    color:'#00f5ff', x:0,   y: 2.5, z:0   },
+      { id:1,  label:'Recebe Tarefa',   desc:'Orquestrador recebe solicitação do usuário',   type:'process',  color:'#7b2fff', x:-2,  y: 1,   z:1   },
+      { id:2,  label:'Análise IA',      desc:'GPT-4o analisa contexto e intenção',           type:'process',  color:'#7b2fff', x: 2,  y: 1,   z:1   },
+      { id:3,  label:'É Código?',       desc:'Decisão: a tarefa envolve programação?',        type:'decision', color:'#ffd700', x: 0,  y:-0.5, z:1.5 },
+      { id:4,  label:'Dev Agent',       desc:'Agente especialista em código é acionado',     type:'process',  color:'#7b2fff', x:-2.5,y:-2,   z:2   },
+      { id:5,  label:'Media Agent',     desc:'Agente de mídia e conteúdo é acionado',        type:'process',  color:'#7b2fff', x: 2.5,y:-2,   z:2   },
+      { id:6,  label:'Gera Artefato',   desc:'Código, HTML, PDF ou imagem é gerado',         type:'output',   color:'#00ff88', x:-2,  y:-3.5, z:1   },
+      { id:7,  label:'Gera Conteúdo',   desc:'Texto, infográfico ou vídeo é produzido',      type:'output',   color:'#00ff88', x: 2,  y:-3.5, z:1   },
+      { id:8,  label:'Salva Memória',   desc:'memoria_tronix.json e DB são atualizados',     type:'integration',color:'#ff6b35',x: 0,  y:-5,   z:0   },
+      { id:9,  label:'WhatsApp/Web',    desc:'Resultado entregue via WhatsApp ou web',       type:'output',   color:'#00ff88', x: 0,  y:-6.5, z:-0.5},
+      { id:10, label:'FIM',             desc:'Ciclo completo. Tronix aguarda próxima tarefa.',type:'start',    color:'#00f5ff', x: 0,  y:-8,   z:0   },
+    ],
+    edges:[
+      [0,1],[0,2],[1,3],[2,3],[3,4],[3,5],[4,6],[5,7],[6,8],[7,8],[8,9],[9,10]
+    ]
+  },
+
+  produto: {
+    title: 'Fluxo de Produto',
+    nodes: [
+      { id:0,  label:'IDEIA',           desc:'Ideia inicial do produto ou feature',          type:'start',    color:'#00f5ff', x:0,   y: 3,   z:0   },
+      { id:1,  label:'Pesquisa',        desc:'Pesquisa de mercado e análise de concorrentes',type:'process',  color:'#7b2fff', x:-1.5,y: 1.5, z:1   },
+      { id:2,  label:'Briefing',        desc:'Documento de requisitos e escopo definido',    type:'process',  color:'#7b2fff', x: 1.5,y: 1.5, z:1   },
+      { id:3,  label:'Viável?',         desc:'Análise de viabilidade técnica e financeira',  type:'decision', color:'#ffd700', x: 0,  y: 0,   z:1.5 },
+      { id:4,  label:'Revisar',         desc:'Voltar ao briefing com ajustes',               type:'process',  color:'#ff6b35', x: 3,  y:-1,   z:1   },
+      { id:5,  label:'Design',          desc:'Prototipagem e design de interface',           type:'process',  color:'#7b2fff', x:-2,  y:-1.5, z:2   },
+      { id:6,  label:'Desenvolvimento', desc:'Sprint de desenvolvimento ágil',               type:'process',  color:'#7b2fff', x: 0,  y:-3,   z:2   },
+      { id:7,  label:'Testes QA',       desc:'Testes automatizados e manuais',               type:'process',  color:'#7b2fff', x: 0,  y:-4.5, z:1   },
+      { id:8,  label:'Aprovado?',       desc:'O produto passou nos critérios de qualidade?', type:'decision', color:'#ffd700', x: 0,  y:-6,   z:1.5 },
+      { id:9,  label:'Corrigir Bug',    desc:'Correção e novo ciclo de testes',              type:'process',  color:'#ff6b35', x: 2.5,y:-7,   z:1   },
+      { id:10, label:'LANÇAMENTO',      desc:'Deploy em produção e comunicação ao mercado',  type:'output',   color:'#00ff88', x: 0,  y:-8,   z:0   },
+    ],
+    edges:[
+      [0,1],[0,2],[1,3],[2,3],[3,4],[3,5],[4,2],[5,6],[6,7],[7,8],[8,9],[8,10],[9,7]
+    ]
+  },
+
+  atendimento: {
+    title: 'Fluxo de Atendimento',
+    nodes: [
+      { id:0,  label:'CONTATO',         desc:'Cliente entra em contato pelo canal digital',  type:'start',    color:'#00f5ff', x:0,   y: 3,   z:0   },
+      { id:1,  label:'Triagem IA',      desc:'Bot classifica urgência e tipo de solicitação',type:'integration',color:'#ff6b35',x: 0,  y: 1.5, z:1   },
+      { id:2,  label:'Autoatendimento', desc:'FAQ inteligente resolve problemas comuns',      type:'process',  color:'#7b2fff', x:-2.5,y: 0,   z:1.5 },
+      { id:3,  label:'Humano?',         desc:'É necessário atendimento humano especializado?',type:'decision', color:'#ffd700', x: 1,  y: 0,   z:1.5 },
+      { id:4,  label:'Resolvido!',      desc:'Problema resolvido automaticamente',            type:'output',   color:'#00ff88', x:-2.5,y:-1.5, z:1   },
+      { id:5,  label:'Fila Suporte',    desc:'Ticket criado e atribuído ao agente correto',  type:'process',  color:'#7b2fff', x: 2.5,y:-1.5, z:2   },
+      { id:6,  label:'Atendimento',     desc:'Agente humano atende e registra interação',    type:'process',  color:'#7b2fff', x: 2.5,y:-3.5, z:1.5 },
+      { id:7,  label:'Solucionado?',    desc:'O problema foi resolvido neste atendimento?',  type:'decision', color:'#ffd700', x: 0,  y:-5,   z:1.5 },
+      { id:8,  label:'Escalonar',       desc:'Escalado para nível 2 ou especialista',        type:'integration',color:'#ff6b35',x: 3,  y:-6.5, z:1   },
+      { id:9,  label:'Feedback',        desc:'NPS e avaliação do atendimento enviados',      type:'process',  color:'#7b2fff', x:-1,  y:-6.5, z:1   },
+      { id:10, label:'ENCERRADO',       desc:'Ticket fechado e dados salvos no CRM',         type:'start',    color:'#00f5ff', x: 0,  y:-8,   z:0   },
+    ],
+    edges:[
+      [0,1],[1,2],[1,3],[2,4],[3,5],[5,6],[6,7],[7,8],[7,9],[8,6],[9,10],[4,10]
+    ]
+  }
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let currentFlow = 'tronix';
+let autoRotate  = true;
+let rotX = 0.28, rotY = 0.3;
+let targetRotX = 0.28, targetRotY = 0.3;
+let camZ = 14;
+let targetCamZ = 14;
+let dragging = false, lastMX = 0, lastMY = 0;
+let hoveredNode = null;
+let mouseX = 0, mouseY = 0;
+let animT = 0;
+let pulseNodes = {};
+
+// ============================================================
+// RESIZE
+// ============================================================
+function resize(){
+  canvas.width  = window.innerWidth  * devicePixelRatio;
+  canvas.height = window.innerHeight * devicePixelRatio;
+  canvas.style.width  = window.innerWidth  + 'px';
+  canvas.style.height = window.innerHeight + 'px';
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+}
+window.addEventListener('resize', resize);
+resize();
+
+// ============================================================
+// 3D MATH
+// ============================================================
+function rotateY(p, a){ return { x: p.x*Math.cos(a)+p.z*Math.sin(a), y:p.y, z:-p.x*Math.sin(a)+p.z*Math.cos(a) }; }
+function rotateX(p, a){ return { x:p.x, y:p.y*Math.cos(a)-p.z*Math.sin(a), z:p.y*Math.sin(a)+p.z*Math.cos(a) }; }
+
+function project(p){
+  const W = window.innerWidth, H = window.innerHeight;
+  const fov = 600;
+  const zOff = camZ;
+  const zd = p.z + zOff;
+  if(zd <= 0.1) return null;
+  const scale = fov / zd;
+  return { x: W/2 + p.x * scale, y: H/2 - p.y * scale, scale };
+}
+
+function transformNode(n){
+  let p = { x: n.x, y: n.y, z: n.z };
+  p = rotateY(p, rotY);
+  p = rotateX(p, rotX);
+  return p;
+}
+
+// ============================================================
+// DRAW HELPERS
+// ============================================================
+function drawGlow(x, y, r, color, alpha=0.3){
+  const g = ctx.createRadialGradient(x,y,0,x,y,r*2.5);
+  g.addColorStop(0, color.replace(')',`,${alpha})`).replace('rgb','rgba').replace('#', 'rgba(').replace(/([0-9a-f]{2})/gi, (m)=>parseInt(m,16)+',').slice(0,-1)+`)` );
+  g.addColorStop(1,'transparent');
+  ctx.beginPath();
+  ctx.arc(x,y,r*2.5,0,Math.PI*2);
+  ctx.fillStyle = g;
+  ctx.fill();
+}
+
+function hexToRgb(hex){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
+}
+
+function drawNode(n, proj, pulse, isHover){
+  const { x, y, scale } = proj;
+  const r = scale * (n.type==='decision' ? 0.55 : 0.6);
+  const rgb = hexToRgb(n.color);
+  const pulseR = r + pulse * r * 0.4;
+
+  // outer pulse ring
+  if(pulse > 0){
+    ctx.beginPath();
+    ctx.arc(x, y, pulseR, 0, Math.PI*2);
+    ctx.strokeStyle = `rgba(${rgb},${0.5*(1-pulse)})`;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+
+  // glow
+  const glowR = r * (isHover ? 3.5 : 2.5);
+  const grd = ctx.createRadialGradient(x,y,0,x,y,glowR);
+  grd.addColorStop(0, `rgba(${rgb},${isHover?0.35:0.18})`);
+  grd.addColorStop(1, 'transparent');
+  ctx.beginPath();
+  ctx.arc(x,y,glowR,0,Math.PI*2);
+  ctx.fillStyle = grd;
+  ctx.fill();
+
+  // shape
+  ctx.save();
+  ctx.translate(x,y);
+  if(n.type === 'decision'){
+    // diamante
+    ctx.beginPath();
+    ctx.moveTo(0,-r*1.3); ctx.lineTo(r*1.1,0); ctx.lineTo(0,r*1.3); ctx.lineTo(-r*1.1,0);
+    ctx.closePath();
+  } else if(n.type === 'start'){
+    // stadium
+    ctx.beginPath();
+    ctx.ellipse(0,0,r*1.4,r*0.85,0,0,Math.PI*2);
+  } else {
+    // círculo
+    ctx.beginPath();
+    ctx.arc(0,0,r,0,Math.PI*2);
+  }
+
+  // fill
+  const fg = ctx.createRadialGradient(-r*.3,-r*.3,0,0,0,r*1.5);
+  fg.addColorStop(0, `rgba(${rgb},${isHover?0.55:0.35})`);
+  fg.addColorStop(1, `rgba(${rgb},0.08)`);
+  ctx.fillStyle = fg;
+  ctx.fill();
+
+  // stroke
+  ctx.strokeStyle = `rgba(${rgb},${isHover?1:0.8})`;
+  ctx.lineWidth = isHover ? 2.5 : 1.5;
+  ctx.stroke();
+
+  // inner shimmer
+  const sg = ctx.createLinearGradient(-r,-r,r,r);
+  sg.addColorStop(0,`rgba(255,255,255,0.15)`);
+  sg.addColorStop(1,'transparent');
+  ctx.fillStyle = sg;
+  ctx.fill();
+
+  ctx.restore();
+
+  // label
+  const fs = Math.max(9, Math.min(13, scale * 0.9));
+  ctx.font = `700 ${fs}px 'Orbitron',monospace`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = `rgba(${rgb},1)`;
+  ctx.shadowColor = n.color;
+  ctx.shadowBlur = 8;
+
+  // word wrap
+  const words = n.label.split(' ');
+  if(words.length === 1){
+    ctx.fillText(n.label, x, y);
+  } else {
+    ctx.fillText(words[0], x, y - fs*0.65);
+    ctx.fillText(words.slice(1).join(' '), x, y + fs*0.65);
+  }
+  ctx.shadowBlur = 0;
+}
+
+function drawEdge(p1, p2, color1, color2, progress=1){
+  const g = ctx.createLinearGradient(p1.x,p1.y,p2.x,p2.y);
+  g.addColorStop(0,  `rgba(${hexToRgb(color1)},0.6)`);
+  g.addColorStop(progress, `rgba(${hexToRgb(color2)},0.6)`);
+  g.addColorStop(1, `rgba(${hexToRgb(color2)},0.05)`);
+
+  ctx.beginPath();
+  ctx.moveTo(p1.x, p1.y);
+
+  // curva bezier suave
+  const mx = (p1.x+p2.x)/2, my = (p1.y+p2.y)/2;
+  const cpx = mx + (p2.y-p1.y)*0.15, cpy = my - (p2.x-p1.x)*0.15;
+  ctx.quadraticCurveTo(cpx, cpy, p2.x, p2.y);
+
+  ctx.strokeStyle = g;
+  ctx.lineWidth = Math.max(1, (p1.scale+p2.scale)/2 * 0.08);
+  ctx.stroke();
+
+  // seta
+  const angle = Math.atan2(p2.y - cpy, p2.x - cpx);
+  const as = Math.max(6, (p1.scale+p2.scale)/2 * 0.5);
+  ctx.save();
+  ctx.translate(p2.x, p2.y);
+  ctx.rotate(angle);
+  ctx.beginPath();
+  ctx.moveTo(0,0); ctx.lineTo(-as,-as*0.5); ctx.lineTo(-as,as*0.5);
+  ctx.closePath();
+  ctx.fillStyle = `rgba(${hexToRgb(color2)},0.9)`;
+  ctx.fill();
+  ctx.restore();
+}
+
+// partículas nas arestas
+const particles = [];
+function spawnParticle(p1, p2, color){
+  particles.push({ x:p1.x, y:p1.y, tx:p2.x, ty:p2.y, t:0, color, speed: 0.008+Math.random()*0.006 });
+}
+
+// ============================================================
+// MAIN RENDER
+// ============================================================
+function render(){
+  const W = window.innerWidth, H = window.innerHeight;
+  ctx.clearRect(0,0,W,H);
+  animT += 0.012;
+
+  // suaviza rotação
+  rotX += (targetRotX - rotX) * 0.08;
+  rotY += (targetRotY - rotY) * 0.08;
+  camZ += (targetCamZ - camZ) * 0.08;
+  if(autoRotate && !dragging) targetRotY += 0.003;
+
+  // background grid
+  ctx.strokeStyle = 'rgba(0,245,255,0.03)';
+  ctx.lineWidth = 1;
+  const gs = 60;
+  for(let x=0;x<W;x+=gs){ ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke(); }
+  for(let y=0;y<H;y+=gs){ ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke(); }
+
+  const flow = flows[currentFlow];
+  const nodes = flow.nodes;
+  const edges = flow.edges;
+
+  // transforma todos
+  const transformed = nodes.map(n => {
+    const p3d = transformNode(n);
+    const proj = project(p3d);
+    return proj ? { ...proj, node: n } : null;
+  });
+
+  // ordena por z (painter's algorithm)
+  const sorted = transformed.filter(Boolean).sort((a,b)=> b.z - a.z);
+
+  // arestas
+  ctx.save();
+  edges.forEach(([i,j]) => {
+    const a = transformed[i], b = transformed[j];
+    if(!a || !b) return;
+    drawEdge(a, b, nodes[i].color, nodes[j].color);
+
+    // spawn partícula ocasionalmente
+    if(Math.random() < 0.008) spawnParticle(a, b, nodes[j].color);
+  });
+  ctx.restore();
+
+  // partículas
+  for(let i=particles.length-1;i>=0;i--){
+    const p = particles[i];
+    p.t += p.speed;
+    if(p.t >= 1){ particles.splice(i,1); continue; }
+    const px = p.x + (p.tx-p.x)*p.t;
+    const py = p.y + (p.ty-p.y)*p.t;
+    const rgb = hexToRgb(p.color);
+    ctx.beginPath();
+    ctx.arc(px,py,3,0,Math.PI*2);
+    ctx.fillStyle = `rgba(${rgb},${0.9*(1-p.t)})`;
+    ctx.shadowColor = p.color; ctx.shadowBlur = 8;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+
+  // nós
+  sorted.forEach(({ x, y, scale, node }) => {
+    const isHover = hoveredNode && hoveredNode.id === node.id;
+    if(!pulseNodes[node.id]) pulseNodes[node.id] = Math.random();
+    pulseNodes[node.id] = (pulseNodes[node.id] + 0.015) % 1;
+    drawNode(node, { x, y, scale }, pulseNodes[node.id], isHover);
+  });
+
+  // título flow no canto inferior centro
+  ctx.font = "600 12px 'Exo 2',sans-serif";
+  ctx.textAlign = 'center';
+  ctx.fillStyle = 'rgba(0,245,255,0.2)';
+  ctx.fillText(flow.title.toUpperCase(), W/2, H - 12);
+
+  requestAnimationFrame(render);
+}
+
+// ============================================================
+// INTERAÇÃO
+// ============================================================
+canvas.addEventListener('mousedown', e => { dragging=true; lastMX=e.clientX; lastMY=e.clientY; });
+window.addEventListener('mouseup',   () => dragging=false);
+window.addEventListener('mousemove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  if(dragging){
+    targetRotY += (e.clientX - lastMX) * 0.008;
+    targetRotX += (e.clientY - lastMY) * 0.005;
+    targetRotX = Math.max(-1.2, Math.min(1.2, targetRotX));
+    lastMX=e.clientX; lastMY=e.clientY;
+  }
+  // hover detection
+  const flow = flows[currentFlow];
+  let found = null;
+  flow.nodes.forEach(n => {
+    const p3d = transformNode(n);
+    const proj = project(p3d);
+    if(!proj) return;
+    const dx = mouseX - proj.x, dy = mouseY - proj.y;
+    const r = proj.scale * 0.65;
+    if(Math.sqrt(dx*dx+dy*dy) < r) found = n;
+  });
+  if(found !== hoveredNode){
+    hoveredNode = found;
+    if(found){
+      const rgb = hexToRgb(found.color);
+      tooltip.style.opacity = '1';
+      tooltip.style.left = (mouseX+16)+'px';
+      tooltip.style.top  = (mouseY-10)+'px';
+      document.getElementById('tt-title').textContent = found.label;
+      document.getElementById('tt-desc').textContent  = found.desc;
+      const badge = document.getElementById('tt-badge');
+      badge.textContent = found.type.toUpperCase();
+      badge.style.background = `rgba(${rgb},0.15)`;
+      badge.style.color = found.color;
+      badge.style.borderColor = `rgba(${rgb},0.4)`;
+      badge.style.border = '1px solid';
+    } else {
+      tooltip.style.opacity = '0';
+    }
+  }
+  if(found) { tooltip.style.left=(mouseX+16)+'px'; tooltip.style.top=(mouseY-10)+'px'; }
+});
+
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  targetCamZ = Math.max(6, Math.min(25, targetCamZ + e.deltaY * 0.02));
+}, {passive:false});
+
+// TOUCH
+let lastTouchDist = 0;
+canvas.addEventListener('touchstart', e => {
+  if(e.touches.length===1){ dragging=true; lastMX=e.touches[0].clientX; lastMY=e.touches[0].clientY; }
+  if(e.touches.length===2){ const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY; lastTouchDist=Math.sqrt(dx*dx+dy*dy); }
+},{passive:true});
+canvas.addEventListener('touchend', ()=>dragging=false,{passive:true});
+canvas.addEventListener('touchmove', e=>{
+  if(e.touches.length===1 && dragging){
+    targetRotY+=(e.touches[0].clientX-lastMX)*0.008;
+    targetRotX+=(e.touches[0].clientY-lastMY)*0.005;
+    targetRotX=Math.max(-1.2,Math.min(1.2,targetRotX));
+    lastMX=e.touches[0].clientX; lastMY=e.touches[0].clientY;
+  }
+  if(e.touches.length===2){
+    const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;
+    const dist=Math.sqrt(dx*dx+dy*dy);
+    targetCamZ=Math.max(6,Math.min(25,targetCamZ+(lastTouchDist-dist)*0.05));
+    lastTouchDist=dist;
+  }
+},{passive:true});
+
+// ============================================================
+// CONTROLES
+// ============================================================
+function setFlow(name){
+  currentFlow = name;
+  particles.length = 0;
+  pulseNodes = {};
+  document.querySelectorAll('.toolbar button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('btn-'+name).classList.add('active');
+  resetCamera();
+}
+
+function toggleAuto(){
+  autoRotate = !autoRotate;
+  document.getElementById('btn-auto').textContent = autoRotate ? '⏸ Parar' : '▶ Girar';
+}
+
+function resetCamera(){
+  targetRotX = 0.28; targetRotY = 0.3; targetCamZ = 14;
+}
+
+function zoom(factor){
+  targetCamZ = Math.max(6, Math.min(25, targetCamZ / factor));
+}
+
+// start
+render();
+</script>
+</body>
+</html>

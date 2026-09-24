@@ -51,7 +51,7 @@ def handle_initialize(params: dict) -> dict:
         },
         "serverInfo": {
             "name": "Tronix MCP Server",
-            "version": "1.5.0"
+            "version": "1.6.0"
         }
     }
 
@@ -178,6 +178,31 @@ TOOLS = [
                 "acao": {"type": "string", "enum": ["status", "versao", "como_usar"], "description": "Acao a executar (padrao: status)"}
             },
             "required": []
+        }
+    },
+    {
+        "name": "tronix_crawl4ai",
+        "description": "Crawl4AI - Web scraper LLM-friendly. Scrapa URL e retorna markdown limpo para agentes.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "url": {"type": "string", "description": "URL para scrapar"},
+                "output": {"type": "string", "description": "Arquivo de saida (opcional)"},
+                "batch": {"type": "array", "items": {"type": "string"}, "description": "Multiplas URLs para scrapar em paralelo"}
+            },
+            "required": ["url"]
+        }
+    },
+    {
+        "name": "tronix_gitnexus",
+        "description": "GitNexus - Code graph intelligence. Analisa repositorios, busca simbolos, impact analysis.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "acao": {"type": "string", "enum": ["analyze", "status", "list", "mcp"], "description": "Acao a executar"},
+                "repo": {"type": "string", "description": "Caminho do repositorio (opcional)"}
+            },
+            "required": ["acao"]
         }
     }
 ]
@@ -363,6 +388,50 @@ def handle_tools_call(params: dict) -> dict:
                     "solucao": "Execute: npm install -g freebuff"
                 }, indent=2)}]}
 
+    elif name == "tronix_crawl4ai":
+        url = args.get("url", "")
+        output = args.get("output", "")
+        batch = args.get("batch", [])
+        try:
+            if batch:
+                cmd = f'python "{ROOT / "tronix_crawl4ai.py"}" --multi {" ".join(batch)}'
+            elif output:
+                cmd = f'python "{ROOT / "tronix_crawl4ai.py"}" "{url}" --output "{output}"'
+            else:
+                cmd = f'python "{ROOT / "tronix_crawl4ai.py"}" "{url}"'
+            result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=str(ROOT), timeout=120)
+            output_text = (result.stdout + result.stderr)[-4000:]
+            status = "sucesso" if result.returncode == 0 else "erro"
+            return {"content": [{"type": "text", "text": json.dumps({"status": status, "output": output_text}, indent=2)}]}
+        except subprocess.TimeoutExpired:
+            return {"content": [{"type": "text", "text": "Erro: Crawl4AI excedeu timeout de 120s"}]}
+        except Exception as e:
+            return {"content": [{"type": "text", "text": json.dumps({"status": "erro", "erro": str(e)}, indent=2)}]}
+
+    elif name == "tronix_gitnexus":
+        acao = args.get("acao", "status")
+        repo = args.get("repo", "")
+        try:
+            if acao == "analyze":
+                path = repo or str(ROOT)
+                cmd = f'gitnexus analyze "{path}"'
+            elif acao == "status":
+                cmd = "gitnexus status"
+            elif acao == "list":
+                cmd = "gitnexus list"
+            elif acao == "mcp":
+                cmd = "gitnexus mcp"
+            else:
+                return {"content": [{"type": "text", "text": f"Acao '{acao}' invalida"}]}
+            result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=str(ROOT), timeout=300)
+            output = (result.stdout + result.stderr)[-4000:]
+            status = "sucesso" if result.returncode == 0 else "erro"
+            return {"content": [{"type": "text", "text": json.dumps({"status": status, "acao": acao, "output": output}, indent=2)}]}
+        except subprocess.TimeoutExpired:
+            return {"content": [{"type": "text", "text": "Erro: GitNexus excedeu timeout de 300s"}]}
+        except Exception as e:
+            return {"content": [{"type": "text", "text": json.dumps({"status": "erro", "erro": str(e)}, indent=2)}]}
+
     return {"content": [{"type": "text", "text": f"Ferramenta '{name}' nao encontrada"}]}
 
 RESOURCES = [
@@ -416,7 +485,7 @@ def main():
     log("INFO", "Tronix MCP Server iniciado (stdio)")
     log("INFO", f"Gateway: {GATEWAY_URL}")
     log("INFO", f"DB: {DB_PATH}")
-    log("INFO", "12 ferramentas registradas (inclui tronix_freebuff)")
+    log("INFO", "14 ferramentas registradas (inclui crawl4ai + gitnexus)")
 
     for line in sys.stdin:
         line = line.strip()
