@@ -1,4 +1,9 @@
-import pyttsx3
+try:
+    import pyttsx3
+    HAS_PYTTSX3 = True
+except ImportError:
+    HAS_PYTTSX3 = False
+    pyttsx3 = None
 import threading
 import queue
 
@@ -11,6 +16,8 @@ class TTSEngine:
         self._init_engine()
 
     def _init_engine(self):
+        if not HAS_PYTTSX3:
+            return
         try:
             self.engine = pyttsx3.init()
             self.engine.setProperty('rate', 180)
