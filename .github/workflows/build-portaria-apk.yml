@@ -50,6 +50,13 @@ jobs:
           ndk-version: r25c
           build-tools-version: 37.0.0
 
+      - name: Link Android SDK for Buildozer
+        run: |
+          mkdir -p ~/.buildozer/android/platform/android-sdk
+          ln -sf $ANDROID_HOME ~/.buildozer/android/platform/android-sdk
+          # Verify build-tools exists
+          ls -la ~/.buildozer/android/platform/android-sdk/build-tools/
+
       - name: Accept Android SDK licenses
         run: |
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
