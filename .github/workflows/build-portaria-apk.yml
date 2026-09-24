@@ -50,11 +50,16 @@ jobs:
           ndk-version: r25c
           build-tools-version: 37.0.0
 
-      - name: Link Android SDK for Buildozer
+      - name: Configure Buildozer Android SDK
         run: |
-          mkdir -p ~/.buildozer/android/platform/android-sdk
+          # Buildozer uses ~/.buildozer/android/platform/android-sdk by default
+          # But we can point it to the GitHub Actions SDK via env vars
+          echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> $GITHUB_ENV
+          echo "ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
+          # Also create the expected directory structure
+          mkdir -p ~/.buildozer/android/platform
           ln -sf $ANDROID_HOME ~/.buildozer/android/platform/android-sdk
-          # Verify build-tools exists
+          # Verify
           ls -la ~/.buildozer/android/platform/android-sdk/build-tools/
 
       - name: Accept Android SDK licenses
@@ -68,6 +73,9 @@ jobs:
 
       - name: Build APK
         working-directory: ./portaria_facial
+        env:
+          ANDROID_SDK_ROOT: ${{ env.ANDROID_HOME }}
+          ANDROID_HOME: ${{ env.ANDROID_HOME }}
         run: |
           buildozer -v android debug
 
