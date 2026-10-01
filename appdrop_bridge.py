@@ -80,8 +80,14 @@ UA = 'Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46'
 ESTADOS_FALHA = {'failed', 'error', 'failed_install'}
 
 
+def _seguro(s):
+    """Remove caracteres que o console Windows (cp1252) nao consegue imprimir,
+    como o simbolo da Apple (U+F8FF) que aparece em titulos de apps."""
+    return str(s).encode('ascii', 'ignore').decode('ascii')
+
+
 def log(*a):
-    print(*a, flush=True)
+    print(*(_seguro(x) for x in a), flush=True)
 
 
 # ---------------------------------------------------------------- historico
