@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 REM AppDrop Bridge — instala no iPad o que o AppDrop nao consegue instalar
 title AppDrop Bridge
 cd /d "%~dp0"

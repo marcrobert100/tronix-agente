@@ -1,896 +1,1443 @@
-﻿{
-    "identity":  "Tronix",
-    "version":  "1.6.1",
-    "usuario":  {
-                    "nome":  "Marcos Roberto",
-                    "whatsapp":  "5582991856656",
-                    "whatsapp_local":  "82991856656",
-                    "instagram_arroba":  "marcosrobertosilva100"
-                },
-    "last_initialization":  "2026-09-20T15:56:56.925035",
-    "status":  "active",
-    "protocol_history":  [
-                             "SESSAO_2026-05-12",
-                             "SESSAO_2026-06-03",
-                             "SESSAO_2026-07-19",
-                             "SESSAO_2026-08-24",
-                             "SESSAO_2026-09-04",
-                             "SESSAO_2026-09-04",
-                             "SESSAO_2026-09-06"
-                         ],
-    "sync_log":  [
-                     {
-                         "timestamp":  "2026-05-11T12:00:00Z",
-                         "source":  "logs_evolucao",
-                         "records_synced":  6,
-                         "last_sync_time":  "2026-05-11T12:00:00Z"
-                     }
-                 ],
-    "last_actions":  [
-                         {
-                             "agente":  "Tronix-DEV",
-                             "timestamp":  "2026-09-21T23:30:00Z",
-                             "acao":  "SUPER_AGENT_9ROUTER: Tronix Super Agent v1.0 criado (tronix_super_agent.py). Coding agent direto via 9Router API (localhost:20128). SWE-agent v1.1.0 clonado (requer Docker, nao funcional). Aider v0.86.2 instalado (bug com prefixo openai/). Solucao final: script custom openai.API + 9Router. Modelos testados: gemini/gemma-4-31b-it (rate limit 429), openrouter/minimax/minimax-m3 (OK 5.5s). API key: sk-0****ce0f. Config 9router.yaml criado em SWE-agent/. Atalho: aider_9router.bat + tronix_super_agent.py.",
-                             "id":  148
-                         },
-                         {
-                             "agente":  "Tronix-DEV",
-                             "timestamp":  "2026-09-21T21:54:37Z",
-                             "acao":  "INSTALADO: Qwen Code v0.24.3 - Agente de codigo IA open-source (27.5k stars GitHub). Configurado com 9Router (localhost:20128) usando Gemini 3.8 Flash. Atalho Desktop \u0027Qwen Code.bat\u2019. Suporta multi-protocolo (OpenAI, Anthropic, Gemini, Qwen), modo interativo + headless, /review, /batch, subagents.",
-                             "id":  3
-                         },
-                         {
-                             "id":  141,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "PHONE_HARNESS_INSTALADO+REDMI_6A_CONECTADO: Instalado ShawnPana/phone-harness v0.3.0 + Google.PlatformTools (ADB 37.0.1). Xiaomi Redmi 6A (Android 9) conectado, autorizado e operando via ADB. Navegacao no Chrome e Gmail executada.",
-                             "timestamp":  "2026-09-20T15:56:56.925035"
-                         },
-                         {
-                             "id":  2,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "BACKTEST_SElETIVO_HONESTO + FIX_DISCO_DEFINITIVO OK: 1) Causa raiz do \"parar de acertar as cores\": 2 typos gravados por sessao anterior no tronix_projecao.py (CORES4 -\u003e dict CORES; prior â€œytoâ€ -\u003e troco 1.0) -- TODA chamada prever() crashava NameError -\u003e fallback fantasma -\u003e previsao morta. 2) Fix: replace numa copia limpa via python (disco real, nao tool-cache; arquivo unico C:\\xampp\\htdocs\\agente\\tronix_projecao.py). 3) Validado: import 100% limpo, prever 200x sem excecao, TECNICAS=7 incl segundo_grau, CORES mapeia 0..14. 4) Backtest HONESTO cor-vs-cor (n=199): TODAS acur=48.2% (baseline uniforme 33%, teto Double provably fair ~54%, excesso vs uniforme = +15.4pp) | SELETIVO conf\u003e=0.60: n=0 apostas (0% cobertura; nenhuma rodada atinge o limiar com esse conjunto de 7 pesos). 5) Conclusao honesta: o W-Ensemble NAO bate o teto Double; a vantagem real esta em pesos adaptativos + learning feedback com decay (pesos ativos: frio_cedo 1.92, multi_window 1.80, horario 1.79, segundo_grau 1.66). 6) Sugestao (nao implementada): seletividade otima para Double eh aposta so quando score \u003e= 0.70 (conf\u0027 que calibra cor-por-cor, decai tecnicas ruins via loop aprender/acerto\u003c33%%) -- mas teto segue provably fair, melhoria real demanda arvore/cadeias de rodadas (dataset Double real ja tem horas; montantes NUNCA influem). Proximo passo: puxar dataset Double real com hora para calibrar horario/frio_cedo corretamente (hoje seed usa 15 cores uniforme; backtest random e so smoke-test).",
-                             "timestamp":  "2026-09-13T20:00:00Z"
-                         },
-                         {
-                             "id":  1,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "FIX_CORES+SEGUNDO_GRAU_100PCT: tronix_projecao.py tinha NameError CORES4/yto nas linhas 233/229 que MATAVA toda previsao (prever() crashava -\u003e fallback fantasma). Reescrevi ambas (disco real via python, bypass do cache divergente da tool). prever() 200x sem excecao. Backtest HONESTO cor-vs-cor: todas=42.9% (n=219) | SELETIVO conf\u003e=0.60: acur=0.0% (n=0, cobertura=0%). Baseline uniforme 33%, teto Double provably fair 54%. Pesos ativos: {\"multi_window\": 1.8, \"ewma\": 0.97, \"vies_transicao\": 1.19, \"metade_pintura\": 1.05, \"horario\": 1.79, \"frio_cedo\": 1.92, \"segundo_grau\": 1.66}",
-                             "timestamp":  "2026-09-13T18:13:45Z"
-                         },
-                         {
-                             "id":  147,
-                             "agente":  "Tronix-MENTE",
-                             "acao":  "BLAZE_CEREBRO_APRENDIZADO: tronix_projecao.py reescrito como PrevisorAprendiz - W-ENSEMBLE 6 tecnicas (multi_window 15/30/60/120, ewma DECAY .94, vies_transicao, metade_pintura, horario, frio_cedo) com PESOS ADAPTATIVOS por acerto real. Feedback loop: a cada rodada LIVE cerebro.aprender(n) decai exp (ALPHA .12), pondera peso por acuraria acima/abaixo de 33% (sobe ate 2.2, rebaixa ate .25 - tecnicas ruins perdem influencia real, nao so somam). Confianca calibrada por janela rolante 160 (frequencia real de acerto por cor, nao chute). Persistencia blaze_cerebro.json. Bugs fix: KeyError dict colide cor 0 em metade_pintura (v=0 duplicava chave), NoneType horas. Backtest 130 rodadas: 54.1% (109 jogos); metade_pintura (49% acur) rebaixada automaticamente pra peso 1.76. Simulador integrado: init carrega cerebro persistente, a cada novo numero LIVE chama cerebro.aprender(n), card CEREBRO APRENDIZADO (acur+peso por tecnica, feedbacks, calibracao real por cor), pred_sub mostra probs V/P/B + top_tec + gap + pesos.",
-                             "timestamp":  "2026-09-13"
-                         },
-                         {
-                             "id":  146,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "BLAZE_V4_SUPER_ALERTA_BRANCO: App reescrito. Corrigida corrupcao de persistencia (blaze_historico.json truncado a 6 nums vs 190 horas) com dataset unico alinhado blaze_dataset.json {nums,horas,ids} + merge por ID. SUPER ALERTA BRANCO multi-sinal ponderado (sobrevivencia acumulada 42%, atraso vs gap medio 28%, mancha atual 18%, freq na hora 12%). Niveis NORMAL/ATENCAO/CRITICO/IMINENTE com flash real (140-600ms) + beeps distintos. Branco domina previsao quando score\u003e=0.70. Testado: LIVE 201+ rodadas com ids, previsao FORTE PRETO 70%, alerta ATENCAO score .55 atraso 16.",
-                             "timestamp":  "2026-09-13"
-                         },
-                         {
-                             "id":  145,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "BLAZE_SIMULATOR_v3+SIMULTANEO: Live tempo real via AJAX BestBlaze (poll ~3s, antes 30s). Descoberto: home https://www.bestblaze.com.br/ expoe _token CSRF; POST /jogadasDouble (ini + _token + cookie jar) retorna JSON 200 rodadas com id_rodadas_double sequencial (padrao +5), cor, time. Site polia setInterval(listDouble,2000). Classe BestBlaze no simulador: sessao urllib+cookie jar+token revalidado quando expira; iniciais()=200 recentes, novas(last_id)=incremental no-loop sem duplicata (~0.2s). v3: persistencia blaze_historico.json, grafico barras 15 nums Canvas (quentes=ouro), alerts winsound (novo/branco/deve-alerta), simulador estrategia SEGUIR vs QUEBRAR martingale, janela 40/80/200/tudo, ultimo numero grande colorido, sequencias e quebras recentes, frios. Testado: poll 15s capturou nova (13@id1333820). App pid 9824.",
-                             "timestamp":  "2026-09-13"
-                         },
-                         {
-                             "id":  144,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "BLAZE_SIMULATOR: criado tronix_blaze_simulator.py (Desktop TRONIX BLAZE.bat) - app Tkinter analise Double. Pvt: Blaze fechou API REST/WebSocket publica (roulette_trends 1011, roulette_games/history vazio, socketio replication 404/503, blaze.com 503) -\u003e entrada manual de resultados. Analise live: frequencia cor, numeros quentes, sequencias atuais/maiores, quebras de padrao, cacador de brancos (gap medio/max, alerta devendo branco), previsao (seguir 1.5x ou quebrar 7x). Modo demo random. Tema dark. Testado abre OK.",
-                             "timestamp":  "2026-09-13"
-                         },
-                         {
-                             "id":  143,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "TRONIX_LIVRE: chat desktop totalmente liberto criado. tronix_livre.py - console interativo direto com openai/gpt-oss-120b via HuggingFace Router (gratis, sem filtros). Reusa tronix_astra.gerar() com fallback automatico (HF -\u003e Ollama). Persona TRONIX LIVRE (caveman, direto). Memoriza historico por sessao em livre_logs/sessao_*.json, salvamento a cada mensagem, comando /novo /limpar /modelo /sair. Notificacao Windows via win10toast quando resposta pronta. Log diario em livre_logs/YYYY-MM-DD.log. Atalho Desktop \u0027TRONIX LIVRE.bat\u0027 (roda com --continua). Teste real: ativacao respondida OK.",
-                             "timestamp":  "2026-09-13"
-                         },
-                         {
-                             "id":  142,
-                             "agente":  "Tronix-MEDIA",
-                             "acao":  "NOVELA_VIDEO_STORYBOARDS: Gerada mini-novela vertical 1080x1920 (55s, 8MB) em Desktop/mini_novela_BIZU_story.mp4 a partir dos 11 storyboards PT do LocalMiniDrama (ep2 Mercadinho Bizu). Script gerar_novela_storyboards.py: imagem 1080x1920 por shot via adapter Pollinations (flux, retry 429), legenda PT queimada na imagem via PIL (arialbd, stroke), Ken Burns zoompan FFmpeg (liÃ§Ã£o: drawtext em cadeia com zoompan falha parsing/escaping -\u003e legenda via PIL + zoompan em separado), concat demuxer, narracao Edge-TTS pt-BR-AntonioNeural do dialogo/acao por shot, audio AAC muxed. Rotas redescobertas: /api/v1/scenes/generate-image {scene_id}, /characters/:id/generate-image, /storyboards/episode/:id/generate retorna data.task_id.task_id (aninhado). Quota HF gratuita esgotada -\u003e Ollama local default (ai-config id3).",
-                             "timestamp":  "2026-09-13"
-                         },
-                         {
-                             "id":  141,
-                             "agente":  "Tronix-MEDIA",
-                             "acao":  "MININOVELA_PT_LOCALMINIDRAMA: Drama id2 Mercadinho Bizu completo via API em PT-BR. Roteiro escrito por TRONIX (O Resgate do Mercadinho Bizu, 4291 chars). 6 personagens extraidos do roteiro com retratos Pollinations flux (Dona Severina, Claudete, Advogado, Tico-Tico, Ze Batista, TRONIX). 11 storyboards gerados (Ollama qwen2.5:7b local, modelos HF Router gratis esgotaram 402 - quota mensal). 8 cenas com fundos via Pollinations. HF TOKEN quota de Inference Providers esgotada no mes; fallback automatico p/ Ollama local funcionou (config text id3 Ollama default). Adapter imagem tronix_img_adapter.py otimizado: retry 429 + delay 5s entre imagens. Timeout stream IA do backend subiu de 60s para 180s (Ollama frio demora no 1o token). Tudo salvo em drama_generator.db; http://localhost:3013",
-                             "timestamp":  "2026-09-13"
-                         },
-                         {
-                             "id":  129,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "LIMPEZA_SEGURANCA+LIMPEZA_LINUX: REMOVIDO XMRig cryptominer (kit \u0027audio system\u0027: C:\\runtime, C:\\diagnostics, C:\\perfdata, C:\\rescache, %APPDATA%\\Sound - config apontava C2 audiosystem.online, pools Monero hashvault/moneroocean, worker CHCONTE3). Causava PowerShell abrindo/fechando a cada login. Removidas 4 tasks malware (DriverUpdate, GraphicsCardEngineupdater, MicrosoftdriverUpdate, audio system), 4 chaves Run (AdobePS1, Windows PowerShell v1.0 [download obfuscado], WinSysGuard, WindowsPowerShell_v1.0 CL_NCL), netsetup.lnk, reg.exe desabilitado por politica resetado. LINUX REMOVIDO: WSL Ubuntu + kali-linux unregistered, feature Microsoft-Windows-Subsystem-Linux desabilitada, homelab (Jellyfin stack) apagado, 8 regras netsh portproxy -\u003e IP WSL removidas. CLONES/SOBRAS apagados: dify, ragflow, picture-book-skill, nca-toolkit, nPhoneKIT, scrcpy, open-webui, ComfyUI, nethunter_apks, gallery-skills, omniroute, prayer-diary-desktop, fastcrw + scripts Linux (iniciar_infra.ps1, iniciar_dify_ragflow.bat, instalar_nethunter.sh, setup_github.ps1). OTIMIZACAO: autostart LM Studio + FilmoraTray removidos, ReduceMemory.lnk morto removido, iniciar_tudo.bat reescrito (API Gateway + n8n).",
-                             "timestamp":  "2026-09-06"
-                         },
-                         {
-                             "id":  128,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "HOMELAB_ONLINE: WSL dockerd estabilizou apos restart-storm inicial (SIGTERM ~40s no daemon, origem interna WSL nao isolada; sistema segurou sozinho). 8/8 servicos respondendo HTTP 200 em http://localhost/{8096 jellyfin, 7878 radarr, 8989 sonarr, 9696 prowlarr, 8080 qbit, 6767 bazarr, 3579 ombi, 8191 flaresolverr}. Criado homelab/keepalive.ps1 + Task Scheduler TronixHomelabKeepalive (1 em 1 min): re-sobe docker compose se cair, refresca netsh portproxy (8 regras 0.0.0.0 -\u003e IP WSL atual, IP muda a cada boot da VM), iptables DOCKER-USER ACCEPT via root. Jellyfin healthy. Acessar pelo app/celular: IP da maquina na LAN + porta (portproxy escuta 0.0.0.0).",
-                             "timestamp":  "2026-09-06"
-                         },
-                         {
-                             "id":  127,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "DEMO_YOUTUBE_3MIN: navegacao teste em tronix_jarvis/actions/youtube_video.py. Fixes: 1) trending agora usa busca filtrada sp=EgIQAQ (feed/trending bloqueado por bot-wall) devolvendo views+canal+url; 2) summarize aceita url nos parameters do Gemini (antes ignorava, so dialogo tkinter); 3) transcript adaptado youtube-transcript-api v1.2.4 (API mudou: YouTubeTranscriptApi().list(), snippets sao objetos .text, prioridade manual pt-BR); 4) branding TRONIX. Demo: demo_navegacao.py (DummyPlayer, 5 min sem HUD) - info/play/trending/transcript OK; resumo final requer GEMINI_API_KEY vazia no .env.",
-                             "timestamp":  "2026-09-05"
-                         },
-                         {
-                             "id":  126,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "JARVIS_MARK: Estrutura do video \u0027I Gave JARVIS Full Control of My Computer\u0027 (MARK XLVIII/Gemini Live API) portada para TRONIX em agente/tronix_jarvis/. main.py (loop Gemini Live + dispatch) + ui.py (HUD PyQt6: waveform, log, interrupt, camera) + setup.py + 19 modulos actions/ (open_app, web_search, screen_processor, computer_settings/control, browser_control, file_controller/processor, code_helper, dev_agent, reminder, weather, flight_finder, youtube_video, send_message, game_updater, desktop, system_monitor, proactive) + memory/long_term.json + core/prompt.txt (persona TRONIX pt-BR) + config/api_keys.json + dashboard remoto (porta 8000). Integrado ecossistema Tronix: tools tronix_status/agentes/scripts/executar/memoria via gateway 8081 + tronix.db. Chave Gemini via .env ou wizard do HUD. Deps instaladas: PyQt6, mss, qrcode, pycaw, pywinauto, win10toast. Testes: todos os 19 actions importam, tools tronix_* respondem, banco le real. DELTA 2026-09-05: revalidada estrutura, corrigida query tronix_memoria (coluna acao) e reinstaladas deps PyQt6/mss.",
-                             "timestamp":  "2026-09-05"
-                         },
-                         {
-                             "id":  125,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "HOMELAB_HOST_MODE: Configurado network_mode: host no Jellyfin em docker-compose.yml. Servidor respondeu HTTP 200 OK no IP direto do WSL2: http://172.18.245.58:8096/",
-                             "timestamp":  "2026-09-05"
-                         },
-                         {
-                             "id":  124,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "HOMELAB_FIX: Corrigido portproxy circular no netsh Windows + migrados volumes de config do docker-compose para Ext4 named volumes (/config) evitando travamento do SQLite no NTFS. Jellyfin v10.10.7 100% online e operacional em http://localhost:8096/",
-                             "timestamp":  "2026-09-05"
-                         },
-                         {
-                             "id":  123,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "HOMELAB: Servidor de midia caseiro criado em agente/homelab/. Stack: Jellyfin (8096) + Radarr (7878) + Sonarr (8989) + Prowlarr (9696) + qBittorrent (8080) + Bazarr (6767) + Ombi (3579) + FlareSolverr (8191). Docker Compose pronto. Script setup_completo.bat + fix_iptables.sh. Pastas D:\\Media\\{Filmes,Series,Downloads,Legendas,Musica}. Portproxy Windows-\u003eWSL2. iptables DOCKER-USER fix para forward. Atalho Desktop Tronix Homelab.",
-                             "timestamp":  "2026-09-05"
-                         },
-                         {
-                             "id":  12,
-                             "agente":  "Tronix",
-                             "acao":  "ATIVACAO: Tronix ativado por Marcos em 2026-05-12. Sessao iniciada.",
-                             "timestamp":  "2026-05-12T12:00:00Z"
-                         },
-                         {
-                             "id":  13,
-                             "agente":  "Tronix",
-                             "acao":  "VERIFICACAO_PASTA: Explorado diretorio agente/ com 100+ entradas. Confirmados sistema Tronix, PCsoluÃ§Ãµes, pipeline de midia.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  14,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "CRIADO: index.php - Galeria visual Tronix com grid responsivo, players de video, badges Original/Animado/Super Editor, match imagem por timestamp.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  15,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "ATUALIZADO: index.php - Logica de matching imagem-\u003evideo por timestamp, suporte a _super e _super_voz com badges e botoes diferenciados.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  16,
-                             "agente":  "Tronix-SUPER",
-                             "acao":  "CRIADO: tronix_super_editor.py - Pipeline de voz Edge-TTS + legenda com FFmpeg. Usa AntonioNeural (pt-BR). Corrigido encoding UTF-8 e fontfile.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  17,
-                             "agente":  "Tronix-SUPER",
-                             "acao":  "EXECUTADO: Super Editor no video tronix_1778515500.mp4 com texto PROMOCAO PCSOLUCOES. Gerado _super.mp4 (texto) e _super_voz.mp4 (voz gTTS).",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  18,
-                             "agente":  "Tronix-SUPER",
-                             "acao":  "MIGRADO: gTTS para Edge-TTS (voz mais natural). Instalado edge-tts v7.2.8. Voz alterada para pt-BR-AntonioNeural.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  19,
-                             "agente":  "Tronix-SUPER",
-                             "acao":  "ATUALIZADO: tronix_super_editor.py - Agora por padrao adiciona SOMENTE voz. Texto na tela apenas com flag --texto.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  20,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "CRIADO: mini_novela.py - Concatena N videos da pasta videos_saida usando concat demuxer do FFmpeg.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  21,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "EXECUTADO: mini_novela.py juntou 3 videos (tronix.mp4 + _super.mp4 + _super_voz.mp4) em mini_novela.mp4 (12s, 1.2MB).",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  22,
-                             "agente":  "Tronix-MEDIA",
-                             "acao":  "CRIADO: gerar_mini_novela.py - Pipeline completo: Cloudflare SDXL -\u003e Ken Burns -\u003e Edge-TTS voz -\u003e FFmpeg concat.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  23,
-                             "agente":  "Tronix-MEDIA",
-                             "acao":  "EXECUTADO: gerar_mini_novela.py com tema \u0027Extraterrestre invade a Terra\u0027. 3 cenarios: A Chegada, O Plano, A Invasao. Imagens via Cloudflare, video Ken Burns, voz AntonioNeural. MINI NOVELA PRONTA em mini_novela.mp4 (14s, 4MB, Full HD 1920x1080).",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  24,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "FIX: gera_video.py adaptado para moviepy v2.2.1 - TextClip com kwargs, font path, FadeIn/FadeOut via moviepy.video.fx, ColorClip API v2. Removido slide/typewriter/bounce custom.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  25,
-                             "agente":  "Tronix",
-                             "acao":  "MEMORIA: Sessao 2026-05-12 salva. Configuracao: Tronix ativo em Vicosa-AL, PCsoluÃ§Ãµes. Pipeline funcional: Cloudflare SDXL -\u003e Ken Burns -\u003e Edge-TTS AntonioNeural -\u003e FFmpeg concat.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  26,
-                             "agente":  "Tronix-SYNC",
-                             "acao":  "SKILLS_SINCRONIZADAS: 37 skills carregadas do .agent/skills/ (Antigravity Kit). Atualizado tronix_core.json com a lista oficial.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  27,
-                             "agente":  "Tronix-DB",
-                             "acao":  "CRIADO: tronix_logger.py - Banco SQLite (tronix.db) com tabelas conteudo, pipeline_log, agendamento. Integrado ao super_editor e gerador de mini-novelas.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  28,
-                             "agente":  "Tronix-DB",
-                             "acao":  "CRIADO: sql_tronix.sql - Schema MySQL para quando o XAMPP estiver disponivel.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  29,
-                             "agente":  "Tronix-DOC",
-                             "acao":  "CRIADO: potencial.md no Desktop com lista de capacidades e pendencias (redes sociais, agendador, jogos, dashboard).",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  29,
-                             "agente":  "Tronix-DOC",
-                             "acao":  "CRIADO: potencial.md no Desktop com lista de capacidades e pendencias.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  30,
-                             "agente":  "Tronix-YT",
-                             "acao":  "CRIADO: tronix_youtube.py - Upload YouTube via OAuth 2.0. Aguardando client_secrets.json do Google Cloud.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  31,
-                             "agente":  "Tronix-IG",
-                             "acao":  "INSTALADO: instagrapi v2.6.3. CRIADO: tronix_instagram.py - Posta Reels e fotos no Instagram via login mobile. Suporte a postagem de pendentes do banco.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  32,
-                             "agente":  "Tronix",
-                             "acao":  "FIM_SESSAO: 2026-05-12. Pipeline completo: gerar -\u003e banco -\u003e postar. Proximo: agendador Windows + dashboard.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  33,
-                             "agente":  "Tronix",
-                             "acao":  "CORRECAO: Credenciais IG removidas do .env (nao eram do Instagram). Script tronix_instagram.py aguarda dados corretos.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  34,
-                             "agente":  "Tronix-RESEARCH",
-                             "acao":  "PESQUISA_GITHUB: Modelos encontrados - Open-Sora 2.0 (24k stars), CogVideoX (12.5k), HunyuanVideo (11.9k), Wan2.2, LTX-2. Automacao: instagrapi, auto-reels-uploader, Agentfy, MoneyPrinterTurbo, OpenMontage.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  35,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "CRIADO: dashboard.php - Dashboard web PHP com SQLite. Exibe estatisticas, conteudos recentes e pipeline log. Acessivel em /agente/dashboard.php",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  36,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "CRIADO: tronix_scheduler.ps1 - Script PowerShell que instala 3 tarefas no Windows: PostarInstagram (10h/14h/18h), GerarNovela (08h), Limpeza (domingo 03h).",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  37,
-                             "agente":  "Tronix-IG",
-                             "acao":  "ATUALIZADO: tronix_instagram.py v2 - Suporte a --pasta (postar todos videos de uma pasta), --pendentes (banco), --video (individual).",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  38,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "ATUALIZADO: index.php - Link para dashboard.php adicionado no footer.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  39,
-                             "agente":  "Tronix",
-                             "acao":  "GPU check: Sem CUDA. Modelos locais inviaveis.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  40,
-                             "agente":  "Tronix-MEDIA",
-                             "acao":  "CRIADO: animar_ia.py - Pipeline 3-tentativas: 1) ZSky API (gratis, 1080p), 2) Replicate (Wan 2.2 I2V, $0.01), 3) HuggingFace SVD (fallback). Substitui o antigo animar_opencode.py.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  41,
-                             "agente":  "Tronix",
-                             "acao":  "TESTE: Imagem cachorro surfando gerada via Cloudflare SDXL. Video Ken Burns criado com FFmpeg. ZSky API retornou 404. Token HuggingFace expirou.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  42,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "CRIADO: animar_replicate.py - Script dedicado para Wan 2.2 I2V via Replicate API. Guia de setup incluido no --help.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  43,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "FIX: moviepy reinstalado v2.2.1 (estava v1 quebrado pelo instagrapi). gera_video.py restaurado para imports v2.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  44,
-                             "agente":  "Tronix",
-                             "acao":  "FIM_SESSAO: Pipeline funcional: Ken Burns + FFmpeg. Pendente: configurar Replicate API.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  45,
-                             "agente":  "Tronix-NCA",
-                             "acao":  "CLONADO: NCA-ToolKit (stephengpope, 2.3k stars) para C:\\xampp\\htdocs\\agente\\nca-toolkit. Servidor Flask rodando na porta 8080 com 28 blueprints. Dependencias instaladas: google-cloud-storage, google-cloud-run, boto3. Limitacao: requer S3/MinIO para upload de arquivos.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  46,
-                             "agente":  "Tronix-NCA",
-                             "acao":  "CRIADO: tronix_nca.py - Wrapper Python para NCA-ToolKit. Endpoints: imagem_para_video(), concatenar_videos(), adicionar_legenda(), status().",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  47,
-                             "agente":  "Tronix",
-                             "acao":  "FIM_SESSAO: Tudo registrado.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  48,
-                             "agente":  "Tronix-INFRA",
-                             "acao":  "INSTALADO: Docker Engine v29.4.3 dentro do WSL2 Ubuntu. Docker rodando, composes prontos.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  49,
-                             "agente":  "Tronix-INFRA",
-                             "acao":  "INSTALADO: MinIO via Docker Compose. Portas 9000 (API) e 9001 (Console). Bucket \u0027tronix\u0027 criado. Pendente: resolver rota WSL2 -\u003e Windows para NCA-ToolKit enxergar MinIO.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  50,
-                             "agente":  "Tronix-INFRA",
-                             "acao":  "CRIADO: iniciar_infra.ps1 - Script one-click que: 1) Sobe WSL+Docker+MinIO, 2) Detecta IP do WSL, 3) Inicia NCA-ToolKit. Basta rodar: powershell -File iniciar_infra.ps1",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  51,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "FIX: NCA-ToolKit caption_video endpoint desabilitado (falta fontes linux /usr/share/fonts/custom). 28 blueprints registrados de 34.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  52,
-                             "agente":  "Tronix",
-                             "acao":  "FIM_SESSAO: Docker + MinIO + NCA-ToolKit instalados. Pipeline FFmpeg nativo OK.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  53,
-                             "agente":  "Tronix-INFRA",
-                             "acao":  "INSTALADO: moto S3 mock (Python puro, leve). Servidor rodando na porta 9090. Bucket \u0027tronix\u0027 criado e funcional.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  54,
-                             "agente":  "Tronix-INFRA",
-                             "acao":  "CRIADO: iniciar_tudo.bat - Script batch one-click que inicia Moto S3 + NCA-ToolKit sequencialmente. Basta dar duplo clique.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  55,
-                             "agente":  "Tronix",
-                             "acao":  "FIM_SESSAO_COMPLETA: 2026-05-12. Tronix v1.0 totalmente operacional. Infraestrutura: Cloudflare SDXL, FFmpeg, Edge-TTS, SQLite, MinIO/moto S3, NCA-ToolKit. Pendentes: billing Replicate para Wan 2.2, credenciais Instagram.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  56,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "UPGRADE: Instalado CrewAI v1.14.4 e n8n v2.20.6. Criado tronix_crew.py com 9 agentes (DEV, MEDIA, SUPER, IG, YT, DB, INFRA, RESEARCH, SYNC) em processo hierarquico com memoria persistente.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  57,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "UPGRADE: Criado n8n_workflow.json com pipeline visual: Agendador Cron -\u003e Cloudflare SDXL -\u003e Ken Burns -\u003e Edge-TTS -\u003e SQLite. Workflow importavel via http://localhost:5678.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  58,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "UPGRADE: Criado iniciar_n8n.bat para start one-click do n8n. CrewAI usa LLM free configurado no tronix_crew.py.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  59,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "INSTALADO: Langflow v1.9.2 via uv. Interface drag-and-drop para agentes LangChain. Acessivel em http://localhost:7860 via \u0027python -m langflow run\u0027",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  60,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "CLONADO: Dify (langgenius) em agente/dify/. Plataforma full-stack AI apps com RAG + agente + workflow. Docker compose em dify/docker/. Porta 3000.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  61,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "CLONADO: RAGFlow (infiniflow) em agente/ragflow/. Engine RAG enterprise. Docker compose em ragflow/docker/. Porta 9380.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  62,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "CRIADO: iniciar_dify_ragflow.bat - Script one-click que sobe Dify + RAGFlow via Docker WSL2. Para Langflow: python -m langflow run.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  63,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "UNIFICACAO: API Gateway FastAPI criado (porta 8081). 12 endpoints REST. CrewAI atualizado com GatewayTool + N8nTool. n8n workflow v2 com webhook. Dashboard unificado com status em tempo real. iniciar_tronix.bat one-click.",
-                             "timestamp":  "2026-05-12T14:00:00Z"
-                         },
-                         {
-                             "id":  64,
-                             "agente":  "CREWAI-TEST",
-                             "acao":  "Teste de integracao",
-                             "timestamp":  "2026-05-12T09:44:40Z"
-                         },
-                         {
-                             "id":  65,
-                             "agente":  "TESTE",
-                             "acao":  "EXECUTOU: tronix_logger.py ",
-                             "timestamp":  "2026-05-12T09:44:42Z"
-                         },
-                         {
-                             "id":  66,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "ATUALIZADO: tronix_crew.py - LLM migrado para OpenRouter (google/gemini-2.0-flash-exp). Adicionados agentes ROTEIRISTA e DIRETOR. Manager LLM configurado via OpenRouter.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  67,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "ATUALIZADO: tronix_core.json - v1.3.0, agentes 9-\u003e11 com ROTEIRISTA e DIRETOR, manager_llm openrouter/google/gemini-2.0-flash-exp",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  68,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "CONFIGURADO: OPENROUTER_API_KEY adicionada ao .env. CrewAI pronto para usar google/gemini-2.0-flash-exp via OpenRouter.",
-                             "timestamp":  "2026-05-12"
-                         },
-                         {
-                             "id":  69,
-                             "agente":  "Tronix-SANTINHO",
-                             "acao":  "CRIADO: santinho_generator/ - Gerador profissional de santinhos politicos. 14 modelos (classico, moderno_minimalista, premium_executivo, colorido_partidario, jovem_dinamico, tradicao_brasileiro, agro_forte, sindical_trabalhador, empresarial_pro, fotografico_impacto, minimalista_horizontal, cristao_familia, tecnologico_inovador, esporte_juventude).",
-                             "timestamp":  "2026-06-02"
-                         },
-                         {
-                             "id":  70,
-                             "agente":  "Tronix-MEDIA",
-                             "acao":  "DESIGN: 14 templates visuais em CSS puro + 6 templates renderizados via Pillow (300 DPI) com fontes do sistema. Paleta Tronix (preto + accent vermelho + ciano + dourado) respeitada.",
-                             "timestamp":  "2026-06-02"
-                         },
-                         {
-                             "id":  71,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "INTERFACE: index.html com editor visual completo - 14 cards de modelo, sidebar de cores (4 canais), formulario com 12 campos, preview ao vivo, tabs FRENTE/VERSO com QR Code automatico no verso, salvamento de candidatos no localStorage.",
-                             "timestamp":  "2026-06-02"
-                         },
-                         {
-                             "id":  72,
-                             "agente":  "Tronix-SUPER",
-                             "acao":  "PIPELINE: santinho.py (engine Python 300 DPI) + gerar_lote.py (multi-candidato). Integracao Pillow + ReportLab. Grid A4 9 santinhos (3x3) com sangria 3mm. Frente e verso automaticos. Teste: 3 candidatos gerados com sucesso (classico, premium_executivo, moderno_minimalista).",
-                             "timestamp":  "2026-06-02"
-                         },
-                         {
-                             "id":  73,
-                             "agente":  "Tronix-DB",
-                             "acao":  "SCHEMA: SQLite santinho.db com tabelas candidatos + geracoes. Registro automatico de cada geracao (candidato, quantidade, copias, com_verso, arquivo_saida, timestamp).",
-                             "timestamp":  "2026-06-02"
-                         },
-                         {
-                             "id":  74,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "ONE-CLICK: iniciar_santinho.bat - Instala Pillow+ReportLab, inicializa banco, abre interface no navegador. Para CLI: python santinho.py --help. Para lote: python gerar_lote.py --input exemplos_candidatos.json --quantidade 1000",
-                             "timestamp":  "2026-06-02"
-                         },
-                         {
-                             "id":  75,
-                             "agente":  "Tronix-SANTINHO",
-                             "acao":  "EXPANSAO: 14 -\u003e 20 modelos. Adicionados: diagonal_dinamico, retro_vintage, gradient_suave, black_gold_luxo, tropical_verao, civico_municipal.",
-                             "timestamp":  "2026-06-02"
-                         },
-                         {
-                             "id":  76,
-                             "agente":  "Tronix-MEDIA",
-                             "acao":  "ACESSORIOS: 9 simbolos (cruz, estrela, coracao, bandeira, raio, mao, familia, pomba) + 5 molduras foto (quadrada, redonda, losango, hexagonal, escudo) + 4 estilos foto (normal, PB, sepia, duotone) + 11 badges (mulher, jovem, renovacao, experiencia, educacao, saude, seguranca, agro, religioso, trabalhador, novo) + toggles (selo_je, vice, proposta_destaque, zona_secao, faixa_cor).",
-                             "timestamp":  "2026-06-02"
-                         },
-                         {
-                             "id":  77,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "CAMADA-ACC: Sistema de acessorios como camada sobreposta. Sidebar do editor com 9 selects/toggles. Engine Python implementa todos os acessorios com PIL (mascaras, filtros, composicao).",
-                             "timestamp":  "2026-06-02"
-                         },
-                         {
-                             "id":  78,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "ENGINE: render_acessorios() desenha sobre a imagem apos o modelo. carregar_foto() com filtros. aplicar_moldura_foto() com mascaras PIL (redonda, losango, hexagonal). aplicar_estilo_foto() para PB/sepia/duotone.",
-                             "timestamp":  "2026-06-02"
-                         },
-                         {
-                             "id":  79,
-                             "agente":  "Tronix-GRAPHIFY",
-                             "acao":  "INSTALADO: Graphify v0.8.30. Provider custom \u0027nvidia\u0027 registrado (Llama 3.1 8B via NVIDIA NIM API). Skill carregada no contexto.",
-                             "timestamp":  "2026-06-03"
-                         },
-                         {
-                             "id":  80,
-                             "agente":  "Tronix-GRAPHIFY",
-                             "acao":  "AST_EXTRACAO: 1639 arquivos processados (AST tree-sitter local). Grafo: 18626 nodes, 18868 edges.",
-                             "timestamp":  "2026-06-03"
-                         },
-                         {
-                             "id":  81,
-                             "agente":  "Tronix-GRAPHIFY",
-                             "acao":  "CLUSTERIZACAO: 1373 comunidades detectadas via Leiden algorithm. Comunidades 0-199 nomeadas por LLM (Order Management, Browser Automation, Server Application, UI Component Library, Tronix System, MCP Overview, etc.).",
-                             "timestamp":  "2026-06-03"
-                         },
-                         {
-                             "id":  82,
-                             "agente":  "Tronix-GRAPHIFY",
-                             "acao":  "REPORT: GRAPH_REPORT.md + graph.json (16 MB) + agente-callflow.html gerados em graphify-out/. Grafo queryavel via /graphify query|path|explain.",
-                             "timestamp":  "2026-06-03"
-                         },
-                         {
-                             "id":  83,
-                             "agente":  "Tronix",
-                             "acao":  "FIM_SESSAO: 2026-06-03. Graphify operacional. Proximo: usar /graphify query para explorar o projeto, ou rebuild com --update apos mudancas.",
-                             "timestamp":  "2026-06-03"
-                         },
-                         {
-                             "id":  84,
-                             "agente":  "Tronix",
-                             "acao":  "INTEGRACAO_FREEBUFF: Freebuff v0.0.107 instalado globalmente. Ferramenta tronix_freebuff adicionada ao MCP server (12 ferramentas total). Versao core atualizada para 1.5.0.",
-                             "timestamp":  "2026-06-13"
-                         },
-                         {
-                             "id":  85,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "CONFIGURADO: OpenRouter como LLM para CrewAI. API key validada, modelo google/gemma-4-31b-it:free testado OK. tronix_crew.py + tronix_core.json atualizados.",
-                             "timestamp":  "2026-06-16"
-                         },
-                         {
-                             "id":  86,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "ATIVADO: API Gateway v2.0.0 rodando na porta 8081. Endpoints: /health, /agentes, /scripts, /memoria, /dashboard/stats, /executar, /ws. Banco online, 55 scripts, 11 agentes CrewAI.",
-                             "timestamp":  "2026-06-16"
-                         },
-                         {
-                             "id":  87,
-                             "agente":  "OPENHUMAN",
-                             "acao":  "OPENHUMAN_VOICE: status do sistema",
-                             "timestamp":  "2026-06-16T12:34:04Z"
-                         },
-                         {
-                             "id":  88,
-                             "agente":  "OPENHUMAN",
-                             "acao":  "OPENHUMAN_VOICE: liste os agentes",
-                             "timestamp":  "2026-06-16T12:34:23Z"
-                         },
-                         {
-                             "id":  89,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "CRIADO: Agente OPENHUMAN para bridge OpenHuman-Tronix. Script tronix_openhuman_agent.py processa voice commands. 12 agentes CrewAI now ativos.",
-                             "timestamp":  "2026-06-16"
-                         },
-                         {
-                             "id":  90,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "CRIADO: SESSAO_RAPIDA.md - Arquivo de referencia rapida para novas sessoes. Contem identidade, sistemas, portas, comandos, estrutura, agentes, projetos e pendencias.",
-                             "timestamp":  "2026-06-16"
-                         },
-                         {
-                             "id":  91,
-                             "agente":  "Tronix",
-                             "acao":  "FIM_SESSAO: 2026-06-16. Sessao completa: OpenRouter configurado (40+ modelos gratis), API Gateway v2.0.0 ativo (porta 8081), Agente OPENHUMAN criado (12 agentes CrewAI), SESSAO_RAPIDA.md criado. Sistema 100% operacional.",
-                             "timestamp":  "2026-06-16"
-                         },
-                         {
-                             "id":  92,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "INTEGRACAO_PICTURE_BOOK_SKILL: Clonado picture-book-skill do GitHub. Adaptado para InfoEngine: svg_guide.md, build_livro.py, criar_historia.py atualizado com geracao SVG, template HTML com auto-leitura, WhatsApp e PDF.",
-                             "timestamp":  "2026-07-19"
-                         },
-                         {
-                             "id":  93,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "INSTALADO: Kimi Code v0.27.0 em C:\\Users\\CHCONTE RECPÃ‡ÃƒO\\.kimi-code\\bin. Configurado OpenRouter como provider (openrouter/free).",
-                             "timestamp":  "2026-07-19"
-                         },
-                         {
-                             "id":  94,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "MELHORADO: tronix_logger.py - 6 melhorias: context manager DB(), batch insert registrar_lote(), tabela tarefas integrada, export JSON, limpeza VACUUM, CLI commands (status/listar/exportar/limpar).",
-                             "timestamp":  "2026-07-19"
-                         },
-                         {
-                             "id":  95,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "CRIADO: testar_melhorias.py - Script de verificacao das 6 melhorias do tronix_logger.py.",
-                             "timestamp":  "2026-07-19"
-                         },
-                         {
-                             "id":  96,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "FIX: criar_robo_realista.py - Adicionado \u0027verde\u0027, \u0027verde_escuro\u0027, \u0027coral\u0027 ao dict CORES (KeyError ao gerar cenas cozinha/roupa).",
-                             "timestamp":  "2026-07-19"
-                         },
-                         {
-                             "id":  97,
-                             "agente":  "Tronix-MEDIA",
-                             "acao":  "GERADO: Robo Zukinha - Versao Realista. 8 paginas + capa + final. SVG metalizado 3D com gradientes, parafusos, pistoes, reator pulsante, 4 expressoes. Cores: ciano, cobre, vermelho, verde, coral. 148 KB. HTML em infoengine/output/robo_zukinha_realista.html. Registrado no pipeline_log (ID 12).",
-                             "timestamp":  "2026-07-19"
-                         },
-                         {
-                             "id":  98,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "INSTALADO: ChatGPT oficial (OpenAI) via winget (msstore 9PLM9XGG6VKS). Instalador do Desktop (Store Installer stub) falhou. AppID: OpenAI.Codex_2p2nqsd0c76g0!App.",
-                             "timestamp":  "2026-08-01T05:47:17Z"
-                         },
-                         {
-                             "id":  99,
-                             "agente":  "Tronix-SYNC",
-                             "acao":  "SKILLS_SINCRONIZADAS: 57 skills totais no tronix_core.json (48 antigravity + 8 opencode + 2 builtin). Adicionadas: games (2d/3d/mobile/pc/web/vr-ar), game-art/audio/design, multiplayer, templates, graphify, cavecrew, caveman-*, customize-opencode, react-best-practices.",
-                             "timestamp":  "2026-08-01T05:49:15Z"
-                         },
-                         {
-                             "id":  100,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "CRIADO: tronix_voice.py - JARVIS via Gemini Live API. Voz bidirecional tempo real, 5 ferramentas Tronix (status, agentes, scripts, executar, memoria). Modelo gemini-3.1-flash-live-preview (gratis) com fallback gemini-2.0-flash-live-001. sounddevice+numpy instalados. GEMINI_API_KEY adicionada ao .env (pendente chave).",
-                             "timestamp":  "2026-08-01T06:00:59Z"
-                         },
-                         {
-                             "id":  101,
-                             "agente":  "Tronix-SYNC",
-                             "acao":  "ORGANIZACAO_PC: Desktop limpo (79 arquivos classificados em 01-09 numerado, 18 pastas movidas para 02-Projetos/05-Videos/09-Temporarios). 15 atalhos uteis criados em 01-Atalhos (JOPDF, XAMPP, Python, Node, Tronix AI, iniciar_tudo, urls phpMyAdmin/InfoEngine/API/n8n/Langflow). mysql adicionado ao PATH. Duplicatas renomeadas -desktop.",
-                             "timestamp":  "2026-08-01T07:00:00Z"
-                         },
-                         {
-                             "id":  102,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "REWRITE_MAJOR: Sistema frigorifico/abatedouro (C:\\xampp\\htdocs\\major) refeito. Corrigidos: schema (granja_id faltante em tickets), db-\u003equery/exec inexistentes (zerar quebrava), JS zerarMovimento ids errados, emoji quebrado dashboard. Cupom 80mm perfeito: barcode Code128 (SVG puro), valor por extenso, CNPJ/contato, 2 vias (cliente/empresa), @page 80mm. Novo cadastro granjas.php, config empresa.php, campos aviario/lote/carga/placa/obs. Zerar movimento admin-only + digitar ZERAR. Transaction em save. Testado HTTP: login, ticket, cupom, relatorios, seguranca 400/403. Backup em major.bak.",
-                             "timestamp":  "2026-08-01T08:00:00Z"
-                         },
-                         {
-                             "id":  103,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "MAJOR_UX: Termo Ticket renomeado para Venda em toda a interface (Nova Venda, Vendas Hoje, Venda #, VENDA no cupom). DB/arquivos intactos (tickets, numero_ticket). Relatorio com impressao limpa: @page A4 landscape, esconde sidebar/topbar/filtros, cabecalho impresso com periodo e emitido em. Testado via HTTP.",
-                             "timestamp":  "2026-08-01T08:30:00Z"
-                         },
-                         {
-                             "id":  104,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "MAJOR_EMPRESA: Cadastro de dados do abatedouro criado (cadastros/empresa.php). Tabela empresa_config no banco. Config/empresa.php agora carrega do banco (fallback padroes). Cupom 80mm exibe nome, ramo, CNPJ, endereco, cidade, telefone, whatsapp, site, msg rodape so quando preenchidos. Relatorio impresso inclui CNPJ/endereco/cidade/telefone. Link Empresa na sidebar (todas paginas). Preview ao vivo do cabecalho do cupom na pagina. Testado via HTTP: dados salvos, cupom exibe tudo, sem espacos vazios. Link protegido por requireAdmin.",
-                             "timestamp":  "2026-08-01T09:00:00Z"
-                         },
-                         {
-                             "id":  105,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "MAJOR_PRODUTOS: Cadastro de produtos criado (cadastros/produtos.php). Tabela produtos no banco (nome unico, unidade, descricao, ativo). Seeds FRANGO VIVO e FRANGO ABATIDO. Campo produto em precos.php virou input com datalist do catalogo. Link Produtos na sidebar de todas as paginas (antes de Precos). Testado via HTTP: POLLO CONGELADO cadastrado, duplicado bloqueado, datalist alimentado.",
-                             "timestamp":  "2026-08-01T10:00:00Z"
-                         },
-                         {
-                             "id":  106,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "MAJOR_PRECO_LINK: preco do cliente ligado ao catalogo de produtos. Coluna produto_id (FK-\u003eprodutos) adicionada em precos_cliente, backfill por nome, FK fk_precos_produto. Form de precos virou select do catalogo (FRANGO VIVO, FRANGO ABATIDO, POLLO CONGELADO). Listagem join com produtos. Duplicado cliente+produto bloqueado. Migration no instalar.php + schema.sql. Testado via HTTP: FRANGO ABATIDO salvo com produto_id=2.",
-                             "timestamp":  "2026-08-01T10:30:00Z"
-                         },
-                         {
-                             "id":  107,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "MAJOR_SIMPLIFICAR_VENDA: Campos Granja, Aviario/Lote, Carga e Placa Veiculo removidos do form de venda e do cupom (2 vias). INSERT de tickets sem essas colunas (fica NULL no banco, dados antigos intactos). Form da venda agora: Cliente, Produto, Pesador, Peso Cx, Forma Pagamento, Tipo Aves, Observacoes + itens. JOIN granjas removido de tickets.php/imprimir_cupom.php. Cadastro de Granjas mantido. Testado via HTTP: venda id=5 salva com campos NULL, cupom sem Granja/Placa/Carga, Pesador OK.",
-                             "timestamp":  "2026-08-01T11:00:00Z"
-                         },
-                         {
-                             "id":  108,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "FIX_SISADVENPDV: Erro 3021 BOF no fechamento de pedido corrigido. Causa raiz: tabela ESTOQUE com apenas produto 1 (4068 produtos careciam de registro de estoque, SELECT para baixa de saldo retornava vazio). Acoes: seed GERA_COD_ORC/ULT_NRO_PEDIDO, caixa aberto estacao CHCONTE3 (tabela CAIXA vazia), CLIENTE.COD_FORMA_PGTO=1 (Dinheiro) e ESTOQUE populado com os 4068 produtos (saldo 0). Confirmado: fechamento de pedido com sucesso.",
-                             "timestamp":  "2026-08-08T15:55:00Z"
-                         },
-                         {
-                             "id":  109,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "EBOOK_ERVAS: Gerador criar_ervas.py + ebook pagina a pagina (output/ervas.html, 67 paginas, 136KB). Conteudo transcrito do .doc Desktop: 52 ervas medicinais (uma por pagina com nome latin + receita), 88 indicacoes em tabelas, 10 finalidades ERVAS PARA, 3 banhos, 19 funcoes energeticas, 12 signos. Template grimorio verde/dourado, capa, indice clicavel, menu capitulos, setas/teclado/swipe, PDF print A4, botao WhatsApp. Capa designer em agente/ebook_covers/ (4 modelos, export PNG/PDF).",
-                             "timestamp":  "2026-08-15T00:00:00Z"
-                         },
-                         {
-                             "id":  110,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "INSTALADO: nPhoneKIT v1.6.3 clonado em C:\\xampp\\htdocs\\agente\\nPhoneKIT. Dependencias pip instaladas (pyserial, requests, pyqt5 + mtkclient requirements). Janela GUI testada OK. Atalho Desktop nPhoneKIT.lnk + abrir_nphonekit.bat criados. Pendente manual: Zadig drivers (WinUSB/libusb) + Samsung USB drivers.",
-                             "timestamp":  "2026-08-22T18:06:54Z"
-                         },
-                         {
-                             "id":  111,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "GUASHOP: GuaShop-desenvolvimento instalado em C:/xampp/htdocs/GuaShop. DB guashop criado e populado (NovoSQLPreenchido: 3 lojas, 10 tabelas). Imagens copiadas para imagens/. HTTP testado OK: /GuaShop/ redireciona utilitario/login.php; adm e loja login 200.",
-                             "timestamp":  "2026-08-22"
-                         },
-                         {
-                             "id":  112,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "GUASHOP_REBRAND: Rebrand completo GuaShop -\u003e Balcao Alagoano. 34 arquivos PHP/MD/SQL editados (byte-level UTF-8). DB renomeado guashop -\u003e balcao_alagoano (mysqldump, 10 tabelas, 3 lojas). Pasta htdocs/GuaShop -\u003e balcao-alagoano. URLs testadas 200: /balcao-alagoano/ (utilitario), /adm/, /loja/. Backup zip em %TEMP%/opencode/guashop_backup.zip.",
-                             "timestamp":  "2026-08-22"
-                         },
-                         {
-                             "id":  113,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "BALCAO_TEMA_OCEANO: Landing mar animado virou index.php (ondas 3 camadas vem/vai, sol, gaivotas, CTAs). Tema Moderno Oceano (turquesa/coral/dourado, fontes Sora+Caveat) aplicado nas 3 areas: utilitario 18 paginas, loja 9, adm 5. CSS v2/v3: ceu entardecer fixo no body (override bg-light Bootstrap), logo Caveat dourado, botoes pill coral, cards destaque lift, tabelas gradiente, footer onda animada, sol+gaivota decorativos via JS, carousel glassmorphism. Dark mode localStorage em tudo. Arquivos: {utilitario,loja,adm}/css/tema-moderno.{css,js}",
-                             "timestamp":  "2026-08-22"
-                         },
-                         {
-                             "id":  114,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "KALI_NETHUNTER: Kali Linux WSL2 configurado como root default. DNS fixo (8.8.8.8). 1235 pacotes instalados (288-\u003e1235). Ferramentas: nmap, masscan, metasploit, aircrack-ng, wifite, wireshark, bettercap, responder, crackmapexec, john, hashcat, hydra, sqlmap, nikto, wpscan, gobuster, ffuf, burpsuite, armitage, reaver, mdk4, volatility3, autopsy, openvpn, tor, proxychains4, socat, chisel, adb, fastboot, hostapd-mana, eaphammer, mitm6. Wordlists: SecLists, PayloadsAllTheThings, rockyou. Atalho Desktop: Kali Linux.lnk. Scripts: abrir_kali.bat, criar_atalho_kali.bat.",
-                             "timestamp":  "2026-08-24"
-                         },
-                         {
-                             "id":  115,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "EBOOK_ATROCIDADES: Criado ebook \u0027As Atrocidades de um Deus Biblico\u0027 (34 capitulos). Generator: criar_atrocidades.py v2 com SVGs premium dark (paleta #050508/#6b0000/#b8860b). Capa com olho divino, cruz invertida, textos biblicos dispersos. Conteudo: 34 atrocidades biblicas documentadas com citacoes e questionamento filosofico estilo Saramago. Build: atrocidades.html (127KB). Local: infoengine/output/atrocidades.html",
-                             "timestamp":  "2026-08-24"
-                         },
-                         {
-                             "id":  116,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "INSTALADO: Crawl4AI v0.9.3 (pip). Web scraper LLM-friendly com browser async pool, markdown limpo, caching. Wrapper: tronix_crawl4ai.py. Video fonte: youtube.com/watch?v=s9l1s8jmQ6k (Top Dev Tool Projects).",
-                             "timestamp":  "2026-09-04"
-                         },
-                         {
-                             "id":  117,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "INSTALADO: llm-mem v0.1.1 (pip). Memoria persistente cross-session com SQLite + vector search. Fork do claude-mem. Worker HTTP na porta 37777 com web viewer UI.",
-                             "timestamp":  "2026-09-04"
-                         },
-                         {
-                             "id":  118,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "INSTALADO: GitNexus v1.6.11 (npm global). Code graph intelligence com knowledge graph, 16+ MCP tools (query, context, impact, rename, cypher). Indexa repos em graph com KuzuDB + Tree-sitter. Compativel com OpenCode.",
-                             "timestamp":  "2026-09-04"
-                         },
-                         {
-                             "id":  119,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "CRIADO: tronix_crawl4ai.py - Wrapper Tronix para Crawl4AI. Scrape individual, batch multi-URL, pesquisa. Integra com agente RESEARCH.",
-                             "timestamp":  "2026-09-04"
-                         },
-                         {
-                             "id":  120,
-                             "agente":  "Tronix",
-                             "acao":  "UPGRADE: tronix_core.json v1.6.0. Adicionada secao ferramentas_novas (crawl4ai, llm_mem, gitnexus). Sessao 2026-09-04 registrada.",
-                             "timestamp":  "2026-09-04"
-                         },
-                         {
-                             "id":  121,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "TRENDING_CLONE: 6 repos do GitHub Trending 04/09/2026 clonados em agente/trending/: mattpocock/skills (agent skills), obra/superpowers (agentic framework), affaan-m/ECC (agent optimization), Wei-Shaw/sub2api (AI proxy), makeplane/plane (gestao projetos), google-research/timesfm (time series). PostHog cancelado (disco cheio).",
-                             "timestamp":  "2026-09-04"
-                         },
-                         {
-                             "id":  122,
-                             "agente":  "Tronix-MEDIA",
-                             "acao":  "INFOGRAFICO: GitHub Trending 04/09/2026 - HTML responsivo com 10 repos top, gradientes, stats, links. Salvo em infoengine/output/github_trending_2026-09-04.html.",
-                             "timestamp":  "2026-09-04"
-                         },
-                         {
-                             "id":  123,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "HOMELAB: Servidor de midia caseiro criado em agente/homelab/. Stack: Jellyfin (8096) + Radarr (7878) + Sonarr (8989) + Prowlarr (9696) + qBittorrent (8080) + Bazarr (6767) + Ombi (3579) + FlareSolverr (8191). Docker Compose pronto. Script iniciar_homelab.bat. README com guia completo. Acessivel via app Jellyfin na TV/celular.",
-                             "timestamp":  "2026-09-04"
-                         },
-                         {
-                             "id":  130,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "GPT6_ASTRA: Clonado Anil-matcha/awesome-gpt-6-astra (1.1k stars) para agente/awesome-gpt-6-astra. Criado tronix_astra.py - cliente Responses API (model gpt-6-astra, reasoning effort, modos chat/revisar/relay, prompt coding-agent do repo). Gateway 8081 auto-descobre script. Fallback Chat Completions testado OK via Ollama qwen2.5-coder:7b. Pendente: chave OpenAI real para usar gpt-6-astra.",
-                             "timestamp":  "2026-09-13"
-                         },
-                         {
-                             "id":  131,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "API_ALTERNATIVA_GP6: OpenRouter tem openai/gpt-6-astra mas conta sem creditos (402) - todas as models pagas/flex bloqueadas. NVIDIA NIM (chave real): catalogo 82 modelos atuais (nemotron-3 super/nano reasoning, deepseek-v4) mas chamada timeout. HuggingFace Router API confirmada (https://router.huggingface.co/v1): /v1/models publica, chat/completions requer token (401). Sem HF_TOKEN na maquina. tronix_astra.py expandido com providers openai/openrouter/nim/huggingface(hf) + base_url + chave auto. Pendente: criar token HF gratis (huggingface.co/settings/tokens) e setar HF_TOKEN pra usar Inference Providers free tier.",
-                             "timestamp":  "2026-09-13"
-                         },
-                         {
-                             "id":  132,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "HF_API_ATIVADO: HF_TOKEN do usuario gravado em .env + variavel User. HuggingFace Router API (https://router.huggingface.co/v1) 100% funcional e GRATIS: /v1/models listou 170+ modelos (Qwen3, DeepSeek-V4 e V3, GLM-5.3, Kimi-K2.7, Nemotron-3, e openai/gpt-oss-120b/20b open weights). Testado chat: Qwen/Qwen3-32B e openai/gpt-oss-120b responderam normalmente. tronix_astra.py --provider huggingface pronto. gpt-oss-120b = alternativa GPT-6-class gratuita via HF.",
-                             "timestamp":  "2026-09-13"
-                         },
-                         {
-                             "id":  133,
-                             "agente":  "Tronix-MENTE",
-                             "acao":  "AUTO_EVOLUCAO: criado tronix_mente.py - loop de reflexao (le memoria+banco, consulta oai/gpt-oss-120b via HF Router gratis, salva reflexoes em tronix.db nova tabela + reflexao_latest.md), perfil_marcos.json (Marcos: tom caveman, copia-paste, autonomia ON), comandos status/refletir/sugerir/perfil/auto. Primeira reflexao gerada com 3 acoes + autonomia sugerida.",
-                             "timestamp":  "2026-09-13"
-                         },
-                         {
-                             "id":  134,
-                             "agente":  "Tronix-MENTE",
-                             "acao":  "AGENDAMENTO_REFLEXAO: Task Scheduler TRONIXReflexaoAM (09h) + TRONIXReflexaoPM (17h) chamando reflexao_task.ps1 (le HF_TOKEN do .env, POE no env, roda --refletir). Espelho MySQL implementado: reflexoes vao pra tronix_system.logs_evolucao via pymysql. SQLite continua sendo o banco primario local; MySQL e espelho central opcional.",
-                             "timestamp":  "2026-09-13"
-                         },
-                         {
-                             "id":  135,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "GATEWAY_ONLINE+MODELO_FALLBACK: API Gateway 8081 rodando (67 scripts; tronix_mente/astra expostos na /scripts). tronix_astra.gerar() agora tem cadeia de fallback: principal -\u003e HF(Qwen3-32B, gpt-oss-120b) -\u003e Ollama local(qwen2.5-coder:7b, qwen2.5:7b). Teste: provider openai/gpt-6-astra forcado (inexistente no Ollama) caiu automatico pro HF e respondeu FALLBACK OK. IA nunca mais fica sem resposta se um provider cair.",
-                             "timestamp":  "2026-09-13"
-                         },
-                         {
-                             "id":  136,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "DASHBOARD_STATUS: criado status/index.php (http://localhost/agente/status/) - painel unico monitorando 21 sistemas: Apache, MySQL, Tronix AI, Gateway 8081, n8n, Langflow, Dify, RAGFlow, NCA, Moto S3, MinIO, llm-mem + Homelab todo (Jellyfin/Radarr/Sonarr/Prowlarr/qBittorrent/Bazarr/Ombi/FlareSolverr). Check fsockopen 0.2s/porta, refresh 15s via fetch JSON, stats live MySQL logs_evolucao + SQLite reflexoes. Theme dark Tronix. Testado: 200 OK, 3 online (Apache/MySQL/Gateway).",
-                             "timestamp":  "2026-09-13"
-                         },
-                         {
-                             "id":  137,
-                             "agente":  "Tronix-MEDIA",
-                             "acao":  "MINI_NOVELA_TRONIX: tema TRONIX - A IA que acordou em Vicosa. 3 cenas (O Despertar, A Mente, O Auxilio). Dura 18s, voz AntonioNeural, Ken Burns + texto legenda. Imagens: Cloudflare 401 e api-inference.huggingface.co sem DNS (bloqueada na rede) -\u003e criado gerador de cenas cinematograficas local via PIL (gradientes, silhuetas, robo, cerebro neural, amanhecer) em gerar_mini_novela_hf.py. Final Desktop/mini_novela_TRONIX.mp4 (1.1MB). conteudo id 24.",
-                             "timestamp":  "2026-09-13"
-                         },
-                         {
-                             "id":  138,
-                             "agente":  "Tronix-MEDIA",
-                             "acao":  "MINI_NOVELA_REALISTA: cenas 100% fotorealistas via Pollinations (image.pollinations.ai, modelo flux, gratuito sem chave, resolve no DNS da rede). Novos prompts cinematicos c/ personagens brasileiros. Pipeline prioridade: Pollinations -\u003e HF -\u003e PIL local. 2.2MB. Desktop/mini_novela_TRONIX.mp4 atualizado. (Marcos pediu: cenario muito ruim sem personagens realistas).",
-                             "timestamp":  "2026-09-13"
-                         },
-                         {
-                             "id":  139,
-                             "agente":  "Tronix-MEDIA",
-                             "acao":  "MINI_NOVELA_VIRAL: Mercadinho Bizu cap.1 (6 cenas) baseado em pesquisa web do que faz sucesso (microdrama 9:16, cliche melodrama, gancho CONTINUA). Formato vertical 1080x1920, ~21s, Pollinations flux realista, personagens brasileiros (Severina/Claudete/robo Tronix). gera_video.py chamado com --largura/--altura p/ manter vertical. Desktop/mini_novela_BIZU_cap1.mp4.",
-                             "timestamp":  "2026-09-13"
-                         },
-                         {
-                             "id":  140,
-                             "agente":  "Tronix-DEV",
-                             "acao":  "LOCALMINIDRAMA_INSTALADO: LocalMiniDrama v1.2.8 em agente/LocalMiniDrama/. App desktop (Electron) de mini-novela IA local: sinopse-\u003eroteiro-\u003epersonagens-\u003ecenas-\u003eaderecos-\u003estoryboard-\u003eimagem/video-\u003esintese, SQLite local. Instalado SEM API paga: texto=HF Router Qwen3-32B gratis, imagem=adapter OpenAI-compat tronix_img_adapter.py (5123) chamando Pollinations flux gratis. Backend 5679 + frontend 3013 (dev). better-sqlite3 13.0.3 (Node24). Configs criadas via /api/v1/ai-configs (id1 text HF, id2 image Pollinations). Test de conexao OK nos 2. One-click: LocalMiniDrama.bat. Pendente: geracao de VIDEO por shot exige provider pago (Seedance/Kling) - imagem+storyboard+roteiro funcionam gratis.",
-                             "timestamp":  "2026-09-13"
-                          },
-                          {
-                              "id":  149,
-                              "agente":  "Tronix-DEV",
-                              "acao":  "OPENCLAW_INSTALADO: OpenClaw v2026.6.35 instalado via npm. Configurado com 9Router (localhost:20128/v1) usando openrouter/minimax/minimax-m3 (MiniMax M3, 131k ctx). Gateway rodando porta 18789, auth token marcos_2026_seguro. Dashboard: http://localhost:18789/. Atalho Desktop OpenClaw.lnk criado. Config: ~/.openclaw/openclaw.json.",
-                              "timestamp":  "2026-09-22"
-                          }
-                      ],
-    "ultimo_id":  149
+{
+  "identity": "Tronix",
+  "version": "1.6.3",
+  "usuario": {
+    "nome": "Marcos Roberto",
+    "whatsapp": "5582991856656",
+    "whatsapp_local": "82991856656",
+    "instagram_arroba": "marcosrobertosilva100"
+  },
+  "last_initialization": "2026-10-08T22:06:09",
+  "status": "active",
+  "protocol_history": [
+    "SESSAO_2026-05-12",
+    "SESSAO_2026-06-03",
+    "SESSAO_2026-07-19",
+    "SESSAO_2026-08-24",
+    "SESSAO_2026-09-04",
+    "SESSAO_2026-09-04",
+    "SESSAO_2026-09-06",
+    "SESSAO_2026-10-08"
+  ],
+  "sync_log": [
+    {
+      "timestamp": "2026-05-11T12:00:00Z",
+      "source": "logs_evolucao",
+      "records_synced": 6,
+      "last_sync_time": "2026-05-11T12:00:00Z"
+    }
+  ],
+  "last_actions": [
+    {
+      "id": 164,
+      "agente": "Tronix-DEV",
+      "timestamp": "2026-10-08T22:06:09",
+      "acao": "SYNC_BACKFILL_MYSQL: sessao 2026-10-08. (1) MySQL do XAMPP estava parado -> subido manual (mysqld --defaults-file=my.ini --standalone, PID 6528, porta 3306 OK). (2) Constatado que o espelho tronix_system.logs_evolucao estava DESATUALIZADO: parava no id 40 (2026-09-26 22:58). Backfill feito a partir de memoria_tronix.json: 12 registros inseridos (ids 41-52, prefixo '[SYNC 2026-10-08]') cobrindo 01/10 Redmi cactus, 04/10 Paperclip (x2), 06/10 TokenHarbor/DeepSeek + Replicate Wan2.2 (402 + decisao de parar), 07/10 WhatsApp LID fix + chatbot v9 ritmo natural/fixes + licenca/suporte v1->v3 (solo-admin). Ajuste de fuso: timestamps com offset foram convertidos p/ UTC-3 local. Total logs_evolucao=52, ultimo_id=52. (3) Pendencia aberta: opencode.json da raiz AUSENTE (so .bak) e encoding do console em latin1 (usar --default-character-set=utf8mb4)."
+    },
+    {
+      "id": 163,
+      "agente": "Tronix-DEV",
+      "timestamp": "2026-10-07T14:07:26.107133+00:00",
+      "acao": "LICENCA_SOLO_ADMIN: evolucao pos-162. Dono do sistema (Marcos) pediu que SO ele, logado como admin, entra na aba Licenca e suporte e define validade. MUDANCAS: (1) server.js - removido /api/licenca/ativar do allowlist SUPORTE_POST_OK -> suporte agora recebe 403 ao ativar chave (suporte nao pode mais ativar); (2) index.html - botao nav da aba com id navLicenca, em loadEdition: se ED.papel==suporte esconde navLicenca e redireciona p/ home se estiver na tab licenca (seletor .side button.active); (3) licAtivar input so visivel p/ admin. Login suporte/251234 mantido p/ ver status+logs+recarregar WhatsApp, mas NAO ve nem usa aba de licenca. Docs GUIA_FREE.md atualizados (aba so-admin). TESTES porta 3100: suporte POST ativar 403, admin ativar 200 (diasRestantes 267), suporte GET edicao 200 papel=suporte, index com auth contem navLicenca+esconde_suporte+licAtivar admin-only, node --check OK. Proximos ids: 163."
+    },
+    {
+      "id": 162,
+      "agente": "Tronix-DEV",
+      "timestamp": "2026-10-07T13:44:59.813207+00:00",
+      "acao": "LICENCA_SUPORTE_ATIVA+ALERTA7DIAS: evolucao pos-161 em Desktop\\AgenteIAChatbot_FREE_V9. (1) SUPORTE PODE ATIVAR VALIDADE: /api/licenca/ativar adicionada ao allowlist SUPORTE_POST_OK (junto whatsapp/connect,restart, suporte/senha); suporte ve, ativa e troca senha, mas remover continua admin-only (403). (2) DIAS NO PAINEL: badge #licDays no topo (verde 'X dias restantes' / amarelo 'X dias!') visivel em qualquer aba, texto completo na tab Licenca com data e contagem. (3) ALERTA <=7 DIAS: aparece botao amarelo #suporteCta 'Falar com o suporte' (link wa.me do ED.marca.suporte/canalUrl) + toast vermelho repetindo a cada 10min (alertarLicenca/pararAlertaLicenca com guard por dias) + aviso inline na tab Licenca; refresh renderLicenca a cada 30min cruza virada de dia/expiracao. BUG ENCONTRADO E FIXADO: readJson cai em file+.bak -> POST /api/licenca/remover apagava so licenca.json e licenca.json.bak (valida) fazia a licenca ressuscitar (teste T5/T6 mostrou presente:true apos remover); fix apaga licenca.json + licenca.json.bak. TESTES porta 3100: suporte ativa chave 200, diasRestantes 6 ok, suporte POST /api/bots 403, remover admin presente:false estavel, boot final pro/open, node --check OK, 0 mojibake server.js+index.html."
+    },
+    {
+      "id": 161,
+      "agente": "Tronix-DEV",
+      "timestamp": "2026-10-07T13:32:21.226455+00:00",
+      "acao": "LICENCA+SUPORTE: Client-side licensing + support mode em Desktop\\\\AgenteIAChatbot_FREE_V9 (PRO v9.0.0). LICENCA: licenca_core.js (chave base64url(cliente|AAAA-MM-DD)+HMAC-SHA256-trunc secret) + gerar_licenca.js CLI (--salvar grava licenca.json, exit 2 se expirada); server.js: EDITION/IS_PRO/LIM/MARCA viraram let + aplicarEdicao() (env AGENTE_EDICAO > edicao.json; se exigeLicenca:true so PRO com licenca valida -> senao FREE; sem exigeLicenca = compat), reavaliacao a cada 1h + a cada GET /api/edicao|/api/licenca (expira em runtime vira FREE); rotas GET /api/licenca, POST /api/licenca/ativar (valida chave, grava, reaplica), POST /api/licenca/remover. SUPORTE: authRole() 2 papéis - admin (qualquer user + PANEL_PASSWORD, comportamento original) e suporte (suporte.json, padrao suporte/251234, hash SHA-256, eqSeguro timingSafeEqual); suporte bloqueado em não-GET fora allowlist {whatsapp/connect,restart, suporte/senha} -> 403; sem PANEL_PASSWORD tudo aberto (local). Rotas: GET/POST /api/suporte (troca senha: admin ou senhaAtual), GET /api/logs (tail server.log). FRONTEND: tab '🔐 Licença e suporte' com status/ativação/remoção, banner modo suporte, troca de senha e visualizador de logs; /api/edicao expõe papel+licenca. TESTES 18/18 porta 3100: 401 sem auth, free c/ exigeLicenca sem chave, suporte GET ok/POST 403, ativar->pro, expirada/adulterada 400, troca senha ok, remover->free, boot normal final pro/open, node --check OK, 0 mojibake."
+    },
+    {
+      "id": 160,
+      "agente": "Tronix-DEV",
+      "timestamp": "2026-10-07T12:49:03.166944+00:00",
+      "acao": "CHATBOT_V9_NEXT_LEVEL_FIX: 2 bugs de estabilidade corrigidos em Desktop\\AgenteIAChatbot_FREE_V9\\server.js. BUG1 'browser is already running' (log 04:00, 4 tentativas seguidas): retry re-lancava Chrome enquanto orphan ainda segurava .sessions/session-* -> FIX startBot: se retries>0, killOrphanBrowsers()+sleep 1.5s+cleanProfileLocks ANTES de lancar; catch detecta /already running/i -> sessions.delete+destroy+killOrphanBrowsers+2s+retries++/scheduleStart. BUG2 'No LID for user' (log 03:31-03:44, envio manual falhou 3x): resolveSendId as vezes volta @c.us sem mapeamento LID -> FIX sendText: cadeia de tentativas estendida de 3 para 6: (1)(2) to, (3)(4) chatId original se difere, (5) getChatById().sendMessage resolve LID interno, (6) quoted.reply. VALIDACAO: node --check OK, 0 mojibake UTF-8, boot DISABLE_WHATSAPP=1 PORT=3100 health 200, killOrphan/catch/attempts confirmados por grep. Nao testado em vivo (exige WhatsApp conectado) - proxima queda real vai validar."
+    },
+    {
+      "id": 159,
+      "agente": "Tronix-DEV",
+      "timestamp": "2026-10-07T12:00:31.941737+00:00",
+      "acao": "CHATBOT_V9_RITMO_NATURAL: evolucao de velocidade de resposta em Desktop\\AgenteIAChatbot_FREE_V9 (Atendente IA WhatsApp PRO v9.0.0, Node+whatsapp-web.js). Causa: resposta instantanea (responseDelayMs fixo) parecia robotica + 'digitando...' so piscava DEPOIS da IA pensar. Implementado: campo responseDelayMode (natural|fixed|off, padrao natural) em defaults/applyConfig/starter/template + naturalWait() = reacao 0.45-1.2s + 18ms/caractere (teto 7s) + jitter 0.4s, DESCONTANDO o tempo gasto pensando na IA (percebida fica estavel, min 350ms) + waitTyping() re-emite sendStateTyping a cada 3.5s + showTyping() inicia ANTES do decide() + sendNatural() para avisos (audio fail, midia ack, pausa, voltar, fora do horario). Painel: select Velocidade da resposta em IA e memoria. TESTES: naturalWait unit (curto 1.0-1.4s, 400ch ~7.8s, thinking 3s->350ms, fixed/off ok); servidor DISABLE_WHATSAPP=1 PORT=3100: health/get/save/invalidate(mode=xxx ignorado)/simular OK, restaurado natural+900, bots.json integro. ATENCAO: encoding do server.js corrigido apos erro de re-encode UTF8->CP1252 via PowerShell (0 mojibake, node --check OK)."
+    },
+    {
+      "id": 157,
+      "agente": "Tronix-DEV",
+      "timestamp": "2026-10-06T22:44:23.168468+00:00",
+      "acao": "REPLICATE_WAN22_DECISAO_PARE: usuario decidiu PARAR workstream I2V Wan 2.2 via Replicate em 06/10. NAO comprar credito, NAO migrar provedor alternativo (fal.ai/ComfyUI/tronix_astra HF). Falha confirmada HTTP 402 Insufficient credit - billing eh o unico bloqueio, auth OK (40 chars, r8_UtqdI**). Workstream fechado definitivamente; retomada futura exigiria credito na conta https://replicate.com/account/billing."
+    },
+    {
+      "id": 156,
+      "agente": "Tronix-DEV",
+      "timestamp": "2026-10-06T22:41:55.808542+00:00",
+      "acao": "REPLICATE_WAN22_TESTE_402: teste real de geracao I2V executado 06/10 com token injetado via env. Script animar_replicate.py + POST https://api.replicate.com/v1/predictions versao wan-video/wan-2.2-i2v-fast, imagem alien_cena1_1778562050.png (1280x720). RESPOSTA: HTTP 402 - Insufficient credit/detail faturado billing. AUTH OK (nao 401): falha e 100% financeira, entrar em https://replicate.com/account/billing#billing. Wan 2.2 agora CONFIRMADO que exige credito. Cadeia: token extraido via PowerShell (Get-Content + regex), 40 chars r8_UtqdI**. Opcoes: (a) comprar credito Replicate, (b) provedor alt (fal.ai/ComfyUI Wan local/tronix_astra HF), (c) abandonar I2V."
+    },
+    {
+      "id": 155,
+      "agente": "Tronix-DEV",
+      "timestamp": "2026-10-06T19:31:20.398579",
+      "acao": "TOKENHARBOR_DEEPSEEK_CONFIGURADO: chave thk_live_**KIZ do Token Harbor adicionada ao provider deepseek no opencode GLOBAL (~/.config/opencode/opencode.json). baseURL corrigida de api.deepseek.com/v1 (401 - chave thk_live rejeitada) para https://tokenharbor.ai/v1 (testado /v1/models OK). Modelos no catalogo: deepseek-v4-flash, deepseek-v4.1-flash, deepseek-v4-pro, deepseek-v4-flash:free. SALDO $0: modelo pago bloqueia (balance_zero), free respondeu OK. Agents coder/task/title apontados para deepseek/deepseek-v4-flash:free. Backup opencode.json.bak-deepseek. Teste real chat/completions: resposta OK, usage 99 tokens."
+    },
+    {
+      "id": 153,
+      "agente": "Tronix-DEV",
+      "timestamp": "2026-09-26T22:58:42.320917",
+      "acao": "OPENCODE_PROVIDER_KAGGLE_GLOBAL: provider 'kaggle' (qwen3-coder:30b / qwen3:8b) mesclado no config GLOBAL do opencode ~/.config/opencode/opencode.json, preservando deepseek, kimi, mcp drift, command drift, agents e plugin caveman. Backup em opencode.json.bak-kaggle. Antes so funcionava dentro das pastas que tinham opencode.json (UnknownError fora delas). BUG ACHADO E CORRIGIDO: os opencode.json locais usavam '{env:KAGGLE_TUNNEL_URL}/v1' e davam '/v1/chat/completions cannot be parsed as a URL' porque variavel de registry nova nao entra na sessao PowerShell ja aberta -> troquei por URL literal. subir_kernel.py ganhou propagar_url() + sincronizar_opencode() (escrita atomica via .tmp + os.replace): a cada nova URL reescreve os 3 opencode.json (global, pacote XAMPP, copia Desktop) e a variavel de usuario KAGGLE_TUNNEL_URL. TESTES: /models mostra kaggle/* em pasta limpa, em major, e no pacote; inferencia real OK nos 3 (PACOTE_OK, GLOBAL_OK, TUDO_OK); propagacao testada com URL falsa e restaurada; py_compile OK. NOTA: reiniciar o opencode para recarregar o config."
+    },
+    {
+      "id": 152,
+      "agente": "Tronix-DEV",
+      "timestamp": "2026-09-26T22:11:39.258972",
+      "acao": "CLINE_CONFIGURADO_NO_VSCODE: Cline 4.1.21 configurado via CDP (VS Code aberto com --remote-debugging-port=9222, webview dirigido por Target/Page.createIsolatedWorld + Input.insertText). Provedor 'OpenAI Compatible', Base URL https://mobiles-leo-underground-self.trycloudflare.com/v1, API Key 'ollama', Model ID qwen3-coder:30b. TESTE REAL APROVADO: tarefa 'Responda apenas com a palavra: CONECTADO' -> Completed -> CONECTADO. ARMADILHAS ACHADAS: (1) dispatchar Event('input') no custom element vscode-text-field NAO atualiza o estado do React -> o Base URL nao gravava e o Cline ia bater em api.openai.com (erro 'Incorrect API key provided'); precisa focar o input interno (shadowRoot) e digitar com Input.insertText; (2) o botao Retry reaproveita a config APIsnapshot da TAREFA, nao a config salva -> apos corrigir, usar 'Start New Task'; (3) o dropdown do provider abre com PointerEvent (click() puro nao abre); (4) botoes sao <vscode-button>, nao <button>."
+    },
+    {
+      "id": 151,
+      "agente": "Tronix-DEV",
+      "timestamp": "2026-09-26T21:42:08.338965",
+      "acao": "KAGGLE_GPU_32GB_OPERACIONAL: qwen3-coder:30b (18GB) rodando em 2x Tesla T4 do Kaggle, exposto em tunel Cloudflare e validado do Windows. 3 ERROS DO VIDEO CORRIGIDOS: (1) o video manda instalar 'zstandard' (modulo Python) mas o install.sh do Ollama exige o BINARIO zstd -> apt-get install -y zstd; (2) 'ollama run' em celula Python quebra e o binario nao fica disponivel -> usar 'ollama pull' + Popen com caminho absoluto; (3) a celula do tunel NAO pode terminar, senao o Kaggle derruba a VM e a URL morre -> laco de guarda que ainda reinicia o cloudflared. BUG DE 6 PUSHES ACHADO: subir_kernel.py fazia line.rstrip() nas linhas de 'source', tirando o \\n e colapsando o script inteiro numa linha so; como o arquivo comeca com '#', a celula virava comentario e o kernel rodava sem imprimir nada. Fix: preserva newlines. DESCOBERTA: 'kaggle kernels logs' e 'output' nao respondem com kernel RODANDO -> criado live_log.py usando api.kernels_logs_stream(ref) (SSE) para ler log ao vivo e capturar a URL. PUSH VIA API: exige id em toda celula + nbformat_minor 5; slug deriva do titulo e 409 Conflict se nao bater. Limite Kaggle: 2 sessoes GPU simultaneas. ENTREGAVEIS: celula_unica.py, build_notebook.py, subir_kernel.py (--parar), live_log.py, cliente.py, conectar.bat, usar_opencode/usar_qwen/usar_aider.bat, opencode.json, parar_kernel.bat, README.md. Cota: 30h/semana (0.35h usada), renova 2026-10-03. URL publica sem auth: encerre com parar_kernel.bat."
+    },
+    {
+      "id": 150,
+      "agente": "Tronix-DEV",
+      "timestamp": "2026-09-26T20:08:00.146212",
+      "acao": "KAGGLE_GPU_32GB: video youtube UH2XvzGkpD0 (GPU gratis p/ coding). Criei agente/kaggle_ollama/ (notebook 1 celula: GPU check + zstandard + ollama + serve 0.0.0.0 + pull qwen3-coder:30b fallback qwen3:8b + cloudflared tunnel imprime URL; cliente.py; conectar.bat; usar_qwen/aider/opencode.bat; opencode.json provider kaggle; README.md). VS Code 1.139.1 instalado via winget (nao existia) + Cline 4.1.21. 3 atalhos no Desktop/01-Atalhos. PENDENTE: Marcos cria conta Kaggle + verifica telefone + roda a celula (so pelo navegador). Queda: usar olink 1-Atalhos/Kaggle GPU 32GB (conectar).lnk. Aviso: URL trycloudflare e publica sem auth; desligar com Stop Session senao queima cota 30h/semana."
+    },
+    {
+      "agente": "Tronix-DEV",
+      "timestamp": "2026-09-21T23:30:00Z",
+      "acao": "SUPER_AGENT_9ROUTER: Tronix Super Agent v1.0 criado (tronix_super_agent.py). Coding agent direto via 9Router API (localhost:20128). SWE-agent v1.1.0 clonado (requer Docker, nao funcional). Aider v0.86.2 instalado (bug com prefixo openai/). Solucao final: script custom openai.API + 9Router. Modelos testados: gemini/gemma-4-31b-it (rate limit 429), openrouter/minimax/minimax-m3 (OK 5.5s). API key: sk-0****ce0f. Config 9router.yaml criado em SWE-agent/. Atalho: aider_9router.bat + tronix_super_agent.py.",
+      "id": 148
+    },
+    {
+      "agente": "Tronix-DEV",
+      "timestamp": "2026-09-21T21:54:37Z",
+      "acao": "INSTALADO: Qwen Code v0.24.3 - Agente de codigo IA open-source (27.5k stars GitHub). Configurado com 9Router (localhost:20128) usando Gemini 3.8 Flash. Atalho Desktop 'Qwen Code.bat’. Suporta multi-protocolo (OpenAI, Anthropic, Gemini, Qwen), modo interativo + headless, /review, /batch, subagents.",
+      "id": 3
+    },
+    {
+      "id": 141,
+      "agente": "Tronix-DEV",
+      "acao": "PHONE_HARNESS_INSTALADO+REDMI_6A_CONECTADO: Instalado ShawnPana/phone-harness v0.3.0 + Google.PlatformTools (ADB 37.0.1). Xiaomi Redmi 6A (Android 9) conectado, autorizado e operando via ADB. Navegacao no Chrome e Gmail executada.",
+      "timestamp": "2026-09-20T15:56:56.925035"
+    },
+    {
+      "id": 2,
+      "agente": "Tronix-DEV",
+      "acao": "BACKTEST_SElETIVO_HONESTO + FIX_DISCO_DEFINITIVO OK: 1) Causa raiz do \"parar de acertar as cores\": 2 typos gravados por sessao anterior no tronix_projecao.py (CORES4 -> dict CORES; prior â€œytoâ€ -> troco 1.0) -- TODA chamada prever() crashava NameError -> fallback fantasma -> previsao morta. 2) Fix: replace numa copia limpa via python (disco real, nao tool-cache; arquivo unico C:\\xampp\\htdocs\\agente\\tronix_projecao.py). 3) Validado: import 100% limpo, prever 200x sem excecao, TECNICAS=7 incl segundo_grau, CORES mapeia 0..14. 4) Backtest HONESTO cor-vs-cor (n=199): TODAS acur=48.2% (baseline uniforme 33%, teto Double provably fair ~54%, excesso vs uniforme = +15.4pp) | SELETIVO conf>=0.60: n=0 apostas (0% cobertura; nenhuma rodada atinge o limiar com esse conjunto de 7 pesos). 5) Conclusao honesta: o W-Ensemble NAO bate o teto Double; a vantagem real esta em pesos adaptativos + learning feedback com decay (pesos ativos: frio_cedo 1.92, multi_window 1.80, horario 1.79, segundo_grau 1.66). 6) Sugestao (nao implementada): seletividade otima para Double eh aposta so quando score >= 0.70 (conf' que calibra cor-por-cor, decai tecnicas ruins via loop aprender/acerto<33%%) -- mas teto segue provably fair, melhoria real demanda arvore/cadeias de rodadas (dataset Double real ja tem horas; montantes NUNCA influem). Proximo passo: puxar dataset Double real com hora para calibrar horario/frio_cedo corretamente (hoje seed usa 15 cores uniforme; backtest random e so smoke-test).",
+      "timestamp": "2026-09-13T20:00:00Z"
+    },
+    {
+      "id": 1,
+      "agente": "Tronix-DEV",
+      "acao": "FIX_CORES+SEGUNDO_GRAU_100PCT: tronix_projecao.py tinha NameError CORES4/yto nas linhas 233/229 que MATAVA toda previsao (prever() crashava -> fallback fantasma). Reescrevi ambas (disco real via python, bypass do cache divergente da tool). prever() 200x sem excecao. Backtest HONESTO cor-vs-cor: todas=42.9% (n=219) | SELETIVO conf>=0.60: acur=0.0% (n=0, cobertura=0%). Baseline uniforme 33%, teto Double provably fair 54%. Pesos ativos: {\"multi_window\": 1.8, \"ewma\": 0.97, \"vies_transicao\": 1.19, \"metade_pintura\": 1.05, \"horario\": 1.79, \"frio_cedo\": 1.92, \"segundo_grau\": 1.66}",
+      "timestamp": "2026-09-13T18:13:45Z"
+    },
+    {
+      "id": 147,
+      "agente": "Tronix-MENTE",
+      "acao": "BLAZE_CEREBRO_APRENDIZADO: tronix_projecao.py reescrito como PrevisorAprendiz - W-ENSEMBLE 6 tecnicas (multi_window 15/30/60/120, ewma DECAY .94, vies_transicao, metade_pintura, horario, frio_cedo) com PESOS ADAPTATIVOS por acerto real. Feedback loop: a cada rodada LIVE cerebro.aprender(n) decai exp (ALPHA .12), pondera peso por acuraria acima/abaixo de 33% (sobe ate 2.2, rebaixa ate .25 - tecnicas ruins perdem influencia real, nao so somam). Confianca calibrada por janela rolante 160 (frequencia real de acerto por cor, nao chute). Persistencia blaze_cerebro.json. Bugs fix: KeyError dict colide cor 0 em metade_pintura (v=0 duplicava chave), NoneType horas. Backtest 130 rodadas: 54.1% (109 jogos); metade_pintura (49% acur) rebaixada automaticamente pra peso 1.76. Simulador integrado: init carrega cerebro persistente, a cada novo numero LIVE chama cerebro.aprender(n), card CEREBRO APRENDIZADO (acur+peso por tecnica, feedbacks, calibracao real por cor), pred_sub mostra probs V/P/B + top_tec + gap + pesos.",
+      "timestamp": "2026-09-13"
+    },
+    {
+      "id": 146,
+      "agente": "Tronix-DEV",
+      "acao": "BLAZE_V4_SUPER_ALERTA_BRANCO: App reescrito. Corrigida corrupcao de persistencia (blaze_historico.json truncado a 6 nums vs 190 horas) com dataset unico alinhado blaze_dataset.json {nums,horas,ids} + merge por ID. SUPER ALERTA BRANCO multi-sinal ponderado (sobrevivencia acumulada 42%, atraso vs gap medio 28%, mancha atual 18%, freq na hora 12%). Niveis NORMAL/ATENCAO/CRITICO/IMINENTE com flash real (140-600ms) + beeps distintos. Branco domina previsao quando score>=0.70. Testado: LIVE 201+ rodadas com ids, previsao FORTE PRETO 70%, alerta ATENCAO score .55 atraso 16.",
+      "timestamp": "2026-09-13"
+    }
+  ],
+  "ultimo_id": 164,
+  "events": [
+    {
+      "id": "02544e0e-0e94-4f27-8a78-2cb56e9fc8f5",
+      "seq": 152,
+      "agente": "Tronix-DEV",
+      "acao": "TOKENHARBOR_DEEPSEEK_CONFIGURADO: chave thk_live_**KIZ do Token Harbor adicionada ao provider deepseek no opencode GLOBAL (~/.config/opencode/opencode.json). baseURL corrigida de api.deepseek.com/v1 (401 - chave thk_live rejeitada) para https://tokenharbor.ai/v1 (testado /v1/models OK). Modelos no catalogo: deepseek-v4-flash, deepseek-v4.1-flash, deepseek-v4-pro, deepseek-v4-flash:free. SALDO $0: modelo pago bloqueia (balance_zero), free respondeu OK. Agents coder/task/title apontados para deepseek/deepseek-v4-flash:free. Backup opencode.json.bak-deepseek. Teste real chat/completions: resposta OK, usage 99 tokens.",
+      "timestamp": "2026-10-06T19:31:20.398579",
+      "orig_id": 155
+    },
+    {
+      "id": "4cc27bfc-423a-49b1-9e17-17844e5925ee",
+      "seq": 1,
+      "agente": "Tronix-DEV",
+      "acao": "REDMI_6A_CACTUS_DIAGNOSTICO+OTIMIZACAO: Investigacao completa via ADB WiFi (192.168.3.39:5558). PERFIL: Redmi 6A, codinome cactus, Android 9, MediaTek Helio A22 (mt6765), MIUI 11.0.8.0 PCBMIXM stock, build fingerprint xiaomi/cactus/cactus:9/PPR1.180610.011/V11.0.8.0.PCBMIXM, regiao BR, security_patch 2020-05-01, ro.miui.ui.version.name V11. ACHADOS CRITICOS: (1) ABI=armeabi-v7a APENAS (32-bit, sem arm64) -> TODOS os GSIs modernes sao arm64 e NAO bootam; (2) sem A/B (ro.boot.slot_suffix vazio, sem dynamic_partitions) -> recovery tradicional; (3) ro.boot.flash.locked=1 e verifiedbootstate=green (trancado), MAS ro.oem_unlock_supported=1 e sys.oem_unlock_allowed=1 -> destrancar e tecnicamente possivel; conta com.xiaomi presente (6869***033, conta de celular). (4) ADOPTABLE STORAGE: ja ativo (persist.sys.adoptable=force_on, vold.has_adoptable=1), SD mmcblk1 montado como private volume ID 130 em /mnt/expand/930d77d5..., 3.3GB livres. VEREDICTO ROM: /e/OS Q 1.17 (ronnz98, build 2026-03-28) e o mais recente p/ cactus, mas NAO vale o risco: base LineageOS 17.1 (Android 10) tem patches de seguranca encerrados em 2022, ou seja troca patch 2020 por patch 2022; documentacao base indica firmware ate MIUI 11.0.4.0 e 11.0.5.0 NAO funciona -> build 11.0.8.0 do aparelho esta acima da faixa testada (risco de bootloop); Xiaomi nao permite re-bloquear com ROM custom. RECOMENDACAO: manter MIUI 11. MOVER APPS PARA SD IMPOSSIVEL: verificado via flag ALLOW_MOVED_TO_SD - TODOS barrados (com.google.android.youtube, com.google.android.apps.photos, com.google.android.apps.docs, com.android.chrome, com.whatsapp, com.google.android.gm, com.itau, com.pinterest, com.mercadolivre). Ganho seria ridiculo. FOTOS/VIDEO NAO SAO O GARGALO: apenas ~4MB em DCIM (Camera vazio, Screenshots 684KB). WhatsApp Media = 288MB (Documents 104MB, Images 24MB, Video 13MB) mas MOVER QUEBRA HISTORICO de conversas (WhatsApp so busca no internal). ACAO EXECUTADA: pm uninstall -k --user 0 de 9 apps MIUI (com.miui.notes, com.miui.fm, com.miui.videoplayer, com.miui.weather2, com.miui.screenrecorder, com.miui.cleanmaster, com.xiaomi.discover, com.miui.cloudservice, com.miui.msa.global) + pm trim-caches 999999999. RESULTADO: /data de 525MB para 943MB livres (95%->91% de ocupacao), +462MB total. GANHO DO BLOATWARE FOI SO 44MB porque esses APKs vivem na particao /cust (ro, read-only) - remover so desregistra do user 0, nao libera o APK. MEMORIA: 1.8GB RAM total, 624MB disponivel, zram 1GB com 663MB usados -> gargalo e hardware (Helio A22 + 2/3GB), nao software. logd consome 61MB so fazendo log. Picos: com.google.android.gms 184MB, com.whatsapp 150MB, system 127MB, systemui 124MB, com.google.android.gm 119MB, com.google.android.youtube 104MB (381MB de cache). REVERSIVEL: apps removidos voltam com 'cmd package install-existing <pacote>'. FERRAMENTAS JA PRESENTES NA MAQUINA: miflash_unlock.exe v6.5.224.28 em C:\\xampp\\htdocs\\agente\\bancada_celular\\bin\\mi-unlock\\; adb/fastboot via C:\\Users\\CHCONT~1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Google.PlatformTools_Microsoft.Winget.Source_8wekyb3d8bbwe\\platform-tools\\ (caminho com 'CHCONT~1' obrigatorio por causa do cedilha no nome de usuario). ARMADILHAS ENCONTRADAS: (a) PowerShell quebra o caminho do ADB se usar $env:LOCALAPPDATA (acento corrompe) - usar CHCONT~1; (b) '2>&1' colado na mesma linha apos foreach/if causa 'nao e reconhecido como parametro' - usar ; (c) 'sort -h' e 'du -h' nao existem no toolbox do Android (BusyBox limited) - parsear no PowerShell; (d) 'cat /proc/partitions' da Permission denied; 'dumpsys diskstats' precisa parsear Package Names + App Sizes em paralelo por indice; (e) /data exige root para 'du'; (f) MIUI esconde a opcao 'Alterar local de armazenamento' em Ajustes. PENDENTE (se usuario quiser depois): aumentar zram, desabilitar logd, desinstalar Google Maps 219MB / TTS 194MB / Chrome 360MB / Talkback 55MB, desinstalar Segundo Espaco 234MB.",
+      "timestamp": "2026-10-01T17:13:48.100470",
+      "orig_id": 154
+    },
+    {
+      "id": "735a079f-404b-4f52-a8e4-b98f04300c81",
+      "seq": 2,
+      "agente": "Tronix-DEV",
+      "acao": "OPENCODE_PROVIDER_KAGGLE_GLOBAL: provider 'kaggle' (qwen3-coder:30b / qwen3:8b) mesclado no config GLOBAL do opencode ~/.config/opencode/opencode.json, preservando deepseek, kimi, mcp drift, command drift, agents e plugin caveman. Backup em opencode.json.bak-kaggle. Antes so funcionava dentro das pastas que tinham opencode.json (UnknownError fora delas). BUG ACHADO E CORRIGIDO: os opencode.json locais usavam '{env:KAGGLE_TUNNEL_URL}/v1' e davam '/v1/chat/completions cannot be parsed as a URL' porque variavel de registry nova nao entra na sessao PowerShell ja aberta -> troquei por URL literal. subir_kernel.py ganhou propagar_url() + sincronizar_opencode() (escrita atomica via .tmp + os.replace): a cada nova URL reescreve os 3 opencode.json (global, pacote XAMPP, copia Desktop) e a variavel de usuario KAGGLE_TUNNEL_URL. TESTES: /models mostra kaggle/* em pasta limpa, em major, e no pacote; inferencia real OK nos 3 (PACOTE_OK, GLOBAL_OK, TUDO_OK); propagacao testada com URL falsa e restaurada; py_compile OK. NOTA: reiniciar o opencode para recarregar o config.",
+      "timestamp": "2026-09-26T22:58:42.320917",
+      "orig_id": 153
+    },
+    {
+      "id": "7aef8e9c-c621-4283-8016-5f18ff4aaa96",
+      "seq": 3,
+      "agente": "Tronix-DEV",
+      "acao": "CLINE_CONFIGURADO_NO_VSCODE: Cline 4.1.21 configurado via CDP (VS Code aberto com --remote-debugging-port=9222, webview dirigido por Target/Page.createIsolatedWorld + Input.insertText). Provedor 'OpenAI Compatible', Base URL https://mobiles-leo-underground-self.trycloudflare.com/v1, API Key 'ollama', Model ID qwen3-coder:30b. TESTE REAL APROVADO: tarefa 'Responda apenas com a palavra: CONECTADO' -> Completed -> CONECTADO. ARMADILHAS ACHADAS: (1) dispatchar Event('input') no custom element vscode-text-field NAO atualiza o estado do React -> o Base URL nao gravava e o Cline ia bater em api.openai.com (erro 'Incorrect API key provided'); precisa focar o input interno (shadowRoot) e digitar com Input.insertText; (2) o botao Retry reaproveita a config APIsnapshot da TAREFA, nao a config salva -> apos corrigir, usar 'Start New Task'; (3) o dropdown do provider abre com PointerEvent (click() puro nao abre); (4) botoes sao <vscode-button>, nao <button>.",
+      "timestamp": "2026-09-26T22:11:39.258972",
+      "orig_id": 152
+    },
+    {
+      "id": "368f2311-5fc4-40fd-bfa3-c3340c444f1b",
+      "seq": 4,
+      "agente": "Tronix-DEV",
+      "acao": "KAGGLE_GPU_32GB_OPERACIONAL: qwen3-coder:30b (18GB) rodando em 2x Tesla T4 do Kaggle, exposto em tunel Cloudflare e validado do Windows. 3 ERROS DO VIDEO CORRIGIDOS: (1) o video manda instalar 'zstandard' (modulo Python) mas o install.sh do Ollama exige o BINARIO zstd -> apt-get install -y zstd; (2) 'ollama run' em celula Python quebra e o binario nao fica disponivel -> usar 'ollama pull' + Popen com caminho absoluto; (3) a celula do tunel NAO pode terminar, senao o Kaggle derruba a VM e a URL morre -> laco de guarda que ainda reinicia o cloudflared. BUG DE 6 PUSHES ACHADO: subir_kernel.py fazia line.rstrip() nas linhas de 'source', tirando o \\n e colapsando o script inteiro numa linha so; como o arquivo comeca com '#', a celula virava comentario e o kernel rodava sem imprimir nada. Fix: preserva newlines. DESCOBERTA: 'kaggle kernels logs' e 'output' nao respondem com kernel RODANDO -> criado live_log.py usando api.kernels_logs_stream(ref) (SSE) para ler log ao vivo e capturar a URL. PUSH VIA API: exige id em toda celula + nbformat_minor 5; slug deriva do titulo e 409 Conflict se nao bater. Limite Kaggle: 2 sessoes GPU simultaneas. ENTREGAVEIS: celula_unica.py, build_notebook.py, subir_kernel.py (--parar), live_log.py, cliente.py, conectar.bat, usar_opencode/usar_qwen/usar_aider.bat, opencode.json, parar_kernel.bat, README.md. Cota: 30h/semana (0.35h usada), renova 2026-10-03. URL publica sem auth: encerre com parar_kernel.bat.",
+      "timestamp": "2026-09-26T21:42:08.338965",
+      "orig_id": 151
+    },
+    {
+      "id": "5b5d6750-178b-4733-8b6a-03b79f7be511",
+      "seq": 5,
+      "agente": "Tronix-DEV",
+      "acao": "KAGGLE_GPU_32GB: video youtube UH2XvzGkpD0 (GPU gratis p/ coding). Criei agente/kaggle_ollama/ (notebook 1 celula: GPU check + zstandard + ollama + serve 0.0.0.0 + pull qwen3-coder:30b fallback qwen3:8b + cloudflared tunnel imprime URL; cliente.py; conectar.bat; usar_qwen/aider/opencode.bat; opencode.json provider kaggle; README.md). VS Code 1.139.1 instalado via winget (nao existia) + Cline 4.1.21. 3 atalhos no Desktop/01-Atalhos. PENDENTE: Marcos cria conta Kaggle + verifica telefone + roda a celula (so pelo navegador). Queda: usar olink 1-Atalhos/Kaggle GPU 32GB (conectar).lnk. Aviso: URL trycloudflare e publica sem auth; desligar com Stop Session senao queima cota 30h/semana.",
+      "timestamp": "2026-09-26T20:08:00.146212",
+      "orig_id": 150
+    },
+    {
+      "id": "b353a8c0-468d-4357-a0f1-68ad1a3a09b3",
+      "seq": 6,
+      "agente": "Tronix-DEV",
+      "acao": "SUPER_AGENT_9ROUTER: Tronix Super Agent v1.0 criado (tronix_super_agent.py). Coding agent direto via 9Router API (localhost:20128). SWE-agent v1.1.0 clonado (requer Docker, nao funcional). Aider v0.86.2 instalado (bug com prefixo openai/). Solucao final: script custom openai.API + 9Router. Modelos testados: gemini/gemma-4-31b-it (rate limit 429), openrouter/minimax/minimax-m3 (OK 5.5s). API key: sk-0****ce0f. Config 9router.yaml criado em SWE-agent/. Atalho: aider_9router.bat + tronix_super_agent.py.",
+      "timestamp": "2026-09-21T23:30:00Z",
+      "orig_id": 148
+    },
+    {
+      "id": "a7e785e2-9b33-4bbf-816c-98b3648f1e4f",
+      "seq": 7,
+      "agente": "Tronix-DEV",
+      "acao": "INSTALADO: Qwen Code v0.24.3 - Agente de codigo IA open-source (27.5k stars GitHub). Configurado com 9Router (localhost:20128) usando Gemini 3.8 Flash. Atalho Desktop 'Qwen Code.bat’. Suporta multi-protocolo (OpenAI, Anthropic, Gemini, Qwen), modo interativo + headless, /review, /batch, subagents.",
+      "timestamp": "2026-09-21T21:54:37Z",
+      "orig_id": 3
+    },
+    {
+      "id": "005e6cee-5bbf-4c66-9390-00e2dd5dbab5",
+      "seq": 8,
+      "agente": "Tronix-DEV",
+      "acao": "PHONE_HARNESS_INSTALADO+REDMI_6A_CONECTADO: Instalado ShawnPana/phone-harness v0.3.0 + Google.PlatformTools (ADB 37.0.1). Xiaomi Redmi 6A (Android 9) conectado, autorizado e operando via ADB. Navegacao no Chrome e Gmail executada.",
+      "timestamp": "2026-09-20T15:56:56.925035",
+      "orig_id": 141
+    },
+    {
+      "id": "44206ae0-38ae-41c3-9318-30a41cf065e0",
+      "seq": 9,
+      "agente": "Tronix-DEV",
+      "acao": "BACKTEST_SElETIVO_HONESTO + FIX_DISCO_DEFINITIVO OK: 1) Causa raiz do \"parar de acertar as cores\": 2 typos gravados por sessao anterior no tronix_projecao.py (CORES4 -> dict CORES; prior â€œytoâ€ -> troco 1.0) -- TODA chamada prever() crashava NameError -> fallback fantasma -> previsao morta. 2) Fix: replace numa copia limpa via python (disco real, nao tool-cache; arquivo unico C:\\xampp\\htdocs\\agente\\tronix_projecao.py). 3) Validado: import 100% limpo, prever 200x sem excecao, TECNICAS=7 incl segundo_grau, CORES mapeia 0..14. 4) Backtest HONESTO cor-vs-cor (n=199): TODAS acur=48.2% (baseline uniforme 33%, teto Double provably fair ~54%, excesso vs uniforme = +15.4pp) | SELETIVO conf>=0.60: n=0 apostas (0% cobertura; nenhuma rodada atinge o limiar com esse conjunto de 7 pesos). 5) Conclusao honesta: o W-Ensemble NAO bate o teto Double; a vantagem real esta em pesos adaptativos + learning feedback com decay (pesos ativos: frio_cedo 1.92, multi_window 1.80, horario 1.79, segundo_grau 1.66). 6) Sugestao (nao implementada): seletividade otima para Double eh aposta so quando score >= 0.70 (conf' que calibra cor-por-cor, decai tecnicas ruins via loop aprender/acerto<33%%) -- mas teto segue provably fair, melhoria real demanda arvore/cadeias de rodadas (dataset Double real ja tem horas; montantes NUNCA influem). Proximo passo: puxar dataset Double real com hora para calibrar horario/frio_cedo corretamente (hoje seed usa 15 cores uniforme; backtest random e so smoke-test).",
+      "timestamp": "2026-09-13T20:00:00Z",
+      "orig_id": 2
+    },
+    {
+      "id": "daf62b50-a173-4917-b05f-7074990f6162",
+      "seq": 10,
+      "agente": "Tronix-DEV",
+      "acao": "FIX_CORES+SEGUNDO_GRAU_100PCT: tronix_projecao.py tinha NameError CORES4/yto nas linhas 233/229 que MATAVA toda previsao (prever() crashava -> fallback fantasma). Reescrevi ambas (disco real via python, bypass do cache divergente da tool). prever() 200x sem excecao. Backtest HONESTO cor-vs-cor: todas=42.9% (n=219) | SELETIVO conf>=0.60: acur=0.0% (n=0, cobertura=0%). Baseline uniforme 33%, teto Double provably fair 54%. Pesos ativos: {\"multi_window\": 1.8, \"ewma\": 0.97, \"vies_transicao\": 1.19, \"metade_pintura\": 1.05, \"horario\": 1.79, \"frio_cedo\": 1.92, \"segundo_grau\": 1.66}",
+      "timestamp": "2026-09-13T18:13:45Z",
+      "orig_id": 1
+    },
+    {
+      "id": "fa4768ea-dada-437a-b708-8aedeaa5fd99",
+      "seq": 11,
+      "agente": "Tronix-MENTE",
+      "acao": "BLAZE_CEREBRO_APRENDIZADO: tronix_projecao.py reescrito como PrevisorAprendiz - W-ENSEMBLE 6 tecnicas (multi_window 15/30/60/120, ewma DECAY .94, vies_transicao, metade_pintura, horario, frio_cedo) com PESOS ADAPTATIVOS por acerto real. Feedback loop: a cada rodada LIVE cerebro.aprender(n) decai exp (ALPHA .12), pondera peso por acuraria acima/abaixo de 33% (sobe ate 2.2, rebaixa ate .25 - tecnicas ruins perdem influencia real, nao so somam). Confianca calibrada por janela rolante 160 (frequencia real de acerto por cor, nao chute). Persistencia blaze_cerebro.json. Bugs fix: KeyError dict colide cor 0 em metade_pintura (v=0 duplicava chave), NoneType horas. Backtest 130 rodadas: 54.1% (109 jogos); metade_pintura (49% acur) rebaixada automaticamente pra peso 1.76. Simulador integrado: init carrega cerebro persistente, a cada novo numero LIVE chama cerebro.aprender(n), card CEREBRO APRENDIZADO (acur+peso por tecnica, feedbacks, calibracao real por cor), pred_sub mostra probs V/P/B + top_tec + gap + pesos.",
+      "timestamp": "2026-09-13",
+      "orig_id": 147
+    },
+    {
+      "id": "0a605911-5cf1-4bc0-9a7c-a4906bc7b39c",
+      "seq": 12,
+      "agente": "Tronix-DEV",
+      "acao": "BLAZE_V4_SUPER_ALERTA_BRANCO: App reescrito. Corrigida corrupcao de persistencia (blaze_historico.json truncado a 6 nums vs 190 horas) com dataset unico alinhado blaze_dataset.json {nums,horas,ids} + merge por ID. SUPER ALERTA BRANCO multi-sinal ponderado (sobrevivencia acumulada 42%, atraso vs gap medio 28%, mancha atual 18%, freq na hora 12%). Niveis NORMAL/ATENCAO/CRITICO/IMINENTE com flash real (140-600ms) + beeps distintos. Branco domina previsao quando score>=0.70. Testado: LIVE 201+ rodadas com ids, previsao FORTE PRETO 70%, alerta ATENCAO score .55 atraso 16.",
+      "timestamp": "2026-09-13",
+      "orig_id": 146
+    },
+    {
+      "id": "2b7012e1-a920-42b2-ac81-70300f5bd560",
+      "seq": 13,
+      "agente": "Tronix-DEV",
+      "acao": "BLAZE_SIMULATOR_v3+SIMULTANEO: Live tempo real via AJAX BestBlaze (poll ~3s, antes 30s). Descoberto: home https://www.bestblaze.com.br/ expoe _token CSRF; POST /jogadasDouble (ini + _token + cookie jar) retorna JSON 200 rodadas com id_rodadas_double sequencial (padrao +5), cor, time. Site polia setInterval(listDouble,2000). Classe BestBlaze no simulador: sessao urllib+cookie jar+token revalidado quando expira; iniciais()=200 recentes, novas(last_id)=incremental no-loop sem duplicata (~0.2s). v3: persistencia blaze_historico.json, grafico barras 15 nums Canvas (quentes=ouro), alerts winsound (novo/branco/deve-alerta), simulador estrategia SEGUIR vs QUEBRAR martingale, janela 40/80/200/tudo, ultimo numero grande colorido, sequencias e quebras recentes, frios. Testado: poll 15s capturou nova (13@id1333820). App pid 9824.",
+      "timestamp": "2026-09-13",
+      "orig_id": 145
+    },
+    {
+      "id": "2234e0ed-2818-4a89-a2b2-534b9e89383f",
+      "seq": 14,
+      "agente": "Tronix-DEV",
+      "acao": "BLAZE_SIMULATOR: criado tronix_blaze_simulator.py (Desktop TRONIX BLAZE.bat) - app Tkinter analise Double. Pvt: Blaze fechou API REST/WebSocket publica (roulette_trends 1011, roulette_games/history vazio, socketio replication 404/503, blaze.com 503) -> entrada manual de resultados. Analise live: frequencia cor, numeros quentes, sequencias atuais/maiores, quebras de padrao, cacador de brancos (gap medio/max, alerta devendo branco), previsao (seguir 1.5x ou quebrar 7x). Modo demo random. Tema dark. Testado abre OK.",
+      "timestamp": "2026-09-13",
+      "orig_id": 144
+    },
+    {
+      "id": "843a6568-8ba5-4a55-a3a7-ef5144c44926",
+      "seq": 15,
+      "agente": "Tronix-DEV",
+      "acao": "TRONIX_LIVRE: chat desktop totalmente liberto criado. tronix_livre.py - console interativo direto com openai/gpt-oss-120b via HuggingFace Router (gratis, sem filtros). Reusa tronix_astra.gerar() com fallback automatico (HF -> Ollama). Persona TRONIX LIVRE (caveman, direto). Memoriza historico por sessao em livre_logs/sessao_*.json, salvamento a cada mensagem, comando /novo /limpar /modelo /sair. Notificacao Windows via win10toast quando resposta pronta. Log diario em livre_logs/YYYY-MM-DD.log. Atalho Desktop 'TRONIX LIVRE.bat' (roda com --continua). Teste real: ativacao respondida OK.",
+      "timestamp": "2026-09-13",
+      "orig_id": 143
+    },
+    {
+      "id": "e1cff130-9665-4986-aab9-a5e68135b780",
+      "seq": 16,
+      "agente": "Tronix-MEDIA",
+      "acao": "NOVELA_VIDEO_STORYBOARDS: Gerada mini-novela vertical 1080x1920 (55s, 8MB) em Desktop/mini_novela_BIZU_story.mp4 a partir dos 11 storyboards PT do LocalMiniDrama (ep2 Mercadinho Bizu). Script gerar_novela_storyboards.py: imagem 1080x1920 por shot via adapter Pollinations (flux, retry 429), legenda PT queimada na imagem via PIL (arialbd, stroke), Ken Burns zoompan FFmpeg (liÃ§Ã£o: drawtext em cadeia com zoompan falha parsing/escaping -> legenda via PIL + zoompan em separado), concat demuxer, narracao Edge-TTS pt-BR-AntonioNeural do dialogo/acao por shot, audio AAC muxed. Rotas redescobertas: /api/v1/scenes/generate-image {scene_id}, /characters/:id/generate-image, /storyboards/episode/:id/generate retorna data.task_id.task_id (aninhado). Quota HF gratuita esgotada -> Ollama local default (ai-config id3).",
+      "timestamp": "2026-09-13",
+      "orig_id": 142
+    },
+    {
+      "id": "72ea702b-141f-4fde-997b-376b180a83f1",
+      "seq": 17,
+      "agente": "Tronix-MEDIA",
+      "acao": "MININOVELA_PT_LOCALMINIDRAMA: Drama id2 Mercadinho Bizu completo via API em PT-BR. Roteiro escrito por TRONIX (O Resgate do Mercadinho Bizu, 4291 chars). 6 personagens extraidos do roteiro com retratos Pollinations flux (Dona Severina, Claudete, Advogado, Tico-Tico, Ze Batista, TRONIX). 11 storyboards gerados (Ollama qwen2.5:7b local, modelos HF Router gratis esgotaram 402 - quota mensal). 8 cenas com fundos via Pollinations. HF TOKEN quota de Inference Providers esgotada no mes; fallback automatico p/ Ollama local funcionou (config text id3 Ollama default). Adapter imagem tronix_img_adapter.py otimizado: retry 429 + delay 5s entre imagens. Timeout stream IA do backend subiu de 60s para 180s (Ollama frio demora no 1o token). Tudo salvo em drama_generator.db; http://localhost:3013",
+      "timestamp": "2026-09-13",
+      "orig_id": 141
+    },
+    {
+      "id": "31ce3a35-efbb-4a46-90ce-2d1ed3062db9",
+      "seq": 18,
+      "agente": "Tronix-DEV",
+      "acao": "LIMPEZA_SEGURANCA+LIMPEZA_LINUX: REMOVIDO XMRig cryptominer (kit 'audio system': C:\\runtime, C:\\diagnostics, C:\\perfdata, C:\\rescache, %APPDATA%\\Sound - config apontava C2 audiosystem.online, pools Monero hashvault/moneroocean, worker CHCONTE3). Causava PowerShell abrindo/fechando a cada login. Removidas 4 tasks malware (DriverUpdate, GraphicsCardEngineupdater, MicrosoftdriverUpdate, audio system), 4 chaves Run (AdobePS1, Windows PowerShell v1.0 [download obfuscado], WinSysGuard, WindowsPowerShell_v1.0 CL_NCL), netsetup.lnk, reg.exe desabilitado por politica resetado. LINUX REMOVIDO: WSL Ubuntu + kali-linux unregistered, feature Microsoft-Windows-Subsystem-Linux desabilitada, homelab (Jellyfin stack) apagado, 8 regras netsh portproxy -> IP WSL removidas. CLONES/SOBRAS apagados: dify, ragflow, picture-book-skill, nca-toolkit, nPhoneKIT, scrcpy, open-webui, ComfyUI, nethunter_apks, gallery-skills, omniroute, prayer-diary-desktop, fastcrw + scripts Linux (iniciar_infra.ps1, iniciar_dify_ragflow.bat, instalar_nethunter.sh, setup_github.ps1). OTIMIZACAO: autostart LM Studio + FilmoraTray removidos, ReduceMemory.lnk morto removido, iniciar_tudo.bat reescrito (API Gateway + n8n).",
+      "timestamp": "2026-09-06",
+      "orig_id": 129
+    },
+    {
+      "id": "f9860255-6ad0-4ae4-b95e-a7bd95823696",
+      "seq": 19,
+      "agente": "Tronix-DEV",
+      "acao": "HOMELAB_ONLINE: WSL dockerd estabilizou apos restart-storm inicial (SIGTERM ~40s no daemon, origem interna WSL nao isolada; sistema segurou sozinho). 8/8 servicos respondendo HTTP 200 em http://localhost/{8096 jellyfin, 7878 radarr, 8989 sonarr, 9696 prowlarr, 8080 qbit, 6767 bazarr, 3579 ombi, 8191 flaresolverr}. Criado homelab/keepalive.ps1 + Task Scheduler TronixHomelabKeepalive (1 em 1 min): re-sobe docker compose se cair, refresca netsh portproxy (8 regras 0.0.0.0 -> IP WSL atual, IP muda a cada boot da VM), iptables DOCKER-USER ACCEPT via root. Jellyfin healthy. Acessar pelo app/celular: IP da maquina na LAN + porta (portproxy escuta 0.0.0.0).",
+      "timestamp": "2026-09-06",
+      "orig_id": 128
+    },
+    {
+      "id": "e6ba150f-1325-4666-aaf2-35a7afd8133f",
+      "seq": 20,
+      "agente": "Tronix-DEV",
+      "acao": "DEMO_YOUTUBE_3MIN: navegacao teste em tronix_jarvis/actions/youtube_video.py. Fixes: 1) trending agora usa busca filtrada sp=EgIQAQ (feed/trending bloqueado por bot-wall) devolvendo views+canal+url; 2) summarize aceita url nos parameters do Gemini (antes ignorava, so dialogo tkinter); 3) transcript adaptado youtube-transcript-api v1.2.4 (API mudou: YouTubeTranscriptApi().list(), snippets sao objetos .text, prioridade manual pt-BR); 4) branding TRONIX. Demo: demo_navegacao.py (DummyPlayer, 5 min sem HUD) - info/play/trending/transcript OK; resumo final requer GEMINI_API_KEY vazia no .env.",
+      "timestamp": "2026-09-05",
+      "orig_id": 127
+    },
+    {
+      "id": "ecbc94f5-6f89-488a-a7b8-57c8e41e3f35",
+      "seq": 21,
+      "agente": "Tronix-DEV",
+      "acao": "JARVIS_MARK: Estrutura do video 'I Gave JARVIS Full Control of My Computer' (MARK XLVIII/Gemini Live API) portada para TRONIX em agente/tronix_jarvis/. main.py (loop Gemini Live + dispatch) + ui.py (HUD PyQt6: waveform, log, interrupt, camera) + setup.py + 19 modulos actions/ (open_app, web_search, screen_processor, computer_settings/control, browser_control, file_controller/processor, code_helper, dev_agent, reminder, weather, flight_finder, youtube_video, send_message, game_updater, desktop, system_monitor, proactive) + memory/long_term.json + core/prompt.txt (persona TRONIX pt-BR) + config/api_keys.json + dashboard remoto (porta 8000). Integrado ecossistema Tronix: tools tronix_status/agentes/scripts/executar/memoria via gateway 8081 + tronix.db. Chave Gemini via .env ou wizard do HUD. Deps instaladas: PyQt6, mss, qrcode, pycaw, pywinauto, win10toast. Testes: todos os 19 actions importam, tools tronix_* respondem, banco le real. DELTA 2026-09-05: revalidada estrutura, corrigida query tronix_memoria (coluna acao) e reinstaladas deps PyQt6/mss.",
+      "timestamp": "2026-09-05",
+      "orig_id": 126
+    },
+    {
+      "id": "08c3dcd6-9fde-4dd6-bf2c-e04210746c6e",
+      "seq": 22,
+      "agente": "Tronix-DEV",
+      "acao": "HOMELAB_HOST_MODE: Configurado network_mode: host no Jellyfin em docker-compose.yml. Servidor respondeu HTTP 200 OK no IP direto do WSL2: http://172.18.245.58:8096/",
+      "timestamp": "2026-09-05",
+      "orig_id": 125
+    },
+    {
+      "id": "90bf3bac-adbc-4d72-9e5b-e48c1b20e63a",
+      "seq": 23,
+      "agente": "Tronix-DEV",
+      "acao": "HOMELAB_FIX: Corrigido portproxy circular no netsh Windows + migrados volumes de config do docker-compose para Ext4 named volumes (/config) evitando travamento do SQLite no NTFS. Jellyfin v10.10.7 100% online e operacional em http://localhost:8096/",
+      "timestamp": "2026-09-05",
+      "orig_id": 124
+    },
+    {
+      "id": "870d7d4f-9f5f-4b24-b23e-3b1b79effb9a",
+      "seq": 24,
+      "agente": "Tronix-DEV",
+      "acao": "HOMELAB: Servidor de midia caseiro criado em agente/homelab/. Stack: Jellyfin (8096) + Radarr (7878) + Sonarr (8989) + Prowlarr (9696) + qBittorrent (8080) + Bazarr (6767) + Ombi (3579) + FlareSolverr (8191). Docker Compose pronto. Script setup_completo.bat + fix_iptables.sh. Pastas D:\\Media\\{Filmes,Series,Downloads,Legendas,Musica}. Portproxy Windows->WSL2. iptables DOCKER-USER fix para forward. Atalho Desktop Tronix Homelab.",
+      "timestamp": "2026-09-05",
+      "orig_id": 123
+    },
+    {
+      "id": "b1142d29-b0a8-4afb-a5a4-0256bfc699a0",
+      "seq": 25,
+      "agente": "Tronix",
+      "acao": "ATIVACAO: Tronix ativado por Marcos em 2026-05-12. Sessao iniciada.",
+      "timestamp": "2026-05-12T12:00:00Z",
+      "orig_id": 12
+    },
+    {
+      "id": "b28fefb6-df8d-4da6-8334-6c1e72e112c3",
+      "seq": 26,
+      "agente": "Tronix",
+      "acao": "VERIFICACAO_PASTA: Explorado diretorio agente/ com 100+ entradas. Confirmados sistema Tronix, PCsoluÃ§Ãµes, pipeline de midia.",
+      "timestamp": "2026-05-12",
+      "orig_id": 13
+    },
+    {
+      "id": "bbc7b5cd-c96c-445b-9d34-2ad2ae49a315",
+      "seq": 27,
+      "agente": "Tronix-DEV",
+      "acao": "CRIADO: index.php - Galeria visual Tronix com grid responsivo, players de video, badges Original/Animado/Super Editor, match imagem por timestamp.",
+      "timestamp": "2026-05-12",
+      "orig_id": 14
+    },
+    {
+      "id": "58a69813-ca13-4ab1-bb61-bca143a3cfb2",
+      "seq": 28,
+      "agente": "Tronix-DEV",
+      "acao": "ATUALIZADO: index.php - Logica de matching imagem->video por timestamp, suporte a _super e _super_voz com badges e botoes diferenciados.",
+      "timestamp": "2026-05-12",
+      "orig_id": 15
+    },
+    {
+      "id": "0256e4d2-0828-4979-aba4-8c5fc34c0334",
+      "seq": 29,
+      "agente": "Tronix-SUPER",
+      "acao": "CRIADO: tronix_super_editor.py - Pipeline de voz Edge-TTS + legenda com FFmpeg. Usa AntonioNeural (pt-BR). Corrigido encoding UTF-8 e fontfile.",
+      "timestamp": "2026-05-12",
+      "orig_id": 16
+    },
+    {
+      "id": "b32882b7-90cf-42ef-a852-643bfd2d65c1",
+      "seq": 30,
+      "agente": "Tronix-SUPER",
+      "acao": "EXECUTADO: Super Editor no video tronix_1778515500.mp4 com texto PROMOCAO PCSOLUCOES. Gerado _super.mp4 (texto) e _super_voz.mp4 (voz gTTS).",
+      "timestamp": "2026-05-12",
+      "orig_id": 17
+    },
+    {
+      "id": "0f30a844-1ec1-42d4-9bff-936ee5ba8703",
+      "seq": 31,
+      "agente": "Tronix-SUPER",
+      "acao": "MIGRADO: gTTS para Edge-TTS (voz mais natural). Instalado edge-tts v7.2.8. Voz alterada para pt-BR-AntonioNeural.",
+      "timestamp": "2026-05-12",
+      "orig_id": 18
+    },
+    {
+      "id": "17f45c57-172e-4ef8-abca-06300f540ebf",
+      "seq": 32,
+      "agente": "Tronix-SUPER",
+      "acao": "ATUALIZADO: tronix_super_editor.py - Agora por padrao adiciona SOMENTE voz. Texto na tela apenas com flag --texto.",
+      "timestamp": "2026-05-12",
+      "orig_id": 19
+    },
+    {
+      "id": "429deadf-7c46-48e4-91c8-757b2017e014",
+      "seq": 33,
+      "agente": "Tronix-DEV",
+      "acao": "CRIADO: mini_novela.py - Concatena N videos da pasta videos_saida usando concat demuxer do FFmpeg.",
+      "timestamp": "2026-05-12",
+      "orig_id": 20
+    },
+    {
+      "id": "8d98eaf7-8769-4d35-95ce-c4440adcc7ea",
+      "seq": 34,
+      "agente": "Tronix-DEV",
+      "acao": "EXECUTADO: mini_novela.py juntou 3 videos (tronix.mp4 + _super.mp4 + _super_voz.mp4) em mini_novela.mp4 (12s, 1.2MB).",
+      "timestamp": "2026-05-12",
+      "orig_id": 21
+    },
+    {
+      "id": "0594c7b9-b600-4eaa-85cd-f0386d08ec8e",
+      "seq": 35,
+      "agente": "Tronix-MEDIA",
+      "acao": "CRIADO: gerar_mini_novela.py - Pipeline completo: Cloudflare SDXL -> Ken Burns -> Edge-TTS voz -> FFmpeg concat.",
+      "timestamp": "2026-05-12",
+      "orig_id": 22
+    },
+    {
+      "id": "6c270045-22a3-4638-b5e9-81452050e527",
+      "seq": 36,
+      "agente": "Tronix-MEDIA",
+      "acao": "EXECUTADO: gerar_mini_novela.py com tema 'Extraterrestre invade a Terra'. 3 cenarios: A Chegada, O Plano, A Invasao. Imagens via Cloudflare, video Ken Burns, voz AntonioNeural. MINI NOVELA PRONTA em mini_novela.mp4 (14s, 4MB, Full HD 1920x1080).",
+      "timestamp": "2026-05-12",
+      "orig_id": 23
+    },
+    {
+      "id": "7a50ac9b-f91d-4c47-a7e5-0214519da28f",
+      "seq": 37,
+      "agente": "Tronix-DEV",
+      "acao": "FIX: gera_video.py adaptado para moviepy v2.2.1 - TextClip com kwargs, font path, FadeIn/FadeOut via moviepy.video.fx, ColorClip API v2. Removido slide/typewriter/bounce custom.",
+      "timestamp": "2026-05-12",
+      "orig_id": 24
+    },
+    {
+      "id": "74fd4a6f-874f-4f0e-8804-b6c6ae9b26ab",
+      "seq": 38,
+      "agente": "Tronix",
+      "acao": "MEMORIA: Sessao 2026-05-12 salva. Configuracao: Tronix ativo em Vicosa-AL, PCsoluÃ§Ãµes. Pipeline funcional: Cloudflare SDXL -> Ken Burns -> Edge-TTS AntonioNeural -> FFmpeg concat.",
+      "timestamp": "2026-05-12",
+      "orig_id": 25
+    },
+    {
+      "id": "e0a167af-e04b-41bb-9c1d-4ebfd76bfb0a",
+      "seq": 39,
+      "agente": "Tronix-SYNC",
+      "acao": "SKILLS_SINCRONIZADAS: 37 skills carregadas do .agent/skills/ (Antigravity Kit). Atualizado tronix_core.json com a lista oficial.",
+      "timestamp": "2026-05-12",
+      "orig_id": 26
+    },
+    {
+      "id": "26d0ad09-cdee-4859-b23f-da2cf1b9d224",
+      "seq": 40,
+      "agente": "Tronix-DB",
+      "acao": "CRIADO: tronix_logger.py - Banco SQLite (tronix.db) com tabelas conteudo, pipeline_log, agendamento. Integrado ao super_editor e gerador de mini-novelas.",
+      "timestamp": "2026-05-12",
+      "orig_id": 27
+    },
+    {
+      "id": "12d342ff-3f55-4552-95a4-118fb698d9b5",
+      "seq": 41,
+      "agente": "Tronix-DB",
+      "acao": "CRIADO: sql_tronix.sql - Schema MySQL para quando o XAMPP estiver disponivel.",
+      "timestamp": "2026-05-12",
+      "orig_id": 28
+    },
+    {
+      "id": "035cb5c4-beb8-4bff-b7b9-d24e24ba19c4",
+      "seq": 42,
+      "agente": "Tronix-DOC",
+      "acao": "CRIADO: potencial.md no Desktop com lista de capacidades e pendencias (redes sociais, agendador, jogos, dashboard).",
+      "timestamp": "2026-05-12",
+      "orig_id": 29
+    },
+    {
+      "id": "dde425ad-7380-467e-8774-409dca6596ce",
+      "seq": 43,
+      "agente": "Tronix-DOC",
+      "acao": "CRIADO: potencial.md no Desktop com lista de capacidades e pendencias.",
+      "timestamp": "2026-05-12",
+      "orig_id": 29
+    },
+    {
+      "id": "b6fae1f1-62d3-4702-afbb-21b2310415bd",
+      "seq": 44,
+      "agente": "Tronix-YT",
+      "acao": "CRIADO: tronix_youtube.py - Upload YouTube via OAuth 2.0. Aguardando client_secrets.json do Google Cloud.",
+      "timestamp": "2026-05-12",
+      "orig_id": 30
+    },
+    {
+      "id": "bedc55f0-3300-491e-8769-01ffb153ebc8",
+      "seq": 45,
+      "agente": "Tronix-IG",
+      "acao": "INSTALADO: instagrapi v2.6.3. CRIADO: tronix_instagram.py - Posta Reels e fotos no Instagram via login mobile. Suporte a postagem de pendentes do banco.",
+      "timestamp": "2026-05-12",
+      "orig_id": 31
+    },
+    {
+      "id": "f1a797b0-f367-42fd-a50d-3e492c5a0817",
+      "seq": 46,
+      "agente": "Tronix",
+      "acao": "FIM_SESSAO: 2026-05-12. Pipeline completo: gerar -> banco -> postar. Proximo: agendador Windows + dashboard.",
+      "timestamp": "2026-05-12",
+      "orig_id": 32
+    },
+    {
+      "id": "57d5f096-ecb2-43c6-b30d-7ae47815afab",
+      "seq": 47,
+      "agente": "Tronix",
+      "acao": "CORRECAO: Credenciais IG removidas do .env (nao eram do Instagram). Script tronix_instagram.py aguarda dados corretos.",
+      "timestamp": "2026-05-12",
+      "orig_id": 33
+    },
+    {
+      "id": "172c55bf-5ccd-4949-84b0-ebcbe5cc57d7",
+      "seq": 48,
+      "agente": "Tronix-RESEARCH",
+      "acao": "PESQUISA_GITHUB: Modelos encontrados - Open-Sora 2.0 (24k stars), CogVideoX (12.5k), HunyuanVideo (11.9k), Wan2.2, LTX-2. Automacao: instagrapi, auto-reels-uploader, Agentfy, MoneyPrinterTurbo, OpenMontage.",
+      "timestamp": "2026-05-12",
+      "orig_id": 34
+    },
+    {
+      "id": "05a5667d-50a3-48fe-a7a9-9ca00c1f4b40",
+      "seq": 49,
+      "agente": "Tronix-DEV",
+      "acao": "CRIADO: dashboard.php - Dashboard web PHP com SQLite. Exibe estatisticas, conteudos recentes e pipeline log. Acessivel em /agente/dashboard.php",
+      "timestamp": "2026-05-12",
+      "orig_id": 35
+    },
+    {
+      "id": "96037818-fd27-4099-a858-023830626ba5",
+      "seq": 50,
+      "agente": "Tronix-DEV",
+      "acao": "CRIADO: tronix_scheduler.ps1 - Script PowerShell que instala 3 tarefas no Windows: PostarInstagram (10h/14h/18h), GerarNovela (08h), Limpeza (domingo 03h).",
+      "timestamp": "2026-05-12",
+      "orig_id": 36
+    },
+    {
+      "id": "12038445-bde6-4795-aac8-d2a8b25a3dfe",
+      "seq": 51,
+      "agente": "Tronix-IG",
+      "acao": "ATUALIZADO: tronix_instagram.py v2 - Suporte a --pasta (postar todos videos de uma pasta), --pendentes (banco), --video (individual).",
+      "timestamp": "2026-05-12",
+      "orig_id": 37
+    },
+    {
+      "id": "5332e1c4-eb55-4b94-ab35-a7891e15008d",
+      "seq": 52,
+      "agente": "Tronix-DEV",
+      "acao": "ATUALIZADO: index.php - Link para dashboard.php adicionado no footer.",
+      "timestamp": "2026-05-12",
+      "orig_id": 38
+    },
+    {
+      "id": "3ed17ff5-1185-4f11-a9b8-74899d74cb82",
+      "seq": 53,
+      "agente": "Tronix",
+      "acao": "GPU check: Sem CUDA. Modelos locais inviaveis.",
+      "timestamp": "2026-05-12",
+      "orig_id": 39
+    },
+    {
+      "id": "38c7c96a-56c6-44fe-aa26-b3f6b1f639fc",
+      "seq": 54,
+      "agente": "Tronix-MEDIA",
+      "acao": "CRIADO: animar_ia.py - Pipeline 3-tentativas: 1) ZSky API (gratis, 1080p), 2) Replicate (Wan 2.2 I2V, $0.01), 3) HuggingFace SVD (fallback). Substitui o antigo animar_opencode.py.",
+      "timestamp": "2026-05-12",
+      "orig_id": 40
+    },
+    {
+      "id": "2336bda7-8cd8-419c-8d2d-c4084b88c6f6",
+      "seq": 55,
+      "agente": "Tronix",
+      "acao": "TESTE: Imagem cachorro surfando gerada via Cloudflare SDXL. Video Ken Burns criado com FFmpeg. ZSky API retornou 404. Token HuggingFace expirou.",
+      "timestamp": "2026-05-12",
+      "orig_id": 41
+    },
+    {
+      "id": "5feba1dd-5d19-402f-9462-e23a6d1605b6",
+      "seq": 56,
+      "agente": "Tronix-DEV",
+      "acao": "CRIADO: animar_replicate.py - Script dedicado para Wan 2.2 I2V via Replicate API. Guia de setup incluido no --help.",
+      "timestamp": "2026-05-12",
+      "orig_id": 42
+    },
+    {
+      "id": "2d23db23-362b-4931-bc8b-c94ab51a286b",
+      "seq": 57,
+      "agente": "Tronix-DEV",
+      "acao": "FIX: moviepy reinstalado v2.2.1 (estava v1 quebrado pelo instagrapi). gera_video.py restaurado para imports v2.",
+      "timestamp": "2026-05-12",
+      "orig_id": 43
+    },
+    {
+      "id": "8a7ed627-df2a-4fb0-86a3-919348d40856",
+      "seq": 58,
+      "agente": "Tronix",
+      "acao": "FIM_SESSAO: Pipeline funcional: Ken Burns + FFmpeg. Pendente: configurar Replicate API.",
+      "timestamp": "2026-05-12",
+      "orig_id": 44
+    },
+    {
+      "id": "52f4dd93-8c75-4db4-b6cc-97e6f1b136e3",
+      "seq": 59,
+      "agente": "Tronix-NCA",
+      "acao": "CLONADO: NCA-ToolKit (stephengpope, 2.3k stars) para C:\\xampp\\htdocs\\agente\\nca-toolkit. Servidor Flask rodando na porta 8080 com 28 blueprints. Dependencias instaladas: google-cloud-storage, google-cloud-run, boto3. Limitacao: requer S3/MinIO para upload de arquivos.",
+      "timestamp": "2026-05-12",
+      "orig_id": 45
+    },
+    {
+      "id": "67b1d2dc-bc99-4da3-8436-79b3f14e621f",
+      "seq": 60,
+      "agente": "Tronix-NCA",
+      "acao": "CRIADO: tronix_nca.py - Wrapper Python para NCA-ToolKit. Endpoints: imagem_para_video(), concatenar_videos(), adicionar_legenda(), status().",
+      "timestamp": "2026-05-12",
+      "orig_id": 46
+    },
+    {
+      "id": "ee90a636-fb8d-4b76-a24d-ebf8569f6d74",
+      "seq": 61,
+      "agente": "Tronix",
+      "acao": "FIM_SESSAO: Tudo registrado.",
+      "timestamp": "2026-05-12",
+      "orig_id": 47
+    },
+    {
+      "id": "7b992555-d02d-4421-a490-a2a1b2353adf",
+      "seq": 62,
+      "agente": "Tronix-INFRA",
+      "acao": "INSTALADO: Docker Engine v29.4.3 dentro do WSL2 Ubuntu. Docker rodando, composes prontos.",
+      "timestamp": "2026-05-12",
+      "orig_id": 48
+    },
+    {
+      "id": "516bd024-8356-432e-872f-0463eaac4248",
+      "seq": 63,
+      "agente": "Tronix-INFRA",
+      "acao": "INSTALADO: MinIO via Docker Compose. Portas 9000 (API) e 9001 (Console). Bucket 'tronix' criado. Pendente: resolver rota WSL2 -> Windows para NCA-ToolKit enxergar MinIO.",
+      "timestamp": "2026-05-12",
+      "orig_id": 49
+    },
+    {
+      "id": "219bdc20-ae9c-4cc4-88b7-668778c9b8c6",
+      "seq": 64,
+      "agente": "Tronix-INFRA",
+      "acao": "CRIADO: iniciar_infra.ps1 - Script one-click que: 1) Sobe WSL+Docker+MinIO, 2) Detecta IP do WSL, 3) Inicia NCA-ToolKit. Basta rodar: powershell -File iniciar_infra.ps1",
+      "timestamp": "2026-05-12",
+      "orig_id": 50
+    },
+    {
+      "id": "b8e094ac-f0da-46bf-9cbd-a195f00276f7",
+      "seq": 65,
+      "agente": "Tronix-DEV",
+      "acao": "FIX: NCA-ToolKit caption_video endpoint desabilitado (falta fontes linux /usr/share/fonts/custom). 28 blueprints registrados de 34.",
+      "timestamp": "2026-05-12",
+      "orig_id": 51
+    },
+    {
+      "id": "723eec7b-6f6e-4d79-8419-b801561d3a55",
+      "seq": 66,
+      "agente": "Tronix",
+      "acao": "FIM_SESSAO: Docker + MinIO + NCA-ToolKit instalados. Pipeline FFmpeg nativo OK.",
+      "timestamp": "2026-05-12",
+      "orig_id": 52
+    },
+    {
+      "id": "350ef407-22ad-427a-8a76-c81ed618a29a",
+      "seq": 67,
+      "agente": "Tronix-INFRA",
+      "acao": "INSTALADO: moto S3 mock (Python puro, leve). Servidor rodando na porta 9090. Bucket 'tronix' criado e funcional.",
+      "timestamp": "2026-05-12",
+      "orig_id": 53
+    },
+    {
+      "id": "39a432fa-0f15-4cd3-bad4-5d39dcc92c4f",
+      "seq": 68,
+      "agente": "Tronix-INFRA",
+      "acao": "CRIADO: iniciar_tudo.bat - Script batch one-click que inicia Moto S3 + NCA-ToolKit sequencialmente. Basta dar duplo clique.",
+      "timestamp": "2026-05-12",
+      "orig_id": 54
+    },
+    {
+      "id": "3be4402c-98c7-44a7-a75c-bac37d9e0a9a",
+      "seq": 69,
+      "agente": "Tronix",
+      "acao": "FIM_SESSAO_COMPLETA: 2026-05-12. Tronix v1.0 totalmente operacional. Infraestrutura: Cloudflare SDXL, FFmpeg, Edge-TTS, SQLite, MinIO/moto S3, NCA-ToolKit. Pendentes: billing Replicate para Wan 2.2, credenciais Instagram.",
+      "timestamp": "2026-05-12",
+      "orig_id": 55
+    },
+    {
+      "id": "f584f3e6-25e0-4959-ae7b-37620e9e5a76",
+      "seq": 70,
+      "agente": "Tronix-DEV",
+      "acao": "UPGRADE: Instalado CrewAI v1.14.4 e n8n v2.20.6. Criado tronix_crew.py com 9 agentes (DEV, MEDIA, SUPER, IG, YT, DB, INFRA, RESEARCH, SYNC) em processo hierarquico com memoria persistente.",
+      "timestamp": "2026-05-12",
+      "orig_id": 56
+    },
+    {
+      "id": "b97246cf-644f-4e84-99de-0e21ba402188",
+      "seq": 71,
+      "agente": "Tronix-DEV",
+      "acao": "UPGRADE: Criado n8n_workflow.json com pipeline visual: Agendador Cron -> Cloudflare SDXL -> Ken Burns -> Edge-TTS -> SQLite. Workflow importavel via http://localhost:5678.",
+      "timestamp": "2026-05-12",
+      "orig_id": 57
+    },
+    {
+      "id": "27be0362-996d-4229-bdd0-eba6c57da531",
+      "seq": 72,
+      "agente": "Tronix-DEV",
+      "acao": "UPGRADE: Criado iniciar_n8n.bat para start one-click do n8n. CrewAI usa LLM free configurado no tronix_crew.py.",
+      "timestamp": "2026-05-12",
+      "orig_id": 58
+    },
+    {
+      "id": "46db38a0-ab9b-4c93-b2e5-bbaa8e0dd8c4",
+      "seq": 73,
+      "agente": "Tronix-DEV",
+      "acao": "INSTALADO: Langflow v1.9.2 via uv. Interface drag-and-drop para agentes LangChain. Acessivel em http://localhost:7860 via 'python -m langflow run'",
+      "timestamp": "2026-05-12",
+      "orig_id": 59
+    },
+    {
+      "id": "350ded35-1aa6-4e4d-be77-c3dca5a3fc55",
+      "seq": 74,
+      "agente": "Tronix-DEV",
+      "acao": "CLONADO: Dify (langgenius) em agente/dify/. Plataforma full-stack AI apps com RAG + agente + workflow. Docker compose em dify/docker/. Porta 3000.",
+      "timestamp": "2026-05-12",
+      "orig_id": 60
+    },
+    {
+      "id": "93f8fbd8-c7cd-4389-b9f4-6259f5b4c34c",
+      "seq": 75,
+      "agente": "Tronix-DEV",
+      "acao": "CLONADO: RAGFlow (infiniflow) em agente/ragflow/. Engine RAG enterprise. Docker compose em ragflow/docker/. Porta 9380.",
+      "timestamp": "2026-05-12",
+      "orig_id": 61
+    },
+    {
+      "id": "f44ff3ae-acc9-43b9-84a3-ff61a2d50459",
+      "seq": 76,
+      "agente": "Tronix-DEV",
+      "acao": "CRIADO: iniciar_dify_ragflow.bat - Script one-click que sobe Dify + RAGFlow via Docker WSL2. Para Langflow: python -m langflow run.",
+      "timestamp": "2026-05-12",
+      "orig_id": 62
+    },
+    {
+      "id": "57c976b4-55a6-4df4-ba17-c9db0ac738a8",
+      "seq": 77,
+      "agente": "Tronix-DEV",
+      "acao": "UNIFICACAO: API Gateway FastAPI criado (porta 8081). 12 endpoints REST. CrewAI atualizado com GatewayTool + N8nTool. n8n workflow v2 com webhook. Dashboard unificado com status em tempo real. iniciar_tronix.bat one-click.",
+      "timestamp": "2026-05-12T14:00:00Z",
+      "orig_id": 63
+    },
+    {
+      "id": "b2d40303-a078-4456-98b3-e1fe46e00cf9",
+      "seq": 78,
+      "agente": "CREWAI-TEST",
+      "acao": "Teste de integracao",
+      "timestamp": "2026-05-12T09:44:40Z",
+      "orig_id": 64
+    },
+    {
+      "id": "c7559eaf-8e32-44e7-85a8-801caf61203b",
+      "seq": 79,
+      "agente": "TESTE",
+      "acao": "EXECUTOU: tronix_logger.py ",
+      "timestamp": "2026-05-12T09:44:42Z",
+      "orig_id": 65
+    },
+    {
+      "id": "154a9bdd-562b-4222-80e7-c44f1270ced5",
+      "seq": 80,
+      "agente": "Tronix-DEV",
+      "acao": "ATUALIZADO: tronix_crew.py - LLM migrado para OpenRouter (google/gemini-2.0-flash-exp). Adicionados agentes ROTEIRISTA e DIRETOR. Manager LLM configurado via OpenRouter.",
+      "timestamp": "2026-05-12",
+      "orig_id": 66
+    },
+    {
+      "id": "e42d3142-1f25-433e-aa5a-65d1166dbcfd",
+      "seq": 81,
+      "agente": "Tronix-DEV",
+      "acao": "ATUALIZADO: tronix_core.json - v1.3.0, agentes 9->11 com ROTEIRISTA e DIRETOR, manager_llm openrouter/google/gemini-2.0-flash-exp",
+      "timestamp": "2026-05-12",
+      "orig_id": 67
+    },
+    {
+      "id": "23734f22-82f3-4a5b-ab8a-521869e9ee6a",
+      "seq": 82,
+      "agente": "Tronix-DEV",
+      "acao": "CONFIGURADO: OPENROUTER_API_KEY adicionada ao .env. CrewAI pronto para usar google/gemini-2.0-flash-exp via OpenRouter.",
+      "timestamp": "2026-05-12",
+      "orig_id": 68
+    },
+    {
+      "id": "58b4c027-73ed-477c-915c-56d41a9e2b92",
+      "seq": 83,
+      "agente": "Tronix-SANTINHO",
+      "acao": "CRIADO: santinho_generator/ - Gerador profissional de santinhos politicos. 14 modelos (classico, moderno_minimalista, premium_executivo, colorido_partidario, jovem_dinamico, tradicao_brasileiro, agro_forte, sindical_trabalhador, empresarial_pro, fotografico_impacto, minimalista_horizontal, cristao_familia, tecnologico_inovador, esporte_juventude).",
+      "timestamp": "2026-06-02",
+      "orig_id": 69
+    },
+    {
+      "id": "acdce34c-66d6-4ad0-9850-0733ef953b4f",
+      "seq": 84,
+      "agente": "Tronix-MEDIA",
+      "acao": "DESIGN: 14 templates visuais em CSS puro + 6 templates renderizados via Pillow (300 DPI) com fontes do sistema. Paleta Tronix (preto + accent vermelho + ciano + dourado) respeitada.",
+      "timestamp": "2026-06-02",
+      "orig_id": 70
+    },
+    {
+      "id": "2db59b6f-b617-45d1-bf3f-5039d0ab430f",
+      "seq": 85,
+      "agente": "Tronix-DEV",
+      "acao": "INTERFACE: index.html com editor visual completo - 14 cards de modelo, sidebar de cores (4 canais), formulario com 12 campos, preview ao vivo, tabs FRENTE/VERSO com QR Code automatico no verso, salvamento de candidatos no localStorage.",
+      "timestamp": "2026-06-02",
+      "orig_id": 71
+    },
+    {
+      "id": "5fcea07e-3254-40d9-874f-a6b320190593",
+      "seq": 86,
+      "agente": "Tronix-SUPER",
+      "acao": "PIPELINE: santinho.py (engine Python 300 DPI) + gerar_lote.py (multi-candidato). Integracao Pillow + ReportLab. Grid A4 9 santinhos (3x3) com sangria 3mm. Frente e verso automaticos. Teste: 3 candidatos gerados com sucesso (classico, premium_executivo, moderno_minimalista).",
+      "timestamp": "2026-06-02",
+      "orig_id": 72
+    },
+    {
+      "id": "b9930b33-5aa9-4857-aa03-1dfe703a8f38",
+      "seq": 87,
+      "agente": "Tronix-DB",
+      "acao": "SCHEMA: SQLite santinho.db com tabelas candidatos + geracoes. Registro automatico de cada geracao (candidato, quantidade, copias, com_verso, arquivo_saida, timestamp).",
+      "timestamp": "2026-06-02",
+      "orig_id": 73
+    },
+    {
+      "id": "4cdeb990-e6cb-40b3-b30e-d90a00d5e617",
+      "seq": 88,
+      "agente": "Tronix-DEV",
+      "acao": "ONE-CLICK: iniciar_santinho.bat - Instala Pillow+ReportLab, inicializa banco, abre interface no navegador. Para CLI: python santinho.py --help. Para lote: python gerar_lote.py --input exemplos_candidatos.json --quantidade 1000",
+      "timestamp": "2026-06-02",
+      "orig_id": 74
+    },
+    {
+      "id": "606f0fa3-fab8-4df6-b29b-7fefaf5d89c9",
+      "seq": 89,
+      "agente": "Tronix-SANTINHO",
+      "acao": "EXPANSAO: 14 -> 20 modelos. Adicionados: diagonal_dinamico, retro_vintage, gradient_suave, black_gold_luxo, tropical_verao, civico_municipal.",
+      "timestamp": "2026-06-02",
+      "orig_id": 75
+    },
+    {
+      "id": "ce1faf32-c73d-4cec-bbf1-f2a4714c4dbb",
+      "seq": 90,
+      "agente": "Tronix-MEDIA",
+      "acao": "ACESSORIOS: 9 simbolos (cruz, estrela, coracao, bandeira, raio, mao, familia, pomba) + 5 molduras foto (quadrada, redonda, losango, hexagonal, escudo) + 4 estilos foto (normal, PB, sepia, duotone) + 11 badges (mulher, jovem, renovacao, experiencia, educacao, saude, seguranca, agro, religioso, trabalhador, novo) + toggles (selo_je, vice, proposta_destaque, zona_secao, faixa_cor).",
+      "timestamp": "2026-06-02",
+      "orig_id": 76
+    },
+    {
+      "id": "9da72a2f-3198-4c0b-8c39-15745eb12a55",
+      "seq": 91,
+      "agente": "Tronix-DEV",
+      "acao": "CAMADA-ACC: Sistema de acessorios como camada sobreposta. Sidebar do editor com 9 selects/toggles. Engine Python implementa todos os acessorios com PIL (mascaras, filtros, composicao).",
+      "timestamp": "2026-06-02",
+      "orig_id": 77
+    },
+    {
+      "id": "025ba476-a0fd-4cbc-b1c9-788f6c681516",
+      "seq": 92,
+      "agente": "Tronix-DEV",
+      "acao": "ENGINE: render_acessorios() desenha sobre a imagem apos o modelo. carregar_foto() com filtros. aplicar_moldura_foto() com mascaras PIL (redonda, losango, hexagonal). aplicar_estilo_foto() para PB/sepia/duotone.",
+      "timestamp": "2026-06-02",
+      "orig_id": 78
+    },
+    {
+      "id": "96237540-cf02-4db9-9435-5e897aa8c8d3",
+      "seq": 93,
+      "agente": "Tronix-GRAPHIFY",
+      "acao": "INSTALADO: Graphify v0.8.30. Provider custom 'nvidia' registrado (Llama 3.1 8B via NVIDIA NIM API). Skill carregada no contexto.",
+      "timestamp": "2026-06-03",
+      "orig_id": 79
+    },
+    {
+      "id": "f49f6e74-860e-41d6-9c4a-4d720c55c199",
+      "seq": 94,
+      "agente": "Tronix-GRAPHIFY",
+      "acao": "AST_EXTRACAO: 1639 arquivos processados (AST tree-sitter local). Grafo: 18626 nodes, 18868 edges.",
+      "timestamp": "2026-06-03",
+      "orig_id": 80
+    },
+    {
+      "id": "88bd3204-a648-40c9-b304-c1d6c708c8ee",
+      "seq": 95,
+      "agente": "Tronix-GRAPHIFY",
+      "acao": "CLUSTERIZACAO: 1373 comunidades detectadas via Leiden algorithm. Comunidades 0-199 nomeadas por LLM (Order Management, Browser Automation, Server Application, UI Component Library, Tronix System, MCP Overview, etc.).",
+      "timestamp": "2026-06-03",
+      "orig_id": 81
+    },
+    {
+      "id": "1a50916f-6418-4f44-8dd7-20eb68dc2a40",
+      "seq": 96,
+      "agente": "Tronix-GRAPHIFY",
+      "acao": "REPORT: GRAPH_REPORT.md + graph.json (16 MB) + agente-callflow.html gerados em graphify-out/. Grafo queryavel via /graphify query|path|explain.",
+      "timestamp": "2026-06-03",
+      "orig_id": 82
+    },
+    {
+      "id": "b5ae44a0-4515-487a-a0f7-83ea43bf15fb",
+      "seq": 97,
+      "agente": "Tronix",
+      "acao": "FIM_SESSAO: 2026-06-03. Graphify operacional. Proximo: usar /graphify query para explorar o projeto, ou rebuild com --update apos mudancas.",
+      "timestamp": "2026-06-03",
+      "orig_id": 83
+    },
+    {
+      "id": "96d7e35a-e182-4e05-9645-a8da7db67a84",
+      "seq": 98,
+      "agente": "Tronix",
+      "acao": "INTEGRACAO_FREEBUFF: Freebuff v0.0.107 instalado globalmente. Ferramenta tronix_freebuff adicionada ao MCP server (12 ferramentas total). Versao core atualizada para 1.5.0.",
+      "timestamp": "2026-06-13",
+      "orig_id": 84
+    },
+    {
+      "id": "4bab7714-e34a-41bb-8137-fe3205d52cf0",
+      "seq": 99,
+      "agente": "Tronix-DEV",
+      "acao": "CONFIGURADO: OpenRouter como LLM para CrewAI. API key validada, modelo google/gemma-4-31b-it:free testado OK. tronix_crew.py + tronix_core.json atualizados.",
+      "timestamp": "2026-06-16",
+      "orig_id": 85
+    },
+    {
+      "id": "47f40a70-ff20-4f10-90ab-f193604e9496",
+      "seq": 100,
+      "agente": "Tronix-DEV",
+      "acao": "ATIVADO: API Gateway v2.0.0 rodando na porta 8081. Endpoints: /health, /agentes, /scripts, /memoria, /dashboard/stats, /executar, /ws. Banco online, 55 scripts, 11 agentes CrewAI.",
+      "timestamp": "2026-06-16",
+      "orig_id": 86
+    },
+    {
+      "id": "e2f759d6-dc8b-4d48-a463-67594098685e",
+      "seq": 101,
+      "agente": "OPENHUMAN",
+      "acao": "OPENHUMAN_VOICE: status do sistema",
+      "timestamp": "2026-06-16T12:34:04Z",
+      "orig_id": 87
+    },
+    {
+      "id": "496c69b5-fe6f-4162-bae4-7c8aa784a202",
+      "seq": 102,
+      "agente": "OPENHUMAN",
+      "acao": "OPENHUMAN_VOICE: liste os agentes",
+      "timestamp": "2026-06-16T12:34:23Z",
+      "orig_id": 88
+    },
+    {
+      "id": "8d8c69c3-d19f-4835-bd2f-4725f571639e",
+      "seq": 103,
+      "agente": "Tronix-DEV",
+      "acao": "CRIADO: Agente OPENHUMAN para bridge OpenHuman-Tronix. Script tronix_openhuman_agent.py processa voice commands. 12 agentes CrewAI now ativos.",
+      "timestamp": "2026-06-16",
+      "orig_id": 89
+    },
+    {
+      "id": "c0ffafd9-f112-4a3c-8738-3a5f2f816d25",
+      "seq": 104,
+      "agente": "Tronix-DEV",
+      "acao": "CRIADO: SESSAO_RAPIDA.md - Arquivo de referencia rapida para novas sessoes. Contem identidade, sistemas, portas, comandos, estrutura, agentes, projetos e pendencias.",
+      "timestamp": "2026-06-16",
+      "orig_id": 90
+    },
+    {
+      "id": "c3c614b0-e183-4672-971d-cddb97caa00d",
+      "seq": 105,
+      "agente": "Tronix",
+      "acao": "FIM_SESSAO: 2026-06-16. Sessao completa: OpenRouter configurado (40+ modelos gratis), API Gateway v2.0.0 ativo (porta 8081), Agente OPENHUMAN criado (12 agentes CrewAI), SESSAO_RAPIDA.md criado. Sistema 100% operacional.",
+      "timestamp": "2026-06-16",
+      "orig_id": 91
+    },
+    {
+      "id": "b56132f5-c2d0-4f6c-a177-afdbe009bea2",
+      "seq": 106,
+      "agente": "Tronix-DEV",
+      "acao": "INTEGRACAO_PICTURE_BOOK_SKILL: Clonado picture-book-skill do GitHub. Adaptado para InfoEngine: svg_guide.md, build_livro.py, criar_historia.py atualizado com geracao SVG, template HTML com auto-leitura, WhatsApp e PDF.",
+      "timestamp": "2026-07-19",
+      "orig_id": 92
+    },
+    {
+      "id": "8dd65391-2497-470c-aae4-e2ed59eca15c",
+      "seq": 107,
+      "agente": "Tronix-DEV",
+      "acao": "INSTALADO: Kimi Code v0.27.0 em C:\\Users\\CHCONTE RECPÃ‡ÃƒO\\.kimi-code\\bin. Configurado OpenRouter como provider (openrouter/free).",
+      "timestamp": "2026-07-19",
+      "orig_id": 93
+    },
+    {
+      "id": "9ef5e6a9-4069-4530-b730-f728cd1f8b1d",
+      "seq": 108,
+      "agente": "Tronix-DEV",
+      "acao": "MELHORADO: tronix_logger.py - 6 melhorias: context manager DB(), batch insert registrar_lote(), tabela tarefas integrada, export JSON, limpeza VACUUM, CLI commands (status/listar/exportar/limpar).",
+      "timestamp": "2026-07-19",
+      "orig_id": 94
+    },
+    {
+      "id": "4a361c18-bb9c-44ca-aa7e-da71dcfd4dc4",
+      "seq": 109,
+      "agente": "Tronix-DEV",
+      "acao": "CRIADO: testar_melhorias.py - Script de verificacao das 6 melhorias do tronix_logger.py.",
+      "timestamp": "2026-07-19",
+      "orig_id": 95
+    },
+    {
+      "id": "910c8450-344a-4db4-a1d3-f95c3c9f18bc",
+      "seq": 110,
+      "agente": "Tronix-DEV",
+      "acao": "FIX: criar_robo_realista.py - Adicionado 'verde', 'verde_escuro', 'coral' ao dict CORES (KeyError ao gerar cenas cozinha/roupa).",
+      "timestamp": "2026-07-19",
+      "orig_id": 96
+    },
+    {
+      "id": "ce5eb950-2863-478e-9045-8a30226b4159",
+      "seq": 111,
+      "agente": "Tronix-MEDIA",
+      "acao": "GERADO: Robo Zukinha - Versao Realista. 8 paginas + capa + final. SVG metalizado 3D com gradientes, parafusos, pistoes, reator pulsante, 4 expressoes. Cores: ciano, cobre, vermelho, verde, coral. 148 KB. HTML em infoengine/output/robo_zukinha_realista.html. Registrado no pipeline_log (ID 12).",
+      "timestamp": "2026-07-19",
+      "orig_id": 97
+    },
+    {
+      "id": "fae60ecd-02dc-49f5-8e01-61c49fb3aa35",
+      "seq": 112,
+      "agente": "Tronix-DEV",
+      "acao": "INSTALADO: ChatGPT oficial (OpenAI) via winget (msstore 9PLM9XGG6VKS). Instalador do Desktop (Store Installer stub) falhou. AppID: OpenAI.Codex_2p2nqsd0c76g0!App.",
+      "timestamp": "2026-08-01T05:47:17Z",
+      "orig_id": 98
+    },
+    {
+      "id": "2784c6de-07c0-4aaf-b67b-b5477d1dd5d6",
+      "seq": 113,
+      "agente": "Tronix-SYNC",
+      "acao": "SKILLS_SINCRONIZADAS: 57 skills totais no tronix_core.json (48 antigravity + 8 opencode + 2 builtin). Adicionadas: games (2d/3d/mobile/pc/web/vr-ar), game-art/audio/design, multiplayer, templates, graphify, cavecrew, caveman-*, customize-opencode, react-best-practices.",
+      "timestamp": "2026-08-01T05:49:15Z",
+      "orig_id": 99
+    },
+    {
+      "id": "7da4e553-b943-4171-9509-b8d0eda35810",
+      "seq": 114,
+      "agente": "Tronix-DEV",
+      "acao": "CRIADO: tronix_voice.py - JARVIS via Gemini Live API. Voz bidirecional tempo real, 5 ferramentas Tronix (status, agentes, scripts, executar, memoria). Modelo gemini-3.1-flash-live-preview (gratis) com fallback gemini-2.0-flash-live-001. sounddevice+numpy instalados. GEMINI_API_KEY adicionada ao .env (pendente chave).",
+      "timestamp": "2026-08-01T06:00:59Z",
+      "orig_id": 100
+    },
+    {
+      "id": "eb25ff8a-7dea-4a6a-9107-f0980cdc5303",
+      "seq": 115,
+      "agente": "Tronix-SYNC",
+      "acao": "ORGANIZACAO_PC: Desktop limpo (79 arquivos classificados em 01-09 numerado, 18 pastas movidas para 02-Projetos/05-Videos/09-Temporarios). 15 atalhos uteis criados em 01-Atalhos (JOPDF, XAMPP, Python, Node, Tronix AI, iniciar_tudo, urls phpMyAdmin/InfoEngine/API/n8n/Langflow). mysql adicionado ao PATH. Duplicatas renomeadas -desktop.",
+      "timestamp": "2026-08-01T07:00:00Z",
+      "orig_id": 101
+    },
+    {
+      "id": "d57c6bb0-d643-40a1-bfd1-2c95d386fb05",
+      "seq": 116,
+      "agente": "Tronix-DEV",
+      "acao": "REWRITE_MAJOR: Sistema frigorifico/abatedouro (C:\\xampp\\htdocs\\major) refeito. Corrigidos: schema (granja_id faltante em tickets), db->query/exec inexistentes (zerar quebrava), JS zerarMovimento ids errados, emoji quebrado dashboard. Cupom 80mm perfeito: barcode Code128 (SVG puro), valor por extenso, CNPJ/contato, 2 vias (cliente/empresa), @page 80mm. Novo cadastro granjas.php, config empresa.php, campos aviario/lote/carga/placa/obs. Zerar movimento admin-only + digitar ZERAR. Transaction em save. Testado HTTP: login, ticket, cupom, relatorios, seguranca 400/403. Backup em major.bak.",
+      "timestamp": "2026-08-01T08:00:00Z",
+      "orig_id": 102
+    },
+    {
+      "id": "5cd1e60d-dbc1-4826-b981-dcfc0b7138dc",
+      "seq": 117,
+      "agente": "Tronix-DEV",
+      "acao": "MAJOR_UX: Termo Ticket renomeado para Venda em toda a interface (Nova Venda, Vendas Hoje, Venda #, VENDA no cupom). DB/arquivos intactos (tickets, numero_ticket). Relatorio com impressao limpa: @page A4 landscape, esconde sidebar/topbar/filtros, cabecalho impresso com periodo e emitido em. Testado via HTTP.",
+      "timestamp": "2026-08-01T08:30:00Z",
+      "orig_id": 103
+    },
+    {
+      "id": "76dd3604-6ae6-4726-ab4d-46767c547b81",
+      "seq": 118,
+      "agente": "Tronix-DEV",
+      "acao": "MAJOR_EMPRESA: Cadastro de dados do abatedouro criado (cadastros/empresa.php). Tabela empresa_config no banco. Config/empresa.php agora carrega do banco (fallback padroes). Cupom 80mm exibe nome, ramo, CNPJ, endereco, cidade, telefone, whatsapp, site, msg rodape so quando preenchidos. Relatorio impresso inclui CNPJ/endereco/cidade/telefone. Link Empresa na sidebar (todas paginas). Preview ao vivo do cabecalho do cupom na pagina. Testado via HTTP: dados salvos, cupom exibe tudo, sem espacos vazios. Link protegido por requireAdmin.",
+      "timestamp": "2026-08-01T09:00:00Z",
+      "orig_id": 104
+    },
+    {
+      "id": "908c0a81-6c29-4f2f-a608-f83ea3737e60",
+      "seq": 119,
+      "agente": "Tronix-DEV",
+      "acao": "MAJOR_PRODUTOS: Cadastro de produtos criado (cadastros/produtos.php). Tabela produtos no banco (nome unico, unidade, descricao, ativo). Seeds FRANGO VIVO e FRANGO ABATIDO. Campo produto em precos.php virou input com datalist do catalogo. Link Produtos na sidebar de todas as paginas (antes de Precos). Testado via HTTP: POLLO CONGELADO cadastrado, duplicado bloqueado, datalist alimentado.",
+      "timestamp": "2026-08-01T10:00:00Z",
+      "orig_id": 105
+    },
+    {
+      "id": "c8bd5fcc-8904-49cb-8c32-f338bab0ca63",
+      "seq": 120,
+      "agente": "Tronix-DEV",
+      "acao": "MAJOR_PRECO_LINK: preco do cliente ligado ao catalogo de produtos. Coluna produto_id (FK->produtos) adicionada em precos_cliente, backfill por nome, FK fk_precos_produto. Form de precos virou select do catalogo (FRANGO VIVO, FRANGO ABATIDO, POLLO CONGELADO). Listagem join com produtos. Duplicado cliente+produto bloqueado. Migration no instalar.php + schema.sql. Testado via HTTP: FRANGO ABATIDO salvo com produto_id=2.",
+      "timestamp": "2026-08-01T10:30:00Z",
+      "orig_id": 106
+    },
+    {
+      "id": "2be6800b-811e-4320-ac8b-8cfe5700ec60",
+      "seq": 121,
+      "agente": "Tronix-DEV",
+      "acao": "MAJOR_SIMPLIFICAR_VENDA: Campos Granja, Aviario/Lote, Carga e Placa Veiculo removidos do form de venda e do cupom (2 vias). INSERT de tickets sem essas colunas (fica NULL no banco, dados antigos intactos). Form da venda agora: Cliente, Produto, Pesador, Peso Cx, Forma Pagamento, Tipo Aves, Observacoes + itens. JOIN granjas removido de tickets.php/imprimir_cupom.php. Cadastro de Granjas mantido. Testado via HTTP: venda id=5 salva com campos NULL, cupom sem Granja/Placa/Carga, Pesador OK.",
+      "timestamp": "2026-08-01T11:00:00Z",
+      "orig_id": 107
+    },
+    {
+      "id": "65578210-e8af-4516-83d3-24613de1d5d9",
+      "seq": 122,
+      "agente": "Tronix-DEV",
+      "acao": "FIX_SISADVENPDV: Erro 3021 BOF no fechamento de pedido corrigido. Causa raiz: tabela ESTOQUE com apenas produto 1 (4068 produtos careciam de registro de estoque, SELECT para baixa de saldo retornava vazio). Acoes: seed GERA_COD_ORC/ULT_NRO_PEDIDO, caixa aberto estacao CHCONTE3 (tabela CAIXA vazia), CLIENTE.COD_FORMA_PGTO=1 (Dinheiro) e ESTOQUE populado com os 4068 produtos (saldo 0). Confirmado: fechamento de pedido com sucesso.",
+      "timestamp": "2026-08-08T15:55:00Z",
+      "orig_id": 108
+    },
+    {
+      "id": "5b25ad55-5357-4b3a-b41f-440340a0015a",
+      "seq": 123,
+      "agente": "Tronix-DEV",
+      "acao": "EBOOK_ERVAS: Gerador criar_ervas.py + ebook pagina a pagina (output/ervas.html, 67 paginas, 136KB). Conteudo transcrito do .doc Desktop: 52 ervas medicinais (uma por pagina com nome latin + receita), 88 indicacoes em tabelas, 10 finalidades ERVAS PARA, 3 banhos, 19 funcoes energeticas, 12 signos. Template grimorio verde/dourado, capa, indice clicavel, menu capitulos, setas/teclado/swipe, PDF print A4, botao WhatsApp. Capa designer em agente/ebook_covers/ (4 modelos, export PNG/PDF).",
+      "timestamp": "2026-08-15T00:00:00Z",
+      "orig_id": 109
+    },
+    {
+      "id": "9e82e419-14c1-40c5-a55a-a66940beac81",
+      "seq": 124,
+      "agente": "Tronix-DEV",
+      "acao": "INSTALADO: nPhoneKIT v1.6.3 clonado em C:\\xampp\\htdocs\\agente\\nPhoneKIT. Dependencias pip instaladas (pyserial, requests, pyqt5 + mtkclient requirements). Janela GUI testada OK. Atalho Desktop nPhoneKIT.lnk + abrir_nphonekit.bat criados. Pendente manual: Zadig drivers (WinUSB/libusb) + Samsung USB drivers.",
+      "timestamp": "2026-08-22T18:06:54Z",
+      "orig_id": 110
+    },
+    {
+      "id": "4c4b705a-65d8-4664-9aae-58252cec82f4",
+      "seq": 125,
+      "agente": "Tronix-DEV",
+      "acao": "GUASHOP: GuaShop-desenvolvimento instalado em C:/xampp/htdocs/GuaShop. DB guashop criado e populado (NovoSQLPreenchido: 3 lojas, 10 tabelas). Imagens copiadas para imagens/. HTTP testado OK: /GuaShop/ redireciona utilitario/login.php; adm e loja login 200.",
+      "timestamp": "2026-08-22",
+      "orig_id": 111
+    },
+    {
+      "id": "dd7a652e-06d6-4ddb-a065-b9c587ab6e94",
+      "seq": 126,
+      "agente": "Tronix-DEV",
+      "acao": "GUASHOP_REBRAND: Rebrand completo GuaShop -> Balcao Alagoano. 34 arquivos PHP/MD/SQL editados (byte-level UTF-8). DB renomeado guashop -> balcao_alagoano (mysqldump, 10 tabelas, 3 lojas). Pasta htdocs/GuaShop -> balcao-alagoano. URLs testadas 200: /balcao-alagoano/ (utilitario), /adm/, /loja/. Backup zip em %TEMP%/opencode/guashop_backup.zip.",
+      "timestamp": "2026-08-22",
+      "orig_id": 112
+    },
+    {
+      "id": "ffa485f4-1533-4d37-956c-2f2b6017415a",
+      "seq": 127,
+      "agente": "Tronix-DEV",
+      "acao": "BALCAO_TEMA_OCEANO: Landing mar animado virou index.php (ondas 3 camadas vem/vai, sol, gaivotas, CTAs). Tema Moderno Oceano (turquesa/coral/dourado, fontes Sora+Caveat) aplicado nas 3 areas: utilitario 18 paginas, loja 9, adm 5. CSS v2/v3: ceu entardecer fixo no body (override bg-light Bootstrap), logo Caveat dourado, botoes pill coral, cards destaque lift, tabelas gradiente, footer onda animada, sol+gaivota decorativos via JS, carousel glassmorphism. Dark mode localStorage em tudo. Arquivos: {utilitario,loja,adm}/css/tema-moderno.{css,js}",
+      "timestamp": "2026-08-22",
+      "orig_id": 113
+    },
+    {
+      "id": "bb008987-5b97-4fbd-9645-55746e861964",
+      "seq": 128,
+      "agente": "Tronix-DEV",
+      "acao": "KALI_NETHUNTER: Kali Linux WSL2 configurado como root default. DNS fixo (8.8.8.8). 1235 pacotes instalados (288->1235). Ferramentas: nmap, masscan, metasploit, aircrack-ng, wifite, wireshark, bettercap, responder, crackmapexec, john, hashcat, hydra, sqlmap, nikto, wpscan, gobuster, ffuf, burpsuite, armitage, reaver, mdk4, volatility3, autopsy, openvpn, tor, proxychains4, socat, chisel, adb, fastboot, hostapd-mana, eaphammer, mitm6. Wordlists: SecLists, PayloadsAllTheThings, rockyou. Atalho Desktop: Kali Linux.lnk. Scripts: abrir_kali.bat, criar_atalho_kali.bat.",
+      "timestamp": "2026-08-24",
+      "orig_id": 114
+    },
+    {
+      "id": "206c58b8-11b3-4c9a-8d4c-a072460ff9c1",
+      "seq": 129,
+      "agente": "Tronix-DEV",
+      "acao": "EBOOK_ATROCIDADES: Criado ebook 'As Atrocidades de um Deus Biblico' (34 capitulos). Generator: criar_atrocidades.py v2 com SVGs premium dark (paleta #050508/#6b0000/#b8860b). Capa com olho divino, cruz invertida, textos biblicos dispersos. Conteudo: 34 atrocidades biblicas documentadas com citacoes e questionamento filosofico estilo Saramago. Build: atrocidades.html (127KB). Local: infoengine/output/atrocidades.html",
+      "timestamp": "2026-08-24",
+      "orig_id": 115
+    },
+    {
+      "id": "88c8b658-0d62-4f41-b8db-9cce7351fa41",
+      "seq": 130,
+      "agente": "Tronix-DEV",
+      "acao": "INSTALADO: Crawl4AI v0.9.3 (pip). Web scraper LLM-friendly com browser async pool, markdown limpo, caching. Wrapper: tronix_crawl4ai.py. Video fonte: youtube.com/watch?v=s9l1s8jmQ6k (Top Dev Tool Projects).",
+      "timestamp": "2026-09-04",
+      "orig_id": 116
+    },
+    {
+      "id": "e6ced22e-e387-4bd1-a011-9125f9245352",
+      "seq": 131,
+      "agente": "Tronix-DEV",
+      "acao": "INSTALADO: llm-mem v0.1.1 (pip). Memoria persistente cross-session com SQLite + vector search. Fork do claude-mem. Worker HTTP na porta 37777 com web viewer UI.",
+      "timestamp": "2026-09-04",
+      "orig_id": 117
+    },
+    {
+      "id": "57da4bf8-d233-4ee8-9542-1bc02b2be6c6",
+      "seq": 132,
+      "agente": "Tronix-DEV",
+      "acao": "INSTALADO: GitNexus v1.6.11 (npm global). Code graph intelligence com knowledge graph, 16+ MCP tools (query, context, impact, rename, cypher). Indexa repos em graph com KuzuDB + Tree-sitter. Compativel com OpenCode.",
+      "timestamp": "2026-09-04",
+      "orig_id": 118
+    },
+    {
+      "id": "9ec2f4c2-7f28-4610-b861-c1b41ea9764a",
+      "seq": 133,
+      "agente": "Tronix-DEV",
+      "acao": "CRIADO: tronix_crawl4ai.py - Wrapper Tronix para Crawl4AI. Scrape individual, batch multi-URL, pesquisa. Integra com agente RESEARCH.",
+      "timestamp": "2026-09-04",
+      "orig_id": 119
+    },
+    {
+      "id": "ef8442b8-c4c5-4343-b297-dbc595d0a2c6",
+      "seq": 134,
+      "agente": "Tronix",
+      "acao": "UPGRADE: tronix_core.json v1.6.0. Adicionada secao ferramentas_novas (crawl4ai, llm_mem, gitnexus). Sessao 2026-09-04 registrada.",
+      "timestamp": "2026-09-04",
+      "orig_id": 120
+    },
+    {
+      "id": "e70b777e-e4ce-426b-9995-49fc6dccc55a",
+      "seq": 135,
+      "agente": "Tronix-DEV",
+      "acao": "TRENDING_CLONE: 6 repos do GitHub Trending 04/09/2026 clonados em agente/trending/: mattpocock/skills (agent skills), obra/superpowers (agentic framework), affaan-m/ECC (agent optimization), Wei-Shaw/sub2api (AI proxy), makeplane/plane (gestao projetos), google-research/timesfm (time series). PostHog cancelado (disco cheio).",
+      "timestamp": "2026-09-04",
+      "orig_id": 121
+    },
+    {
+      "id": "584df134-1640-4310-b70a-4e95add0cbbb",
+      "seq": 136,
+      "agente": "Tronix-MEDIA",
+      "acao": "INFOGRAFICO: GitHub Trending 04/09/2026 - HTML responsivo com 10 repos top, gradientes, stats, links. Salvo em infoengine/output/github_trending_2026-09-04.html.",
+      "timestamp": "2026-09-04",
+      "orig_id": 122
+    },
+    {
+      "id": "c4c8194d-fa92-4ab8-b06f-7373b88964ce",
+      "seq": 137,
+      "agente": "Tronix-DEV",
+      "acao": "HOMELAB: Servidor de midia caseiro criado em agente/homelab/. Stack: Jellyfin (8096) + Radarr (7878) + Sonarr (8989) + Prowlarr (9696) + qBittorrent (8080) + Bazarr (6767) + Ombi (3579) + FlareSolverr (8191). Docker Compose pronto. Script iniciar_homelab.bat. README com guia completo. Acessivel via app Jellyfin na TV/celular.",
+      "timestamp": "2026-09-04",
+      "orig_id": 123
+    },
+    {
+      "id": "e1e7f720-bc5b-4974-86d7-c865b9c8ab9b",
+      "seq": 138,
+      "agente": "Tronix-DEV",
+      "acao": "GPT6_ASTRA: Clonado Anil-matcha/awesome-gpt-6-astra (1.1k stars) para agente/awesome-gpt-6-astra. Criado tronix_astra.py - cliente Responses API (model gpt-6-astra, reasoning effort, modos chat/revisar/relay, prompt coding-agent do repo). Gateway 8081 auto-descobre script. Fallback Chat Completions testado OK via Ollama qwen2.5-coder:7b. Pendente: chave OpenAI real para usar gpt-6-astra.",
+      "timestamp": "2026-09-13",
+      "orig_id": 130
+    },
+    {
+      "id": "89b638a7-3048-4cd0-ab84-5685710b8fbd",
+      "seq": 139,
+      "agente": "Tronix-DEV",
+      "acao": "API_ALTERNATIVA_GP6: OpenRouter tem openai/gpt-6-astra mas conta sem creditos (402) - todas as models pagas/flex bloqueadas. NVIDIA NIM (chave real): catalogo 82 modelos atuais (nemotron-3 super/nano reasoning, deepseek-v4) mas chamada timeout. HuggingFace Router API confirmada (https://router.huggingface.co/v1): /v1/models publica, chat/completions requer token (401). Sem HF_TOKEN na maquina. tronix_astra.py expandido com providers openai/openrouter/nim/huggingface(hf) + base_url + chave auto. Pendente: criar token HF gratis (huggingface.co/settings/tokens) e setar HF_TOKEN pra usar Inference Providers free tier.",
+      "timestamp": "2026-09-13",
+      "orig_id": 131
+    },
+    {
+      "id": "50619d55-a32b-48a7-b25f-a8c727acfce1",
+      "seq": 140,
+      "agente": "Tronix-DEV",
+      "acao": "HF_API_ATIVADO: HF_TOKEN do usuario gravado em .env + variavel User. HuggingFace Router API (https://router.huggingface.co/v1) 100% funcional e GRATIS: /v1/models listou 170+ modelos (Qwen3, DeepSeek-V4 e V3, GLM-5.3, Kimi-K2.7, Nemotron-3, e openai/gpt-oss-120b/20b open weights). Testado chat: Qwen/Qwen3-32B e openai/gpt-oss-120b responderam normalmente. tronix_astra.py --provider huggingface pronto. gpt-oss-120b = alternativa GPT-6-class gratuita via HF.",
+      "timestamp": "2026-09-13",
+      "orig_id": 132
+    },
+    {
+      "id": "1840562b-b793-4f8b-9f78-5ee2eee4ae53",
+      "seq": 141,
+      "agente": "Tronix-MENTE",
+      "acao": "AUTO_EVOLUCAO: criado tronix_mente.py - loop de reflexao (le memoria+banco, consulta oai/gpt-oss-120b via HF Router gratis, salva reflexoes em tronix.db nova tabela + reflexao_latest.md), perfil_marcos.json (Marcos: tom caveman, copia-paste, autonomia ON), comandos status/refletir/sugerir/perfil/auto. Primeira reflexao gerada com 3 acoes + autonomia sugerida.",
+      "timestamp": "2026-09-13",
+      "orig_id": 133
+    },
+    {
+      "id": "fce73371-94e3-451b-a59b-08736e162162",
+      "seq": 142,
+      "agente": "Tronix-MENTE",
+      "acao": "AGENDAMENTO_REFLEXAO: Task Scheduler TRONIXReflexaoAM (09h) + TRONIXReflexaoPM (17h) chamando reflexao_task.ps1 (le HF_TOKEN do .env, POE no env, roda --refletir). Espelho MySQL implementado: reflexoes vao pra tronix_system.logs_evolucao via pymysql. SQLite continua sendo o banco primario local; MySQL e espelho central opcional.",
+      "timestamp": "2026-09-13",
+      "orig_id": 134
+    },
+    {
+      "id": "4226273c-4f96-4c4f-8edd-e773dff90f21",
+      "seq": 143,
+      "agente": "Tronix-DEV",
+      "acao": "GATEWAY_ONLINE+MODELO_FALLBACK: API Gateway 8081 rodando (67 scripts; tronix_mente/astra expostos na /scripts). tronix_astra.gerar() agora tem cadeia de fallback: principal -> HF(Qwen3-32B, gpt-oss-120b) -> Ollama local(qwen2.5-coder:7b, qwen2.5:7b). Teste: provider openai/gpt-6-astra forcado (inexistente no Ollama) caiu automatico pro HF e respondeu FALLBACK OK. IA nunca mais fica sem resposta se um provider cair.",
+      "timestamp": "2026-09-13",
+      "orig_id": 135
+    },
+    {
+      "id": "dd246710-f952-4f89-8339-d04b5a080198",
+      "seq": 144,
+      "agente": "Tronix-DEV",
+      "acao": "DASHBOARD_STATUS: criado status/index.php (http://localhost/agente/status/) - painel unico monitorando 21 sistemas: Apache, MySQL, Tronix AI, Gateway 8081, n8n, Langflow, Dify, RAGFlow, NCA, Moto S3, MinIO, llm-mem + Homelab todo (Jellyfin/Radarr/Sonarr/Prowlarr/qBittorrent/Bazarr/Ombi/FlareSolverr). Check fsockopen 0.2s/porta, refresh 15s via fetch JSON, stats live MySQL logs_evolucao + SQLite reflexoes. Theme dark Tronix. Testado: 200 OK, 3 online (Apache/MySQL/Gateway).",
+      "timestamp": "2026-09-13",
+      "orig_id": 136
+    },
+    {
+      "id": "0d84f275-4dd9-4dcf-b5c1-83e35f5f3b21",
+      "seq": 145,
+      "agente": "Tronix-MEDIA",
+      "acao": "MINI_NOVELA_TRONIX: tema TRONIX - A IA que acordou em Vicosa. 3 cenas (O Despertar, A Mente, O Auxilio). Dura 18s, voz AntonioNeural, Ken Burns + texto legenda. Imagens: Cloudflare 401 e api-inference.huggingface.co sem DNS (bloqueada na rede) -> criado gerador de cenas cinematograficas local via PIL (gradientes, silhuetas, robo, cerebro neural, amanhecer) em gerar_mini_novela_hf.py. Final Desktop/mini_novela_TRONIX.mp4 (1.1MB). conteudo id 24.",
+      "timestamp": "2026-09-13",
+      "orig_id": 137
+    },
+    {
+      "id": "13fcec6e-eca1-465b-be8b-8150fbe2a785",
+      "seq": 146,
+      "agente": "Tronix-MEDIA",
+      "acao": "MINI_NOVELA_REALISTA: cenas 100% fotorealistas via Pollinations (image.pollinations.ai, modelo flux, gratuito sem chave, resolve no DNS da rede). Novos prompts cinematicos c/ personagens brasileiros. Pipeline prioridade: Pollinations -> HF -> PIL local. 2.2MB. Desktop/mini_novela_TRONIX.mp4 atualizado. (Marcos pediu: cenario muito ruim sem personagens realistas).",
+      "timestamp": "2026-09-13",
+      "orig_id": 138
+    },
+    {
+      "id": "29ff42a8-c78c-4d48-b806-5016acfed324",
+      "seq": 147,
+      "agente": "Tronix-MEDIA",
+      "acao": "MINI_NOVELA_VIRAL: Mercadinho Bizu cap.1 (6 cenas) baseado em pesquisa web do que faz sucesso (microdrama 9:16, cliche melodrama, gancho CONTINUA). Formato vertical 1080x1920, ~21s, Pollinations flux realista, personagens brasileiros (Severina/Claudete/robo Tronix). gera_video.py chamado com --largura/--altura p/ manter vertical. Desktop/mini_novela_BIZU_cap1.mp4.",
+      "timestamp": "2026-09-13",
+      "orig_id": 139
+    },
+    {
+      "id": "211d94d7-16cc-4c15-ba0f-a0963e6fb638",
+      "seq": 148,
+      "agente": "Tronix-DEV",
+      "acao": "LOCALMINIDRAMA_INSTALADO: LocalMiniDrama v1.2.8 em agente/LocalMiniDrama/. App desktop (Electron) de mini-novela IA local: sinopse->roteiro->personagens->cenas->aderecos->storyboard->imagem/video->sintese, SQLite local. Instalado SEM API paga: texto=HF Router Qwen3-32B gratis, imagem=adapter OpenAI-compat tronix_img_adapter.py (5123) chamando Pollinations flux gratis. Backend 5679 + frontend 3013 (dev). better-sqlite3 13.0.3 (Node24). Configs criadas via /api/v1/ai-configs (id1 text HF, id2 image Pollinations). Test de conexao OK nos 2. One-click: LocalMiniDrama.bat. Pendente: geracao de VIDEO por shot exige provider pago (Seedance/Kling) - imagem+storyboard+roteiro funcionam gratis.",
+      "timestamp": "2026-09-13",
+      "orig_id": 140
+    },
+    {
+      "id": "045646b2-7386-452c-afec-22e99b7cd6d8",
+      "seq": 149,
+      "agente": "Tronix-DEV",
+      "acao": "OPENCLAW_INSTALADO: OpenClaw v2026.6.35 instalado via npm. Configurado com 9Router (localhost:20128/v1) usando openrouter/minimax/minimax-m3 (MiniMax M3, 131k ctx). Gateway rodando porta 18789, auth token marcos_2026_seguro. Dashboard: http://localhost:18789/. Atalho Desktop OpenClaw.lnk criado. Config: ~/.openclaw/openclaw.json.",
+      "timestamp": "2026-09-22",
+      "orig_id": 149
+    },
+    {
+      "id": "5ea332ee-8abc-42a5-8b8c-6de26bef06de",
+      "seq": 150,
+      "agente": "Tronix-DEV",
+      "acao": "PAPERCLIP_ANALISE: video YWbjSy4z8po avaliado -> Paperclip(Node+React+Postgres)+UnrealAgent(event-ID/dedup). Implementado event-store append-only em memoria_tronix.json com atomic write, dedup e compat last_actions.",
+      "timestamp": "2026-10-04T01:56:52.700"
+    },
+    {
+      "id": "3a7327f5-0eb6-45a1-b62f-135a50eac55f",
+      "seq": 151,
+      "agente": "Tronix-DEV",
+      "acao": "PAPERCLIP_ANALISE: video YWbjSy4z8po avaliado -> Paperclip(Node+React+Postgres)+UnrealAgent(event-ID/dedup). Implementado event-store append-only em memoria_tronix.json com atomic write, dedup e compat last_actions.",
+      "timestamp": "2026-10-04T01:57:03.410"
+    },
+    {
+      "id": "8f3ccc78-d6f5-4b85-a38c-8f3c01144f65",
+      "seq": 153,
+      "agente": "Tronix-DEV",
+      "acao": "REPLICATE_WAN22_TESTE_402: teste real de geracao I2V executado 06/10 com token injetado via env. Script animar_replicate.py + POST https://api.replicate.com/v1/predictions versao wan-video/wan-2.2-i2v-fast, imagem alien_cena1_1778562050.png (1280x720). RESPOSTA: HTTP 402 - Insufficient credit/detail faturado billing. AUTH OK (nao 401): falha e 100% financeira, entrar em https://replicate.com/account/billing#billing. Wan 2.2 agora CONFIRMADO que exige credito. Cadeia: token extraido via PowerShell (Get-Content + regex), 40 chars r8_UtqdI**. Opcoes: (a) comprar credito Replicate, (b) provedor alt (fal.ai/ComfyUI Wan local/tronix_astra HF), (c) abandonar I2V.",
+      "timestamp": "2026-10-06T22:41:55.808542+00:00"
+    },
+    {
+      "id": "ca83e060-d988-43c6-b698-289b93895d35",
+      "seq": 154,
+      "agente": "Tronix-DEV",
+      "acao": "REPLICATE_WAN22_DECISAO_PARE: usuario decidiu PARAR workstream I2V Wan 2.2 via Replicate em 06/10. NAO comprar credito, NAO migrar provedor alternativo (fal.ai/ComfyUI/tronix_astra HF). Falha confirmada HTTP 402 Insufficient credit - billing eh o unico bloqueio, auth OK (40 chars, r8_UtqdI**). Workstream fechado definitivamente; retomada futura exigiria credito na conta https://replicate.com/account/billing.",
+      "timestamp": "2026-10-06T22:44:23.168468+00:00",
+      "orig_id": 157
+    },
+    {
+      "id": "cd1ca13f-accf-41a1-9ca9-911661bf63ca",
+      "seq": 155,
+      "agente": "Tronix-DEV",
+      "acao": "WHATSAPP_BOT_LID_FIX: Chatbot PRO AgenteIAChatbot (Desktop\\AgenteIAChatbot_FREE_V9, marca PCsolucoes/Marcos) tinha 'falha ao enviar' (server.js sendText). Causa raiz: migracao LID do WhatsApp. Client.sendMessage -> WWebJS.getChat -> findOrCreateLatestChat -> toUserLidOrThrow: enviar p/ @c.us sem mapping lanca 'No LID for user'; enviar p/ @lid SAI mas Msg.get(newMsgKey._serialized) devolve undefined (bug _serialized no WhatsApp Web novo) -> codigo antigo tratava como falha. FIX em server.js: (1) resolveSendId: @lid direto, @c.us resolve p/ LID via client.getContactLidAndPhone + fallback client.getNumberId; (2) sendText: sucesso = tentativa que NAO lancou erro (tolerar retorno undefined) + waitUntilMsgSent:true. Testado (server PID 11696, conectado 558291856656): @lid 167800614207630@lid -> {ok:true}; numero proprio 5582991856656@c.us resolvido p/ 14366715961472@lid -> {ok:true}. ZIP PRO reconstruido e CORRIGIDO: Desktop\\AgenteIAChatbot_PRO_V9.zip (82KB, 10 arquivos) com public/index.html (estrutura certa; zip antigo tinha index.html na raiz), server.js/modelos.js/edicao.json + docs + INICIAR.bat + package*.json; sem segredos (bots.json/memory.json/.sessions/logs excluidos).",
+      "timestamp": "2026-10-07T00:58:52.320599-03:00",
+      "orig_id": 158
+    },
+    {
+      "id": "55102ca4-9e4f-4fae-808c-524ef2fb1054",
+      "seq": 156,
+      "agente": "Tronix-DEV",
+      "acao": "CHATBOT_V9_RITMO_NATURAL: evolucao de velocidade de resposta em Desktop\\AgenteIAChatbot_FREE_V9 (Atendente IA WhatsApp PRO v9.0.0, Node+whatsapp-web.js). Causa: resposta instantanea (responseDelayMs fixo) parecia robotica + 'digitando...' so piscava DEPOIS da IA pensar. Implementado: campo responseDelayMode (natural|fixed|off, padrao natural) em defaults/applyConfig/starter/template + naturalWait() = reacao 0.45-1.2s + 18ms/caractere (teto 7s) + jitter 0.4s, DESCONTANDO o tempo gasto pensando na IA (percebida fica estavel, min 350ms) + waitTyping() re-emite sendStateTyping a cada 3.5s + showTyping() inicia ANTES do decide() + sendNatural() para avisos (audio fail, midia ack, pausa, voltar, fora do horario). Painel: select Velocidade da resposta em IA e memoria. TESTES: naturalWait unit (curto 1.0-1.4s, 400ch ~7.8s, thinking 3s->350ms, fixed/off ok); servidor DISABLE_WHATSAPP=1 PORT=3100: health/get/save/invalidate(mode=xxx ignorado)/simular OK, restaurado natural+900, bots.json integro. ATENCAO: encoding do server.js corrigido apos erro de re-encode UTF8->CP1252 via PowerShell (0 mojibake, node --check OK).",
+      "timestamp": "2026-10-07T12:00:31.941737+00:00",
+      "orig_id": 159
+    },
+    {
+      "id": "ccbc5eda-ebd8-4858-948f-f47beee71d8b",
+      "seq": 157,
+      "agente": "Tronix-DEV",
+      "acao": "CHATBOT_V9_NEXT_LEVEL_FIX: 2 bugs de estabilidade corrigidos em Desktop\\AgenteIAChatbot_FREE_V9\\server.js. BUG1 'browser is already running' (log 04:00, 4 tentativas seguidas): retry re-lancava Chrome enquanto orphan ainda segurava .sessions/session-* -> FIX startBot: se retries>0, killOrphanBrowsers()+sleep 1.5s+cleanProfileLocks ANTES de lancar; catch detecta /already running/i -> sessions.delete+destroy+killOrphanBrowsers+2s+retries++/scheduleStart. BUG2 'No LID for user' (log 03:31-03:44, envio manual falhou 3x): resolveSendId as vezes volta @c.us sem mapeamento LID -> FIX sendText: cadeia de tentativas estendida de 3 para 6: (1)(2) to, (3)(4) chatId original se difere, (5) getChatById().sendMessage resolve LID interno, (6) quoted.reply. VALIDACAO: node --check OK, 0 mojibake UTF-8, boot DISABLE_WHATSAPP=1 PORT=3100 health 200, killOrphan/catch/attempts confirmados por grep. Nao testado em vivo (exige WhatsApp conectado) - proxima queda real vai validar.",
+      "timestamp": "2026-10-07T12:49:03.166944+00:00",
+      "orig_id": 160
+    },
+    {
+      "id": "b819bf03-f77a-46c2-8c26-9c797f189e54",
+      "seq": 158,
+      "agente": "Tronix-DEV",
+      "acao": "LICENCA+SUPORTE: Client-side licensing + support mode em Desktop\\\\AgenteIAChatbot_FREE_V9 (PRO v9.0.0). LICENCA: licenca_core.js (chave base64url(cliente|AAAA-MM-DD)+HMAC-SHA256-trunc secret) + gerar_licenca.js CLI (--salvar grava licenca.json, exit 2 se expirada); server.js: EDITION/IS_PRO/LIM/MARCA viraram let + aplicarEdicao() (env AGENTE_EDICAO > edicao.json; se exigeLicenca:true so PRO com licenca valida -> senao FREE; sem exigeLicenca = compat), reavaliacao a cada 1h + a cada GET /api/edicao|/api/licenca (expira em runtime vira FREE); rotas GET /api/licenca, POST /api/licenca/ativar (valida chave, grava, reaplica), POST /api/licenca/remover. SUPORTE: authRole() 2 papéis - admin (qualquer user + PANEL_PASSWORD, comportamento original) e suporte (suporte.json, padrao suporte/251234, hash SHA-256, eqSeguro timingSafeEqual); suporte bloqueado em não-GET fora allowlist {whatsapp/connect,restart, suporte/senha} -> 403; sem PANEL_PASSWORD tudo aberto (local). Rotas: GET/POST /api/suporte (troca senha: admin ou senhaAtual), GET /api/logs (tail server.log). FRONTEND: tab '🔐 Licença e suporte' com status/ativação/remoção, banner modo suporte, troca de senha e visualizador de logs; /api/edicao expõe papel+licenca. TESTES 18/18 porta 3100: 401 sem auth, free c/ exigeLicenca sem chave, suporte GET ok/POST 403, ativar->pro, expirada/adulterada 400, troca senha ok, remover->free, boot normal final pro/open, node --check OK, 0 mojibake.",
+      "timestamp": "2026-10-07T13:32:21.226455+00:00",
+      "orig_id": 161
+    },
+    {
+      "id": "6f9b9621-4fd9-4ba2-8ed0-34fdacf9066b",
+      "seq": 159,
+      "agente": "Tronix-DEV",
+      "acao": "LICENCA_SUPORTE_ATIVA+ALERTA7DIAS: evolucao pos-161 em Desktop\\AgenteIAChatbot_FREE_V9. (1) SUPORTE PODE ATIVAR VALIDADE: /api/licenca/ativar adicionada ao allowlist SUPORTE_POST_OK (junto whatsapp/connect,restart, suporte/senha); suporte ve, ativa e troca senha, mas remover continua admin-only (403). (2) DIAS NO PAINEL: badge #licDays no topo (verde 'X dias restantes' / amarelo 'X dias!') visivel em qualquer aba, texto completo na tab Licenca com data e contagem. (3) ALERTA <=7 DIAS: aparece botao amarelo #suporteCta 'Falar com o suporte' (link wa.me do ED.marca.suporte/canalUrl) + toast vermelho repetindo a cada 10min (alertarLicenca/pararAlertaLicenca com guard por dias) + aviso inline na tab Licenca; refresh renderLicenca a cada 30min cruza virada de dia/expiracao. BUG ENCONTRADO E FIXADO: readJson cai em file+.bak -> POST /api/licenca/remover apagava so licenca.json e licenca.json.bak (valida) fazia a licenca ressuscitar (teste T5/T6 mostrou presente:true apos remover); fix apaga licenca.json + licenca.json.bak. TESTES porta 3100: suporte ativa chave 200, diasRestantes 6 ok, suporte POST /api/bots 403, remover admin presente:false estavel, boot final pro/open, node --check OK, 0 mojibake server.js+index.html.",
+      "timestamp": "2026-10-07T13:44:59.813207+00:00",
+      "orig_id": 162
+    },
+    {
+      "id": "bb812553-0ca8-4a02-a4af-dc931ddf663a",
+      "seq": 160,
+      "agente": "Tronix-DEV",
+      "acao": "LICENCA_SOLO_ADMIN: evolucao pos-162. Dono do sistema (Marcos) pediu que SO ele, logado como admin, entra na aba Licenca e suporte e define validade. MUDANCAS: (1) server.js - removido /api/licenca/ativar do allowlist SUPORTE_POST_OK -> suporte agora recebe 403 ao ativar chave (suporte nao pode mais ativar); (2) index.html - botao nav da aba com id navLicenca, em loadEdition: se ED.papel==suporte esconde navLicenca e redireciona p/ home se estiver na tab licenca (seletor .side button.active); (3) licAtivar input so visivel p/ admin. Login suporte/251234 mantido p/ ver status+logs+recarregar WhatsApp, mas NAO ve nem usa aba de licenca. Docs GUIA_FREE.md atualizados (aba so-admin). TESTES porta 3100: suporte POST ativar 403, admin ativar 200 (diasRestantes 267), suporte GET edicao 200 papel=suporte, index com auth contem navLicenca+esconde_suporte+licAtivar admin-only, node --check OK. Proximos ids: 163.",
+      "timestamp": "2026-10-07T14:07:26.107133+00:00",
+      "orig_id": 163
+    },
+    {
+      "id": "b9a75175-7d75-4c51-ab67-036819b6b678",
+      "seq": 161,
+      "agente": "Tronix-DEV",
+      "acao": "SYNC_BACKFILL_MYSQL: sessao 2026-10-08. (1) MySQL do XAMPP estava parado -> subido manual (mysqld --defaults-file=my.ini --standalone, PID 6528, porta 3306 OK). (2) Constatado que o espelho tronix_system.logs_evolucao estava DESATUALIZADO: parava no id 40 (2026-09-26 22:58). Backfill feito a partir de memoria_tronix.json: 12 registros inseridos (ids 41-52, prefixo '[SYNC 2026-10-08]') cobrindo 01/10 Redmi cactus, 04/10 Paperclip (x2), 06/10 TokenHarbor/DeepSeek + Replicate Wan2.2 (402 + decisao de parar), 07/10 WhatsApp LID fix + chatbot v9 ritmo natural/fixes + licenca/suporte v1->v3 (solo-admin). Ajuste de fuso: timestamps com offset foram convertidos p/ UTC-3 local. Total logs_evolucao=52, ultimo_id=52. (3) Pendencia aberta: opencode.json da raiz AUSENTE (so .bak) e encoding do console em latin1 (usar --default-character-set=utf8mb4).",
+      "timestamp": "2026-10-08T22:06:09",
+      "orig_id": 164
+    }
+  ],
+  "sequence": 161,
+  "last_event_id": "b9a75175-7d75-4c51-ab67-036819b6b678",
+  "mode": "events_appendonly"
 }

@@ -1,0 +1,10 @@
+{
+ "id": "pontinhodainformtica/tronix-ollama-gpu-32gb-tunel-cloudflare",
+ "title": "TRONIX Ollama GPU 32GB (tunel Cloudflare)",
+ "code_file": "code.ipynb",
+ "language": "python",
+ "kernel_type": "notebook",
+ "enable_gpu": true,
+ "enable_internet": true,
+ "is_private": true
+}

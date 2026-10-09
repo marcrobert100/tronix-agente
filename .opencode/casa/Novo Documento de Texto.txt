@@ -1,6 +1,0 @@
-🛵 *DeliveryBot — Acesso*
-
-🏪 *teste*
-📧 Email: *teste@teste.com*
-🔑 Senha: *oihu1he9*
-🔗 http://localhost:3000/painel

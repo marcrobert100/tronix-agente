@@ -172,3 +172,147 @@ e61820a ✨ InfoEngine — Sistema de Infográficos e Livros Infantis
 - [ ] ~PWA (Progressive Web App) para uso mobile~ ✅ CONCLUÍDO
 - [ ] Gerar APK assinado (Android App Bundle) para Play Store
 - [ ] Criar versão iOS via PWABuilder
+
+---
+# Bancada de Trabalho e Equipamentos
+
+## Configuração da Bancada
+- **Computador principal**: Dell XPS 15 (2023) com Windows 11 Pro
+- **Processador**: Intel Core i7-13700H
+- **Memória RAM**: 32GB DDR5
+- **Armazenamento**: 1TB NVMe SSD
+- **Monitor**: Dell UltraSharp 27" 4K UHD (U2723QE)
+- **Placa de vídeo**: NVIDIA RTX 4060 Laptop
+- **Teclado**: Logitech MX Keys
+- **Mouse**: Logitech MX Master 3S
+- **Conectividade**: Ethernet, WiFi 6E, Bluetooth 5.2
+
+## Software e Ferramentas
+### Ambiente de Desenvolvimento
+- **IDE**: Visual Studio Code 1.85+
+- **PHP**: XAMPP v8.2
+- **Node.js**: LTS 20.x
+- **Python**: 3.11.x com Virtual Environments
+- **Git**: GitHub Desktop e linha de comando
+- **Browser**: Chrome 120+, Edge 120+, Firefox 120+
+
+### Ferramentas Específicas do Projeto
+- **Gerador de APKs**: Capacitor + PWABuilder (node tools/gerar-apk.js)
+- **Conversor SVG para PNG**: gerar-icones.html com Canvas API
+- **Ferramenta WhatsApp**: pywhatkit e scripts Python
+- **Build de livros**: Picture-book-skill (GitHub)
+- **Geração de PDF**: Playwright + html2pdf.js
+
+### Ferramentas de Bancada (kit completo)
+- **ADB (Android Debug Bridge)**: localização padrão no Windows via winget
+  - `%LOCALAPPDATA%\Microsoft\WinGet\Packages\Google.PlatformTools_Microsoft.Winget.Source_8wekyb3d8bbwe\platform-tools\adb.exe`
+  - ⚠️ Sempre use o ADB deste caminho específico, pois outros podem falhar por causa do "Ç" no nome do usuário
+- **scrcpy** (espelhamento de tela): 
+  - `%LOCALAPPDATA%\Microsoft\WinGet\Packages\Genymobile.scrcpy_Microsoft.Winget.Source_8wekyb3d8bbwe\scrcpy-win64-v4.1\scrcpy.exe`
+- **Python 3.12**: 
+  - `%LOCALAPPDATA%\Programs\Python\Python312\python.exe`
+- **JDK 17**: para compilar o Evo
+  - `C:\Program Files\Microsoft\jdk-17.0.20.101-hotspot`
+- **Gradle 9.3.1**: para compilar o Evo
+  - `%USERPROFILE%\.gradle\wrapper\dists\gradle-9.3.1-bin\23ovyewtku6u96viwx3xl3oks\gradle-9.3.1\bin\gradle.bat`
+- **Drivers de celular instalados no Windows**:
+  - Google USB Driver (oem42.inf) — via pnputil ✓
+  - Xiaomi/MIUI (VID_2717) — nativo do sistema ✓
+
+### Acesso ao Código
+- **Repositório Git**: `C:\xampp\htdocs\agente\`
+- **Dashboard PHP**: `http://localhost/agente/infoengine/dashboard/index.php`
+- **Caminhos importantes**:
+  - `C:\xampp\htdocs\agente\infoengine\`  
+  - `C:\Users\marcos\Desktop\tronix-3d-flowchart.html`
+  - `C:\Users\marcos\Desktop\potencial.md`
+  - `C:\Users\CHCONTE RECPÇÃO\Desktop\MANUAL-DA-BANCADA.md` (manual completo da bancada)
+
+## Procedimentos para Trabalho com Telefones
+
+### Preparação do Ambiente
+1. **Conectar dispositivo Android ao PC via USB**
+   - Ativar modo desenvolvedor (Configurações > Sobre o telefone > Toque 7 vezes no número da build)
+   - Habilitar depuração por USB (Configurações > Desenvolvedor > Depuração USB)
+2. **Verificar conexão**
+   - Abrir PowerShell como administrador
+   - Executar `adb devices` para verificar se o dispositivo está conectado
+   - Se não aparecer, instalar drivers ADB ou usar USB Debugging em modo "MTP"
+
+### Conexão Wi-Fi do Celular (Passo a Passo)
+1. **Conectar USB** ao celular + PC
+2. **Executar comandos ADB**:
+   - `adb tcpip 5555`
+   - `adb shell svc wifi enable`
+   - Aguardar 30s até o celular reconectar automaticamente
+   - `adb connect 192.168.3.39:5555` → conectado sem cabo ✓
+3. **Usar a variável de ambiente** para comandos ADB:
+   - `ANDROID_SERIAL=192.168.3.39:5555 adb shell getprop` (exemplo de comando)
+4. **Verificar conexão Wi-Fi**:
+   - `adb devices` → o celular deve aparecer com IP e porta
+
+### Testes de Aplicativo
+1. **Instalação do APK**
+   - Abrir PowerShell na pasta `C:\xampp\htdocs\agente\infoengine`
+   - Executar: `adb install -r "C:\caminho\para\app.apk"`
+2. **Verificação do funcionamento**
+   - Abrir aplicativo no dispositivo
+   - Verificar logs usando: `adb logcat | findstr "tronix"`
+3. **Debugging**
+   - Usar Chrome DevTools (`chrome://inspect/#devices`) para inspeção em tempo real
+   - Acessar o app pelo caminho: `http://localhost:8080` (se servidor local estiver ativo)
+
+### Gerenciamento de Dispositivos
+- **Backup de dados importantes**: `/data/data/com.stitch.contosmagicos/files/`
+- **Limpeza após testes**: Apagar cache e dados do app do dispositivo
+- **Manutenção periódica**: Desinstalar apps desnecessários
+
+## Comandos Úteis para PowerShell
+```powershell
+# Iniciar Apache no XAMPP
+Start-Process -FilePath "C:\xampp\xampp-control.exe"
+
+# Verificar portas em uso
+Get-NetTCPConnection -LocalPort 80
+
+# Conectar USB com ADB
+adb start-server
+adb devices
+
+# Reiniciar dispositivo
+adb reboot
+
+# Copiar arquivos do dispositivo
+adb pull /sdcard/Download /local/path/
+
+# Instalar APK
+adb install -r "C:\caminho\para\app.apk"
+
+# Conexão Wi-Fi do celular (passo a passo)
+adb tcpip 5555
+adb shell svc wifi enable
+adb connect 192.168.3.39:5555
+```
+
+## Atualizações e Manutenção
+- **Atualizar XAMPP**: Semanalmente verificar novas versões
+- **Manter Node.js atualizado**: Usar NVM para gerenciar versões
+- **Ferramentas Python**: Manter virtual environments atualizados com `pip list --outdated`
+- **Verificar logs de sistema**: Monitorar `logs_evolucao` no MySQL e `tronix.db`
+
+## Procedimento de Resolução de Problemas
+
+### Problema com Apache/XAMPP
+1. Testar porta 80
+2. Verificar se outra aplicação está usando a porta
+3. Reiniciar serviço do Apache pelo painel XAMPP
+
+### Problema com ADB/Android
+1. Verificar USB debugging ativado
+2. Instalar drivers adequados
+3. Executar `adb kill-server` seguido por `adb start-server`
+
+### Erros no PHP
+1. Verificar logs de erro do Apache em `/xampp/apache/logs/error.log`
+2. Testar conexão com MySQL
+3. Validar arquivos com `php -l arquivo.php`

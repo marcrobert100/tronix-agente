@@ -1,0 +1,7 @@
+﻿1. By unlocking the device you agree that this may bring changes to some parts of the system. These changes may damage the device.
+2. After the device is unlocked, it becomes less secure and more vulnerable to malware attacks, which may lead to the disclosure and loss of your private data.
+3. Some features which require high security level (e.g., Find device, added-value services, etc.) will no longer be available.
+4. After the device is unlocked, some features will be changed. Thus, you will no longer be able to receive regular updates and enjoy newest features of MIUI.
+
+The risks stated above do not fully cover changes which may be brought about by Mi Unlock.
+We will keep improving Mi Unlock in order to prevent the cases when unauthorised vendors unlock Mi devices to install third party apps which worsen MIUI user experience and can't to be deleted. Locked devices also provide you with high-quality security features, such as Find device, and other added-value services. We're sorry for any inconveniences our policies may cause.

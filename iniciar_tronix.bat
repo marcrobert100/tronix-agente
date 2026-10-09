@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 title Tronix v1.4 - Unified System
 cd /d "%~dp0"
 
